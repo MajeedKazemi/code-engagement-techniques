@@ -15,6 +15,7 @@ import {
     retryOpeningLanguageClient,
     stopLanguageClient,
 } from "../api/intellisense";
+import { Baseline } from "./baseline-generater";
 import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
 
@@ -43,6 +44,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const [lastEditedAt, setLastEditedAt] = useState<Date | null>(null);
     const [saved, setSaved] = useState(true);
     const [canReset, setCanReset] = useState(false);
+    const [cursorPosition, setCursorPosition] = useState({ lineNumber: 0, column: 0 });
 
     useImperativeHandle(ref, () => ({
         setCode(code: string) {
@@ -74,8 +76,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                 );
                             }
 
-                            let breakpointDecorationIds = [];
-
                             const editor = monaco.editor.create(
                                 monacoEl.current!,
                                 {
@@ -89,39 +89,33 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                     minimap: { enabled: false },
                                     wordWrap: "on",
                                     wrappingIndent: "indent",
-                                    lineNumbers: 'on',
-                                    glyphMargin: true,
+                                    lineNumbers: 'on'
                                 }
                             );
 
-                        
-                            const decoration = {
-                                range: new monaco.Range(1,1,1,1),
-                                options: {
-                                  isWholeLine: true,
-                                  glyphMarginClassName: 'breakpoint-button',
-                                },
-                            };
-
-                            breakpointDecorationIds = editor.deltaDecorations([], [decoration]);
-
-                            const handleBreakpointClick = (e: MouseEvent) => {
-                                const target = e.target as HTMLElement;
-                                if (target.classList.contains('breakpoint-button')) {
-                                  console.log('Breakpoint clicked on line:', editor.getValue());
-                                }
-                            };
-
-                            (monacoEl.current! as HTMLElement).addEventListener('click', handleBreakpointClick);
+                            editor.onDidChangeCursorPosition((e) => {
+                                setCursorPosition(e.position);
+                            });
 
                             editor.addAction({
-                                id: 'custom-action',
-                                label: 'Custom Action',
+                                id: 'show-ai-assistance',
+                                label: 'AI Assistance',
                                 contextMenuGroupId: 'navigation',
                                 contextMenuOrder: 1,
                                 run: function (editor) {
-                                  // Perform the action logic here
-                                  console.log('Custom action triggered!');
+                                    const currentPosition = editor.getPosition();
+                                    const model = editor.getModel();
+                                
+                                    if (currentPosition && model) {
+                                      const codeAboveCursor = model.getValueInRange({
+                                        startLineNumber: 1,
+                                        startColumn: 1,
+                                        endLineNumber: currentPosition.lineNumber - 1,
+                                        endColumn: model.getLineMaxColumn(currentPosition.lineNumber - 1),
+                                      });
+                                
+                                      console.log('Code above cursor:', codeAboveCursor);
+                                    }
                                 },
                               });
 
@@ -403,6 +397,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
+            <Baseline editor={editor}/>
         </Fragment>
     );
 });

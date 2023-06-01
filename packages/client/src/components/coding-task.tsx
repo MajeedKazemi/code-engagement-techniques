@@ -7,7 +7,6 @@ import { getLogObject } from "../utils/logger";
 import { convertTime } from "../utils/shared";
 import { Button } from "./button";
 import { Editor } from "./editor";
-import { Baseline } from "./baseline-generater";
 
 interface CodingTaskProps {
     taskId: string;
@@ -191,7 +190,7 @@ export const CodingTask = (props: CodingTaskProps) => {
                     ) : null}
                 </div>
 
-                <div className="task-submission-buttons-container">
+                {/* <div className="task-submission-buttons-container">
                     <div className="submit-container">
                         <div className="submit-attention">
                             <b>ATTENTION</b>
@@ -221,7 +220,7 @@ export const CodingTask = (props: CodingTaskProps) => {
                             </div>
                         ) : null}
                     </div>
-                </div>
+                </div> */}
             </section>
 
             <Editor
@@ -231,7 +230,6 @@ export const CodingTask = (props: CodingTaskProps) => {
                 starterCode={props.starterCode ? props.starterCode : ""}
                 updateCode={setUserCode}
             />
-            {/* <Baseline/> */}
         </div>
     );
 };

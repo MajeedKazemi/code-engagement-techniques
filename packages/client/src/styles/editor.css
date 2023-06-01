@@ -134,28 +134,21 @@
     margin-left: 12px;
 }
 
-.margin {
-    width: 10px;
+.task-baseline {
+    margin-left: 2px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    background-color: rgba(207, 207, 207, 0.877); 
+    padding: 0.5rem;   
 }
 
-.breakpoint-button {
-    position: relative;
-    display: inline-block;
-    width: 8px; 
-    height: 8px; 
-    border-radius: 50%;
-    background-color: rgb(84, 34, 165); 
-    margin-right: 8px; 
-  
-    &:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -8px; 
-      bottom: 0;
-      width: 2px; 
-      background-color: black; 
-    }
+.gpt-image {
+    width: 2em;
+    padding-right: 2px;
+}
+
+
+.margin {
+    width: 10px;
 }
 
 .task-assists {
