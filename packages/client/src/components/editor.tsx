@@ -89,7 +89,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                     minimap: { enabled: false },
                                     wordWrap: "on",
                                     wrappingIndent: "indent",
-                                    lineNumbers: 'on'
+                                    lineNumbers: 'on',
                                 }
                             );
 
@@ -285,6 +285,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         <Fragment>
             <section className="task-workspace">
                 <div className="editor" ref={monacoEl}></div>
+                <div className="overlay"></div>
                 <div className="editor-buttons-container">
                     <button
                         className={`editor-button ${

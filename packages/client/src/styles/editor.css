@@ -4,6 +4,18 @@
     border: solid 1px #ccc;
     border-radius: 6px;
     overflow: hidden;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(85, 84, 84, 0.5);
+    pointer-events: none; 
+    display: none;
 }
 
 .output {
@@ -134,6 +146,13 @@
     margin-left: 12px;
 }
 
+.read-only-editor {
+    min-height: 100px;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 .task-baseline {
     margin-left: 2px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -141,9 +160,24 @@
     padding: 0.5rem;   
 }
 
+.baseline-input {
+    height: 25%;
+    width: 100%;
+    font-size: 16px;
+}
+
 .gpt-image {
     width: 2em;
     padding-right: 2px;
+}
+
+.gpt-button {
+    background-color: rgb(0, 122, 204);
+    color: #fff;
+    font-weight: bold;
+    width: 200px;
+    border: none;
+    padding: 10px;
 }
 
 
