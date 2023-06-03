@@ -236,12 +236,12 @@ export const apiGetSavedUserCode = (
         },
     });
 
-export const apiGenerateCodex = (
+export const apiGetBaselineCodex = (
     token: string | null | undefined,
     description: string,
     context: string
 ) =>
-    fetch(env.API_URL + "/api/codex/generate", {
+    fetch(env.API_URL + "/api/technique-baseline/generate", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -254,6 +254,7 @@ export const apiGenerateCodex = (
             context: context,
         }),
     });
+
 
 export const apiLogEvents = (
     token: string | null | undefined,

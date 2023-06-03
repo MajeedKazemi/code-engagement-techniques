@@ -1,6 +1,6 @@
 import * as monaco from "monaco-editor";
 import { Range } from "monaco-editor";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
@@ -12,14 +12,12 @@ interface ICodexProps {
     editor?: monaco.editor.IStandaloneCodeEditor | null;
 }
 
-export const Codex = (props: ICodexProps) => {
+export const BaselineCodex = (props: ICodexProps) => {
     const [description, setDescription] = useState<string>("");
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
-    // const [checked, setChecked] = useState(true);
-
-    // const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [checked, setChecked] = useState(true);
 
     const generateCode = () => {
         if (description.length === 0) {
@@ -32,14 +30,14 @@ export const Codex = (props: ICodexProps) => {
 
             const focusedPosition = props.editor?.getPosition();
             const userCode = props.editor?.getValue();
-            // let codeContext = "";
+            let codeContext = "";
 
-            // if (focusedPosition && userCode && checked) {
-            //     codeContext = userCode
-            //         .split("\n")
-            //         .slice(0, focusedPosition.lineNumber + 1)
-            //         .join("\n");
-            // }
+            if (focusedPosition && userCode && checked) {
+                codeContext = userCode
+                    .split("\n")
+                    .slice(0, focusedPosition.lineNumber + 1)
+                    .join("\n");
+            }
 
             try {
                 apiGetBaselineCodex(
@@ -205,36 +203,6 @@ export const Codex = (props: ICodexProps) => {
                                         []
                                     );
                                 }, 1000);
-
-                                // props.editor.addContentWidget({
-                                //     getId: function () {
-                                //         return "my.content.widget";
-                                //     },
-                                //     getDomNode: function () {
-                                //         if (!generatedCodeButton) {
-                                //             generatedCodeButton =
-                                //                 document.createElement("div");
-                                //             generatedCodeButton.innerHTML =
-                                //                 "<button>Accept Code</button><button>Reject Code</button>";
-                                //         }
-
-                                //         return generatedCodeButton;
-                                //     },
-                                //     getPosition: function () {
-                                //         return {
-                                //             position: {
-                                //                 lineNumber: highlightEndLine,
-                                //                 column: highlightEndColumn + 20,
-                                //             },
-                                //             preference: [
-                                //                 monaco.editor
-                                //                     .ContentWidgetPositionPreference.ABOVE,
-                                //                 monaco.editor
-                                //                     .ContentWidgetPositionPreference.BELOW,
-                                //             ],
-                                //         };
-                                //     },
-                                // });
                             } else {
                                 const words = description.split(" ").length;
 
@@ -304,7 +272,7 @@ export const Codex = (props: ICodexProps) => {
                     <p>Hint: {feedback}</p>
                 </div>
             ) : null}
-            {/* <div className="context-checkbox-container">
+            <div className="context-checkbox-container">
                 <input
                     type="checkbox"
                     value="Use Code Before Cursor"
@@ -313,23 +281,7 @@ export const Codex = (props: ICodexProps) => {
                         setChecked(!checked);
                     }}
                 ></input>
-                <label>Use Code Before Cursor as Context</label>
-
-                {checked ? (
-                    <p>
-                        The code generator will generate code based on the
-                        provided instructions and the current code (before the
-                        cursor in the editor). So for example you could specify
-                        what to do with a particular variable that is in the
-                        editor.
-                    </p>
-                ) : (
-                    <p>
-                        The code generator will generate code independently from
-                        the code that you have in the editor.
-                    </p>
-                )}
-            </div> */}
+            </div>
         </div>
     );
 };
