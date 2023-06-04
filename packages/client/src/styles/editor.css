@@ -18,6 +18,10 @@
     display: none;
 }
 
+.hidden {
+    display: none;
+}
+
 .output {
     background-color: #023231;
     color: #fff;

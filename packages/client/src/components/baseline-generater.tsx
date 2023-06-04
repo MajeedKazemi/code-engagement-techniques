@@ -5,12 +5,16 @@ import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
+import ParsonsGenerateCode from './parsons-generator';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 interface BaselineGeneratorProps {
   editor: monaco.editor.IStandaloneCodeEditor | null;
 }
 
 const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
+  const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
   const baselineRef = useRef<HTMLDivElement | null>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [userInput, setUserInput] = useState('');
@@ -22,6 +26,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [waiting, setWaiting] = useState(false);
   const [feedback, setFeedback] = useState<string>("");
   const [checked, setChecked] = useState(true);
+  const [generatedCodeComponent, setGeneratedCodeComponent] = useState<React.ReactNode>(null);
 
   useEffect(() => {
     if (editor) {
@@ -88,14 +93,33 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     overlayElement!.style.display = 'none';
     editorElement.style.zIndex = '1';
 
+    const isUserPromptsVisible = true;
+    setIsUserPromptsVisible(isUserPromptsVisible);
     setGeneratedCode("");
     setExplanation("");
   };
   
+  const handleGenerateCode = (techniques: string) => {
+    switch (techniques) {
+      case "baseline":
+        BaselineGenerateCode();
+        break;
+      case "parsons":
+        const generatedCodeComponent = 
+        <DndProvider backend={HTML5Backend}>
+          <ParsonsGenerateCode prompt={userInput} />;
+        </DndProvider>
+        setGeneratedCodeComponent(generatedCodeComponent);
+        break;
+      default:
+        BaselineGenerateCode();
+    }
+  }
 
-  const handleGenerateCode = () => {
+  const BaselineGenerateCode = () => {
     // Call the GPT API or any code generation logic here
     // to generate code based on the userInput
+
     const explanation = `This code snippet demonstrates a simple Python program that defines two functions (greet and calculate_sum) and uses them to calculate the sum of two numbers (5 and 7).`;    
     const props = {
       taskId: "",
@@ -260,6 +284,22 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     const editorElement = document.querySelector('.editor') as HTMLElement;
     overlayElement!.style.display = 'block';
     editorElement.style.zIndex = '-99';
+
+    const generatedCodeComponent =
+      <>
+        <div style={{ whiteSpace: 'pre-wrap' }}>
+          <b>prompts: </b> {userInput}
+        </div>
+        <div ref={baselineRef} className="read-only-editor"></div>
+        <div>
+          <b>explanation: </b> {explanation}
+        </div>
+        <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
+        </div>
+      </>
+
+    setGeneratedCodeComponent(generatedCodeComponent);
   };
 
   
@@ -304,26 +344,23 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     };
   }, [generatedCode]);
 
-  
+  // define the current technique
+  const technique = 'parsons';
+
+  const handleClick = () => {
+    const isUserPromptsVisible = false;
+    setIsUserPromptsVisible(isUserPromptsVisible);
+    handleGenerateCode(technique);
+  };
 
   return (
     <section>
       <div className="task-baseline" id="baselineDiv" style={{ position: 'absolute' }}>
-        {generatedCode && explanation && (
-          <>
-            <div style={{ whiteSpace: 'pre-wrap' }}>
-              <b>prompts: </b> {userInput}
-            </div>
-            <div ref={baselineRef} className="read-only-editor"></div>
-            <div>
-              <b>explanation: </b> {explanation}
-            </div>
-            <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'flex-end' }}>
-              <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-            </div>
-          </>
-        )}
-        {!generatedCode && !explanation && (
+          {/* Conditionally render the generated code component */}
+          {generatedCodeComponent && (
+              generatedCodeComponent
+          )}
+          <div id='user-prompts' className={isUserPromptsVisible ? '' : 'hidden'}>
           <>
             <div>
               <img src={robot} className="gpt-image" />
@@ -341,12 +378,12 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
               />
             </div>
             <div>
-              <button className="gpt-button" onClick={handleGenerateCode}>
+              <button className="gpt-button" onClick={handleClick} disabled={!userInput.trim()}>
                 Generate Code
               </button>
             </div>
           </>
-        )}
+          </div>
       </div>
     </section>
   );
