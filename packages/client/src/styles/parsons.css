@@ -116,6 +116,7 @@
 .right-section {
     background-color: lightgray;
     padding: 10px;
+    position: relative;
 }
 
 .code-block {
@@ -125,4 +126,15 @@
     margin: 10px 0.5rem;
     border-radius: 15px;
     border: #6c757d 1px solid;
+    z-index: 2;
+    position: relative;
 }
+
+.vertical-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-left: 1.5px dashed #66666654; 
+    z-index: 1;
+  }

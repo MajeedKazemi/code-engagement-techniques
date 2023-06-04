@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import robot from "../assets/robot.png";
 import { XYCoord, useDrag, useDrop } from 'react-dnd';
 
 const ItemTypes = {
-    CODE_BLOCK: 'code-block',
+  CODE_BLOCK: 'codeBlock',
 };
 
 interface CodeBlock {
@@ -22,16 +22,26 @@ interface ParsonsGenerateCodeProps {
     prompt: string;
 }
 
+var highestIndex = 0;
+
 const CodeBlockItem: React.FC<{ codeBlock: CodeBlock, index: number, moveCodeBlock: (dragIndex: number, hoverIndex: number) => void }> = ({ codeBlock, index, moveCodeBlock }) => {
     const ref = useRef<HTMLDivElement>(null);
     const [dragIndex, setDragIndex] = useState<number>(0);
     const [hoverIndex, setHoverIndex] = useState<number>(0);
-    const [{ isDragging }, drag] = useDrag({
-      type: ItemTypes.CODE_BLOCK,
-      item: { codeBlock, type: ItemTypes.CODE_BLOCK, index },
-      collect: monitor => ({
-        isDragging: monitor.isDragging(),
-      }),
+    const [initialClientOffset, setInitialClientOffset] = useState<{ x: number, y: number } | null>(null);
+    const [indentationLevel, setIndentationLevel] = useState<number>(0);
+    const [isDropping, setIsDropping] = useState<boolean>(false);
+    const [canDrag, setCanDrag] = useState<boolean>(true);
+  
+    const [{ isDragging }, drag, preview] = useDrag({
+        type: ItemTypes.CODE_BLOCK,
+        item: { codeBlock, type: ItemTypes.CODE_BLOCK, index },
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
+        end(item, monitor) {
+            setInitialClientOffset(monitor.getClientOffset());
+        }
     });
   
     const [, drop] = useDrop({
@@ -45,20 +55,101 @@ const CodeBlockItem: React.FC<{ codeBlock: CodeBlock, index: number, moveCodeBlo
         setDragIndex(dragIndex);
         setHoverIndex(hoverIndex);
         if (dragIndex === hoverIndex) {
-          return;
+            const rightSectionElement = document.getElementsByClassName('right-section')[0];
+            if (rightSectionElement) {
+                if(initialClientOffset == null){
+                    setInitialClientOffset(monitor.getClientOffset());
+                }
+                const { x } = rightSectionElement.getBoundingClientRect();
+                if (x < monitor.getClientOffset()!.x) {
+                    //setInitialClientOffset(monitor.getClientOffset());
+                    if(monitor.getClientOffset() && initialClientOffset) {
+                        console.log(monitor.getClientOffset()!.x, initialClientOffset?.x);
+                        const dragOffsetX = monitor.getClientOffset()!.x - initialClientOffset?.x;
+                        let newIndentationLevel;
+                        if (dragOffsetX > 50) {
+                            if (indentationLevel < 6)
+                            {
+                                newIndentationLevel = indentationLevel + 1;
+                                const indentElement = document.getElementById(`indent${indentationLevel+1}`);
+                                if (indentElement) {
+                                    indentElement.classList.remove('hidden');
+                                }
+                                if(highestIndex < newIndentationLevel) {
+                                    highestIndex = newIndentationLevel;
+                                }
+                                console.log(newIndentationLevel+1);
+                            } else {
+                                newIndentationLevel = indentationLevel;
+                            }
+                        } else if (dragOffsetX < -50) {
+                            if (indentationLevel > 0)                    
+                            {
+                                newIndentationLevel = indentationLevel - 1;
+                                if(highestIndex == indentationLevel) {
+                                    highestIndex -= 1;
+                                }
+                                const indentElement = document.getElementById(`indent${indentationLevel}`);
+                                if (indentElement) {
+                                    indentElement.classList.add('hidden');
+                                }
+                            } else {
+                                newIndentationLevel = indentationLevel;
+                            }
+                        } else {
+                            setIsDropping(true);
+                            //setInitialClientOffset(monitor.getClientOffset());
+                            return;
+                        }
+                        setIsDropping(true);
+                        setInitialClientOffset(monitor.getClientOffset());
+                        if (newIndentationLevel !== indentationLevel) {
+                            setIndentationLevel(newIndentationLevel);
+                        }
+                    }
+                }
+            }
+            
+            return;
         }
+
+        
+        
         moveCodeBlock(dragIndex, hoverIndex);
         item.index = hoverIndex;
       },
+      collect: monitor => ({
+        isOver: monitor.isOver(),
+      }),
     });
   
+    useEffect(() => {
+        if (isDragging) {
+          // Disable dragging for 1 second
+          setCanDrag(false);
+          const timeout = setTimeout(() => {
+            setCanDrag(true);
+            setIsDropping(false);
+          }, 1000);
+    
+          return () => clearTimeout(timeout);
+        }
+      }, [isDropping]);
+
     drag(drop(ref));
 
-    return (
-        <div ref={ref} className="code-block" style={{ opacity: isDragging ? 0.5 : 1 }}>
-          {codeBlock.code}
-        </div>
-      );
+    return (<div
+    ref={ref}
+    className="code-block"
+    style={{
+        opacity: isDragging ? 0.5 : 1,
+        display: 'flex',
+        alignItems: 'center',
+        marginLeft: `${indentationLevel * 4}rem`,
+    }}
+    >
+    {codeBlock.code}
+    </div>);
   };
   
 
@@ -199,7 +290,12 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt })  =>
                             <h2>Ordered Code</h2>
                             <div className="right-section" ref={rightDrop} style={{ height: `${rightSectionHeight}px` }}>
                                 {orderedCodeBlocks.map((codeBlock, index) => (
-                                <CodeBlockItem key={codeBlock.id} codeBlock={codeBlock} index={index} moveCodeBlock={(dragIndex, hoverIndex) => moveCodeBlock(dragIndex, hoverIndex, true)} />
+                                <React.Fragment key={codeBlock.id}>
+                                <CodeBlockItem codeBlock={codeBlock} index={index} moveCodeBlock={(dragIndex, hoverIndex) => moveCodeBlock(dragIndex, hoverIndex, true)} />
+                                </React.Fragment>
+                                ))}
+                                {Array.from({ length: 7 }).map((_, index) => (
+                                    <div key={index} className="vertical-line hidden" id={`indent${index + 1}`} style={{ left: `${4 * (index+1)}rem` }}></div>
                                 ))}
                             </div>
                             </div>
