@@ -250,11 +250,9 @@ export const apiGetBaselineCodex = (
         },
         body: JSON.stringify({
             description: description,
-            type: "block",
             context: context,
         }),
     });
-
 
 export const apiLogEvents = (
     token: string | null | undefined,
