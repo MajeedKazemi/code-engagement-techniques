@@ -107,7 +107,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "parsons":
         const generatedCodeComponent = 
         <DndProvider backend={HTML5Backend}>
-          <ParsonsGenerateCode prompt={userInput} />;
+          <ParsonsGenerateCode prompt={userInput} editor={editor} />;
         </DndProvider>
         setGeneratedCodeComponent(generatedCodeComponent);
         break;

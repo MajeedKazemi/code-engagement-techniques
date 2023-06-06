@@ -20,6 +20,7 @@ import { metaRouter } from "./routes/meta-router";
 import { tasksRouter } from "./routes/tasks-router";
 import { initLanguageService } from "./sockets/intellisense";
 import { initPythonShell } from "./sockets/python-shell";
+import { parsonsRouter } from "./routes/parsons-ast-router";
 import env from "./utils/env";
 
 const corsOptions = {
@@ -75,6 +76,7 @@ mongoose
         app.use("/api/analysis/", analysisRouter);
         app.use("/api/technique-baseline/", codexRouter);
         app.use("/diagnostics/", diagRouter);
+        app.use("/api/technique-parsons/", parsonsRouter);
 
         const server = app.listen(
             env.PORT_PREFIX + env.NODE_APP_INSTANCE,

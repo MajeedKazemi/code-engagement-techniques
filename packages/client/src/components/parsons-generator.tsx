@@ -1,6 +1,25 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import robot from "../assets/robot.png";
 import { XYCoord, useDrag, useDrop } from 'react-dnd';
+import { AuthContext } from "../context";
+import { log, LogType } from "../utils/logger";
+
+import Parser from 'web-tree-sitter';
+import { apiGetBaselineCodex, logError } from '../api/api';
+import * as monaco from 'monaco-editor';
+
+function convertToCodeBlocks(text: string): CodeBlock[] {
+    const lines = text.split("\n");
+    
+    const codeBlocks: CodeBlock[] = lines.map((line, index) => {
+      return {
+        id: index + 1,
+        code: line.trim(),
+      };
+    });
+    
+    return codeBlocks;
+  }
 
 const ItemTypes = {
   CODE_BLOCK: 'codeBlock',
@@ -20,6 +39,7 @@ interface DragItem {
 
 interface ParsonsGenerateCodeProps {
     prompt: string;
+    editor: monaco.editor.IStandaloneCodeEditor | null;
 }
 
 var highestIndex = 0;
@@ -153,94 +173,261 @@ const CodeBlockItem: React.FC<{ codeBlock: CodeBlock, index: number, moveCodeBlo
   };
   
 
-const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt })  => {
+const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor })  => {
     const [isOpen, setIsOpen] = useState(true);
-    const responseCodeObject:CodeBlock[] = [
-        { id: 1, code: 'for (let i = 0; i < 10; i++) {' },
-        { id: 2, code: 'console.log(i);' },
-        { id: 3, code: '}' },
-    ];
-    const [initialCodeBlocks, setInitialCodeBlocks] = useState<CodeBlock[]>(responseCodeObject);
+    const { context, setContext } = useContext(AuthContext);
+    const [waiting, setWaiting] = useState(false);
+    const [feedback, setFeedback] = useState<string>("");
+    const [checked, setChecked] = useState(true);
+    const [generatedCode, setGeneratedCode] = useState('');
+    const [initialCodeBlocks, setInitialCodeBlocks] = useState<CodeBlock[]>([]);
     const [orderedCodeBlocks, setOrderedCodeBlocks] = useState<CodeBlock[]>([]);
+    const sectionHeightRef = useRef<number>(0);
+    const props = {
+        taskId: "",
+        editor: editor
+    };
+
+    const generateCode = () => {
+        if (prompt.length === 0) {
+            setFeedback(
+                "You should write an instruction of the code that you want to be generated."
+            );
+        } else {
+            setWaiting(true);
+  
+            const focusedPosition = props.editor?.getPosition();
+            const userCode = props.editor?.getValue();
+            let codeContext = "";
+  
+            if (focusedPosition && userCode && checked) {
+                codeContext = userCode
+                    .split("\n")
+                    .slice(0, focusedPosition.lineNumber + 1)
+                    .join("\n");
+            }
+  
+            try {
+                apiGetBaselineCodex(
+                    context?.token,
+                    prompt,
+                    userCode ? userCode : ""
+                )
+                    .then(async (response) => {
+  
+                        if (response.ok && props.editor) {
+                            const data = await response.json();
+  
+                            let text = data.code;
+  
+                            if (text.length > 0) {
+                                setFeedback("");
+                                log(
+                                    props.taskId,
+                                    context?.user?.id,
+                                    LogType.PromptEvent,
+                                    {
+                                        code: text,
+                                        userInput: prompt,
+                                    }
+                                );
+  
+                                let insertLine = 0;
+                                let insertColumn = 1;
+  
+                                let curLineNumber = 0;
+                                let curColumn = 0;
+  
+                                let highlightStartLine = 0;
+                                let highlightStartColumn = 0;
+                                let highlightEndLine = 0;
+                                let highlightEndColumn = 0;
+  
+                                const curPos = props.editor.getPosition();
+                                const curCodeLines = props.editor
+                                    .getValue()
+                                    .split("\n");
+  
+                                if (curPos) {
+                                    curLineNumber = curPos.lineNumber;
+                                    curColumn = curPos.column;
+                                }
+  
+                                let curLineText =
+                                    curCodeLines[curLineNumber - 1];
+                                let nextLineText =
+                                    curLineNumber < curCodeLines.length
+                                        ? curCodeLines[curLineNumber]
+                                        : null;
+  
+                                if (curColumn === 1) {
+                                    // at the beginning of a line
+                                    if (curLineText !== "") {
+                                        text += "\n";
+                                        insertLine = curLineNumber;
+                                        insertColumn = 1;
+  
+                                        highlightStartLine = curLineNumber;
+                                        highlightStartColumn = curColumn;
+  
+                                        const textLines = text.split("\n");
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            textLines.length -
+                                            1;
+                                        highlightEndColumn = 1;
+                                    } else {
+                                        insertLine = curLineNumber;
+                                        insertColumn = 1;
+  
+                                        highlightStartLine = curLineNumber;
+                                        highlightStartColumn = curColumn;
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            text.split("\n").length;
+                                        highlightEndColumn = 1;
+                                    }
+                                } else if (curColumn !== 1) {
+                                    // in the middle of a line
+                                    if (nextLineText !== "") {
+                                        text = "\n" + text;
+                                        insertLine = curLineNumber;
+                                        insertColumn = curLineText.length + 1;
+  
+                                        const textLines = text.split("\n");
+  
+                                        highlightStartLine = curLineNumber + 1;
+                                        highlightStartColumn = 1;
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            text.split("\n").length -
+                                            1;
+                                        highlightEndColumn =
+                                            textLines[textLines.length - 1]
+                                                .length + 1;
+                                    } else {
+                                        insertLine = curLineNumber + 1;
+                                        insertColumn = 1;
+  
+                                        highlightStartLine = curLineNumber;
+                                        highlightStartColumn = curColumn;
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            text.split("\n").length;
+                                        highlightEndColumn = 1;
+                                    }
+                                }
+                                setGeneratedCode(text);
+                            } 
+                        }
+                    })
+                    .catch((error) => {
+                        props.editor?.updateOptions({ readOnly: false });
+                        setWaiting(false);
+                        logError(error.toString());
+                    });
+            } catch (error: any) {
+                props.editor?.updateOptions({ readOnly: false });
+                setWaiting(false);
+                logError(error.toString());
+            }
+        }
+    };
+
+    useEffect(() => {
+        generateCode();
+    }, []);
+
+    useEffect(() => {
+        const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedCode);
+        setInitialCodeBlocks(responseCodeObject);
+        sectionHeightRef.current = (responseCodeObject.length + 3) * 60;
+    }, [generatedCode]);
+
+
 
     const handleDropLeft = (index: number, codeBlock: CodeBlock) => {
-    const updatedCodeBlocks = [...initialCodeBlocks];
-    updatedCodeBlocks.splice(index, 0, codeBlock);
-    setInitialCodeBlocks(updatedCodeBlocks);
-    setOrderedCodeBlocks(orderedCodeBlocks.filter(block => block.id !== codeBlock.id));
-  };
+        const updatedCodeBlocks = [...initialCodeBlocks];
+        updatedCodeBlocks.splice(index, 0, codeBlock);
+        setInitialCodeBlocks(updatedCodeBlocks);
+        setOrderedCodeBlocks(orderedCodeBlocks.filter(block => block.id !== codeBlock.id));
+    };
 
-  const handleDropRight = (index: number, codeBlock: CodeBlock) => {
-    const updatedCodeBlocks = [...orderedCodeBlocks];
-    updatedCodeBlocks.splice(index, 0, codeBlock);
-    setOrderedCodeBlocks(updatedCodeBlocks);
-    setInitialCodeBlocks(initialCodeBlocks.filter(block => block.id !== codeBlock.id));
-  };
-
-  const moveCodeBlock = (dragIndex: number, hoverIndex: number, isRight: boolean) => {
-    if (isRight) {
-        if (dragIndex == hoverIndex) {
-            return;
-        }
-        const dragCodeBlock = orderedCodeBlocks[dragIndex];
+    const handleDropRight = (index: number, codeBlock: CodeBlock) => {
         const updatedCodeBlocks = [...orderedCodeBlocks];
-      
-        if (dragIndex < hoverIndex) {
+        updatedCodeBlocks.splice(index, 0, codeBlock);
+        setOrderedCodeBlocks(updatedCodeBlocks);
+        setInitialCodeBlocks(initialCodeBlocks.filter(block => block.id !== codeBlock.id));
+    };
+
+    const moveCodeBlock = (dragIndex: number, hoverIndex: number, isRight: boolean) => {
+        if (isRight) {
+            if (dragIndex == hoverIndex) {
+                return;
+            }
+            const dragCodeBlock = orderedCodeBlocks[dragIndex];
+            const updatedCodeBlocks = [...orderedCodeBlocks];
+        
+            if (dragIndex < hoverIndex) {
+                updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
+                updatedCodeBlocks.splice(dragIndex, 1);
+            } else {
+                updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
+                updatedCodeBlocks.splice(dragIndex + 1, 1);
+            }
+            
+            setOrderedCodeBlocks(updatedCodeBlocks);
+
+        } else {
+            if (dragIndex == hoverIndex) {
+                return;
+            }
+        
+            const dragCodeBlock = initialCodeBlocks[dragIndex];
+            const updatedCodeBlocks = [...initialCodeBlocks];
+
+            if (dragIndex < hoverIndex) {
             updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
             updatedCodeBlocks.splice(dragIndex, 1);
-        } else {
+            } else {
             updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
             updatedCodeBlocks.splice(dragIndex + 1, 1);
-        }
+            }
         
-        setOrderedCodeBlocks(updatedCodeBlocks);
-
-    } else {
-        if (dragIndex == hoverIndex) {
-            return;
+            setInitialCodeBlocks(updatedCodeBlocks);
         }
-    
-        const dragCodeBlock = initialCodeBlocks[dragIndex];
-        const updatedCodeBlocks = [...initialCodeBlocks];
-
-        if (dragIndex < hoverIndex) {
-        updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
-        updatedCodeBlocks.splice(dragIndex, 1);
-        } else {
-        updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
-        updatedCodeBlocks.splice(dragIndex + 1, 1);
-        }
-    
-        setInitialCodeBlocks(updatedCodeBlocks);
-    }
-  };
+    };
 
     const rightDropRef = useRef<HTMLDivElement>(null);
     const leftDropRef = useRef<HTMLDivElement>(null);
 
-  const [, leftDrop] = useDrop({
-    accept: ItemTypes.CODE_BLOCK,
-    drop: (item: DragItem, monitor) => {
-      if (monitor.didDrop()) return;
+    const [, leftDrop] = useDrop({
+        accept: ItemTypes.CODE_BLOCK,
+        drop: (item: DragItem, monitor) => {
+        if (monitor.didDrop()) return;
 
-      const isHoveringRightSection = isHoveringOverSection(monitor.getInitialClientOffset(), rightDropRef.current);
+        const isHoveringRightSection = isHoveringOverSection(monitor.getInitialClientOffset(), rightDropRef.current);
+            if (
+                isHoveringRightSection
+            ) handleDropLeft(initialCodeBlocks.length, item.codeBlock);
+        },
+    });
+
+    const [, rightDrop] = useDrop({
+        accept: ItemTypes.CODE_BLOCK,
+        drop: (item: DragItem, monitor) => {
+        if (monitor.didDrop()) return;
+        const isHoveringLeftSection = isHoveringOverSection(monitor.getInitialClientOffset(), leftDropRef.current);
         if (
-            isHoveringRightSection
-        ) handleDropLeft(initialCodeBlocks.length, item.codeBlock);
-    },
-  });
-
-  const [, rightDrop] = useDrop({
-    accept: ItemTypes.CODE_BLOCK,
-    drop: (item: DragItem, monitor) => {
-      if (monitor.didDrop()) return;
-      const isHoveringLeftSection = isHoveringOverSection(monitor.getInitialClientOffset(), leftDropRef.current);
-      if (
-        isHoveringLeftSection
-      )
-      handleDropRight(orderedCodeBlocks.length, item.codeBlock);
-    },
-  });
+            isHoveringLeftSection
+        )
+        handleDropRight(orderedCodeBlocks.length, item.codeBlock);
+        },
+    });
 
     const isHoveringOverSection = (clientOffset: XYCoord | null, sectionRef: HTMLDivElement | null): boolean => {
         if (!clientOffset || !sectionRef) return false;
@@ -256,10 +443,6 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt })  =>
     const closePopup = () => {
         setIsOpen(false);
     };
-
-    const leftSectionHeight = (responseCodeObject.length + 3) * 60;
-    const rightSectionHeight = (responseCodeObject.length + 3) * 60;
-
 
     return (
         <div>
@@ -280,7 +463,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt })  =>
                         <div className="parsons-problem">
                             <div className="left-section-container" ref={leftDropRef}>
                             <h2>Code Blocks</h2>
-                            <div className="left-section" ref={leftDrop} style={{ height: `${leftSectionHeight}px` }}>
+                            <div className="left-section" ref={leftDrop} style={{ height: `${sectionHeightRef.current}px` }}>
                                 {initialCodeBlocks.map((codeBlock, index) => (
                                 <CodeBlockItem key={codeBlock.id} codeBlock={codeBlock} index={index} moveCodeBlock={(dragIndex, hoverIndex) => moveCodeBlock(dragIndex, hoverIndex, false)} />
                                 ))}
@@ -288,7 +471,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt })  =>
                             </div>
                             <div className="right-section-container" ref={rightDropRef}>
                             <h2>Ordered Code</h2>
-                            <div className="right-section" ref={rightDrop} style={{ height: `${rightSectionHeight}px` }}>
+                            <div className="right-section" ref={rightDrop} style={{ height: `${sectionHeightRef.current}px` }}>
                                 {orderedCodeBlocks.map((codeBlock, index) => (
                                 <React.Fragment key={codeBlock.id}>
                                 <CodeBlockItem codeBlock={codeBlock} index={index} moveCodeBlock={(dragIndex, hoverIndex) => moveCodeBlock(dragIndex, hoverIndex, true)} />
