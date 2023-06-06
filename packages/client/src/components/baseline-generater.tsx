@@ -345,7 +345,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [generatedCode]);
 
   // define the current technique
-  const technique = 'parsons';
+  const technique = 'baseline';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
