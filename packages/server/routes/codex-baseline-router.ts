@@ -51,7 +51,7 @@ codexRouter.post("/generate", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `number = int(input("Enter a number: "))\n[end-code]`,
+                content: `number = int(input("Enter a number: "))\n[end-code]\n[explanation]:\nThis code displays a message asking the user to enter a number. The \`input()\` function is used to get input from the user, and the \`int()\` function is used to convert the input into an integer. The entered number is stored in the \`number\` variable\n[end-explanation]`,
             },
 
             {
@@ -60,7 +60,7 @@ codexRouter.post("/generate", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `import random\nnumber = random.randint(0, 100)\n[end-code]`,
+                content: `import random\nnumber = random.randint(0, 100)\n[end-code]\n[explanation]:\nThe program first needs to use the \`random\` module in Python. The \`import\` statement is used to bring in the functionality of the \`random\` module. Next, the program generates a random number using the \`random.randint(a, b)\` function. In this case, the \`randint()\` function generates a random integer between the given range \`a\` and \`b\`. In the code, it generates a random number between 1 and 10. The generated random number is stored in the variable called \`random_number\`\n[end-explanation]`,
             },
 
             {
@@ -69,7 +69,7 @@ codexRouter.post("/generate", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `if number > 50:\n    print("The number is greater than 50")\n[end-code]`,
+                content: `if number > 50:\n    print("The number is greater than 50")\n[end-code]\n[explanation]:\nThe program asks the user to enter a number using the \`input\` function. The \`input\` function reads the user's input as a string. To treat it as a number, we use the \`int\` function to convert the input into an integer. The entered number is stored in a variable called \`number\`. Next, the program uses an if statement to check if the value of \`number\` is greater than 50. The \`if\` statement evaluates the given condition, and if it is true, the code will print \`The number is greater than 50\`.\n[end-explanation]`,
             },
 
             {
@@ -78,7 +78,7 @@ codexRouter.post("/generate", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `if roll % 2 == 0:\n    print("The roll is even")\n[end-code]`,
+                content: `if roll % 2 == 0:\n    print("The roll is even")\n[end-code]\n[explanation]:\nThe program asks the user to enter the roll number using the \`input\` function. The \`input\` function reads the user's input as a string. To treat it as a number, we use the \`int\` function to convert the input into an integer. The entered roll number is stored in a variable called \`roll\`. This code follows a simple algorithm: it asks the user to enter a roll number, performs the modulus operation \`(%)\` to check if the roll number is even, and then displays the result based on the comparison.\n[end-explanation]`,
             },
         ];
 
@@ -86,6 +86,17 @@ codexRouter.post("/generate", verifyUser, async (req, res, next) => {
             messages.push({
                 role: "user",
                 content: `[context-code]:\n${context}\n[intended-behavior]: use the above [context-code] as context and ${description}\n[code]:`,
+   
+            });
+            messages.push({
+                role: "user",
+                content: `[context-code]:start = 1\nend = 100\nsum_of_evens = 0\n[intended-behavior]: Write a Python program to find the sum of all even numbers between 1 and 100\n[code]:`,
+            });
+            messages.push({
+                role: "assistant",
+                content: `for num in range(start, end + 1):\n    if num % 2 == 0:\n         sum_of_evens += num\nprint("Sum of even numbers between", start, "and", end, "is:", sum_of_evens)\n[end-code]\n[explanation]:\nThe \`for\` loop is like a repeating process that goes through a sequence of numbers. The num variable represents each number in the sequence as the loop progresses. The \`range(start, end + 1)\` function generates a sequence of numbers starting from \`start\` and ending at \`end\` (including \`end\`). So, in our case, the loop will go through each number from 1 to 100. The \`if\` statement checks whether the current number, \`num\`, is an even number. The \`%\` operator calculates the remainder when \`num\` is divided by 2. If the remainder is 0, it means the number is even. If the number is indeed even, the code inside the if block will execute. \`sum_of_evens += num\` is a way to add the current even number, \`num\`, to the running total stored in \`sum_of_evens\`.
+                The \`+=\` operator combines addition and assignment. It adds the value on the right side to the current value on the left side and assigns the result back to the left side.\n[end-explanation]`,
+   
             });
         } else {
             messages.push({
