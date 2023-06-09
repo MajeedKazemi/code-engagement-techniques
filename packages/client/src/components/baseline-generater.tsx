@@ -8,6 +8,9 @@ import { LogType, log } from '../utils/logger';
 import ParsonsGenerateCode from './parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { highlightCode } from '../utils/utils';
+
+let insertedCode = "";
 
 interface BaselineGeneratorProps {
   editor: monaco.editor.IStandaloneCodeEditor | null;
@@ -15,7 +18,9 @@ interface BaselineGeneratorProps {
 
 const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
+  const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] = useState(false);
   const baselineRef = useRef<HTMLDivElement | null>(null);
+  const explainRef = useRef<HTMLDivElement | null>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [userInput, setUserInput] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
@@ -79,12 +84,29 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     }
   };
 
+  const cancelClick = () => {
+    // clean up explination and generated code, remove the generatedCodeComponent to null
+
+    const overlayElement = document.querySelector('.overlay') as HTMLElement;
+    const editorElement = document.querySelector('.editor') as HTMLElement;
+    overlayElement!.style.display = 'none';
+    editorElement.style.zIndex = '1';
+
+    const generatedCodeComponentVisible = false;
+    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
+    const isUserPromptsVisible = true;
+    setIsUserPromptsVisible(isUserPromptsVisible);
+    setExplanation("");
+    setGeneratedCode("");
+  };
+
   const handleInsertCodeClick = () => {
     if (editor) {
       const position = editor.getPosition();
       if (position) {
         const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-        const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
+        const op = { identifier: { major: 1, minor: 1 }, range: range, text: insertedCode, forceMoveMarkers: true };
+        console.log(insertedCode);
         editor.executeEdits("insertCodeAfterCursor", [op]);
       }
     }
@@ -93,15 +115,20 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     overlayElement!.style.display = 'none';
     editorElement.style.zIndex = '1';
 
+    const generatedCodeComponentVisible = false;
+    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     const isUserPromptsVisible = true;
     setIsUserPromptsVisible(isUserPromptsVisible);
     setGeneratedCode("");
     setExplanation("");
+    setUserInput("");
   };
   
   const handleGenerateCode = (techniques: string) => {
     switch (techniques) {
       case "baseline":
+        const generatedCodeComponentVisible = true;
+        setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
         BaselineGenerateCode();
         break;
       case "parsons":
@@ -112,6 +139,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
         setGeneratedCodeComponent(generatedCodeComponent);
         break;
       default:
+        setGeneratedCodeComponentVisible(true);
         BaselineGenerateCode();
     }
   }
@@ -119,8 +147,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const BaselineGenerateCode = () => {
     // Call the GPT API or any code generation logic here
     // to generate code based on the userInput
-
-    const explanation = `This code snippet demonstrates a simple Python program that defines two functions (greet and calculate_sum) and uses them to calculate the sum of two numbers (5 and 7).`;    
+ 
     const props = {
       taskId: "",
       editor: editor
@@ -135,7 +162,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
           setWaiting(true);
 
           const focusedPosition = props.editor?.getPosition();
-          const userCode = props.editor?.getValue();
+          const userCode = codeAboveCursor;
+          console.log("code to be use", userCode);
           let codeContext = "";
 
           if (focusedPosition && userCode && checked) {
@@ -156,7 +184,9 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                       if (response.ok && props.editor) {
                           const data = await response.json();
 
-                          let text = data.code;
+                          let text = data.bundle.code;
+
+                          setExplanation(data.bundle.explain);
 
                           if (text.length > 0) {
                               setFeedback("");
@@ -259,9 +289,12 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                                       highlightEndColumn = 1;
                                   }
                               }
-
                               setGeneratedCode(text);
+                              insertedCode = text;
                           } 
+                      }else{
+                          setExplanation("No explanation available.");
+                          setGeneratedCode("No code generated.");
                       }
                   })
                   .catch((error) => {
@@ -278,7 +311,6 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     };
     
     generateCode();
-    setExplanation(explanation);
 
     const overlayElement = document.querySelector('.overlay') as HTMLElement;
     const editorElement = document.querySelector('.editor') as HTMLElement;
@@ -291,10 +323,9 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
           <b>prompts: </b> {userInput}
         </div>
         <div ref={baselineRef} className="read-only-editor"></div>
-        <div>
-          <b>explanation: </b> {explanation}
-        </div>
-        <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'flex-end' }}>
+        <div ref={explainRef}> </div>
+        <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
+          <button className="gpt-button" onClick={cancelClick}>Cancel</button>
           <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
         </div>
       </>
@@ -329,8 +360,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
         if (model) {
           const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
           const lineCount = Math.max(model.getLineCount(), 1);
-          const newHeight = lineHeight * lineCount;
-          baselineRef.current!.style.height = `${newHeight}px`;
+          const newHeight = lineHeight * (lineCount+2);
+          const maxHeight = window.innerHeight * 0.4;
+          const height = Math.min(newHeight, maxHeight);
+          baselineRef.current!.style.height = `${height}px`;
           editorRef.current!.layout();
         }
       });
@@ -343,6 +376,30 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       }
     };
   }, [generatedCode]);
+
+  useEffect(() => {
+    if (explainRef.current) {
+      const div = document.createElement('div');
+      // div.innerHTML = `<b>Explanation:</b> ${explanation}`;
+      const highlightedExplanation = highlightCode(explanation, "code-highlight");
+      div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
+      explainRef.current.appendChild(div);
+      const explainContainer = explainRef.current;
+      const maxHeight = window.innerHeight * 0.4;
+
+      if (explainContainer.scrollHeight > maxHeight) {
+        explainContainer.style.height = `${maxHeight}px`;
+        explainContainer.style.overflowY = 'scroll';
+      } else {
+        explainContainer.style.height = 'auto';
+        explainContainer.style.overflowY = 'unset';
+      }
+      return () => {
+        explainRef.current!.removeChild(div);
+      };
+    }
+    
+  }, [explanation]);
 
   // define the current technique
   const technique = 'baseline';
@@ -357,9 +414,11 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     <section>
       <div className="task-baseline" id="baselineDiv" style={{ position: 'absolute' }}>
           {/* Conditionally render the generated code component */}
-          {generatedCodeComponent && (
-              generatedCodeComponent
-          )}
+          <div className={generatedCodeComponentVisible ? '' : 'hidden'}>
+            {generatedCodeComponent && (
+                generatedCodeComponent
+            )}
+          </div>
           <div id='user-prompts' className={isUserPromptsVisible ? '' : 'hidden'}>
           <>
             <div>

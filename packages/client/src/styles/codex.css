@@ -50,3 +50,40 @@
     font-weight: 600;
     color: #000;
 }
+
+.keyword {
+    color:#00538c;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 600;
+}
+
+.variable {
+    color:#8c5900;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 600;
+}
+
+.build-in-function {
+    color:#1e8c00;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 600;
+}
+
+.operation {
+    color:#8c1023;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 800;
+    font-size: larger;
+}
+
+.self-defined-function {
+    color:#008c85;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 600;
+}
+
+.module {
+    color:#8c1058;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 600;
+}
