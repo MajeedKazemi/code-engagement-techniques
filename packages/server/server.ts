@@ -1,6 +1,5 @@
 import "./utils/strategy";
 
-import { expressMiddleware } from "@appsignal/express";
 import bodyParser from "body-parser";
 import compression from "compression";
 import cookieParser from "cookie-parser";
@@ -10,13 +9,9 @@ import Session from "express-session";
 import mongoose from "mongoose";
 import passport from "passport";
 
-import { appSignal } from "./appsignal";
-import { adminRouter } from "./routes/admin-router";
-import { analysisRouter } from "./routes/analysis-router";
-import { codexRouter } from "./routes/codex-router";
-import { diagRouter } from "./routes/diag-router";
+import { codexRouter } from "./routes/codex-baseline-router";
 import { loginRouter } from "./routes/login-router";
-import { metaRouter } from "./routes/meta-router";
+import { parsonsRouter } from "./routes/parsons-ast-router";
 import { tasksRouter } from "./routes/tasks-router";
 import { initLanguageService } from "./sockets/intellisense";
 import { initPythonShell } from "./sockets/python-shell";
@@ -66,15 +61,10 @@ mongoose
             })
         );
 
-        app.use(expressMiddleware(appSignal));
-
         app.use("/api/auth/", loginRouter);
         app.use("/api/tasks/", tasksRouter);
-        app.use("/api/meta/", metaRouter);
-        app.use("/api/admin/", adminRouter);
-        app.use("/api/analysis/", analysisRouter);
-        app.use("/api/codex/", codexRouter);
-        app.use("/diagnostics/", diagRouter);
+        app.use("/api/technique-baseline/", codexRouter);
+        app.use("/api/technique-parsons/", parsonsRouter);
 
         const server = app.listen(
             env.PORT_PREFIX + env.NODE_APP_INSTANCE,

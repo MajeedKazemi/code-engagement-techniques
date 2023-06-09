@@ -1,7 +1,7 @@
 import * as monaco from "monaco-editor";
 import { Range } from "monaco-editor";
 import { useContext, useRef, useState } from "react";
-import { apiGenerateCodex, logError } from "../api/api";
+import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { log, LogType } from "../utils/logger";
@@ -42,7 +42,7 @@ export const Codex = (props: ICodexProps) => {
             // }
 
             try {
-                apiGenerateCodex(
+                apiGetBaselineCodex(
                     context?.token,
                     description,
                     userCode ? userCode : ""

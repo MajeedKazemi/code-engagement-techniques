@@ -236,12 +236,12 @@ export const apiGetSavedUserCode = (
         },
     });
 
-export const apiGenerateCodex = (
+export const apiGetBaselineCodex = (
     token: string | null | undefined,
     description: string,
     context: string
 ) =>
-    fetch(env.API_URL + "/api/codex/generate", {
+    fetch(env.API_URL + "/api/technique-baseline/generate", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -250,7 +250,6 @@ export const apiGenerateCodex = (
         },
         body: JSON.stringify({
             description: description,
-            type: "block",
             context: context,
         }),
     });
@@ -274,15 +273,21 @@ export const apiLogEvents = (
     });
 
 export const logError = (message: string) => {
-    // fetch(env.API_URL + "/diagnostics/error", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //         message,
-    //         date: new Date(),
-    //     }),
-    // });
     console.error(message);
 };
+
+// export const parsonsGetAst = (
+//     token: string | null | undefined,
+//     context: string
+// ) => fetch(env.API_URL + "/api/technique-parsons/ast", {
+//     method: "POST",
+//     credentials: "include",
+//     headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//         type: "block",
+//         context: context,
+//     }),
+// });

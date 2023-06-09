@@ -57,14 +57,6 @@ if (PYLSP_PATH === undefined) {
     throw Error("PYLSP_PATH not set in .env");
 }
 
-if (APP_SIGNAL_KEY === undefined) {
-    throw Error("APP_SIGNAL_KEY not set in .env");
-}
-
-if (APP_SIGNAL_KEY === undefined) {
-    throw Error("APP_SIGNAL_KEY not set in .env");
-}
-
 if (NODE_APP_INSTANCE === undefined) {
     throw Error("NODE_APP_INSTANCE not set in .env");
 }
@@ -81,6 +73,5 @@ export default {
     OPENAI_API_KEY,
     dev,
     PYLSP_PATH,
-    APP_SIGNAL_KEY,
     NODE_APP_INSTANCE,
 };

@@ -1,23 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as monaco from 'monaco-editor';
 import robot from "../assets/robot.png";
+import { apiGetBaselineCodex, logError } from "../api/api";
+
+import { AuthContext } from "../context";
+import { LogType, log } from '../utils/logger';
+import ParsonsGenerateCode from './parsons-generator';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { highlightCode } from '../utils/utils';
+
+let insertedCode = "";
 
 interface BaselineGeneratorProps {
   editor: monaco.editor.IStandaloneCodeEditor | null;
 }
 
 const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
+  const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
+  const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] = useState(false);
   const baselineRef = useRef<HTMLDivElement | null>(null);
+  const explainRef = useRef<HTMLDivElement | null>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [userInput, setUserInput] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
   const [explanation, setExplanation] = useState('');
+  const [codeAboveCursor, setcodeAboveCursor] = useState('');
   const [cursorPosition, setCursorPosition] = useState<monaco.Position | null>(null);
+  const { context, setContext } = useContext(AuthContext);
+  const [waiting, setWaiting] = useState(false);
+  const [feedback, setFeedback] = useState<string>("");
+  const [checked, setChecked] = useState(true);
+  const [generatedCodeComponent, setGeneratedCodeComponent] = useState<React.ReactNode>(null);
 
   useEffect(() => {
     if (editor) {
       const handleCursorPositionChange = (event: monaco.editor.ICursorPositionChangedEvent) => {
         const newPosition = event.position;
+        const currentPosition = editor.getPosition();
         const model = editor.getModel();
         if (model) {
           if (
@@ -28,6 +48,17 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
             const adjustedPosition = new monaco.Position(adjustedLineNumber, newPosition.column);
       
             setCursorPosition(adjustedPosition);
+          }
+
+          if (currentPosition) {
+            const currCode = model.getValueInRange({
+              startLineNumber: 1,
+              startColumn: 1,
+              endLineNumber: currentPosition.lineNumber - 1,
+              endColumn: model.getLineMaxColumn(currentPosition.lineNumber - 1),
+            });
+
+            setcodeAboveCursor(currCode);
           }
         }
       };
@@ -53,12 +84,29 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     }
   };
 
+  const cancelClick = () => {
+    // clean up explination and generated code, remove the generatedCodeComponent to null
+
+    const overlayElement = document.querySelector('.overlay') as HTMLElement;
+    const editorElement = document.querySelector('.editor') as HTMLElement;
+    overlayElement!.style.display = 'none';
+    editorElement.style.zIndex = '1';
+
+    const generatedCodeComponentVisible = false;
+    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
+    const isUserPromptsVisible = true;
+    setIsUserPromptsVisible(isUserPromptsVisible);
+    setExplanation("");
+    setGeneratedCode("");
+  };
+
   const handleInsertCodeClick = () => {
     if (editor) {
       const position = editor.getPosition();
       if (position) {
         const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-        const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
+        const op = { identifier: { major: 1, minor: 1 }, range: range, text: insertedCode, forceMoveMarkers: true };
+        console.log(insertedCode);
         editor.executeEdits("insertCodeAfterCursor", [op]);
       }
     }
@@ -67,34 +115,222 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     overlayElement!.style.display = 'none';
     editorElement.style.zIndex = '1';
 
+    const generatedCodeComponentVisible = false;
+    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
+    const isUserPromptsVisible = true;
+    setIsUserPromptsVisible(isUserPromptsVisible);
     setGeneratedCode("");
     setExplanation("");
+    setUserInput("");
   };
   
+  const handleGenerateCode = (techniques: string) => {
+    switch (techniques) {
+      case "baseline":
+        const generatedCodeComponentVisible = true;
+        setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
+        BaselineGenerateCode();
+        break;
+      case "parsons":
+        const generatedCodeComponent = 
+        <DndProvider backend={HTML5Backend}>
+          <ParsonsGenerateCode prompt={userInput} editor={editor} />;
+        </DndProvider>
+        setGeneratedCodeComponent(generatedCodeComponent);
+        break;
+      default:
+        setGeneratedCodeComponentVisible(true);
+        BaselineGenerateCode();
+    }
+  }
 
-  const handleGenerateCode = () => {
+  const BaselineGenerateCode = () => {
     // Call the GPT API or any code generation logic here
     // to generate code based on the userInput
+ 
+    const props = {
+      taskId: "",
+      editor: editor
+    }
 
-    // Dummy code generation and explanation for demonstration
-    const generatedCode = 
-    `def greet(name):
-  print(f"Hello, {name}!")
-    
-def calculate_sum(a, b):
-  return a + b
-    
-result = calculate_sum(5, 7)
-print(f"The sum is: {result}")`;
-    const explanation = `This code snippet demonstrates a simple Python program that defines two functions (greet and calculate_sum) and uses them to calculate the sum of two numbers (5 and 7).`;
+    const generateCode = () => {
+      if (userInput.length === 0) {
+          setFeedback(
+              "You should write an instruction of the code that you want to be generated."
+          );
+      } else {
+          setWaiting(true);
 
-    setGeneratedCode(generatedCode);
-    setExplanation(explanation);
+          const focusedPosition = props.editor?.getPosition();
+          const userCode = codeAboveCursor;
+          console.log("code to be use", userCode);
+          let codeContext = "";
+
+          if (focusedPosition && userCode && checked) {
+              codeContext = userCode
+                  .split("\n")
+                  .slice(0, focusedPosition.lineNumber + 1)
+                  .join("\n");
+          }
+
+          try {
+              apiGetBaselineCodex(
+                  context?.token,
+                  userInput,
+                  userCode ? userCode : ""
+              )
+                  .then(async (response) => {
+
+                      if (response.ok && props.editor) {
+                          const data = await response.json();
+
+                          let text = data.bundle.code;
+
+                          setExplanation(data.bundle.explain);
+
+                          if (text.length > 0) {
+                              setFeedback("");
+                              log(
+                                  props.taskId,
+                                  context?.user?.id,
+                                  LogType.PromptEvent,
+                                  {
+                                      code: text,
+                                      userInput: userInput,
+                                  }
+                              );
+
+                              let insertLine = 0;
+                              let insertColumn = 1;
+
+                              let curLineNumber = 0;
+                              let curColumn = 0;
+
+                              let highlightStartLine = 0;
+                              let highlightStartColumn = 0;
+                              let highlightEndLine = 0;
+                              let highlightEndColumn = 0;
+
+                              const curPos = props.editor.getPosition();
+                              const curCodeLines = props.editor
+                                  .getValue()
+                                  .split("\n");
+
+                              if (curPos) {
+                                  curLineNumber = curPos.lineNumber;
+                                  curColumn = curPos.column;
+                              }
+
+                              let curLineText =
+                                  curCodeLines[curLineNumber - 1];
+                              let nextLineText =
+                                  curLineNumber < curCodeLines.length
+                                      ? curCodeLines[curLineNumber]
+                                      : null;
+
+                              if (curColumn === 1) {
+                                  // at the beginning of a line
+                                  if (curLineText !== "") {
+                                      text += "\n";
+                                      insertLine = curLineNumber;
+                                      insertColumn = 1;
+
+                                      highlightStartLine = curLineNumber;
+                                      highlightStartColumn = curColumn;
+
+                                      const textLines = text.split("\n");
+
+                                      highlightEndLine =
+                                          curLineNumber +
+                                          textLines.length -
+                                          1;
+                                      highlightEndColumn = 1;
+                                  } else {
+                                      insertLine = curLineNumber;
+                                      insertColumn = 1;
+
+                                      highlightStartLine = curLineNumber;
+                                      highlightStartColumn = curColumn;
+
+                                      highlightEndLine =
+                                          curLineNumber +
+                                          text.split("\n").length;
+                                      highlightEndColumn = 1;
+                                  }
+                              } else if (curColumn !== 1) {
+                                  // in the middle of a line
+                                  if (nextLineText !== "") {
+                                      text = "\n" + text;
+                                      insertLine = curLineNumber;
+                                      insertColumn = curLineText.length + 1;
+
+                                      const textLines = text.split("\n");
+
+                                      highlightStartLine = curLineNumber + 1;
+                                      highlightStartColumn = 1;
+
+                                      highlightEndLine =
+                                          curLineNumber +
+                                          text.split("\n").length -
+                                          1;
+                                      highlightEndColumn =
+                                          textLines[textLines.length - 1]
+                                              .length + 1;
+                                  } else {
+                                      insertLine = curLineNumber + 1;
+                                      insertColumn = 1;
+
+                                      highlightStartLine = curLineNumber;
+                                      highlightStartColumn = curColumn;
+
+                                      highlightEndLine =
+                                          curLineNumber +
+                                          text.split("\n").length;
+                                      highlightEndColumn = 1;
+                                  }
+                              }
+                              setGeneratedCode(text);
+                              insertedCode = text;
+                          } 
+                      }else{
+                          setExplanation("No explanation available.");
+                          setGeneratedCode("No code generated.");
+                      }
+                  })
+                  .catch((error) => {
+                      props.editor?.updateOptions({ readOnly: false });
+                      setWaiting(false);
+                      logError(error.toString());
+                  });
+          } catch (error: any) {
+              props.editor?.updateOptions({ readOnly: false });
+              setWaiting(false);
+              logError(error.toString());
+          }
+      }
+    };
+    
+    generateCode();
 
     const overlayElement = document.querySelector('.overlay') as HTMLElement;
     const editorElement = document.querySelector('.editor') as HTMLElement;
     overlayElement!.style.display = 'block';
     editorElement.style.zIndex = '-99';
+
+    const generatedCodeComponent =
+      <>
+        <div style={{ whiteSpace: 'pre-wrap' }}>
+          <b>prompts: </b> {userInput}
+        </div>
+        <div ref={baselineRef} className="read-only-editor"></div>
+        <div ref={explainRef}> </div>
+        <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
+          <button className="gpt-button" onClick={cancelClick}>Cancel</button>
+          <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
+        </div>
+      </>
+
+    setGeneratedCodeComponent(generatedCodeComponent);
   };
 
   
@@ -124,8 +360,10 @@ print(f"The sum is: {result}")`;
         if (model) {
           const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
           const lineCount = Math.max(model.getLineCount(), 1);
-          const newHeight = lineHeight * lineCount;
-          baselineRef.current!.style.height = `${newHeight}px`;
+          const newHeight = lineHeight * (lineCount+2);
+          const maxHeight = window.innerHeight * 0.4;
+          const height = Math.min(newHeight, maxHeight);
+          baselineRef.current!.style.height = `${height}px`;
           editorRef.current!.layout();
         }
       });
@@ -139,26 +377,49 @@ print(f"The sum is: {result}")`;
     };
   }, [generatedCode]);
 
+  useEffect(() => {
+    if (explainRef.current) {
+      const div = document.createElement('div');
+      // div.innerHTML = `<b>Explanation:</b> ${explanation}`;
+      const highlightedExplanation = highlightCode(explanation, "code-highlight");
+      div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
+      explainRef.current.appendChild(div);
+      const explainContainer = explainRef.current;
+      const maxHeight = window.innerHeight * 0.4;
 
+      if (explainContainer.scrollHeight > maxHeight) {
+        explainContainer.style.height = `${maxHeight}px`;
+        explainContainer.style.overflowY = 'scroll';
+      } else {
+        explainContainer.style.height = 'auto';
+        explainContainer.style.overflowY = 'unset';
+      }
+      return () => {
+        explainRef.current!.removeChild(div);
+      };
+    }
+    
+  }, [explanation]);
+
+  // define the current technique
+  const technique = 'baseline';
+
+  const handleClick = () => {
+    const isUserPromptsVisible = false;
+    setIsUserPromptsVisible(isUserPromptsVisible);
+    handleGenerateCode(technique);
+  };
 
   return (
     <section>
       <div className="task-baseline" id="baselineDiv" style={{ position: 'absolute' }}>
-        {generatedCode && explanation && (
-          <>
-            <div style={{ whiteSpace: 'pre-wrap' }}>
-              <b>prompts: </b> {userInput}
-            </div>
-            <div ref={baselineRef} className="read-only-editor"></div>
-            <div>
-              <b>explanation: </b> {explanation}
-            </div>
-            <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'flex-end' }}>
-              <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-            </div>
-          </>
-        )}
-        {!generatedCode && !explanation && (
+          {/* Conditionally render the generated code component */}
+          <div className={generatedCodeComponentVisible ? '' : 'hidden'}>
+            {generatedCodeComponent && (
+                generatedCodeComponent
+            )}
+          </div>
+          <div id='user-prompts' className={isUserPromptsVisible ? '' : 'hidden'}>
           <>
             <div>
               <img src={robot} className="gpt-image" />
@@ -176,12 +437,12 @@ print(f"The sum is: {result}")`;
               />
             </div>
             <div>
-              <button className="gpt-button" onClick={handleGenerateCode}>
+              <button className="gpt-button" onClick={handleClick} disabled={!userInput.trim()}>
                 Generate Code
               </button>
             </div>
           </>
-        )}
+          </div>
       </div>
     </section>
   );
