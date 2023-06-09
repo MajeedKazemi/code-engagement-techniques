@@ -5,10 +5,11 @@ import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
-import ParsonsGenerateCode from './parsons-generator';
+import ParsonsGenerateCode from './techniques/parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
+import PseudoGenerateCode from './techniques/pseudo-generator';
 
 let insertedCode = "";
 
@@ -125,23 +126,34 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   };
   
   const handleGenerateCode = (techniques: string) => {
+    const overlayElement = document.querySelector('.overlay') as HTMLElement;
+    const editorElement = document.querySelector('.editor') as HTMLElement;
+    overlayElement!.style.display = 'block';
+    editorElement.style.zIndex = '-99';
+    
+    let generatedCodeComponent = null;
+    const generatedCodeComponentVisible = true;
+    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     switch (techniques) {
       case "baseline":
-        const generatedCodeComponentVisible = true;
-        setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
-        BaselineGenerateCode();
+        generatedCodeComponent =  BaselineGenerateCode();
+        break;
+      case "pseudo":
+        generatedCodeComponent = 
+          <PseudoGenerateCode prompt={userInput} editor={editor} />
+        
         break;
       case "parsons":
-        const generatedCodeComponent = 
-        <DndProvider backend={HTML5Backend}>
-          <ParsonsGenerateCode prompt={userInput} editor={editor} />;
-        </DndProvider>
-        setGeneratedCodeComponent(generatedCodeComponent);
+        generatedCodeComponent = 
+          <DndProvider backend={HTML5Backend}>
+            <ParsonsGenerateCode prompt={userInput} editor={editor} />;
+          </DndProvider>
         break;
       default:
-        setGeneratedCodeComponentVisible(true);
-        BaselineGenerateCode();
+        generatedCodeComponent =  BaselineGenerateCode();
+        break;
     }
+    setGeneratedCodeComponent(generatedCodeComponent);
   }
 
   const BaselineGenerateCode = () => {
@@ -312,11 +324,6 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     
     generateCode();
 
-    const overlayElement = document.querySelector('.overlay') as HTMLElement;
-    const editorElement = document.querySelector('.editor') as HTMLElement;
-    overlayElement!.style.display = 'block';
-    editorElement.style.zIndex = '-99';
-
     const generatedCodeComponent =
       <>
         <div style={{ whiteSpace: 'pre-wrap' }}>
@@ -330,7 +337,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
         </div>
       </>
 
-    setGeneratedCodeComponent(generatedCodeComponent);
+    return generatedCodeComponent;
   };
 
   
@@ -402,7 +409,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [explanation]);
 
   // define the current technique
-  const technique = 'baseline';
+  //const technique = 'baseline';
+  const technique = 'pseudo';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

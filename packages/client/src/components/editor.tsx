@@ -15,7 +15,7 @@ import {
     retryOpeningLanguageClient,
     stopLanguageClient,
 } from "../api/intellisense";
-import { Baseline } from "./baseline-generater";
+import { Baseline } from "./response-generater";
 import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
 
