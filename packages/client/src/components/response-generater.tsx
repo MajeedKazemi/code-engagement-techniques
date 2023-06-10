@@ -140,7 +140,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
         break;
       case "pseudo":
         generatedCodeComponent = 
-          <PseudoGenerateCode prompt={userInput} editor={editor} />
+          <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         
         break;
       case "parsons":

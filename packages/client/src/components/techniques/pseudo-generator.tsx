@@ -2,17 +2,24 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import robot from "../../assets/robot.png";
 import { apiGetBaselineCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
+import { AuthContext } from '../../context';
+import { LogType, log } from '../../utils/logger';
 
 interface PseudoGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    code: string | null;
 }
 
-const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor })  => {
+const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, code })  => {
     const pseudoRef = useRef<HTMLDivElement | null>(null);
     const editorRef = useRef<HTMLDivElement | null>(null);
+    const { context, setContext } = useContext(AuthContext);
+    const [waiting, setWaiting] = useState(false);
+    const [feedback, setFeedback] = useState<string>("");
     const [generatedPseudo, setGeneratedPseudo] = useState('');
     const [userInputCode, setUserInputCode] = useState('');
+    const [checked, setChecked] = useState(true);
 
     const cancelClick = () => {
         
@@ -40,6 +47,74 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor 
       
     };
 
+    const generatePseudoCode = () => {
+        const props = {
+            taskId: "",
+            editor: editor
+        }
+    
+        const generateCode = () => {
+        if (prompt.length === 0) {
+            setFeedback(
+                "You should write an instruction of the code that you want to be generated."
+            );
+        } else {
+            setWaiting(true);
+    
+            const focusedPosition = props.editor?.getPosition();
+            const userCode = code;
+            console.log("code to be use", userCode);
+            let codeContext = "";
+    
+            if (focusedPosition && userCode && checked) {
+                codeContext = userCode
+                    .split("\n")
+                    .slice(0, focusedPosition.lineNumber + 1)
+                    .join("\n");
+            }
+    
+            try {
+                apiGetBaselineCodex(
+                    context?.token,
+                    prompt,
+                    userCode ? userCode : ""
+                )
+                    .then(async (response) => {
+    
+                        if (response.ok && props.editor) {
+                            const data = await response.json();
+    
+                            let steps = data.steps;
+    
+                            if (steps.length > 0) {
+                                setFeedback("");
+                                log(
+                                    props.taskId,
+                                    context?.user?.id,
+                                    LogType.PromptEvent,
+                                    {
+                                        code: steps,
+                                        userInput: prompt,
+                                    }
+                                );
+                                // TODO: seperate steps into lines, each lines returns content and explanation
+                            } 
+                        }
+                    })
+                    .catch((error) => {
+                        props.editor?.updateOptions({ readOnly: false });
+                        setWaiting(false);
+                        logError(error.toString());
+                    });
+            } catch (error: any) {
+                props.editor?.updateOptions({ readOnly: false });
+                setWaiting(false);
+                logError(error.toString());
+            }
+        }
+        };
+    }
+
     useEffect(() => {
         if (pseudoRef.current && generatedPseudo) {
           
@@ -50,41 +125,41 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor 
         };
     }, [generatedPseudo]);
 
-  useEffect(() => {
-    const editorContainer = editorRef.current;
-    const windowHeight = window.innerHeight;
-    const editorHeight = Math.floor(windowHeight * 0.35);
+    useEffect(() => {
+        const editorContainer = editorRef.current;
+        const windowHeight = window.innerHeight;
+        const editorHeight = Math.floor(windowHeight * 0.35);
 
-    if (editorContainer) {
-      const editor = monaco.editor.create(editorContainer, 
-        {
-            value: "",
-            language: "python",
-            automaticLayout: true,
-            fontSize: 12,
-            lineHeight: 25,
-            minimap: { enabled: false },
-            wordWrap: "on",
-            wrappingIndent: "indent",
-            lineNumbers: 'on',
+        if (editorContainer) {
+        const editor = monaco.editor.create(editorContainer, 
+            {
+                value: "",
+                language: "python",
+                automaticLayout: true,
+                fontSize: 12,
+                lineHeight: 25,
+                minimap: { enabled: false },
+                wordWrap: "on",
+                wrappingIndent: "indent",
+                lineNumbers: 'on',
+            }
+        );
+
+        editorContainer.style.height = `${editorHeight}px`;
+
+        editor.onDidChangeModelContent(() => {
+            const updatedCode = editor.getValue();
+            setUserInputCode(updatedCode);
+        });
+
+        editor.layout();
+        editor.focus();
+
+        return () => {
+            editor.dispose();
+        };
         }
-      );
-
-      editorContainer.style.height = `${editorHeight}px`;
-
-      editor.onDidChangeModelContent(() => {
-        const updatedCode = editor.getValue();
-        setUserInputCode(updatedCode);
-      });
-
-      editor.layout();
-      editor.focus();
-
-      return () => {
-        editor.dispose();
-      };
-    }
-  }, []);
+    }, []);
 
 
     return (
