@@ -164,6 +164,7 @@ function convertToJSON(response: string) {
   
     const jsonData = { steps };
     const jsonContent = JSON.stringify(jsonData, null, 2);
-    console.log(jsonContent);
+    // console.log(jsonContent);
+    return jsonContent;
 }
 

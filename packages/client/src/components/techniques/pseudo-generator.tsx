@@ -1,9 +1,10 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import robot from "../../assets/robot.png";
-import { apiGetBaselineCodex, logError } from '../../api/api';
+import { apiGetPseudoCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
+import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 
 interface PseudoGenerateCodeProps {
     prompt: string;
@@ -17,7 +18,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
-    const [generatedPseudo, setGeneratedPseudo] = useState('');
+    const [generatedPseudo, setGeneratedPseudo] = useState([]);
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
 
@@ -74,7 +75,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             }
     
             try {
-                apiGetBaselineCodex(
+                apiGetPseudoCodex(
                     context?.token,
                     prompt,
                     userCode ? userCode : ""
@@ -83,9 +84,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     
                         if (response.ok && props.editor) {
                             const data = await response.json();
-    
-                            let steps = data.steps;
-    
+                            
+                            let steps = JSON.parse(data.steps).steps;
                             if (steps.length > 0) {
                                 setFeedback("");
                                 log(
@@ -98,6 +98,11 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                     }
                                 );
                                 // TODO: seperate steps into lines, each lines returns content and explanation
+                                // let pseudoCode = "";
+                                // steps.forEach((step: any) => {
+                                //     //do hoverable
+                                // });
+                                setGeneratedPseudo(steps);
                             } 
                         }
                     })
@@ -113,19 +118,12 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             }
         }
         };
+
+        generateCode();
     }
 
     useEffect(() => {
-        if (pseudoRef.current && generatedPseudo) {
-          
-        }
-    
-        return () => {
-          
-        };
-    }, [generatedPseudo]);
-
-    useEffect(() => {
+        generatePseudoCode();
         const editorContainer = editorRef.current;
         const windowHeight = window.innerHeight;
         const editorHeight = Math.floor(windowHeight * 0.35);
@@ -167,7 +165,10 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             <div style={{ whiteSpace: 'pre-wrap' }}>
                 <b>prompts: </b> {prompt}
             </div>
-            <div ref={pseudoRef} className="pesudo-code-reader"><b>Pseudocode: </b></div>
+            <b>Pseudocode: </b>
+            <div ref={pseudoRef} className="pesudo-code-reader">
+                {generatedPseudo && <PseudoCodeHoverable code={generatedPseudo} />}
+            </div>
             <div ref={editorRef} className="monaco-code-writer"><b>Editor: </b>Write your own code based on the above pseudocode below </div>
             <div style={{ marginTop:'5rem', display: 'flex', justifyContent: 'space-between'  }}>
                 <button className="gpt-button" onClick={cancelClick}>Cancel</button>
