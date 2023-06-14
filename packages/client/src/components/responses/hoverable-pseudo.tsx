@@ -29,7 +29,7 @@ export const PseudoCodeHoverable = (props: IProps) => {
                         console.log("line", line);
                         return (
                             <HoverableExplainCode
-                                code={line.content || ""}
+                                content={line.content || ""}
                                 explanation={line.explanation || ""}
                                 key={JSON.stringify(line) + index.toString()}
                             />

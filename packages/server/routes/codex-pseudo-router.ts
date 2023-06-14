@@ -11,21 +11,12 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
     const { description, context } = req.body;
     const userId = (req.user as IUser)._id;
 
-    // if there is no context:
-    // then just generate new code (like the LLM prompt below) + explanation
-
-    // however, if there is context:
-    // we should have a separate LLM prompt
-    // examples of correct context + description -> generated code + explanation
-    // examples of incorrect context + description -> generated code + explanation
-    // example of correct but incomplete context + description -> generated code + explanation
-
     if (description !== undefined) {
         let messages: Array<ChatCompletionRequestMessage> = [
             {
                 role: "system",
                 content:
-                    "for each provided [intended-behavior] generate a breif [pseudocode] snippet for a novice child that is learning to code python for the first time. For each line of the pesudocode, follow it up with an [explanation] of the generated code, end with [end-explanation]. Use novice-friendly terms. The explaination for each line of pesudocode should explain the Python keywords, syntax, what they do, and the algorithm (if any).",
+                    "for each provided [intended-behavior] generate a breif [pseudocode] snippet for a novice child that is learning to code python for the first time. For each line of the pesudocode, follow it up with an [explanation] of the generated code, end with [end-explanation]. Use novice-friendly terms. The explaination for each line of pesudocode should explain the Python keywords, syntax, what they do, and the algorithm (if any). Make sure to include the keyword types in the explaination. For example, if the line of code is num = 10 % 2, the explaination should include the variable and operation in format of \`num{variable}\` and \`%{operation}\`.",
             },
             {
                 role: "user",
@@ -33,7 +24,7 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `[begin-line] Read the input number from the user.[explanation] This line instructs the program to take input from the user. In Python, you can use the \`input(){build-in-function}\` function to achieve this. The input will be stored in a variable that we can use later in the program. [end-explanation][end-line]\n[begin-line]If the input number modulo 2 is equal to 0, then:[explanation] The modulo operator \`%{operator}\` returns the remainder of the division. So, when we perform \`input_number % 2{variable}\`, if the remainder is 0, it means that the number is divisible by 2 without any remainder.The if statement checks whether the condition is true or false. If it's true, the program will execute the indented code block following it. [end-explanation][end-line]\n[begin-line]     Print "Even"[explanation] This line of code will execute if the condition in the previous if statement is \`true{keyword}\`. It prints the message "Even" to the console, indicating that the input number is divisible by 2. [end-explanation][end-line][end-code]`,
+                content: `[begin-line] Read the input number from the user.[explanation] This line instructs the program to take input from the user. In Python, you can use the \`input(){build-in-function}\` function to achieve this. The input will be stored in a variable that we can use later in the program. [end-explanation][end-line]\n[begin-line]If the input number modulo 2 is equal to 0, then:[explanation] The modulo operator \`%{operation}\` returns the remainder of the division. So, when we perform \`input_number % 2{variable}\`, if the remainder is 0, it means that the number is divisible by 2 without any remainder.The if statement checks whether the condition is true or false. If it's true, the program will execute the indented code block following it. [end-explanation][end-line]\n[begin-line]     Print "Even"[explanation] This line of code will execute if the condition in the previous if statement is \`true{keyword}\`. It prints the message "Even" to the console, indicating that the input number is divisible by 2. [end-explanation][end-line][end-code]`,
             },
 
             {
@@ -42,7 +33,7 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `[begin-line] Read the input number from the user.[explanation] This line instructs the program to take input from the user. In Python, you can use the \`input(){build-in-function}\` function to achieve this. The input will be stored in a variable that we can use later in the program. [end-explanation][end-line]\n[begin-line]If the input number modulo 2 is equal to 0, then:[explanation] The modulo operator \`%{operator}\` returns the remainder of the division. So, when we perform \`input_number % 2{variable}\`, if the remainder is 0, it means that the number is divisible by 2 without any remainder.The if statement checks whether the condition is true or false. If it's true, the program will execute the indented code block following it. [end-explanation][end-line]\n[begin-line]     Print "Even"[explanation] This line of code will execute if the condition in the previous if statement is \`true{keyword}\`. It prints the message "Even" to the console, indicating that the input number is divisible by 2.[end-explanation][end-line]\n [begin-line]Otherwise:[explanation]This \`else{keyword}\` statement is executed if the condition in the initial \`if{keyword}\` statement is \`false{keyword}\`. In other words, if the number is not divisible by 2 (i.e., if the remainder is not 0), the program will execute the indented code block following it.[end-explanation][end-line]\n[begin-line]     Print "Odd":[explanation]This line of code will execute \`if{keyword}\` the condition in the previous if statement is \`false{keyword}\`. It prints the message "Odd" to the console, indicating that the input number is not divisible by 2.[end-explanation][end-line][end-code]`,
+                content: `[begin-line] Read the input number from the user.[explanation] This line instructs the program to take input from the user. In Python, you can use the \`input(){build-in-function}\` function to achieve this. The input will be stored in a variable that we can use later in the program. [end-explanation][end-line]\n[begin-line]If the input number modulo 2 is equal to 0, then:[explanation] The modulo operator \`%{operation}\` returns the remainder of the division. So, when we perform \`input_number % 2{variable}\`, if the remainder is 0, it means that the number is divisible by 2 without any remainder.The if statement checks whether the condition is true or false. If it's true, the program will execute the indented code block following it. [end-explanation][end-line]\n[begin-line]     Print "Even"[explanation] This line of code will execute if the condition in the previous if statement is \`true{keyword}\`. It prints the message "Even" to the console, indicating that the input number is divisible by 2.[end-explanation][end-line]\n [begin-line]Otherwise:[explanation]This \`else{keyword}\` statement is executed if the condition in the initial \`if{keyword}\` statement is \`false{keyword}\`. In other words, if the number is not divisible by 2 (i.e., if the remainder is not 0), the program will execute the indented code block following it.[end-explanation][end-line]\n[begin-line]     Print "Odd":[explanation]This line of code will execute \`if{keyword}\` the condition in the previous if statement is \`false{keyword}\`. It prints the message "Odd" to the console, indicating that the input number is not divisible by 2.[end-explanation][end-line][end-code]`,
             },
 
             {

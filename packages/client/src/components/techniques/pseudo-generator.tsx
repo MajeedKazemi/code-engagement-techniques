@@ -6,6 +6,8 @@ import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
 import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 
+export let cancelClicked = false;
+
 interface PseudoGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
@@ -28,7 +30,9 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         const editorElement = document.querySelector('.editor') as HTMLElement;
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
-    
+        setGeneratedPseudo([]);
+        setUserInputCode('');
+        cancelClicked = true;
     };
     
     const handleInsertCodeClick = () => {
@@ -45,7 +49,9 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         const editorElement = document.querySelector('.editor') as HTMLElement;
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
-      
+        setGeneratedPseudo([]);
+        setUserInputCode('');
+        cancelClicked = true;
     };
 
     const generatePseudoCode = () => {
@@ -97,11 +103,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                         userInput: prompt,
                                     }
                                 );
-                                // TODO: seperate steps into lines, each lines returns content and explanation
-                                // let pseudoCode = "";
-                                // steps.forEach((step: any) => {
-                                //     //do hoverable
-                                // });
+
                                 setGeneratedPseudo(steps);
                             } 
                         }
@@ -123,6 +125,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     }
 
     useEffect(() => {
+        console.log("generatedPseudo", generatedPseudo.length);
         generatePseudoCode();
         const editorContainer = editorRef.current;
         const windowHeight = window.innerHeight;

@@ -9,7 +9,7 @@ import ParsonsGenerateCode from './techniques/parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
-import PseudoGenerateCode from './techniques/pseudo-generator';
+import PseudoGenerateCode, { cancelClicked } from './techniques/pseudo-generator';
 
 let insertedCode = "";
 
@@ -141,7 +141,6 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "pseudo":
         generatedCodeComponent = 
           <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
-        
         break;
       case "parsons":
         generatedCodeComponent = 
@@ -407,6 +406,27 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     }
     
   }, [explanation]);
+
+  const [isChecking, setIsChecking] = useState(true);
+  useEffect(() => {
+    const checkCancelClicked = () => {
+      if (cancelClicked) {
+        // Perform any necessary actions when cancelClicked is true
+        console.log('Cancel clicked');
+        setIsChecking(false); // Stop checking when cancelClicked is true
+        const generatedCodeComponentVisible = false;
+        setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
+        const isUserPromptsVisible = true;
+        setIsUserPromptsVisible(isUserPromptsVisible);
+        setGeneratedCodeComponent(null);
+        setGeneratedCode("");
+        setExplanation("");
+        setUserInput("");
+      } 
+    };
+
+    checkCancelClicked();
+  }, [cancelClicked, isChecking]);
 
   // define the current technique
   //const technique = 'baseline';

@@ -4,23 +4,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { highlightCode } from "../../utils/utils";
 
 interface IProps {
-    code: string;
+    content: string;
     explanation: string | null;
 }
 
 export const HoverableExplainCode = (props: IProps) => {
     const [hovering, setHovering] = useState(false);
-    const codeEl = useRef(null);
+    // const codeEl = useRef(null);
 
-    useEffect(() => {
-        if (codeEl.current) {
-            monaco.editor.colorizeElement(codeEl.current as HTMLElement, {
-                theme: "dark",
-                mimeType: "c",
-                tabSize: 4,
-            });
-        }
-    }, [codeEl]);
+    // useEffect(() => {
+    //     if (codeEl.current) {
+    //         monaco.editor.colorizeElement(codeEl.current as HTMLElement, {
+    //             theme: "dark",
+    //             mimeType: "c",
+    //             tabSize: 4,
+    //         });
+    //     }
+    // }, [codeEl]);
 
     return (
         <div
@@ -32,8 +32,8 @@ export const HoverableExplainCode = (props: IProps) => {
                 setHovering(false);
             }}
         >
-            <span className={"hoverable-code"} ref={codeEl}>
-                {props.code}
+            <span className={"hoverable-code"}>
+                {props.content}
             </span>
             {hovering && props.explanation && (
                 <div
