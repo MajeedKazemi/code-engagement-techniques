@@ -10,17 +10,17 @@ interface IProps {
 
 export const HoverableExplainCode = (props: IProps) => {
     const [hovering, setHovering] = useState(false);
-    // const codeEl = useRef(null);
+    const codeEl = useRef(null);
 
-    // useEffect(() => {
-    //     if (codeEl.current) {
-    //         monaco.editor.colorizeElement(codeEl.current as HTMLElement, {
-    //             theme: "dark",
-    //             mimeType: "c",
-    //             tabSize: 4,
-    //         });
-    //     }
-    // }, [codeEl]);
+    useEffect(() => {
+        if (codeEl.current) {
+            monaco.editor.colorizeElement(codeEl.current as HTMLElement, {
+                theme: "dark",
+                mimeType: "pseudo-code",
+                tabSize: 4,
+            });
+        }
+    }, [codeEl]);
 
     return (
         <div

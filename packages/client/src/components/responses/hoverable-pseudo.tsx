@@ -26,7 +26,6 @@ export const PseudoCodeHoverable = (props: IProps) => {
             <div className="hoverable-code-content">
                 {props.code &&
                     props.code.map((line, index) => {
-                        console.log("line", line);
                         return (
                             <HoverableExplainCode
                                 content={line.content || ""}

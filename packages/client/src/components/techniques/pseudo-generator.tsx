@@ -24,6 +24,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
 
+
     const cancelClick = () => {
         
         const overlayElement = document.querySelector('.overlay') as HTMLElement;
@@ -32,7 +33,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         editorElement.style.zIndex = '1';
         setGeneratedPseudo([]);
         setUserInputCode('');
-        cancelClicked = true;
+        cancelClicked = !cancelClicked;
     };
     
     const handleInsertCodeClick = () => {
@@ -51,7 +52,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         editorElement.style.zIndex = '1';
         setGeneratedPseudo([]);
         setUserInputCode('');
-        cancelClicked = true;
+        cancelClicked = !cancelClicked;
     };
 
     const generatePseudoCode = () => {
@@ -125,7 +126,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     }
 
     useEffect(() => {
-        console.log("generatedPseudo", generatedPseudo.length);
         generatePseudoCode();
         const editorContainer = editorRef.current;
         const windowHeight = window.innerHeight;

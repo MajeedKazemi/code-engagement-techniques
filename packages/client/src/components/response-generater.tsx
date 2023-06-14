@@ -10,6 +10,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
 import PseudoGenerateCode, { cancelClicked } from './techniques/pseudo-generator';
+import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
 
 let insertedCode = "";
 
@@ -407,13 +408,9 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     
   }, [explanation]);
 
-  const [isChecking, setIsChecking] = useState(true);
   useEffect(() => {
     const checkCancelClicked = () => {
-      if (cancelClicked) {
-        // Perform any necessary actions when cancelClicked is true
-        console.log('Cancel clicked');
-        setIsChecking(false); // Stop checking when cancelClicked is true
+      if (isUserPromptsVisible == false) {
         const generatedCodeComponentVisible = false;
         setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
         const isUserPromptsVisible = true;
@@ -424,9 +421,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
         setUserInput("");
       } 
     };
-
     checkCancelClicked();
-  }, [cancelClicked, isChecking]);
+  }, [cancelClicked]);
 
   // define the current technique
   //const technique = 'baseline';
