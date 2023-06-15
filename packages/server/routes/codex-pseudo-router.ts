@@ -16,7 +16,7 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                    "for each provided [intended-behavior] generate a breif [pseudocode] snippet for a novice child that is learning to code python for the first time. For each line of the pesudocode, follow it up with an [explanation] of the generated code, end with [end-explanation]. Use novice-friendly terms. The explaination for each line of pesudocode should explain the Python keywords, syntax, what they do, and the algorithm (if any). Make sure to include the keyword types in the explaination. For example, if the line of code is num = 10 % 2, the explaination should include the variable and operation in format of \`num{variable}\` and \`%{operation}\`.",
+                    "for each provided [intended-behavior] generate a [pseudocode] snippet with indentations and breakdown details (i.e if statement should be breakdown into the condition code and the block below it with indentation)for a novice child that is learning to code python for the first time. For each line of the pesudocode, with the correct indentation for each line, follow it up with an [explanation] of the generated code, end with [end-explanation]. Use novice-friendly terms. The explaination for each line of pesudocode should explain the Python keywords, syntax, what they do, and the algorithm (if any). Make sure to include the keyword types in the explaination. For example, if the line of code is num = 10 % 2, the explaination should include the variable and operation in format of \`num{variable}\` and \`%{operation}\`. (only for the explaination, not the code itself).",
             },
             {
                 role: "user",
@@ -61,18 +61,17 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
         if (context && context.length > 0) {
             messages.push({
                 role: "user",
-                content: `[context-code]:start = 1\nend = 100\nsum_of_evens = 0\n[intended-behavior]: use the above [context-code] as context and write a pseudocode (exclude the generated pseudocode that already covered in context-code, only include context-code if context-code is incorrect) to find the sum of all even numbers between 1 and 100\n[code]:`,
+                content: `[context-code]:start = 1\nend = 100\nsum_of_evens = 0\n[intended-behavior]: use the above [context-code] as context and write a pseudocode (exclude the generated pseudocode that already covered in context-code, only include context-code with the same structure and variable name if context-code is incorrect) to find the sum of all even numbers between 1 and 100\n[code]:`,
             });
             messages.push({
                 role: "assistant",
                 content: `[begin-line] Iterate through the numbers from start to end.
                 [explanation] This step involves a loop that iterates through each number in the given range, starting from the value of \`start{variable}\` and ending at the value of \`end{variable}\`. It ensures that all numbers within the specified range are considered. [end-explanation][end-line]\n[begin-line]     Check if the current number is even.
                 [explanation] Within the loop, this step checks whether the current number being processed is even. It uses a condition that evaluates \`if{keyword}\` the current number divided by 2 results in a remainder of 0, which indicates an even number. [end-explanation][end-line]\n[begin-line]       If the number is even, add it to the \`sum_of_evens{variable}\`.[explanation] This step is executed when the condition in the previous step is \`true{keyword}\`, indicating that the current number is even. In such cases, the current number is added to the \`sum_of_evens{variable}\` variable to accumulate the sum of all even numbers. [end-explanation][end-line]\n[begin-line]            Print the value of sum_of_evens.[explanation] Once the loop completes, this step prints the final value of the \`sum_of_evens{variable}\` variable, which represents the sum of all even numbers within the given range. The output displays this value on the console. [end-explanation][end-line][end-code]`,
-   
             });
             messages.push({
                 role: "user",
-                content: `[context-code]:start = 1\nend = 10\nsum_of_evens = 0\n[intended-behavior]: use the above [context-code] as context and write a pseudocode (exclude the generated pseudocode that already covered in context-code, only include context-code if context-code is incorrect) to find the sum of all even numbers between 1 and 100\n[code]:`,
+                content: `[context-code]:start = 1\nend = 10\nsum_of_evens = 0\n[intended-behavior]: use the above [context-code] as context and write a pseudocode (exclude the generated pseudocode that already covered in context-code, only include context-code with the same structure and variable name if context-code is incorrect) to find the sum of all even numbers between 1 and 100\n[code]:`,
             });
             messages.push({
                 role: "assistant",
@@ -80,12 +79,20 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
             });
             messages.push({
                 role: "user",
-                content: `[context-code]:\nimport random\ndef generate_random():\n     return random.randint(0, 100)\n[intended-behavior]: use the above [context-code] as context and write a Python program (exclude the context-code, only include context-code if context-code is incorrect) and check if a random generated number from is greater than 50\n[code]:`,
+                content: `[context-code]:\nimport random\ndef generate_random():\n     return random.randint(0, 100)\n[intended-behavior]: use the above [context-code] as context and write a Python program (exclude the context-code, only include context-code with the same structure and variable name if context-code is incorrect) and check if a random generated number from 1 to 100 is greater than 50\n[code]:`,
             });
             messages.push({
                 role: "assistant",
                 content: `[begin-line] Call the generate_random() function and assign the returned value to the variable random_number[explanation]This line executes the \`generate_random(){self-defined-function}\` function and stores the generated random number in the \`random_number{variable}\` variable.[end-explanation][end-line]\n[begin-line]Check if the value of random_number is greater than 50.[explanation]This \`if{keyword}\` statement evaluates whether the value of \`random_number{variable}\` is greater than 50.[end-explanation][end-line]\n[begin-line]      If the condition in the previous step is true, print "The random number is greater than 50".[explain]This print statement is executed \`if{keyword}\` the condition in the preceding \`if{keyword}\` statement is \`true{keyword}\`. It displays the message "The random number is greater than 50" on the console[end-explain]\n[begin-line]Otherwise:[explanation]This \`else{keyword}\` statement is executed if the condition in the initial \`if{keyword}\` statement is \`false{keyword}\`.[end-explanation][end-line]\n[begin-line]      If the condition in the previous step is false, print "The random number is not greater than 50".[explanation]This \`print(){build-in-function}\` statement is executed if the condition in the preceding \`if{keyword}\` statement is \`false{keyword}\`. It displays the message "The random number is not greater than 50" on the console.[end-explanation][end-line][end-code]`,
             });
+            // messages.push({
+            //     role: "user",
+            //     content: `[context-code]:\nimport random\nrandom_number = random.randint(0, 0)\n[intended-behavior]: use the above [context-code] as context and write a Python program (exclude the context-code, only include context-code with the same structure and variable name if context-code is incorrect) and check if a random generated number from 1 to 100 is greater than 50\n[code]:`,
+            // });
+            // messages.push({
+            //     role: "assistant",
+            //     content: `[begin-line]modify the existing variable random_number to random between 0 to 100[explanation]Your previous context code is incorrect because the range of random numbers generated is from 0 to 0, which means that the generated number will always be 0. Therefore, it is not possible to check if the generated number is greater than 50.[end-explanation][end-line]\n[begin-line]Check if the value of random_number is greater than 50.[explanation]This \`if{keyword}\` statement evaluates whether the value of \`random_number{variable}\` is greater than 50.[end-explanation][end-line]\n[begin-line]      If the condition in the previous step is true, print "The random number is greater than 50".[explain]This print statement is executed \`if{keyword}\` the condition in the preceding \`if{keyword}\` statement is \`true{keyword}\`. It displays the message "The random number is greater than 50" on the console[end-explain]\n[begin-line]Otherwise:[explanation]This \`else{keyword}\` statement is executed if the condition in the initial \`if{keyword}\` statement is \`false{keyword}\`.[end-explanation][end-line]\n[begin-line]      If the condition in the previous step is false, print "The random number is not greater than 50".[explanation]This \`print(){build-in-function}\` statement is executed if the condition in the preceding \`if{keyword}\` statement is \`false{keyword}\`. It displays the message "The random number is not greater than 50" on the console.[end-explanation][end-line][end-code]`,
+            // });
             messages.push({
                 role: "user",
                 content: `[context-code]:\n${context}\n[intended-behavior]: use the above [context-code] as context and write a Python program (exclude the context-code, only include context-code if context-code is incorrect) ${description}\n[code]:`,

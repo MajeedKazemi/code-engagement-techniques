@@ -425,8 +425,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [cancelClicked]);
 
   // define the current technique
-  //const technique = 'baseline';
-  const technique = 'pseudo';
+  const technique = 'baseline';
+  // const technique = 'pseudo';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

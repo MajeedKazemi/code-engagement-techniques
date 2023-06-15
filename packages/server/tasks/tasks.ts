@@ -191,8 +191,8 @@ export const CodingTasks = [
     // ),
     new AuthoringTask(
         "1a",
-        "Write a program that creates a variable called <i>sum_even</i> will compute the sum of even numbers from 1 to 100, and print the sum.\n Then, generate the two random values from 1 to the <i>sum_even</i>, and check if both values are odd numbers. If both values are odd numbers, print <b>True</b>, otherwise print <b>False</b>.",
-        [["output: <b></b>"]],
+        "Write a program that creates a variable called <i>sum_even</i> will compute the sum of even numbers from 1 to 100 (inclusive), and print the sum.\n Then, generate the two random values from 1 to the <i>sum_even</i>, and check if both values are <b>odd</b> numbers.",
+        [["output: <b>The sum is 2550</b>"]],
         [`print("I'm Wall-E!")`].join("\n"),
         60 * 3,
         TaskTopic.basics,
