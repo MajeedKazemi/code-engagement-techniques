@@ -124,7 +124,15 @@
     line-height: 30px;
     border-radius: 0 0 6px 6px;
 
-    width: 55%;
+    width: 75%;
+}
+
+.monaco-code-writer{
+    height: calc(55% - 2px);
+    border: solid 1px #ccc;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
 }
 
 .hoverable-code-container {
@@ -133,6 +141,7 @@
 
 .hoverable-code-line-container {
     position: relative;
+    background-color: #fff;
 }
 
 .hoverable-code-header {
@@ -170,12 +179,97 @@
 
 .hoverable-code-content {
     padding: 12px;
-
+    background-color: #fff;
     border-radius: 0 0 12px 12px;
     border: 1px solid #1e4976;
 
     /* background-color: #001a41; */
 }
+
+.pesudo-code-reader{
+    font-family: "Courier New", Courier, monospace;
+    font-size: 15px;
+    line-height: 30px;
+    background-color: #edf8f9; 
+    border-radius: 15px;
+}
+
+mark {
+    background: var(--color-accent);
+    color: var(--color-text);
+    font-weight: bold;
+    padding: 0 0.2em;
+  }
+  
+  .card-question {
+    background: var(--color-background);
+    padding: 1vw;
+    border-radius: var(--size-radius);
+    border: 3px solid var(--color-shadow, currentColor);
+    box-shadow: .5rem .5rem 0 var(--color-shadow, currentColor);
+    overflow-y: auto;
+    
+    &--inverted {
+      --color-background: var(--color-dark);
+      color: var(--color-light);
+      --color-shadow: var(--color-accent);
+    }
+    
+    &--accent {
+      --color-background: var(--color-signal);
+      --color-accent: var(--color-light);
+      color: var(--color-dark);
+    }
+    
+    *:first-child {
+      margin-top: 0;
+    }
+  }
+  
+  
+  .l-design-widht {
+    max-width: 40rem;
+    padding: 1rem;
+  }
+
+  
+  .input-question {
+    position: relative;
+    
+    &__label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * .5);
+      margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * .5);
+      background: pink;
+      white-space: nowrap;
+      transform: translate(0, 0);
+      transform-origin: 0 0;
+      background: var(--color-background);
+      transition: transform 120ms ease-in;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+    &__field {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      border: 3px solid currentColor;
+      padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+      color: currentColor;
+      background: transparent;
+      border-radius: var(--size-radius);
+      
+      &:focus,
+      &:not(:placeholder-shown) {
+        & + .input__label {
+          transform: translate(.25rem, -65%) scale(.8);
+          color: var(--color-accent);
+        }
+      }
+    }
+  }
 
 .response-header-icon {
     height: 24px;

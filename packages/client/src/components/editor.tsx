@@ -93,6 +93,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                 }
                             );
 
+
                             editor.onDidChangeCursorPosition((e) => {
                                 setCursorPosition(e.position);
                             });

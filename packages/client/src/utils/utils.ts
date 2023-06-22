@@ -19,3 +19,9 @@ export const highlightCode = (
         return `<span class="${newClassName}">${word}</span>`;
     }
 );
+
+export const highlightCodeBlock = (
+    code: string,
+    className: string = "default-indent"
+) => code.replace(/{indentation}/g, "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+

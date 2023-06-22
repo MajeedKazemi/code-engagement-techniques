@@ -172,8 +172,12 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             <div ref={pseudoRef} className="pesudo-code-reader">
                 {generatedPseudo && <PseudoCodeHoverable code={generatedPseudo} />}
             </div>
-            <div ref={editorRef} className="monaco-code-writer"><b>Editor: </b>Write your own code based on the above pseudocode below </div>
-            <div style={{ marginTop:'5rem', display: 'flex', justifyContent: 'space-between'  }}>
+            <div>
+                <b>Editor: </b>Write your own code based on the above pseudocode below 
+                <div ref={editorRef} className="monaco-code-writer">
+                </div>
+            </div>
+            <div style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
                 <button className="gpt-button" onClick={cancelClick}>Cancel</button>
                 <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
             </div>

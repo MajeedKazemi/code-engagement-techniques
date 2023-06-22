@@ -1,5 +1,5 @@
 .editor {
-    width: 45vw;
+    width: 42vw;
     height: calc(55% - 2px);
     border: solid 1px #ccc;
     border-radius: 6px;
@@ -30,7 +30,7 @@
     height: calc(45% - 88px);
     border-radius: 6px;
     position: relative;
-    width: 45vw;
+    width: 42vw;
     padding: 12px 0 12px 0;
 }
 
@@ -148,6 +148,7 @@
 
 .task-workspace {
     margin-left: 12px;
+    width: 42vw;
 }
 
 .read-only-editor {
@@ -160,19 +161,34 @@
 .task-baseline {
     margin-left: 2px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    background-color: rgba(207, 207, 207, 0.877); 
+    background-color: #edf8f9; 
     padding: 0.5rem;   
+    margin-right: 12px;
 }
 
 .baseline-input {
-    height: 25%;
+    height: 30%;
     width: 100%;
-    font-size: 16px;
+    border: none;
+	border-radius: 20px;
+	outline: none;
+	padding: 10px;
+	font-size: 1.25em;
+	color: #676767;
+	transition: border 0.5s;
+	-webkit-transition: border 0.5s;
+	-moz-transition: border 0.5s;
+	-o-transition: border 0.5s;
+	border: solid 3px #4c93b7;	
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
 }
 
 .gpt-image {
+    display: inline-block;
     width: 2em;
-    padding-right: 2px;
+    margin-right: .5em;
 }
 
 .gpt-button {
@@ -181,6 +197,22 @@
     font-weight: bold;
     border: none;
     padding: 10px;
+    border: none;
+    height: 40px;
+    border-radius: 12px;
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+    font-weight: 500;
+
+    font-family: "Poppins";
+
+    cursor: pointer;
+    padding: 0 20px;
 }
 
 .margin {

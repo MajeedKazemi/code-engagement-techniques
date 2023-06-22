@@ -425,8 +425,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [cancelClicked]);
 
   // define the current technique
-  const technique = 'baseline';
-  // const technique = 'pseudo';
+  //const technique = 'baseline';
+  const technique = 'pseudo';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
@@ -435,30 +435,34 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   };
 
   return (
-    <section>
-      <div className="task-baseline" id="baselineDiv" style={{ position: 'absolute' }}>
+    <section className='response-container'>
+      <div className="task-baseline card-question" id="baselineDiv" style={{ position: 'absolute' }}>
           {/* Conditionally render the generated code component */}
           <div className={generatedCodeComponentVisible ? '' : 'hidden'}>
             {generatedCodeComponent && (
                 generatedCodeComponent
             )}
           </div>
-          <div id='user-prompts' className={isUserPromptsVisible ? '' : 'hidden'}>
+          <div id='user-prompts' className={isUserPromptsVisible? '' : 'hidden'}>
           <>
-            <div>
+            <h3>
               <img src={robot} className="gpt-image" />
-              <b>AI Assistance: </b> describe the behavior of the code to be generated.
-            </div>
+              AI Assistance: <i>Describe the behavior of the code to be generated.</i>
+            </h3>
             <div className="baseline-input-container">
-              <textarea
-                className="baseline-input"
-                id="userInput"
-                value={userInput}
-                onChange={handleUserInput}
-                onKeyDown={handleKeyDown}
-                placeholder="Describe the intended behavior..."
-                rows={4}
-              />
+                  {/* <label className="input-question"> */}
+                      <textarea
+                      className="baseline-input"
+                      id="userInput"
+                      value={userInput}
+                      onChange={handleUserInput}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Describe the intended behavior..."
+                      rows={4}
+                    />
+                    {/* <textarea className="input__field" placeholder=" " />
+                    <span className="input__label">Some Fancy Label</span> */}
+                  {/* </label> */}
             </div>
             <div>
               <button className="gpt-button" onClick={handleClick} disabled={!userInput.trim()}>
@@ -471,5 +475,6 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     </section>
   );
 };
+
 
 export { Baseline };
