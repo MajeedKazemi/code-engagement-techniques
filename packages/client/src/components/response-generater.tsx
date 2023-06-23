@@ -5,10 +5,12 @@ import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
-import ParsonsGenerateCode from './parsons-generator';
+import ParsonsGenerateCode from './techniques/parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
+import PseudoGenerateCode, { cancelClicked } from './techniques/pseudo-generator';
+import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
 
 let insertedCode = "";
 
@@ -125,23 +127,33 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   };
   
   const handleGenerateCode = (techniques: string) => {
+    const overlayElement = document.querySelector('.overlay') as HTMLElement;
+    const editorElement = document.querySelector('.editor') as HTMLElement;
+    overlayElement!.style.display = 'block';
+    editorElement.style.zIndex = '-99';
+    
+    let generatedCodeComponent = null;
+    const generatedCodeComponentVisible = true;
+    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     switch (techniques) {
       case "baseline":
-        const generatedCodeComponentVisible = true;
-        setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
-        BaselineGenerateCode();
+        generatedCodeComponent =  BaselineGenerateCode();
+        break;
+      case "pseudo":
+        generatedCodeComponent = 
+          <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       case "parsons":
-        const generatedCodeComponent = 
-        <DndProvider backend={HTML5Backend}>
-          <ParsonsGenerateCode prompt={userInput} editor={editor} />;
-        </DndProvider>
-        setGeneratedCodeComponent(generatedCodeComponent);
+        generatedCodeComponent = 
+          <DndProvider backend={HTML5Backend}>
+            <ParsonsGenerateCode prompt={userInput} editor={editor} />;
+          </DndProvider>
         break;
       default:
-        setGeneratedCodeComponentVisible(true);
-        BaselineGenerateCode();
+        generatedCodeComponent =  BaselineGenerateCode();
+        break;
     }
+    setGeneratedCodeComponent(generatedCodeComponent);
   }
 
   const BaselineGenerateCode = () => {
@@ -296,6 +308,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                           setExplanation("No explanation available.");
                           setGeneratedCode("No code generated.");
                       }
+                      setWaiting(false);
                   })
                   .catch((error) => {
                       props.editor?.updateOptions({ readOnly: false });
@@ -312,36 +325,57 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     
     generateCode();
 
-    const overlayElement = document.querySelector('.overlay') as HTMLElement;
-    const editorElement = document.querySelector('.editor') as HTMLElement;
-    overlayElement!.style.display = 'block';
-    editorElement.style.zIndex = '-99';
-
     const generatedCodeComponent =
-      <>
-        <div style={{ whiteSpace: 'pre-wrap' }}>
-          <b>prompts: </b> {userInput}
-        </div>
-        <div ref={baselineRef} className="read-only-editor"></div>
-        <div ref={explainRef}> </div>
-        <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
-          <button className="gpt-button" onClick={cancelClick}>Cancel</button>
-          <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-        </div>
-      </>
+    <>
+      <div style={{ whiteSpace: 'pre-wrap' }}>
+        <b>prompts: </b> {userInput}
+      </div>
+      <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
+      <div ref={baselineRef} className="read-only-editor"></div>
+      <div ref={explainRef}> </div>
+      <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
+        <button className="gpt-button disabled" onClick={cancelClick}>Cancel</button>
+        <button className="gpt-button disabled" onClick={handleInsertCodeClick}>Insert Code</button>
+      </div>
+    </>
 
-    setGeneratedCodeComponent(generatedCodeComponent);
+    return generatedCodeComponent;
   };
 
+  useEffect(() => {
+    const waitMessageElement = document.querySelector('.wait-message');
+    const buttonElements = document.querySelectorAll('.generated-button-container .gpt-button');
   
+    if (waiting) {
+      if (waitMessageElement){
+        waitMessageElement.classList.remove('hidden');
+      }
+      if (buttonElements) {
+        buttonElements.forEach((button) => {
+          button.classList.add('disabled');
+        });
+      }
+    } else {
+      if (waitMessageElement){
+        waitMessageElement.classList.add('hidden');
+      }
+      if (buttonElements) {
+        buttonElements.forEach((button) => {
+          button.classList.remove('disabled');
+        });
+      }
+    }
+  }, [waiting]);
 
   // Move the baseline div based on the cursor position
   useEffect(() => {
     if (cursorPosition) {
       const { lineNumber } = cursorPosition;
       const baselineDiv = document.getElementById('baselineDiv');
-      if (baselineDiv) {
+      if (baselineDiv && !generatedCodeComponentVisible) {
         baselineDiv.style.top = `${lineNumber * 20}px`;
+      }else if(baselineDiv){
+        baselineDiv.style.top = `60px`;
       }
     }
   }, [cursorPosition]);
@@ -401,40 +435,65 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     
   }, [explanation]);
 
+  useEffect(() => {
+    const checkCancelClicked = () => {
+      if (isUserPromptsVisible == false) {
+        const generatedCodeComponentVisible = false;
+        setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
+        const isUserPromptsVisible = true;
+        setIsUserPromptsVisible(isUserPromptsVisible);
+        setGeneratedCodeComponent(null);
+        setGeneratedCode("");
+        setExplanation("");
+        setUserInput("");
+      } 
+    };
+    checkCancelClicked();
+  }, [cancelClicked]);
+
   // define the current technique
-  const technique = 'baseline';
+  // const technique = 'baseline';
+  const technique = 'pseudo';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
     setIsUserPromptsVisible(isUserPromptsVisible);
+    const baselineDiv = document.getElementById('baselineDiv');
+    if (baselineDiv) {
+      baselineDiv.style.top = `60px`;
+    }
     handleGenerateCode(technique);
   };
 
   return (
-    <section>
-      <div className="task-baseline" id="baselineDiv" style={{ position: 'absolute' }}>
+    <section className='response-container'>
+      <div className="task-baseline card-question" id="baselineDiv" style={{ position: 'absolute' }}>
           {/* Conditionally render the generated code component */}
-          <div className={generatedCodeComponentVisible ? '' : 'hidden'}>
+          <div className={`generated-code-component ${generatedCodeComponentVisible ? '' : 'hidden'}`}>
             {generatedCodeComponent && (
                 generatedCodeComponent
             )}
           </div>
-          <div id='user-prompts' className={isUserPromptsVisible ? '' : 'hidden'}>
+          <div id='user-prompts' className={isUserPromptsVisible? '' : 'hidden'}>
           <>
-            <div>
+            <h3>
               <img src={robot} className="gpt-image" />
-              <b>AI Assistance: </b> describe the behavior of the code to be generated.
-            </div>
+              AI Assistance: <i>Describe the behavior of the code to be generated.</i>
+            </h3>
             <div className="baseline-input-container">
-              <textarea
-                className="baseline-input"
-                id="userInput"
-                value={userInput}
-                onChange={handleUserInput}
-                onKeyDown={handleKeyDown}
-                placeholder="Describe the intended behavior..."
-                rows={4}
-              />
+                  {/* <label className="input-question"> */}
+                      <textarea
+                      className="baseline-input"
+                      id="userInput"
+                      value={userInput}
+                      onChange={handleUserInput}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Describe the intended behavior..."
+                      rows={4}
+                    />
+                    {/* <textarea className="input__field" placeholder=" " />
+                    <span className="input__label">Some Fancy Label</span> */}
+                  {/* </label> */}
             </div>
             <div>
               <button className="gpt-button" onClick={handleClick} disabled={!userInput.trim()}>
@@ -447,5 +506,6 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     </section>
   );
 };
+
 
 export { Baseline };

@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../assets/robot.png";
+import robot from "../../assets/robot.png";
 import { XYCoord, useDrag, useDrop } from 'react-dnd';
-import { AuthContext } from "../context";
-import { log, LogType } from "../utils/logger";
+import { AuthContext } from "../../context";
+import { log, LogType } from "../../utils/logger";
 
 import Parser from 'web-tree-sitter';
-import { apiGetBaselineCodex, logError } from '../api/api';
+import { apiGetBaselineCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 
 function convertToCodeBlocks(text: string): CodeBlock[] {
