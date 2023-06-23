@@ -330,7 +330,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       <div style={{ whiteSpace: 'pre-wrap' }}>
         <b>prompts: </b> {userInput}
       </div>
-      <h4 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code ... </h4>
+      <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
       <div ref={baselineRef} className="read-only-editor"></div>
       <div ref={explainRef}> </div>
       <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>

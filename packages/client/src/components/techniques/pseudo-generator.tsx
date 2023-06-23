@@ -170,11 +170,16 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 <div style={{ whiteSpace: 'pre-wrap' }}>
                     <b>prompts: </b> {prompt}
                 </div>
-                <b>Pseudocode: </b>
-                <h4 className={waiting ? '' : 'hidden'}>Generating Code ... </h4>
-                <div ref={pseudoRef} className="pesudo-code-reader">
-                    {generatedPseudo && !waiting && <PseudoCodeHoverable code={generatedPseudo} />}
-                </div>
+                {waiting?  
+                    <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
+                    :
+                    <>
+                    <b>Pseudocode: </b>
+                    <div ref={pseudoRef} className="pesudo-code-reader">
+                        {generatedPseudo && !waiting && <PseudoCodeHoverable code={generatedPseudo} />}
+                    </div>
+                    </>
+                }
                 <div>
                     <b>Editor: </b>Write your own code based on the above pseudocode below 
                     <div ref={editorRef} className="monaco-code-writer">
