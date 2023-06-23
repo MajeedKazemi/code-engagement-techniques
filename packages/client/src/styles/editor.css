@@ -7,6 +7,19 @@
     position: relative;
 }
 
+.gpt-button:disabled, .gpt-button.disabled{
+    background-color: #9b9b9b;
+    opacity: 0.5; 
+    cursor: not-allowed; 
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    bottom: 0;
+  }
+
 .overlay {
     position: absolute;
     top: 0;

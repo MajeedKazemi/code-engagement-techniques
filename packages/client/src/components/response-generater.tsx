@@ -308,6 +308,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                           setExplanation("No explanation available.");
                           setGeneratedCode("No code generated.");
                       }
+                      setWaiting(false);
                   })
                   .catch((error) => {
                       props.editor?.updateOptions({ readOnly: false });
@@ -325,30 +326,56 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     generateCode();
 
     const generatedCodeComponent =
-      <>
-        <div style={{ whiteSpace: 'pre-wrap' }}>
-          <b>prompts: </b> {userInput}
-        </div>
-        <div ref={baselineRef} className="read-only-editor"></div>
-        <div ref={explainRef}> </div>
-        <div style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
-          <button className="gpt-button" onClick={cancelClick}>Cancel</button>
-          <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-        </div>
-      </>
+    <>
+      <div style={{ whiteSpace: 'pre-wrap' }}>
+        <b>prompts: </b> {userInput}
+      </div>
+      <h4 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code ... </h4>
+      <div ref={baselineRef} className="read-only-editor"></div>
+      <div ref={explainRef}> </div>
+      <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
+        <button className="gpt-button disabled" onClick={cancelClick}>Cancel</button>
+        <button className="gpt-button disabled" onClick={handleInsertCodeClick}>Insert Code</button>
+      </div>
+    </>
 
     return generatedCodeComponent;
   };
 
+  useEffect(() => {
+    const waitMessageElement = document.querySelector('.wait-message');
+    const buttonElements = document.querySelectorAll('.generated-button-container .gpt-button');
   
+    if (waiting) {
+      if (waitMessageElement){
+        waitMessageElement.classList.remove('hidden');
+      }
+      if (buttonElements) {
+        buttonElements.forEach((button) => {
+          button.classList.add('disabled');
+        });
+      }
+    } else {
+      if (waitMessageElement){
+        waitMessageElement.classList.add('hidden');
+      }
+      if (buttonElements) {
+        buttonElements.forEach((button) => {
+          button.classList.remove('disabled');
+        });
+      }
+    }
+  }, [waiting]);
 
   // Move the baseline div based on the cursor position
   useEffect(() => {
     if (cursorPosition) {
       const { lineNumber } = cursorPosition;
       const baselineDiv = document.getElementById('baselineDiv');
-      if (baselineDiv) {
+      if (baselineDiv && !generatedCodeComponentVisible) {
         baselineDiv.style.top = `${lineNumber * 20}px`;
+      }else if(baselineDiv){
+        baselineDiv.style.top = `60px`;
       }
     }
   }, [cursorPosition]);
@@ -425,12 +452,16 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [cancelClicked]);
 
   // define the current technique
-  //const technique = 'baseline';
+  // const technique = 'baseline';
   const technique = 'pseudo';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
     setIsUserPromptsVisible(isUserPromptsVisible);
+    const baselineDiv = document.getElementById('baselineDiv');
+    if (baselineDiv) {
+      baselineDiv.style.top = `60px`;
+    }
     handleGenerateCode(technique);
   };
 
@@ -438,7 +469,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     <section className='response-container'>
       <div className="task-baseline card-question" id="baselineDiv" style={{ position: 'absolute' }}>
           {/* Conditionally render the generated code component */}
-          <div className={generatedCodeComponentVisible ? '' : 'hidden'}>
+          <div className={`generated-code-component ${generatedCodeComponentVisible ? '' : 'hidden'}`}>
             {generatedCodeComponent && (
                 generatedCodeComponent
             )}

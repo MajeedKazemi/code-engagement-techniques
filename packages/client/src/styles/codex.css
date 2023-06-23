@@ -133,6 +133,7 @@
     border-radius: 15px;
     overflow: hidden;
     position: relative;
+    max-height: 30%;
 }
 
 .hoverable-code-container {
@@ -200,6 +201,7 @@ mark {
     font-weight: bold;
     padding: 0 0.2em;
   }
+
   
   .card-question {
     background: var(--color-background);
@@ -207,7 +209,8 @@ mark {
     border-radius: var(--size-radius);
     border: 3px solid var(--color-shadow, currentColor);
     box-shadow: .5rem .5rem 0 var(--color-shadow, currentColor);
-    overflow-y: auto;
+    max-height: 86vh;
+    overflow: auto;
     
     &--inverted {
       --color-background: var(--color-dark);

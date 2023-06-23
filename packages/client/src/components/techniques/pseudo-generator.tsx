@@ -108,6 +108,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                 setGeneratedPseudo(steps);
                             } 
                         }
+                        setWaiting(false);
                     })
                     .catch((error) => {
                         props.editor?.updateOptions({ readOnly: false });
@@ -165,21 +166,24 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
 
     return (
         <>
-            <div style={{ whiteSpace: 'pre-wrap' }}>
-                <b>prompts: </b> {prompt}
-            </div>
-            <b>Pseudocode: </b>
-            <div ref={pseudoRef} className="pesudo-code-reader">
-                {generatedPseudo && <PseudoCodeHoverable code={generatedPseudo} />}
-            </div>
-            <div>
-                <b>Editor: </b>Write your own code based on the above pseudocode below 
-                <div ref={editorRef} className="monaco-code-writer">
+            <div className='generated-pseudo-container'>
+                <div style={{ whiteSpace: 'pre-wrap' }}>
+                    <b>prompts: </b> {prompt}
+                </div>
+                <b>Pseudocode: </b>
+                <h4 className={waiting ? '' : 'hidden'}>Generating Code ... </h4>
+                <div ref={pseudoRef} className="pesudo-code-reader">
+                    {generatedPseudo && !waiting && <PseudoCodeHoverable code={generatedPseudo} />}
+                </div>
+                <div>
+                    <b>Editor: </b>Write your own code based on the above pseudocode below 
+                    <div ref={editorRef} className="monaco-code-writer">
+                    </div>
                 </div>
             </div>
-            <div style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
-                <button className="gpt-button" onClick={cancelClick}>Cancel</button>
-                <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
+            <div className="button-container" style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
+                <button disabled={waiting} className="gpt-button" onClick={cancelClick}>Cancel</button>
+                <button disabled={waiting} className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
             </div>
         </>
     );
