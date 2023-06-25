@@ -149,6 +149,9 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
             <ParsonsGenerateCode prompt={userInput} editor={editor} />;
           </DndProvider>
         break;
+      case "hierarchical":
+        generatedCodeComponent = <></>
+        break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
         break;
@@ -330,7 +333,28 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       <div style={{ whiteSpace: 'pre-wrap' }}>
         <b>prompts: </b> {userInput}
       </div>
-      <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
+      {/* <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2> */}
+      <div className="wait-message preloader-2 ${waiting ? '' : 'hidden'}`}">
+          <span className="line line-1"></span>
+          <span className="line line-2"></span>
+          <span className="line line-3"></span>
+          <span className="line line-4"></span>
+          <span className="line line-5"></span>
+          <span className="line line-6"></span>
+          <span className="line line-7"></span>
+          <span className="line line-8"></span>
+          <span className="line line-9"></span>
+          <span className="line line-10"></span>
+          <span className="line line-11"></span>
+          <span className="line line-12"></span>
+          <span className="line line-13"></span>
+          <span className="line line-14"></span>
+          <span className="line line-15"></span>
+          <span className="line line-16"></span>
+          <span className="line line-17"></span>
+          <span className="line line-18"></span>
+          <div>Generating</div>
+      </div>
       <div ref={baselineRef} className="read-only-editor"></div>
       <div ref={explainRef}> </div>
       <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
@@ -453,7 +477,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
   // define the current technique
   // const technique = 'baseline';
-  const technique = 'pseudo';
+  // const technique = 'pseudo';
+  const technique = 'hierarchical';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

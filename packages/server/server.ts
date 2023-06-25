@@ -14,6 +14,7 @@ import { loginRouter } from "./routes/login-router";
 import { parsonsRouter } from "./routes/parsons-ast-router";
 import { tasksRouter } from "./routes/tasks-router";
 import { pseudoRouter } from "./routes/codex-pseudo-router";
+import { hierarchicalRouter } from "./routes/codex-hierarchical-router";
 import { initLanguageService } from "./sockets/intellisense";
 import { initPythonShell } from "./sockets/python-shell";
 import env from "./utils/env";
@@ -67,6 +68,7 @@ mongoose
         app.use("/api/technique-baseline/", codexRouter);
         app.use("/api/technique-parsons/", parsonsRouter);
         app.use("/api/technique-pseudo/", pseudoRouter);
+        app.use("/api/technique-hierarchical/", hierarchicalRouter);
 
         const server = app.listen(
             env.PORT_PREFIX + env.NODE_APP_INSTANCE,

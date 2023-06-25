@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import robot from "../../assets/robot.png";
-import { apiGetPseudoCodex, logError } from '../../api/api';
+import { apiGetHierarchicalCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
@@ -8,19 +8,19 @@ import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 
 export let cancelClicked = false;
 
-interface PseudoGenerateCodeProps {
+interface HierarchicalGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     code: string | null;
 }
 
-const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, code })  => {
-    const pseudoRef = useRef<HTMLDivElement | null>(null);
+const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prompt, editor, code })  => {
+    const HierachicalRef = useRef<HTMLDivElement | null>(null);
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
-    const [generatedPseudo, setGeneratedPseudo] = useState([]);
+    const [generatedHierarchical, setGeneratedHierarchical] = useState([]);
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
 
@@ -31,7 +31,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         const editorElement = document.querySelector('.editor') as HTMLElement;
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
-        setGeneratedPseudo([]);
+        setGeneratedHierarchical([]);
         setUserInputCode('');
         cancelClicked = !cancelClicked;
     };
@@ -50,12 +50,12 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         const editorElement = document.querySelector('.editor') as HTMLElement;
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
-        setGeneratedPseudo([]);
+        setGeneratedHierarchical([]);
         setUserInputCode('');
         cancelClicked = !cancelClicked;
     };
 
-    const generatePseudoCode = () => {
+    const generateHierachical = () => {
         const props = {
             taskId: "",
             editor: editor
@@ -82,32 +82,32 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             }
     
             try {
-                apiGetPseudoCodex(
+                apiGetHierarchicalCodex(
                     context?.token,
                     prompt,
                     userCode ? userCode : ""
                 )
                     .then(async (response) => {
     
-                        if (response.ok && props.editor) {
-                            const data = await response.json();
+                        // if (response.ok && props.editor) {
+                        //     const data = await response.json();
                             
-                            let steps = JSON.parse(data.steps).steps;
-                            if (steps.length > 0) {
-                                setFeedback("");
-                                log(
-                                    props.taskId,
-                                    context?.user?.id,
-                                    LogType.PromptEvent,
-                                    {
-                                        code: steps,
-                                        userInput: prompt,
-                                    }
-                                );
+                        //     let steps = JSON.parse(data.steps).steps;
+                        //     if (steps.length > 0) {
+                        //         setFeedback("");
+                        //         log(
+                        //             props.taskId,
+                        //             context?.user?.id,
+                        //             LogType.PromptEvent,
+                        //             {
+                        //                 code: steps,
+                        //                 userInput: prompt,
+                        //             }
+                        //         );
 
-                                setGeneratedPseudo(steps);
-                            } 
-                        }
+                        //         setGeneratedPseudo(steps);
+                        //     } 
+                        // }
                         setWaiting(false);
                     })
                     .catch((error) => {
@@ -127,7 +127,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     }
 
     useEffect(() => {
-        generatePseudoCode();
+        generateHierachical();
         const editorContainer = editorRef.current;
         const windowHeight = window.innerHeight;
         const editorHeight = Math.floor(windowHeight * 0.35);
@@ -166,27 +166,11 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
 
     return (
         <>
-            <div className='generated-pseudo-container'>
+            <div className='generated-hierarchical-container'>
                 <div style={{ whiteSpace: 'pre-wrap' }}>
                     <b>prompts: </b> {prompt}
                 </div>
                 {waiting?  
-                    // <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
-                    // <div className="loader-container ${waiting ? '' : 'hidden'}">
-                    //     <div className="loader">
-                    //         <span>G</span>
-                    //         <span>E</span>
-                    //         <span>N</span>
-                    //         <span>E</span>
-                    //         <span>R</span>
-                    //         <span>A</span>
-                    //         <span>T</span>
-                    //         <span>I</span>
-                    //         <span>N</span>
-                    //         <span>G</span>
-                    //     </div>
-                    //     <div className="hourglass"></div>
-                    // </div>
                     <div className="preloader-2 ${waiting ? '' : 'hidden'}`}">
                         <span className="line line-1"></span>
                         <span className="line line-2"></span>
@@ -210,14 +194,14 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                     </div>
                     :
                     <>
-                    <b>Pseudocode: </b>
+                    {/* <b>Pseudocode: </b>
                     <div ref={pseudoRef} className="pesudo-code-reader">
                         {generatedPseudo && !waiting && <PseudoCodeHoverable code={generatedPseudo} />}
-                    </div>
+                    </div> */}
                     </>
                 }
                 <div>
-                    <b>Editor: </b>Write your own code based on the above pseudocode below 
+                    <b>Editor: </b>Write your own code based on the above hierarchical expression below 
                     <div ref={editorRef} className="monaco-code-writer">
                     </div>
                 </div>
@@ -230,4 +214,4 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     );
 };
 
-export default PseudoGenerateCode;
+export default HierachicalGenerateCode;
