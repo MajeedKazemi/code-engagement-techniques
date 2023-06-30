@@ -290,6 +290,25 @@ export const apiGetHierarchicalCodex = (
         }),
     });
 
+
+export const apiGetCodeToPseudoCodex = (
+    token: string | null | undefined,
+    code: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-hierarchical/codetopseudocode", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            context: context,
+        }),
+    });
+
 export const apiLogEvents = (
     token: string | null | undefined,
     taskId: string,

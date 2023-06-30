@@ -11,6 +11,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
 import PseudoGenerateCode, { cancelClicked } from './techniques/pseudo-generator';
 import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
+import HierachicalGenerateCode from './techniques/hierarchical-generator';
 
 let insertedCode = "";
 
@@ -150,7 +151,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
           </DndProvider>
         break;
       case "hierarchical":
-        generatedCodeComponent = <></>
+        generatedCodeComponent = 
+          <HierachicalGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();

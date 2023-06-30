@@ -1,10 +1,9 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import robot from "../../assets/robot.png";
-import { apiGetHierarchicalCodex, logError } from '../../api/api';
+import { apiGetHierarchicalCodex, apiGetCodeToPseudoCodex, logError, apiGetBaselineCodex } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
-import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 
 export let cancelClicked = false;
 
@@ -12,6 +11,16 @@ interface HierarchicalGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     code: string | null;
+}
+
+interface CodeRepresentation {
+    pseudo: string;
+    code: string;
+}
+
+interface FunctionObject {
+    title: string;
+    code: string;
 }
 
 const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prompt, editor, code })  => {
@@ -82,33 +91,180 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
             }
     
             try {
-                apiGetHierarchicalCodex(
+                apiGetBaselineCodex(
                     context?.token,
                     prompt,
                     userCode ? userCode : ""
                 )
                     .then(async (response) => {
-    
-                        // if (response.ok && props.editor) {
-                        //     const data = await response.json();
-                            
-                        //     let steps = JSON.parse(data.steps).steps;
-                        //     if (steps.length > 0) {
-                        //         setFeedback("");
-                        //         log(
-                        //             props.taskId,
-                        //             context?.user?.id,
-                        //             LogType.PromptEvent,
-                        //             {
-                        //                 code: steps,
-                        //                 userInput: prompt,
-                        //             }
-                        //         );
+  
+                        if (response.ok && props.editor) {
+                            const data = await response.json();
+  
+                            let text = data.bundle.code;
+  
+                            if (text.length > 0) {
+                                setFeedback("");
+                                log(
+                                    props.taskId,
+                                    context?.user?.id,
+                                    LogType.PromptEvent,
+                                    {
+                                        code: text,
+                                        userInput: prompt,
+                                    }
+                                );
+  
+                                let insertLine = 0;
+                                let insertColumn = 1;
+  
+                                let curLineNumber = 0;
+                                let curColumn = 0;
+  
+                                let highlightStartLine = 0;
+                                let highlightStartColumn = 0;
+                                let highlightEndLine = 0;
+                                let highlightEndColumn = 0;
+  
+                                const curPos = props.editor.getPosition();
+                                const curCodeLines = props.editor
+                                    .getValue()
+                                    .split("\n");
+  
+                                if (curPos) {
+                                    curLineNumber = curPos.lineNumber;
+                                    curColumn = curPos.column;
+                                }
+  
+                                let curLineText =
+                                    curCodeLines[curLineNumber - 1];
+                                let nextLineText =
+                                    curLineNumber < curCodeLines.length
+                                        ? curCodeLines[curLineNumber]
+                                        : null;
+  
+                                if (curColumn === 1) {
+                                    // at the beginning of a line
+                                    if (curLineText !== "") {
+                                        text += "\n";
+                                        insertLine = curLineNumber;
+                                        insertColumn = 1;
+  
+                                        highlightStartLine = curLineNumber;
+                                        highlightStartColumn = curColumn;
+  
+                                        const textLines = text.split("\n");
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            textLines.length -
+                                            1;
+                                        highlightEndColumn = 1;
+                                    } else {
+                                        insertLine = curLineNumber;
+                                        insertColumn = 1;
+  
+                                        highlightStartLine = curLineNumber;
+                                        highlightStartColumn = curColumn;
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            text.split("\n").length;
+                                        highlightEndColumn = 1;
+                                    }
+                                } else if (curColumn !== 1) {
+                                    // in the middle of a line
+                                    if (nextLineText !== "") {
+                                        text = "\n" + text;
+                                        insertLine = curLineNumber;
+                                        insertColumn = curLineText.length + 1;
+  
+                                        const textLines = text.split("\n");
+  
+                                        highlightStartLine = curLineNumber + 1;
+                                        highlightStartColumn = 1;
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            text.split("\n").length -
+                                            1;
+                                        highlightEndColumn =
+                                            textLines[textLines.length - 1]
+                                                .length + 1;
+                                    } else {
+                                        insertLine = curLineNumber + 1;
+                                        insertColumn = 1;
+  
+                                        highlightStartLine = curLineNumber;
+                                        highlightStartColumn = curColumn;
+  
+                                        highlightEndLine =
+                                            curLineNumber +
+                                            text.split("\n").length;
+                                        highlightEndColumn = 1;
+                                    }
+                                }
 
-                        //         setGeneratedPseudo(steps);
-                        //     } 
-                        // }
-                        setWaiting(false);
+                                console.log("text", text);
+                                apiGetHierarchicalCodex(
+                                    context?.token,
+                                    text,
+                                    userCode ? userCode : ""
+                                )
+                                    .then(async (response) => {
+                    
+                                        if (response.ok) {
+                                            const code = await response.json();
+                                            // console.log(code);
+                                            let hierachical_steps = code.response;
+                                            
+                                            // console.log(hierachical_steps);
+                                            if(hierachical_steps.length == 0) {
+                                                setFeedback(
+                                                    "There is no code to be generated for this prompt."
+                                                );
+                                                setWaiting(false);
+                                            }else{
+                                                let generatedCodeObject:CodeRepresentation[][] = [];
+                                                async function performAPICallsForEach(): Promise<void> {
+                                                    for (const step of hierachical_steps) {
+                                                      const code = step.code;
+                                                    //   console.log(code);
+                                                  
+                                                      await (async () => {
+                                                        const response = await apiGetCodeToPseudoCodex(
+                                                          context?.token,
+                                                          code,
+                                                          userCode ? userCode : ""
+                                                        );
+                                                  
+                                                        if (response.ok) {
+                                                          const data = await response.json();
+                                                          const codeRepresentations = data.response;
+                                                          generatedCodeObject.push(codeRepresentations);
+                                                        }
+                                                      })();
+                                                    }
+                                                  
+                                                    setWaiting(false);
+                                                }
+                                                  
+                                                  
+                                                
+                                                await performAPICallsForEach();
+                                                console.log(generatedCodeObject);
+                                            }
+                                            
+                                            
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        props.editor?.updateOptions({ readOnly: false });
+                                        setWaiting(false);
+                                        logError(error.toString());
+                                    });
+                            } 
+                        }
                     })
                     .catch((error) => {
                         props.editor?.updateOptions({ readOnly: false });

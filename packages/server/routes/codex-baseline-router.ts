@@ -7,6 +7,7 @@ import { verifyUser } from "../utils/strategy";
 
 export const codexRouter = express.Router();
 
+
 codexRouter.post("/generate", verifyUser, async (req, res, next) => {
     const { description, context } = req.body;
     const userId = (req.user as IUser)._id;
