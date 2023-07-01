@@ -11,13 +11,12 @@ export const hierarchicalCodeToPseudocodeRouter = express.Router();
 hierarchicalRouter.post("/codetopseudocode", verifyUser, async (req, res, next) => {
     const { code, context } = req.body;
     const userId = (req.user as IUser)._id;
-    // console.log("it called here", code);
     if (code !== undefined) {
         let messages: Array<ChatCompletionRequestMessage> = [
             {
                 role: "system",
                 content:
-                    "given the below python {code}, for each line generate a one-line[pseudocode] snippet with {indentations} and breakdown details for a novice child that is learning to code python for the first time. For each line of the pesudocode, with the correct indentation for each line,  also make sure to breakdown each of the statements, if statement should break into condition and code block, for loop should break into condition and code block, etc. ",
+                    "given the below python {code}, for each line generate a one-line[pseudocode] snippet with {indentations} and breakdown details for a novice child that is learning to code python for the first time. For each [line] of the pesudocode, with the correct indentation for each line,  also make sure to breakdown each of the statements, if statement should break into condition and code block, for loop should break into condition and code block, etc. ",
             },
             {
                 role: "user",
@@ -167,13 +166,13 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content: 
-                `[begin]{title}User Input{code}user_input = input("Enter a number: "){end-code}
+                `[begin]{title}User Input{code}user_input = input("Enter a number: "){description}allows the program to interact with the user and obtain a number as input for further processing{end-description}{end-code}
                 {title}Conditional Statement Validation{code}if user_input.isdigit():
                     number = int(user_input)
                     if number % 2 == 0:
                         print("The number is even.")
                     else:
-                        print("The number is odd."){end-code}[end]`,
+                        print("The number is odd."){end-code}{description}checks if the user-provided input is a digit, converts it to an integer, and determines whether it is even or odd before printing the corresponding message{end-discription}[end]`,
             },
             {
                 role: "user",
@@ -194,13 +193,13 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
                 role: "system",
                 content:
                 `[begin]{title}Function Definition{code}def factorial(n):
-                    if n == 0:
-                        return 1
-                    else:
-                        return n * factorial(n - 1){end-code}
-                {title}User Input{code}number = int(input("Enter a number: ")){end-code}
-                {title}Function Call{code}result = factorial(number){end-code}
-                {title}Print Result{code}print("The factorial of", number, "is:", result){end-code}[end]`,
+                if n == 0:
+                    return 1
+                else:
+                    return n * factorial(n - 1){description}the factorial function computes the factorial of a number by breaking it down into smaller subproblems and utilizing the recursive nature of the function{end-discription}{end-code}
+            {title}User Input{code}number = int(input("Enter a number: ")){description}allows the program to receive user input for a number and stores it as an integer value in the number variable{end-discription}{end-code}
+            {title}Function Call{code}result = factorial(number){description}By calling the factorial function with the number as an argument, the code calculates the factorial of that number and stores it in the result variable.{end-discription}{end-code}
+            {title}Print Result{code}print("The factorial of", number, "is:", result){end-code}{description}print a message to the console with the format: "The factorial of number is: result", where number and result are replaced with the actual values{end-discription}[end]`,
             },
             {
                 role: "user",
@@ -217,11 +216,12 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                `[begin]{title}User Input{code}num = int(input("Enter a number: ")){end-code}
-                {title}Variable Initialization{code}factorial = 1{end-code}
-                {title}Loop to Update Factorial{code}for i in range(1, num + 1):
-                    factorial *= i{end-code}
-                {title}Print Result{code}print("The factorial of", num, "is", factorial){end-code}[end]`,
+                `[begin]{title}User Input{code}num = int(input("Enter a number: ")) {description}allows the program to receive user input for a number and stores it as an integer value in the num variable{end-description}{end-code}
+                {title}Factorial Calculation{code}factorial = 1
+                
+                for i in range(1, num + 1):
+                    factorial *= i {description}calculates the factorial of the number by iterating through a range of numbers from 1 to num (inclusive) and multiplying each number with the factorial variable{end-description}{end-code}
+                {title}Print Result{code}print("The factorial of", num, "is", factorial) {end-code}{description}prints a message to the console with the format: "The factorial of num is factorial", where num and factorial are replaced with the actual values{end-description}[end]`,
             },
             {
                 role: "user",
@@ -237,10 +237,10 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
                 role: "system",
                 content:
                 `[begin]{title}Function Definition{code}def my_function(fname):
-                    print(fname + " Refsnes"){end-code}
-                {title}Function Calls{code}my_function("Emil")
-                my_function("Tobias")
-                my_function("Linus"){end-code}[end]`,
+                print(fname + " Refsnes"){description}defines a function called my_function that takes a parameter fname and prints the value of fname followed by "Refsnes"{end-description}{end-code}
+            {title}Function Calls{code}my_function("Emil")
+            my_function("Tobias")
+            my_function("Linus"){description}calls the my_function with different arguments: "Emil", "Tobias", and "Linus"{end-description}{end-code}[end]`,
             }
             
         ];
@@ -310,21 +310,93 @@ interface CodeRepresentation {
   interface FunctionObject {
     title: string;
     code: string;
+    description: string;
   }
 
   function convertStringToCodeObject(input: string): FunctionObject[] {
     const regex = /\{title\}([\s\S]+?)\{code\}([\s\S]+?)(?=\{title\}|$)/g;
     const matches = input.matchAll(regex);
-    const objectList: { title: string, code: string }[] = [];
+    const objectList: FunctionObject[] = [];
   
     for (const match of matches) {
       const title = match[1].trim();
       let code = match[2].trim();
       code = code.replace("{end-code}", "").trim();
-      objectList.push({ title, code });
+      
+      const descriptionMatch = code.match(/\{description\}([\s\S]+?)\{end-description\}/);
+      const description = descriptionMatch ? descriptionMatch[1].trim() : '';
+  
+      code = code.replace(/\{description\}([\s\S]+?)\{end-description\}/g, '').trim();
+      
+      objectList.push({ title, code, description });
     }
+    
     return objectList;
   }
+  
+//example:
+//   [
+//     {
+//         "title": "Variable Initialization",
+//         "content": {
+//             "description": "initialize the variable sum_even to 0, which will be used to store the sum of even numbers",
+//             "details": [
+//                 {
+//                     "pseudo": "Create a variable called sum_even and set it to 0.",
+//                     "code": "sum_even = 0"
+//                 }
+//             ]
+//         }
+//     },
+//     {
+//         "title": "Loop through Numbers",
+//         "content": {
+//             "description": "iterates through the numbers from 1 to 100 (inclusive) using the range function",
+//             "details": [
+//                 {
+//                     "pseudo": "For each number num in the range from 1 to 100 (inclusive), do the following:",
+//                     "code": "for num in range(1, 101):"
+//                 }
+//             ]
+//         }
+//     },
+//     {
+//         "title": "Check for Even Numbers",
+//         "content": {
+//             "description": "checks if the current number (num) is divisible by 2, indicating that it is an even number",
+//             "details": [
+//                 {
+//                     "pseudo": "Check if num is divisible by 2 (i.e., the remainder of num divided by 2 is 0).",
+//                     "code": "if num % 2 == 0:"
+//                 }
+//             ]
+//         }
+//     },
+//     {
+//         "title": "Sum Even Numbers",
+//         "content": {
+//             "description": "if the current number is even, it is added to the sum_even variable",
+//             "details": [
+//                 {
+//                     "pseudo": "Add the value of num to the sum_even variable.",
+//                     "code": "sum_even += num"
+//                 }
+//             ]
+//         }
+//     },
+//     {
+//         "title": "Print Result",
+//         "content": {
+//             "description": "prints the final result, which is the sum of even numbers from 1 to 100, along with a descriptive message",
+//             "details": [
+//                 {
+//                     "pseudo": "Print the message \"The sum of even numbers from 1 to 100 is:\" followed by the value of the variable sum_even.",
+//                     "code": "print(\"The sum of even numbers from 1 to 100 is:\", sum_even)"
+//                 }
+//             ]
+//         }
+//     }
+// ]
   
 
   

@@ -13,15 +13,16 @@ interface HierarchicalGenerateCodeProps {
     code: string | null;
 }
 
-interface CodeRepresentation {
-    pseudo: string;
-    code: string;
-}
-
-interface FunctionObject {
+interface HierarchicalRepresentation {
     title: string;
-    code: string;
-}
+    content: {
+      description: string;
+      details: {
+        pseudo: string;
+        code: string;
+      }[];
+    };
+  }
 
 const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prompt, editor, code })  => {
     const HierachicalRef = useRef<HTMLDivElement | null>(null);
@@ -225,7 +226,7 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
                                                 );
                                                 setWaiting(false);
                                             }else{
-                                                let generatedCodeObject:CodeRepresentation[][] = [];
+                                                let generatedCodeObject:HierarchicalRepresentation[] = [];
                                                 async function performAPICallsForEach(): Promise<void> {
                                                     for (const step of hierachical_steps) {
                                                       const code = step.code;
@@ -239,9 +240,17 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
                                                         );
                                                   
                                                         if (response.ok) {
-                                                          const data = await response.json();
-                                                          const codeRepresentations = data.response;
-                                                          generatedCodeObject.push(codeRepresentations);
+                                                            const data = await response.json();
+                                                            const codeRepresentations = data.response;
+                                                        //   generatedCodeObject.push(codeRepresentations);
+                                                            const currentComponent:HierarchicalRepresentation = {
+                                                                title: step.title,
+                                                                content:{
+                                                                    description: step.description,
+                                                                    details: codeRepresentations
+                                                                }
+                                                            }
+                                                            generatedCodeObject.push(currentComponent);
                                                         }
                                                       })();
                                                     }
