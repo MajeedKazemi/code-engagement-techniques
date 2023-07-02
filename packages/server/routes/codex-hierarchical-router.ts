@@ -125,7 +125,7 @@ hierarchicalRouter.post("/codetopseudocode", verifyUser, async (req, res, next) 
             //     pseudo: "pseudo",
             //     code: "code",
             // }, ...]
-            console.log(response);
+            // console.log(response);
             if(response){
                 res.json({
                     response: convertStringToPseudoObject(response),
