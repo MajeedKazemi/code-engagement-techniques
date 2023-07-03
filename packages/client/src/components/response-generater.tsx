@@ -9,9 +9,9 @@ import ParsonsGenerateCode from './techniques/parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
-import PseudoGenerateCode, { cancelClicked } from './techniques/pseudo-generator';
+import PseudoGenerateCode, { pseudoCancelClicked } from './techniques/pseudo-generator';
 import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
-import HierachicalGenerateCode from './techniques/hierarchical-generator';
+import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/hierarchical-generator';
 
 let insertedCode = "";
 
@@ -475,7 +475,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [cancelClicked]);
+  }, [pseudoCancelClicked, hierarchicalCancelClicked,]);
 
   // define the current technique
   // const technique = 'baseline';

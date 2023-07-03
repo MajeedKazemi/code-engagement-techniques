@@ -126,7 +126,7 @@ codexRouter.post("/generate", verifyUser, async (req, res, next) => {
             model: "gpt-3.5-turbo",
             messages,
             temperature: 0.1,
-            max_tokens: 750,
+            max_tokens: 1000,
             stop: ["[end-explanation]"],
             user: userId,
         });

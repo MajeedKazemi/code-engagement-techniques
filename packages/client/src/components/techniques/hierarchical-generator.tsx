@@ -6,7 +6,7 @@ import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
 import { HierarchicalComponent } from '../responses/hierachical-collapsible';
 
-export let cancelClicked = false;
+export let hierarchicalCancelClicked = false;
 
 interface HierarchicalGenerateCodeProps {
     prompt: string;
@@ -44,7 +44,7 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
         editorElement.style.zIndex = '1';
         setGeneratedHierarchical([]);
         setUserInputCode('');
-        cancelClicked = !cancelClicked;
+        hierarchicalCancelClicked = !hierarchicalCancelClicked;
     };
     
     const handleInsertCodeClick = () => {
@@ -63,7 +63,7 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
         editorElement.style.zIndex = '1';
         setGeneratedHierarchical([]);
         setUserInputCode('');
-        cancelClicked = !cancelClicked;
+        hierarchicalCancelClicked = !hierarchicalCancelClicked;
     };
 
     const generateHierachical = () => {
@@ -338,7 +338,6 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
                 <div style={{ whiteSpace: 'pre-wrap' }}>
                     <b>prompts: </b> {prompt}
                 </div>
-                <HierarchicalComponent prop={generatedHierarchical}/>
                 {waiting?  
                     <div className="preloader-2 ${waiting ? '' : 'hidden'}`}">
                         <span className="line line-1"></span>
@@ -363,10 +362,8 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
                     </div>
                     :
                     <>
-                    {/* <b>Pseudocode: </b>
-                    <div ref={pseudoRef} className="pesudo-code-reader">
-                        {generatedPseudo && !waiting && <PseudoCodeHoverable code={generatedPseudo} />}
-                    </div> */}
+                    <b>Representation: </b>
+                    <HierarchicalComponent prop={generatedHierarchical}/>
                     </>
                 }
                 <div>

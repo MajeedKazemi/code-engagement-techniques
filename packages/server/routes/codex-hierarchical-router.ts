@@ -16,7 +16,7 @@ hierarchicalRouter.post("/codetopseudocode", verifyUser, async (req, res, next) 
             {
                 role: "system",
                 content:
-                    "given the below python {code}, for each line generate a one-line[pseudocode] snippet with {indentations} and breakdown details for a novice child that is learning to code python for the first time. For each [line] of the pesudocode, with the correct indentation for each line,  also make sure to breakdown each of the statements, if statement should break into condition and code block, for loop should break into condition and code block, etc. ",
+                    "given the below python {code}, for each line generate a one-line[pseudocode] snippet with {indentations} and breakdown details for a novice child that is learning to code python for the first time. For each [line] of the pesudocode, with the correct indentation for each line,  also make sure to breakdown each of the statements, if statement should break into condition and code block, for loop should break into condition and code block, etc. The response must contain [line] in each line and each indentation with {indentation}.",
             },
             {
                 role: "user",
@@ -113,7 +113,7 @@ hierarchicalRouter.post("/codetopseudocode", verifyUser, async (req, res, next) 
             model: "gpt-3.5-turbo",
             messages,
             temperature: 0.05,
-            max_tokens: 1000,
+            max_tokens: 2000,
             stop: ["[end]"],
             user: userId,
         });
@@ -150,7 +150,7 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                    "given the provided python {code}, write a hierarchical representation with the first level {title} separate by each line.",
+                    "given the provided python {code}, write a hierarchical representation with the first level {title} separate by each line. ",
             },
             {
                 role: "user",
@@ -201,28 +201,28 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {title}Function Call{code}result = factorial(number){description}By calling the factorial function with the number as an argument, the code calculates the factorial of that number and stores it in the result variable.{end-discription}{end-code}
             {title}Print Result{code}print("The factorial of", number, "is:", result){end-code}{description}print a message to the console with the format: "The factorial of number is: result", where number and result are replaced with the actual values{end-discription}[end]`,
             },
-            {
-                role: "user",
-                content:
-                `num = int(input("Enter a number: "))
+            // {
+            //     role: "user",
+            //     content:
+            //     `num = int(input("Enter a number: "))
 
-                factorial = 1
+            //     factorial = 1
                 
-                for i in range(1, num + 1):
-                    factorial *= i
+            //     for i in range(1, num + 1):
+            //         factorial *= i
                 
-                print("The factorial of", num, "is", factorial)`,
-            },
-            {
-                role: "system",
-                content:
-                `[begin]{title}User Input{code}num = int(input("Enter a number: ")) {description}allows the program to receive user input for a number and stores it as an integer value in the num variable{end-description}{end-code}
-                {title}Factorial Calculation{code}factorial = 1
+            //     print("The factorial of", num, "is", factorial)`,
+            // },
+            // {
+            //     role: "system",
+            //     content:
+            //     `[begin]{title}User Input{code}num = int(input("Enter a number: ")) {description}allows the program to receive user input for a number and stores it as an integer value in the num variable{end-description}{end-code}
+            //     {title}Factorial Calculation{code}factorial = 1
                 
-                for i in range(1, num + 1):
-                    factorial *= i {description}calculates the factorial of the number by iterating through a range of numbers from 1 to num (inclusive) and multiplying each number with the factorial variable{end-description}{end-code}
-                {title}Print Result{code}print("The factorial of", num, "is", factorial) {end-code}{description}prints a message to the console with the format: "The factorial of num is factorial", where num and factorial are replaced with the actual values{end-description}[end]`,
-            },
+            //     for i in range(1, num + 1):
+            //         factorial *= i {description}calculates the factorial of the number by iterating through a range of numbers from 1 to num (inclusive) and multiplying each number with the factorial variable{end-description}{end-code}
+            //     {title}Print Result{code}print("The factorial of", num, "is", factorial) {end-code}{description}prints a message to the console with the format: "The factorial of num is factorial", where num and factorial are replaced with the actual values{end-description}[end]`,
+            // },
             {
                 role: "user",
                 content:
@@ -241,6 +241,24 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {title}Function Calls{code}my_function("Emil")
             my_function("Tobias")
             my_function("Linus"){description}calls the my_function with different arguments: "Emil", "Tobias", and "Linus"{end-description}{end-code}[end]`,
+            },
+            {
+                role: "user",
+                content:
+                `sum_even = 0
+                for num in range(1, 101):
+                    if num % 2 == 0:
+                        sum_even += num
+                print("The sum of even numbers from 1 to 100 is:", sum_even)`,
+            },
+            {
+                role: "system",
+                content:
+                `[begin]{title}Variable Initialization{code}sum_even = 0{description}initializes a variable sum_even to 0 to store the sum of even numbers{end-description}{end-code}
+                {title}Loop Iteration{code}for num in range(1, 101):
+    if num % 2 == 0:
+        sum_even += num{description}iterates through numbers from 1 to 100 (inclusive) and checks if each number is even. If it is, the number is added to the sum_even variable{end-description}{end-code}
+                {title}Print Result{code}print("The sum of even numbers from 1 to 100 is:", sum_even){end-code}{description}prints a message to the console with the format: "The sum of even numbers from 1 to 100 is: sum_even", where sum_even is replaced with the actual value{end-description}[end]`,
             }
             
         ];
@@ -254,8 +272,8 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
         const result = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages,
-            temperature: 0.05,
-            max_tokens: 1000,
+            temperature: 0.1,
+            max_tokens: 1200,
             stop: ["[end]"],
             user: userId,
         });
@@ -292,14 +310,16 @@ interface CodeRepresentation {
         // .replace("[end-pseudocode]", ""));
 
         const [pseudo, code] = line
-        .replace("[pseudocode]", "")
-        .replace("[end-pseudocode]", "")
-        .trim()
-        .split("[line]");
+        .split("[end-pseudocode]");
+
         // console.log("pseudo "+pseudo, "code "+code);
         return {
-            pseudo: pseudo.trim(),
-            code: code.trim(),
+            pseudo: pseudo.replace("[pseudocode]", "")
+            .replace("[end-pseudocode]", "")
+            .trim(),
+            code: code.replace("[pseudocode]", "")
+            .replace("[end-pseudocode]", "").replace("[line]", "")
+            .trim(),
         };
       
     });

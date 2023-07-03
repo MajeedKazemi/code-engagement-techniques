@@ -6,7 +6,7 @@ import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
 import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 
-export let cancelClicked = false;
+export let pseudoCancelClicked = false;
 
 interface PseudoGenerateCodeProps {
     prompt: string;
@@ -33,7 +33,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         editorElement.style.zIndex = '1';
         setGeneratedPseudo([]);
         setUserInputCode('');
-        cancelClicked = !cancelClicked;
+        pseudoCancelClicked = !pseudoCancelClicked;
     };
     
     const handleInsertCodeClick = () => {
@@ -52,7 +52,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         editorElement.style.zIndex = '1';
         setGeneratedPseudo([]);
         setUserInputCode('');
-        cancelClicked = !cancelClicked;
+        pseudoCancelClicked = !pseudoCancelClicked;
     };
 
     const generatePseudoCode = () => {
