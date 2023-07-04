@@ -12,6 +12,7 @@ import { highlightCode } from '../utils/utils';
 import PseudoGenerateCode, { pseudoCancelClicked } from './techniques/pseudo-generator';
 import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
 import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/hierarchical-generator';
+import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-generator';
 
 let insertedCode = "";
 
@@ -153,6 +154,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "hierarchical":
         generatedCodeComponent = 
           <HierachicalGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+        break;
+      case "token":
+        generatedCodeComponent =
+          <TokenGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
@@ -475,12 +480,13 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [pseudoCancelClicked, hierarchicalCancelClicked,]);
+  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked]);
 
   // define the current technique
   // const technique = 'baseline';
   // const technique = 'pseudo';
-  const technique = 'hierarchical';
+  // const technique = 'hierarchical';
+  const technique = 'token';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
