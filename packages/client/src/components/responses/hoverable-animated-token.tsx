@@ -6,6 +6,8 @@ import { highlightCode, highlightCodeBlock } from "../../utils/utils";
 interface IProps {
     content: string;
     explanation: string | null;
+    isActive: boolean;
+    style: React.CSSProperties;
 }
 
 export const HoverableExplainCode = (props: IProps) => {
@@ -24,7 +26,7 @@ export const HoverableExplainCode = (props: IProps) => {
 
     return (
         <div
-            className="hoverable-token"
+            className={`hoverable-token ${props.isActive ? "active" : ""}`}
             onMouseEnter={() => {
                 setHovering(true);
             }}

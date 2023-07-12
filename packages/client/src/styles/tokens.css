@@ -1,14 +1,8 @@
-.tokens-container {
-    display: flex;
-    position: relative;
-    background-color: #fff;
-}
-
 .tokens-container .hoverable-code {
     line-height: 30px;
     cursor: pointer;
     display: block;
-    padding: 0 0 0 16px;
+    padding: 0 0 0 2px;
 }
 
 .tokens-container:hover {
@@ -17,6 +11,8 @@
     /* border-radius: 12px;*/
     border: solid 1px #69696a;
 }
+
+
 
 .tokens-container .exp-inline-code {
     font-family: "Courier New", Courier, monospace;
@@ -28,8 +24,54 @@
 }
 
 .hoverable-code-content {
-    padding: 12px;
+    /* padding: 12px; */
     background-color: #fff;
     border-radius: 0 0 12px 12px;
     border: 1px solid #1e4976;
 }
+
+.tokens-container {
+    display: flex;
+    position: relative;
+    background-color: #fff;
+  }
+  
+  .hoverable-token.active {
+    opacity: 1;
+  }
+
+  .hoverable-token:hover {
+    background-color: #ccc;
+  }
+
+  .hoverable-token {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid transparent;
+    opacity: 0;
+    transition: opacity 1.8s ease-in-out;
+    align-self: flex-start;
+  }
+  
+  
+  .tokens-container br {
+    margin-bottom: 10px;
+  }
+
+  .next-line-button {
+    padding: 0.5rem 1rem;
+    background-color: #ccc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .tokens-container button {
+    margin-left: auto;
+  }
+  
+  .next-line-button:hover {
+    background-color: #999;
+  }
+  

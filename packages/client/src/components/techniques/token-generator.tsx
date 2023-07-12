@@ -254,6 +254,18 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
                 },
               ],
             },
+            {
+                tokens: [
+                  {
+                    code: "if",
+                    explanation: "keyword used to perform conditional operations",
+                  },
+                  {
+                    code: "n == 0:",
+                    explanation: "condition to check if `n` is equal to 0",
+                  },
+                ],
+              },
           ];
           
         setGeneratedToken(generatedToken);
