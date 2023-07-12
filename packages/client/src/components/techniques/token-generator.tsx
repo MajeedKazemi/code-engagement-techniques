@@ -4,6 +4,7 @@ import { apiGetBaselineCodex, apiGetPseudoCodex, logError } from '../../api/api'
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
+import { AnimatedTokens } from '../responses/animated-tokens';
 
 export let tokenCancelClicked = false;
 
@@ -13,15 +14,27 @@ interface TokenGenerateCodeProps {
     code: string | null;
 }
 
+interface Token {
+    code: string;
+    explanation: string;
+}
+
+interface TokensProps {
+    tokens: Token[];
+}
+
 const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, code })  => {
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
-    const [generatedToken, setGeneratedToken] = useState("");
+    const [generatedCode, setGeneratedCode] = useState<string>("");
+    const [generatedToken, setGeneratedToken] = useState<TokensProps[]>([]);
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
+
+
 
 
     const cancelClick = () => {
@@ -30,7 +43,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
         const editorElement = document.querySelector('.editor') as HTMLElement;
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
-        setGeneratedToken("");
+        setGeneratedToken([]);
         setUserInputCode('');
         tokenCancelClicked = !tokenCancelClicked;
     };
@@ -40,7 +53,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
             const position = editor.getPosition();
             if (position) {
               const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedToken, forceMoveMarkers: true };
+              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
               editor.executeEdits("insertCodeAfterCursor", [op]);
             }
           }
@@ -48,7 +61,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
         const editorElement = document.querySelector('.editor') as HTMLElement;
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
-        setGeneratedToken("");
+        setGeneratedToken([]);
         setUserInputCode('');
         tokenCancelClicked = !tokenCancelClicked;
     };
@@ -194,7 +207,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
                                     }
                                 }
 
-                                setGeneratedToken(text);
+                                setGeneratedCode(text);
                                 setWaiting(false);
                             }
                         }
@@ -212,7 +225,39 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
 
     useEffect(() => {
         generateToken();
-
+        const generatedToken : TokensProps[] = [
+            {
+              tokens: [
+                {
+                  code: "def",
+                  explanation: "keyword used to define a function",
+                },
+                {
+                  code: "factorial",
+                  explanation: "Name of the function is `factorial`",
+                },
+                {
+                  code: "(n):",
+                  explanation: "The function takes one argument `n`",
+                },
+              ],
+            },
+            {
+              tokens: [
+                {
+                  code: "if",
+                  explanation: "keyword used to perform conditional operations",
+                },
+                {
+                  code: "n == 0:",
+                  explanation: "condition to check if `n` is equal to 0",
+                },
+              ],
+            },
+          ];
+          
+        setGeneratedToken(generatedToken);
+        console.log(generatedToken);
     }, []);
 
 
@@ -247,7 +292,9 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
                     :
                     <>
                     <b>Representation: </b>
-                    {generatedToken}
+                    {generatedCode}
+                    
+                    <AnimatedTokens tokens={generatedToken} />
                     </>
                 }
             </div>

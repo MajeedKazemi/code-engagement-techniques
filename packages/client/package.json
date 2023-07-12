@@ -48,6 +48,8 @@
         "react-dom": "^18.1.0",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
+        "tree-sitter": "^0.20.5",
+        "tree-sitter-python": "^0.20.1",
         "typescript": "^4.4.2",
         "vite": "^2.9.10"
     },

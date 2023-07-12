@@ -1,0 +1,35 @@
+.tokens-container {
+    display: flex;
+    position: relative;
+    background-color: #fff;
+}
+
+.tokens-container .hoverable-code {
+    line-height: 30px;
+    cursor: pointer;
+    display: block;
+    padding: 0 0 0 16px;
+}
+
+.tokens-container:hover {
+    /* background-color: #003575; 
+    color: #fff; */
+    /* border-radius: 12px;*/
+    border: solid 1px #69696a;
+}
+
+.tokens-container .exp-inline-code {
+    font-family: "Courier New", Courier, monospace;
+    padding: 2px 8px;
+    background-color: #00538c;
+    font-weight: 600;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.hoverable-code-content {
+    padding: 12px;
+    background-color: #fff;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid #1e4976;
+}
