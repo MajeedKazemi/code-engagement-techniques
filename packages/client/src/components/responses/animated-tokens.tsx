@@ -14,7 +14,6 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTokenIndex, setActiveTokenIndex] = useState(0);
   const [currentIteration, setCurrentIteration] = useState(0);
-  const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
     const animateTokens = async () => {
@@ -22,40 +21,21 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
         const animation = tokens[i];
 
         for (let j = 0; j < animation.tokens.length; j++) {
-          await new Promise((resolve) => setTimeout(resolve, 200));
-
           setActiveTokenIndex(j);
+
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
+
+        setCurrentIteration(i + 1);
+
+        if (i !== tokens.length - 1) {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
       }
     };
 
     animateTokens();
   }, [tokens]);
-
-  useEffect(() => {
-    const startTime = Date.now();
-    const endTime = startTime + 200;
-
-    const animationFrame = () => {
-      const now = Date.now();
-      const progress = Math.min((now - startTime) / 200, 1);
-
-      setOpacity(progress);
-
-      if (now < endTime) {
-        requestAnimationFrame(animationFrame);
-      } else {
-        setActiveTokenIndex((prevIndex) => prevIndex + 1);
-        setOpacity(0);
-      }
-    };
-
-    const timeout = setTimeout(animationFrame, 0);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [activeTokenIndex]);
 
   const handleNextLineClick = () => {
     setCurrentIteration((prevIteration) => prevIteration + 1);
@@ -72,8 +52,10 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
                 key={tokenIndex}
                 content={token.code || ""}
                 explanation={token.explanation || ""}
-                isActive={animationIndex < currentIteration || (animationIndex === currentIteration && tokenIndex <= activeTokenIndex)}
-                style={{ opacity: animationIndex === currentIteration && tokenIndex === activeTokenIndex ? opacity : 1 }}
+                isActive={
+                  animationIndex < currentIteration ||
+                  (animationIndex === currentIteration && tokenIndex <= activeTokenIndex)
+                }
               />
             </React.Fragment>
           ))}

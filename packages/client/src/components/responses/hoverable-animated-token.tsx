@@ -7,7 +7,6 @@ interface IProps {
     content: string;
     explanation: string | null;
     isActive: boolean;
-    style: React.CSSProperties;
 }
 
 export const HoverableExplainCode = (props: IProps) => {
