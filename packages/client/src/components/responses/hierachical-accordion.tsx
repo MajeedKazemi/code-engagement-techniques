@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { highlightCode, highlightCodeBlock } from "../../utils/utils";
 
 interface IAccordionProps {
     title: string;
@@ -38,11 +39,12 @@ export const Accordion = (props: IAccordionProps) => {
             >
                 <h2
                     className="accordion-title"
-                    dangerouslySetInnerHTML={{
-                        __html: props.title.replace(/`(.*?)`/g, (match, p1) => {
-                            return `<span class="accordion-title-code">${p1}</span>`;
-                        }),
-                    }}
+                    // dangerouslySetInnerHTML={{
+                    //     __html: props.title.replace(/`(.*?)`/g, (match, p1) => {
+                    //         return `<span class="accordion-title-code">${p1}</span>`;
+                    //     }),
+                    // }}
+                    dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlock(props.title)) }}
                 ></h2>
                 <div className="accordion-arrow-button" onClick={handleClick}>
                     {isOpen ? (

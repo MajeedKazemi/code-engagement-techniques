@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import robot from "../../assets/robot.png";
-import { apiGetHierarchicalCodex, apiGetCodeToPseudoCodex, logError, apiGetBaselineCodex } from '../../api/api';
+import { apiGetHierarchicalCodex, apiGetCodeToPseudoCodex, logError, apiGetGeneratedCodeCodex } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
@@ -93,7 +93,7 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
             }
     
             try {
-                apiGetBaselineCodex(
+                apiGetGeneratedCodeCodex(
                     context?.token,
                     prompt,
                     userCode ? userCode : ""
@@ -103,7 +103,7 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
                         if (response.ok && props.editor) {
                             const data = await response.json();
   
-                            let text = data.bundle.code;
+                            let text = data.code;
   
                             if (text.length > 0) {
                                 setFeedback("");

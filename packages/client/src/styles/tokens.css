@@ -3,6 +3,7 @@
     cursor: pointer;
     display: block;
     padding: 0 0 0 2px;
+    flex: 0 0 100%;
 }
 
 .tokens-container:hover {
@@ -30,10 +31,27 @@
     border: 1px solid #1e4976;
 }
 
+.tokens-container .hoverable-code-line-explanation {
+    z-index: 99;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #91d8dc;
+    color: #000;
+    padding: 12px;
+    line-height: 30px;
+    border-radius: 0 0 6px 6px;
+    opacity: 1!important;
+
+    width: 75%;
+}
+
+
 .tokens-container {
     display: flex;
     position: relative;
     background-color: #fff;
+    flex-wrap: wrap;
   }
   
   .hoverable-token.active {
@@ -43,6 +61,21 @@
   .hoverable-token:hover {
     background-color: #ccc;
   }
+
+  .tokens-container .goal-container {
+    width: 100%;
+    flex-basis: 100%;
+    background-color: #eee;
+    padding: 12px;
+    margin-top: 24px;
+    border-radius: 8px;
+  }
+
+  .tokens-container .grayed {
+    opacity: 0.5;
+  }
+
+ 
 
   .hoverable-token {
     display: inline-block;

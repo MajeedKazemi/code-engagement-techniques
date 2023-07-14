@@ -236,6 +236,24 @@ export const apiGetSavedUserCode = (
         },
     });
 
+export const apiGetGeneratedCodeCodex = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-baseline/generatecode", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
 export const apiGetBaselineCodex = (
     token: string | null | undefined,
     description: string,

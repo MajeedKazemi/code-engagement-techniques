@@ -15,6 +15,7 @@ interface TokenGenerateCodeProps {
 }
 
 interface Token {
+    index: number;
     code: string;
     explanation: string;
 }
@@ -33,9 +34,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
     const [generatedToken, setGeneratedToken] = useState<TokensProps[]>([]);
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
-
-
-
+      
 
     const cancelClick = () => {
         
@@ -246,48 +245,6 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
 
     useEffect(() => {
         generateToken();
-        // const generatedToken : TokensProps[] = [
-        //     {
-        //       tokens: [
-        //         {
-        //           code: "def",
-        //           explanation: "keyword used to define a function",
-        //         },
-        //         {
-        //           code: "factorial",
-        //           explanation: "Name of the function is `factorial`",
-        //         },
-        //         {
-        //           code: "(n):",
-        //           explanation: "The function takes one argument `n`",
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       tokens: [
-        //         {
-        //           code: "if",
-        //           explanation: "keyword used to perform conditional operations",
-        //         },
-        //         {
-        //           code: "n == 0:",
-        //           explanation: "condition to check if `n` is equal to 0",
-        //         },
-        //       ],
-        //     },
-        //     {
-        //         tokens: [
-        //           {
-        //             code: "if",
-        //             explanation: "keyword used to perform conditional operations",
-        //           },
-        //           {
-        //             code: "n == 0:",
-        //             explanation: "condition to check if `n` is equal to 0",
-        //           },
-        //         ],
-        //       },
-        //   ];
           
     }, []);
 
@@ -323,9 +280,8 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
                     :
                     <>
                     <b>Representation: </b>
-                    {generatedCode}
                     
-                    <AnimatedTokens tokens={generatedToken} />
+                    <AnimatedTokens tokens={generatedToken}/>
                     </>
                 }
             </div>

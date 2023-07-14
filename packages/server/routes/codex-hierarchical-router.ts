@@ -110,7 +110,7 @@ hierarchicalRouter.post("/codetopseudocode", verifyUser, async (req, res, next) 
         });
 
         const result = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages,
             temperature: 0.05,
             max_tokens: 2000,
@@ -166,8 +166,8 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content: 
-                `[begin]{title}User Input{code}user_input = input("Enter a number: "){description}allows the program to interact with the user and obtain a number as input for further processing{end-description}{end-code}
-                {title}Conditional Statement Validation{code}if user_input.isdigit():
+                `[begin]{title}Ask user for numeric input {code}user_input = input("Enter a number: "){description}allows the program to interact with the user and obtain a number as input for further processing{end-description}{end-code}
+                {title}Conditional statement validation the user_input is digit{code}if user_input.isdigit():
                     number = int(user_input)
                     if number % 2 == 0:
                         print("The number is even.")
@@ -192,14 +192,14 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                `[begin]{title}Function Definition{code}def factorial(n):
+                `[begin]{title}Factorial function definition{code}def factorial(n):
                 if n == 0:
                     return 1
                 else:
                     return n * factorial(n - 1){description}the factorial function computes the factorial of a number by breaking it down into smaller subproblems and utilizing the recursive nature of the function{end-discription}{end-code}
-            {title}User Input{code}number = int(input("Enter a number: ")){description}allows the program to receive user input for a number and stores it as an integer value in the number variable{end-discription}{end-code}
-            {title}Function Call{code}result = factorial(number){description}By calling the factorial function with the number as an argument, the code calculates the factorial of that number and stores it in the result variable.{end-discription}{end-code}
-            {title}Print Result{code}print("The factorial of", number, "is:", result){end-code}{description}print a message to the console with the format: "The factorial of number is: result", where number and result are replaced with the actual values{end-discription}[end]`,
+            {title}Ask user for numeric input{code}number = int(input("Enter a number: ")){description}allows the program to receive user input for a number and stores it as an integer value in the number variable{end-discription}{end-code}
+            {title}Call function facortial recursively{code}result = factorial(number){description}By calling the factorial function with the number as an argument, the code calculates the factorial of that number and stores it in the result variable.{end-discription}{end-code}
+            {title}Print the final factorial result{code}print("The factorial of", number, "is:", result){end-code}{description}print a message to the console with the format: "The factorial of number is: result", where number and result are replaced with the actual values{end-discription}[end]`,
             },
             // {
             //     role: "user",
@@ -236,9 +236,9 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                `[begin]{title}Function Definition{code}def my_function(fname):
+                `[begin]{title}my_function function definition{code}def my_function(fname):
                 print(fname + " Refsnes"){description}defines a function called my_function that takes a parameter fname and prints the value of fname followed by "Refsnes"{end-description}{end-code}
-            {title}Function Calls{code}my_function("Emil")
+            {title}call my_function in different parameters{code}my_function("Emil")
             my_function("Tobias")
             my_function("Linus"){description}calls the my_function with different arguments: "Emil", "Tobias", and "Linus"{end-description}{end-code}[end]`,
             },
@@ -254,11 +254,11 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                `[begin]{title}Variable Initialization{code}sum_even = 0{description}initializes a variable sum_even to 0 to store the sum of even numbers{end-description}{end-code}
-                {title}Loop Iteration{code}for num in range(1, 101):
+                `[begin]{title}Initialize variable for total summation of even numbers{code}sum_even = 0{description}initializes a variable sum_even to 0 to store the sum of even numbers{end-description}{end-code}
+                {title}Loop iteration from 1 to 100{code}for num in range(1, 101):
     if num % 2 == 0:
         sum_even += num{description}iterates through numbers from 1 to 100 (inclusive) and checks if each number is even. If it is, the number is added to the sum_even variable{end-description}{end-code}
-                {title}Print Result{code}print("The sum of even numbers from 1 to 100 is:", sum_even){end-code}{description}prints a message to the console with the format: "The sum of even numbers from 1 to 100 is: sum_even", where sum_even is replaced with the actual value{end-description}[end]`,
+                {title}Print the final summation{code}print("The sum of even numbers from 1 to 100 is:", sum_even){end-code}{description}prints a message to the console with the format: "The sum of even numbers from 1 to 100 is: sum_even", where sum_even is replaced with the actual value{end-description}[end]`,
             }
             
         ];
@@ -266,11 +266,11 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
 
         messages.push({
             role: "user",
-            content: `[intended-behavior]: ${description}\n[code]:`,
+            content: `${description}`,
         });
 
         const result = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages,
             temperature: 0.1,
             max_tokens: 1200,
@@ -280,6 +280,7 @@ hierarchicalRouter.post("/generate", verifyUser, async (req, res, next) => {
 
         if (result.data.choices && result.data.choices?.length > 0) {
             const response = result.data.choices[0].message?.content;
+            console.log(response);
             if(response){
                 res.json({
                     response: convertStringToCodeObject(response),
@@ -323,7 +324,7 @@ interface CodeRepresentation {
         };
       
     });
-    // console.log(codeRepresentation);
+    console.log(codeRepresentation);
     return codeRepresentation;
   }
 
@@ -350,7 +351,7 @@ interface CodeRepresentation {
       
       objectList.push({ title, code, description });
     }
-    
+    console.log(objectList);
     return objectList;
   }
   
