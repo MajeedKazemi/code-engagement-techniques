@@ -12,6 +12,9 @@ const Slider: React.FC<SliderProps> = ({ maxIndex, currentIndex, onChangeIndex, 
 
   useEffect(() => {
     setSliderValue(currentIndex);
+    if(currentIndex === maxIndex){
+      onStopAutoMode();
+    }
   }, [currentIndex]);
 
   const handleIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {

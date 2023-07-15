@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { HoverableExplainCode } from "./hoverable-animated-token";
 import { highlightCode, highlightCodeBlock } from "../../utils/utils";
 import Slider from "./token-slider";
+import { FiChevronsLeft, FiChevronsRight, FiPause, FiPlay } from 'react-icons/fi';
 
 
 interface Token {
@@ -13,66 +14,6 @@ interface Token {
 interface AnimatedTokensProps {
   tokens: Token[];
 }
-
-  
-// export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ tokens }) => {
-//   const [activeTokenIndex, setActiveTokenIndex] = useState(0);
-//   const [currentIteration, setCurrentIteration] = useState(0);
-//   const [fullWidthDivContent, setFullWidthDivContent] = useState("");
-  
-
-//   useEffect(() => {
-//     const animateTokens = async () => {
-//       for (let i = 0; i <= tokens.length; i++) {
-
-//         setCurrentIteration(i);
-
-//         if(i < tokens.length) {
-//             const animation = tokens[i];
-//             for (let j = 0; j < animation.tokens.length; j++) {
-//                 setActiveTokenIndex(animation.tokens[j].index);
-//                 setFullWidthDivContent(animation.tokens[j].explanation || "");
-//                 await new Promise((resolve) => setTimeout(resolve, 4000));
-
-//             }
-//         }
-
-//       }
-//     };
-
-//     animateTokens();
-//   }, [tokens]);
-
-//   return (
-//     <div className="animated-container">
-//       {tokens.map((animation, animationIndex) => (
-//         <div className="tokens-container" key={animationIndex}>
-//             {(animationIndex === currentIteration) && (
-//             <>
-//             {fullWidthDivContent.length > 0 && (
-//               <div className={`goal-container`}>
-//                 <span className={"hoverable-code"} dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlock(fullWidthDivContent)) }} />
-//              </div>
-//           )}
-//               {/* <br /> */}
-//             </>
-//           )}
-//           {animation.tokens.map((token, tokenIndex) => (
-//             <React.Fragment key={tokenIndex}>
-//               <HoverableExplainCode
-//                 key={tokenIndex}
-//                 content={token.code || ""}
-//                 explanation={token.explanation || ""}
-//                 isActive={token.index <= activeTokenIndex}
-//                 isAfterActive={token.index < activeTokenIndex}
-//               />
-//             </React.Fragment>
-//           ))}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
 
 export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ tokens }) => {
     const [activeTokenIndex, setActiveTokenIndex] = useState(0);
@@ -210,18 +151,6 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
   
     return (
       <div className="animated-container">
-        <Slider maxIndex={maxIndex} 
-        currentIndex={isAutoMode? activeTokenIndex:prevActiveTokenIndex} 
-        onChangeIndex={handleIndexChange} onStopAutoMode={handleStopAutoMode}/>
-        <button onClick={handlePrev} disabled={prevActiveTokenIndex === 0 || isAutoMode}>
-          Prev
-        </button>
-        <button onClick={handleNext} disabled={prevActiveTokenIndex === maxIndex || isAutoMode}>
-          Next
-        </button>
-        <button onClick={handleAuto}>
-          {isAutoMode ? "Stop" : "Auto"}
-        </button>
         {!isAutoMode && (
             tokensCopy.map((animation, animationIndex) => (
                 <div className="tokens-container" key={animationIndex}>
@@ -273,6 +202,23 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
             ))}
           </div>
         ))}
+        <div className="quick-sliding-buttons-container">
+            <button onClick={handleAuto}>
+            {isAutoMode ? (<FiPause size={24} color="grey"/>)
+             : (<FiPlay size={24} color="grey"/>)}
+            </button>
+            <Slider maxIndex={maxIndex} 
+            currentIndex={isAutoMode? activeTokenIndex:prevActiveTokenIndex} 
+            onChangeIndex={handleIndexChange} onStopAutoMode={handleStopAutoMode}/>
+            <button onClick={handlePrev} disabled={prevActiveTokenIndex === 0 || isAutoMode}>
+            <FiChevronsLeft size={24}/>
+            </button>
+            <button onClick={handleNext} disabled={prevActiveTokenIndex === maxIndex || isAutoMode}>
+            <FiChevronsRight size={24}/>
+            </button>
+        </div>
+        
+
       </div>
     );
   };

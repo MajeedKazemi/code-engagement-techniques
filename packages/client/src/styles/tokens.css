@@ -108,3 +108,40 @@
     background-color: #999;
   }
   
+  .quick-sliding-buttons-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color:#e4e4e4;
+    padding: 5px;
+}
+
+.quick-sliding-buttons-container button {
+    border: none;
+    height: 40px;
+    border-radius: 12px;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+    font-weight: 500;
+
+    font-family: "Poppins";
+
+    cursor: pointer;
+    background-color:#e4e4e4;
+}
+
+/* .quick-sliding-buttons-container .run-button {
+    background: #136913;
+    color: #fff;
+}
+
+.quick-sliding-buttons-container .run-button:hover {
+    background: #427742;
+} */
