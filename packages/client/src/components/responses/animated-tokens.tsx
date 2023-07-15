@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { HoverableExplainCode } from "./hoverable-animated-token";
 import { highlightCode, highlightCodeBlock } from "../../utils/utils";
+import Slider from "./token-slider";
+
 
 interface Token {
   index: number;
@@ -80,7 +82,18 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
     const [fullWidthDivContent, setFullWidthDivContent] = useState("");
     const [prevContent, setPrevContent] = useState("");
     const [isAutoMode, setIsAutoMode] = useState(true);
+
     let animationInterval: number | null = null;
+    
+    const handleIndexChange = (index: number) => {
+        if (isAutoMode) {
+          setActiveTokenIndex(index);
+        } else {
+          setPrevActiveTokenIndex(index);
+          findExplanationByIndex(index);
+        }
+      };
+      
 
     const tokensCopy: AnimatedTokensProps[] = JSON.parse(JSON.stringify(tokens));
 
@@ -89,7 +102,6 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
         for (const animation of tokens) {
           for (const token of animation.tokens) {
             if (token.index === index) {
-              console.log("token.explanation", token.explanation);
               setPrevContent(token.explanation);
               setPrevCurrentIteration(i);
             }
@@ -191,9 +203,16 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
       setIsAutoMode((prevAutoMode) => !prevAutoMode);
     };
 
+    const handleStopAutoMode = () => {
+        setIsAutoMode(false); 
+    };
+
   
     return (
       <div className="animated-container">
+        <Slider maxIndex={maxIndex} 
+        currentIndex={isAutoMode? activeTokenIndex:prevActiveTokenIndex} 
+        onChangeIndex={handleIndexChange} onStopAutoMode={handleStopAutoMode}/>
         <button onClick={handlePrev} disabled={prevActiveTokenIndex === 0 || isAutoMode}>
           Prev
         </button>
