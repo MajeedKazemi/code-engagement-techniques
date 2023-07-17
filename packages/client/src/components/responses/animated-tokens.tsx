@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { HoverableExplainCode } from "./hoverable-animated-token";
-import { highlightCode, highlightCodeBlock } from "../../utils/utils";
+import { highlightCode, highlightCodeBlockCode } from "../../utils/utils";
 import Slider from "./token-slider";
 import { FiChevronsLeft, FiChevronsRight, FiPause, FiPlay } from 'react-icons/fi';
 
@@ -141,7 +141,14 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
     };
   
     const handleAuto = () => {
-      setIsAutoMode((prevAutoMode) => !prevAutoMode);
+        if (isAutoMode) {
+            setIsAutoMode(false);
+        }else{
+            setActiveTokenIndex(prevActiveTokenIndex);
+            setCurrentIteration(prevCurrentIteration);
+            setFullWidthDivContent(prevContent);
+            setIsAutoMode(true);
+        }
     };
 
     const handleStopAutoMode = () => {
@@ -158,7 +165,7 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
                     <>
                         {prevContent && prevContent.length > 0 && (
                         <div className="goal-container">
-                            <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlock(prevContent)) }} />
+                            <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlockCode(prevContent)) }} />
                         </div>
                         )}
                     </>
@@ -172,6 +179,7 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
                         explanation={token.explanation || ""}
                         isActive={token.index <= prevActiveTokenIndex}
                         isAfterActive={token.index < prevActiveTokenIndex}
+                        tokenType="outer"
                       />
                     </React.Fragment>
                   ))}
@@ -182,8 +190,8 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
             {animationIndex === currentIteration && (
               <>
                 {fullWidthDivContent.length > 0 && (
-                  <div className="goal-container">
-                    <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlock(fullWidthDivContent)) }} />
+                  <div className="goal-container" >
+                    <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlockCode(fullWidthDivContent)) }} />
                   </div>
                 )}
               </>
@@ -197,6 +205,7 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
                   explanation={token.explanation || ""}
                   isActive={token.index <= activeTokenIndex}
                   isAfterActive={token.index < activeTokenIndex}
+                  tokenType="outer"
                 />
               </React.Fragment>
             ))}
@@ -204,18 +213,19 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
         ))}
         <div className="quick-sliding-buttons-container">
             <button onClick={handleAuto}>
-            {isAutoMode ? (<FiPause size={24} color="grey"/>)
-             : (<FiPlay size={24} color="grey"/>)}
+            {isAutoMode ? <FiPause size={24} color="grey" /> : <FiPlay size={24} color="grey" />}
             </button>
             <Slider maxIndex={maxIndex} 
             currentIndex={isAutoMode? activeTokenIndex:prevActiveTokenIndex} 
             onChangeIndex={handleIndexChange} onStopAutoMode={handleStopAutoMode}/>
+            <div className="chevrons">
             <button onClick={handlePrev} disabled={prevActiveTokenIndex === 0 || isAutoMode}>
-            <FiChevronsLeft size={24}/>
+            <FiChevronsLeft size={24} />
             </button>
-            <button onClick={handleNext} disabled={prevActiveTokenIndex === maxIndex || isAutoMode}>
+            <button onClick={handleNext}disabled={prevActiveTokenIndex === maxIndex || isAutoMode}>
             <FiChevronsRight size={24}/>
             </button>
+            </div>
         </div>
         
 

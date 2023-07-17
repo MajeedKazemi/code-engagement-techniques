@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { highlightCode, highlightCodeBlock } from "../../utils/utils";
+import { highlightCode, highlightCodeBlockCode } from "../../utils/utils";
 
 interface IProps {
     isAfterActive: boolean;
@@ -8,6 +8,7 @@ interface IProps {
     explanation: string | null;
     isActive: boolean;
     id: string;
+    tokenType: string;
 }
 
 export const HoverableExplainCode = (props: IProps) => {
@@ -27,7 +28,7 @@ export const HoverableExplainCode = (props: IProps) => {
             {/* <span className={"hoverable-code"}>
                 {highlightCodeBlock(props.content)}
             </span> */}
-            <span className={`hoverable-code ${props.isAfterActive ? "grayed" : ""}`} dangerouslySetInnerHTML={{ __html: highlightCodeBlock(props.content) }} />
+            <span className={`hoverable-code ${props.isAfterActive ? "grayed" : ""}`} dangerouslySetInnerHTML={{ __html: highlightCodeBlockCode(props.content) }} />
             {hovering && props.explanation && (
                 <div
                     className="hoverable-code-line-explanation"

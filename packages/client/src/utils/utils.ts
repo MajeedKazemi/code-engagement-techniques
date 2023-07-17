@@ -25,3 +25,8 @@ export const highlightCodeBlock = (
     className: string = "default-indent"
 ) => code.replace(/{indentation}/g, "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 
+export const highlightCodeBlockCode = (
+    code: string,
+    className: string = "default-indent"
+) => code.replace(/{indentation}/g, "&nbsp;&nbsp;&nbsp;");
+

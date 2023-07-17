@@ -1,3 +1,14 @@
+.animated-container {
+    border: solid 1px #e5e5e5;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    margin-right: 12px;
+    overflow: hidden;
+    max-width: 100%;
+    background-color: #fff;
+}
+
 .tokens-container .hoverable-code {
     line-height: 30px;
     cursor: pointer;
@@ -6,12 +17,10 @@
     flex: 0 0 100%;
 }
 
-.tokens-container:hover {
-    /* background-color: #003575; 
-    color: #fff; */
-    /* border-radius: 12px;*/
-    border: solid 1px #69696a;
+.hoverable-token .hoverable-code{
+    font-family: Monaco, Consolas, "Menlo", monospace;
 }
+
 
 
 
@@ -58,6 +67,11 @@
     opacity: 1;
   }
 
+  .goal-container.opaque {
+    opacity: 0;
+  }
+
+
   .hoverable-token:hover {
     background-color: #ccc;
   }
@@ -65,10 +79,13 @@
   .tokens-container .goal-container {
     width: 100%;
     flex-basis: 100%;
-    background-color: #eee;
     padding: 12px;
     margin-top: 24px;
     border-radius: 8px;
+    border: 1px solid #91d8dc;
+    outline: 2px solid #91d8dc;
+    outline-offset: -2px;
+      
   }
 
   .tokens-container .grayed {
@@ -113,7 +130,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color:#e4e4e4;
+    background-color:#91d8dc;
     padding: 5px;
 }
 
@@ -134,7 +151,13 @@
     font-family: "Poppins";
 
     cursor: pointer;
-    background-color:#e4e4e4;
+    background-color:#91d8dc;
+}
+
+.quick-sliding-buttons-container .chevrons{
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* .quick-sliding-buttons-container .run-button {
