@@ -148,7 +148,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "parsons":
         generatedCodeComponent = 
           <DndProvider backend={HTML5Backend}>
-            <ParsonsGenerateCode prompt={userInput} editor={editor} />;
+            <ParsonsGenerateCode prompt={userInput} editor={editor} />
           </DndProvider>
         break;
       case "hierarchical":

@@ -216,9 +216,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
             explainContainer.style.height = 'auto';
             explainContainer.style.overflowY = 'unset';
           }
-          return () => {
-            explainRef.current!.removeChild(div);
-          };
+          
         }
         
       }, [isOver]);
@@ -245,12 +243,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
           });
         }
     
-        return () => {
-          if (editorRef.current) {
-            editorRef.current.dispose();
-            editorRef.current = null;
-          }
-        };
+        
       }, [isOver]);
     
     const props = {
@@ -581,7 +574,12 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   <p>
                     <b>Prompts: </b> {prompt}
                   </p>
+
                   {/* parsons main div */}
+                  {waiting && (
+                    <p>Generating</p>
+                  )}
+                  {!waiting && (
                   <div className="parsons-problem">
                     <div className="left-section-container" ref={leftDropRef}>
                       <h2>Code Blocks</h2>
@@ -605,22 +603,20 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                       </div>
                     </div>
                   </div>
+                  )}
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={checkCode}>
+                  <button disabled={waiting} type="button" className="btn btn-secondary" onClick={checkCode}>
                     Submit
                   </button>
-                  <button type="button" className="btn btn-secondary" onClick={closePopup}>
+                  <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Cancel
                   </button>
-                  {/* <button type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Insert Code
-                  </button> */}
                 </div>
               </div>
             )}
           </div>
-      );
+      )
       
 };
 
