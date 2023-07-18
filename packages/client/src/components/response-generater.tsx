@@ -5,7 +5,7 @@ import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
-import ParsonsGenerateCode from './techniques/parsons-generator';
+import ParsonsGenerateCode, { parsonsCancelClicked } from './techniques/parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
@@ -480,13 +480,14 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked]);
+  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked]);
 
   // define the current technique
   // const technique = 'baseline';
   // const technique = 'pseudo';
   // const technique = 'hierarchical';
-  const technique = 'token';
+  // const technique = 'token';
+  const technique = 'parsons';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
