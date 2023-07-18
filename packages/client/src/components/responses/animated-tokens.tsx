@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Children, Fragment, useEffect, useState } from "react";
 import { HoverableExplainCode } from "./hoverable-animated-token";
 import { highlightCode, highlightCodeBlockCode } from "../../utils/utils";
 import Slider from "./token-slider";
@@ -9,13 +9,24 @@ interface Token {
   index: number;
   code: string;
   explanation: string;
+  parent: number | null;
 }
+
+interface TreeToken {
+    index: number;
+    children: number[];
+}
+
 
 interface AnimatedTokensProps {
   tokens: Token[];
 }
 
-export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ tokens }) => {
+interface Tree {
+    treeObject: TreeToken[];
+}
+
+export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[], tree:Tree[]  }> = ({ tokens, tree }) => {
     const [activeTokenIndex, setActiveTokenIndex] = useState(0);
     const [prevActiveTokenIndex, setPrevActiveTokenIndex] = useState(0);
     const [currentIteration, setCurrentIteration] = useState(0);
@@ -25,6 +36,14 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
     const [isAutoMode, setIsAutoMode] = useState(true);
 
     let animationInterval: number | null = null;
+
+    const handleActiveTokenIndexChange = () => {
+        if(isAutoMode){
+            return activeTokenIndex;
+        }else{
+            return prevActiveTokenIndex;
+        }
+    };
     
     const handleIndexChange = (index: number) => {
         if (isAutoMode) {
@@ -34,9 +53,6 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
           findExplanationByIndex(index);
         }
       };
-      
-
-    const tokensCopy: AnimatedTokensProps[] = JSON.parse(JSON.stringify(tokens));
 
     function findExplanationByIndex(index: number){
         let i = 0;
@@ -159,7 +175,7 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
     return (
       <div className="animated-container">
         {!isAutoMode && (
-            tokensCopy.map((animation, animationIndex) => (
+            tree.map((treeObjects, animationIndex) => (
                 <div className="tokens-container" key={animationIndex}>
                     {animationIndex === prevCurrentIteration && (
                     <>
@@ -170,22 +186,29 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
                         )}
                     </>
                     )}
-                  {animation.tokens.map((token, tokenIndex) => (
-                    <React.Fragment key={tokenIndex}>
-                      <HoverableExplainCode
-                        id={`animated-token-${token.index}`}
-                        key={tokenIndex}
-                        content={token.code || ""}
-                        explanation={token.explanation || ""}
-                        isActive={token.index <= prevActiveTokenIndex}
-                        isAfterActive={token.index < prevActiveTokenIndex}
-                        tokenType="outer"
-                      />
-                    </React.Fragment>
-                  ))}
+                  {treeObjects.treeObject.map((treeToken, tokenIndex) => (
+              <React.Fragment key={tokenIndex}>
+                {tokens[animationIndex].tokens[tokenIndex].parent == null && (
+                    <HoverableExplainCode
+                    id={`animated-token-${treeToken.index}`}
+                    key={tokenIndex}
+                    content={tokens[animationIndex].tokens[tokenIndex].code || ""}
+                    explanation={tokens[animationIndex].tokens[tokenIndex].explanation || ""}
+                    isActive={treeToken.index <= prevActiveTokenIndex}
+                    isAfterActive={treeToken.index < prevActiveTokenIndex}
+                    fullContent={tokens[animationIndex].tokens}
+                    children={treeToken.children}
+                    treeContent={treeObjects.treeObject}
+                    currentActiveIndex={handleActiveTokenIndexChange}
+                />
+                )
+                }
+              </React.Fragment>
+            
+            ))}
                 </div>
               )))}
-        {isAutoMode && tokens.map((animation, animationIndex) => (
+        {isAutoMode && tree.map((treeObjects, animationIndex) => (
           <div className="tokens-container" key={animationIndex}>
             {animationIndex === currentIteration && (
               <>
@@ -196,18 +219,24 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[] }> = ({ to
                 )}
               </>
             )}
-            {animation.tokens.map((token, tokenIndex) => (
+            {treeObjects.treeObject.map((treeToken, tokenIndex) => (
               <React.Fragment key={tokenIndex}>
+                {tokens[animationIndex].tokens[tokenIndex].parent == null && (
                 <HoverableExplainCode
-                  id={`animated-token-${token.index}`}
-                  key={tokenIndex}
-                  content={token.code || ""}
-                  explanation={token.explanation || ""}
-                  isActive={token.index <= activeTokenIndex}
-                  isAfterActive={token.index < activeTokenIndex}
-                  tokenType="outer"
+                    id={`animated-token-${treeToken.index}`}
+                    key={tokenIndex}
+                    content={tokens[animationIndex].tokens[tokenIndex].code || ""}
+                    explanation={tokens[animationIndex].tokens[tokenIndex].explanation || ""}
+                    isActive={treeToken.index <= activeTokenIndex}
+                    isAfterActive={treeToken.index < activeTokenIndex}
+                    fullContent={tokens[animationIndex].tokens}
+                    children={treeToken.children}
+                    treeContent={treeObjects.treeObject}
+                    currentActiveIndex={handleActiveTokenIndexChange}
                 />
+                )}
               </React.Fragment>
+            
             ))}
           </div>
         ))}

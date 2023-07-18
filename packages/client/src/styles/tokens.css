@@ -14,7 +14,7 @@
     cursor: pointer;
     display: block;
     padding: 0 0 0 2px;
-    flex: 0 0 100%;
+    /* flex: 0 0 100%; */
 }
 
 .hoverable-token .hoverable-code{
@@ -71,9 +71,12 @@
     opacity: 0;
   }
 
-
-  .hoverable-token:hover {
+  .hoverable-code:hover{
     background-color: #ccc;
+  }
+
+  .tokens-container {
+    padding: 4px;
   }
 
   .tokens-container .goal-container {
@@ -92,12 +95,17 @@
     opacity: 0.5;
   }
 
+  .token-child-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
  
 
   .hoverable-token {
     display: inline-block;
-    padding: 5px;
-    border: 1px solid transparent;
+    padding-right: 5px;
+    /* border: 1px solid transparent; */
     opacity: 0;
     transition: opacity 1.8s ease-in-out;
     align-self: flex-start;

@@ -176,8 +176,10 @@ tokenRouter.post("/codetotoken", verifyUser, async (req, res, next) => {
         if (result.data.choices && result.data.choices?.length > 0) {
             const response = result.data.choices[0].message?.content;
             if(response){
+                const tokenObject = convertStringToCodeObject(response);
                 res.json({
-                    response: convertStringToCodeObject(response),
+                    response: tokenObject,
+                    tree: convertToTree(tokenObject),
                     success: true,
                 });
             }
@@ -228,6 +230,47 @@ function convertStringToCodeObject(input: string): AnimatedTokensProps[] {
     });
     return animatedTokens;
 }
+
+// function cleanObject(tokenObject: ){
+
+// }
+
+interface TreeToken {
+    index: number;
+    children: number[];
+}
+
+interface Tree {
+    treeObject: TreeToken[];
+}
+
+function findRealIndex(treeTokens: Token[], index: number): number {
+    for (let i = 0; i < treeTokens.length; i++) {
+        if (treeTokens[i].index === index) {
+            return i; 
+        }
+    }
+    return index; 
+}
+
+function convertToTree(animatedTokensProps: AnimatedTokensProps[]): Tree[] {
+    return animatedTokensProps.map(({ tokens }) => {
+        // Initialize treeObject with tokens indices and empty children
+        let treeObject: TreeToken[] = tokens.map((token) => ({ index: token.index, children: [] }));
+
+        tokens.forEach((token) => {
+            // if token has parent then push index to the parent's children array
+            if (token.parent !== null) {
+                treeObject[findRealIndex(tokens, token.parent)].children.push(token.index);
+            }
+        });
+
+        return {
+            treeObject
+        };
+    });
+}
+
 
 
 

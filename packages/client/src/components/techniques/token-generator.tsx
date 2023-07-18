@@ -18,10 +18,20 @@ interface Token {
     index: number;
     code: string;
     explanation: string;
+    parent: number | null;
 }
 
 interface TokensProps {
     tokens: Token[];
+}
+
+interface TreeToken {
+    index: number;
+    children: number[];
+}
+
+interface Tree {
+    treeObject: TreeToken[];
 }
 
 const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, code })  => {
@@ -32,6 +42,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
     const [feedback, setFeedback] = useState<string>("");
     const [generatedCode, setGeneratedCode] = useState<string>("");
     const [generatedToken, setGeneratedToken] = useState<TokensProps[]>([]);
+    const [tokenTree, setTokenTree] = useState<Tree[]>([]);
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
       
@@ -43,6 +54,8 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
         setGeneratedToken([]);
+        setGeneratedCode('');
+        setTokenTree([]);
         setUserInputCode('');
         tokenCancelClicked = !tokenCancelClicked;
     };
@@ -61,6 +74,8 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
         overlayElement!.style.display = 'none';
         editorElement.style.zIndex = '1';
         setGeneratedToken([]);
+        setGeneratedCode('');
+        setTokenTree([]);
         setUserInputCode('');
         tokenCancelClicked = !tokenCancelClicked;
     };
@@ -218,7 +233,9 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
                                             if (response.ok) {
                                                 const tokens = await response.json();
                                                 setGeneratedToken(tokens.response);
+                                                setTokenTree(tokens.tree);
                                                 console.log("generated token", tokens.response);
+                                                console.log("generated token tree", tokens.tree);
                                             }
                                             setWaiting(false);
                                             
@@ -281,7 +298,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
                     <>
                     <b>Representation: </b>
                     
-                    <AnimatedTokens tokens={generatedToken}/>
+                    <AnimatedTokens tokens={generatedToken} tree={tokenTree}/>
                     </>
                 }
             </div>
