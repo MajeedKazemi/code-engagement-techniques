@@ -80,7 +80,7 @@ tokenRouter.post("/codetotoken", verifyUser, async (req, res, next) => {
                 content: `
                 [begin-line]number = [index] 0 [parents] [exp] assign the value on the right side to the variable \`number{variable}\` on the left side.[end-line]
                 [begin-line]random.randint() [index] 1 [parents] [exp] generate a random integer between the two arguments provided, inclusive [end-line]
-                [begin-line]0 [index] 2 [parents] 1 [exp] the lower bound for the random integer [end-line]
+                [begin-line]0, [index] 2 [parents] 1 [exp] the lower bound for the random integer [end-line]
                 [begin-line]int() [index] 3 [parents] 1 [exp] convert the input string from the user to an integer so it can be used as the upper bound for the random integer [end-line]
                 [begin-line]input() [index] 4 [parents] 3 [exp] get a string value from the user input [end-line]
                 [begin-line]“enter a number” [index] 5 [parents] 4 [exp] provide a prompt to the user indicating what they should input, in this case, a number.[end-line]
@@ -167,7 +167,7 @@ tokenRouter.post("/codetotoken", verifyUser, async (req, res, next) => {
         const result = await openai.createChatCompletion({
             model: "gpt-4",
             messages,
-            temperature: 0.1,
+            temperature: 0,
             max_tokens: 2000,
             stop: ["[end-explanation]"],
             user: userId,

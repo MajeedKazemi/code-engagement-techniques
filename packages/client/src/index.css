@@ -15,6 +15,7 @@
 @import "styles/accordion.css";
 @import "styles/parsons.css";
 @import "styles/tokens.css";
+@import "styles/writeover.css";
 
 body {
     font-family: "Poppins", sans-serif;

@@ -100,10 +100,10 @@ const CodeBlockItem: React.FC<{ codeBlock: CodeBlock, index: number, moveCodeBlo
                             if (indentationLevel < 6)
                             {
                                 newIndentationLevel = indentationLevel + 1;
-                                const indentElement = document.getElementById(`indent${indentationLevel+1}`);
-                                if (indentElement) {
-                                    indentElement.classList.remove('hidden');
-                                }
+                                // const indentElement = document.getElementById(`indent${indentationLevel+1}`);
+                                // if (indentElement) {
+                                //     indentElement.classList.remove('hidden');
+                                // }
                                 if(highestIndex < newIndentationLevel) {
                                     highestIndex = newIndentationLevel;
                                 }
@@ -118,10 +118,10 @@ const CodeBlockItem: React.FC<{ codeBlock: CodeBlock, index: number, moveCodeBlo
                                 if(highestIndex == indentationLevel) {
                                     highestIndex -= 1;
                                 }
-                                const indentElement = document.getElementById(`indent${indentationLevel}`);
-                                if (indentElement) {
-                                    indentElement.classList.add('hidden');
-                                }
+                                // const indentElement = document.getElementById(`indent${indentationLevel}`);
+                                // if (indentElement) {
+                                //     indentElement.classList.add('hidden');
+                                // }
                             } else {
                                 newIndentationLevel = indentationLevel;
                             }
@@ -243,7 +243,6 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
           });
         }
     
-        
       }, [isOver]);
     
     const props = {

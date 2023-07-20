@@ -13,6 +13,7 @@ import PseudoGenerateCode, { pseudoCancelClicked } from './techniques/pseudo-gen
 import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
 import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/hierarchical-generator';
 import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-generator';
+import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/write-over-generator';
 
 let insertedCode = "";
 
@@ -158,6 +159,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "token":
         generatedCodeComponent =
           <TokenGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+        break;
+      case "writeover":
+        generatedCodeComponent = 
+          <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
@@ -480,14 +485,15 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked]);
+  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked]);
 
   // define the current technique
   // const technique = 'baseline';
   // const technique = 'pseudo';
   // const technique = 'hierarchical';
   // const technique = 'token';
-  const technique = 'parsons';
+  // const technique = 'parsons';
+  const technique = 'writeover'
 
   const handleClick = () => {
     const isUserPromptsVisible = false;
