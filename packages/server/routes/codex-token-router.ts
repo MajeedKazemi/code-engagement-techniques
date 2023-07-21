@@ -99,12 +99,13 @@ tokenRouter.post("/codetotoken", verifyUser, async (req, res, next) => {
                 content: `
                 [begin-line]def [index] 0 [parents] [exp] keyword to define a function [end-line]
                 [begin-line]my_function() [index] 1 [parents] [exp] the name of the function being defined [end-line]
-                [begin-line]fname [index] 2 [parents] 1 [exp] the parameter of the function \`my_function{self-defined-function}\`[end-line]
+                [begin-line]fname [index] 2 [parents] 1 [exp] the parameter of the function \`my_function{self-defined-function}\`       [end-line]
+                [begin-line]: [index] 3 [parents] [exp] [end-line]
                 [linebreak]
-                [begin-line]{indentation}print() [index] 3 [parents] [exp] print the result of the concatenation of \`fname{variable}\` and " Refsnes" [end-line]
-                [begin-line]fname [index] 4 [parents] 3 [exp] the parameter of the function \`my_function{self-defined-function}\` that is being concatenated with " Refsnes" [end-line]
-                [begin-line]+ [index] 5 [parents] 3 [exp] concatenate \`fname{variable}\` and " Refsnes" [end-line]
-                [begin-line]" Refsnes" [index] 6 [parents] 3 [exp] a string of text that is being concatenated with \`fname{variable}\`[end-line]`,
+                [begin-line]{indentation}print() [index] 4 [parents] [exp] print the result of the concatenation of \`fname{variable}\` and " Refsnes" [end-line]
+                [begin-line]fname [index] 5 [parents] 4 [exp] the parameter of the function \`my_function{self-defined-function}\` that is being concatenated with " Refsnes" [end-line]
+                [begin-line]+ [index] 6 [parents] 4 [exp] concatenate \`fname{variable}\` and " Refsnes" [end-line]
+                [begin-line]" Refsnes" [index] 7 [parents] 4 [exp] a string of text that is being concatenated with \`fname{variable}\`[end-line]`,
             },
             {
                 role: "user",
@@ -125,9 +126,10 @@ tokenRouter.post("/codetotoken", verifyUser, async (req, res, next) => {
                 [begin-line]range() [index] 5 [parents]  [exp] the range of values that \`i{variable}\` will take on [end-line]
                 [begin-line]1, [index] 6 [parents] 5 [exp] the start of the range [end-line]
                 [begin-line]num + 1 [index] 7 [parents] 5 [exp] the end of the range [end-line]
+                [begin-line]: [index] 8 [parents] [exp] [end-line]
                 [linebreak]
-                [begin-line]{indentation}factorial *= [index] 11 [parents] [exp] multiply the current value of \`factorial{variable}\` by \`i{variable}\` and assign the result to \`factorial{variable}\` [end-line]
-                [begin-line]i [index] 12 [parents] [exp] the variable that is being multiplied with \`factorial{variable}\`[end-line]`,
+                [begin-line]{indentation}factorial *= [index] 9 [parents] [exp] multiply the current value of \`factorial{variable}\` by \`i{variable}\` and assign the result to \`factorial{variable}\` [end-line]
+                [begin-line]i [index] 10 [parents] [exp] the variable that is being multiplied with \`factorial{variable}\`[end-line]`,
             },
             {
                 role: "user",
@@ -144,19 +146,20 @@ tokenRouter.post("/codetotoken", verifyUser, async (req, res, next) => {
                 [begin-line]def [index] 0 [parents] [exp] keyword to define a function [end-line]
                 [begin-line]factorial()[index] 1 [parents] [exp] the name of the function being defined [end-line]
                 [begin-line]n[index] 2 [parents] 1 [exp] the parameter of the function \`factorial{self-defined-function}\`[end-line]
+                [begin-line]: [index] 3 [parents] [exp] [end-line]
                 [linebreak]
-                [begin-line]{indentation}if [index] 3 [parents] [exp] keyword to start an if statement [end-line]
-                [begin-line]n == 0 [index] 4 [parents] [exp] the condition of the if statement [end-line]
+                [begin-line]{indentation}if [index] 4 [parents] [exp] keyword to start an if statement [end-line]
+                [begin-line]n == 0 [index] 5 [parents] [exp] the condition of the if statement [end-line]
                 [linebreak]
-                [begin-line]{indentation}{indentation}return [index] 5 [parents] [exp] keyword to specify the value to return from the function [end-line]
-                [begin-line]1 [index] 6 [parents] [exp] the value to return if the condition of the if statement is true [end-line]
+                [begin-line]{indentation}{indentation}return [index] 6 [parents] [exp] keyword to specify the value to return from the function [end-line]
+                [begin-line]1 [index] 7 [parents] [exp] the value to return if the condition of the if statement is true [end-line]
                 [linebreak]
-                [begin-line]{indentation}else [index] 7 [parents] [exp] keyword to start the else block of the if statement [end-line]
+                [begin-line]{indentation}else [index] 8 [parents] [exp] keyword to start the else block of the if statement [end-line]
                 [linebreak]
-                [begin-line]{indentation}{indentation}return [index] 8 [parents] [exp] recursive step to return [end-line]
-                [begin-line]n * [index] 9 [parents] [exp]the current value of the parameter \`n{variable}\`[end-line]
-                [begin-line] factorial() [index] 10 [parents] [exp] a recursive call to the function \`factorial{self-defined-function}\` with the argument \`n - 1{variable}\`[end-line]
-                [begin-line] n + 1 [index] 11 [parents]10 [exp] the argument to the recursive call to the function \`factorial{self-defined-function}\`[end-line]`,
+                [begin-line]{indentation}{indentation}return [index] 9 [parents] [exp] recursive step to return [end-line]
+                [begin-line]n * [index] 10 [parents] [exp]the current value of the parameter \`n{variable}\`[end-line]
+                [begin-line] factorial() [index] 11 [parents] [exp] a recursive call to the function \`factorial{self-defined-function}\` with the argument \`n - 1{variable}\`[end-line]
+                [begin-line] n - 1 [index] 12 [parents]11 [exp] the argument to the recursive call to the function \`factorial{self-defined-function}\`[end-line]`,
             },
             {
                 role: "user",

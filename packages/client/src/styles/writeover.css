@@ -30,6 +30,10 @@
     font-size: 24px;
   }
 
+  .writeover-code-reader:focus {
+    outline: none;
+  }
+
   .writeover-code-reader pre{
     margin: 0;
   }
@@ -48,7 +52,7 @@
 }
 
 .writeover-cursor {
-    background: black;
+    background: rgba(0, 0, 0, 0.474);
     width: 2px;
     display: inline-block;
     height: 1rem;

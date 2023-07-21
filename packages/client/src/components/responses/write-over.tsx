@@ -10,6 +10,8 @@ interface LineWithLeadSpaces {
     leadSpaces: number;
 }
 
+export let allLinesCompleted = false;
+
 const processLines = (text: string): LineWithLeadSpaces[] => {
     return text.split('\n')
         .filter(line => line.trim() !== '')
@@ -27,6 +29,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
     const [shakeError, setShakeError] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLDivElement | null>(null);
+    const [completed, setCompleted] = useState(false);
 
     useEffect(() => {
         containerRef.current?.focus();
@@ -50,6 +53,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
     }, [shakeError]);
 
     const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
+
         const value = e.key;
 
         if (e.key === 'Enter') {
@@ -72,9 +76,34 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
             setTimeout(() => setShakeError(false), 820);
             return;
         }
+
+        const nextInput = userInput + value;
+        if (currentLineIndex === lines.length - 1 && lines[currentLineIndex].trimmed === nextInput) {
+            setCompleted(true);
+        }
     
         setUserInput(prevInput => prevInput + value);
+
     };
+    
+    useEffect(() => {
+        if (completed == true) {
+            allLinesCompleted = true;
+            const elementsWithInsertButtonClass = document.getElementsByClassName("insert-button");
+
+            for (const element of elementsWithInsertButtonClass) {
+                if (element instanceof HTMLElement) {
+                    // Check if the element contains the "disabled" class
+                    if (element.classList.contains("disabled")) {
+                        // Remove the "disabled" class from the classList
+                        element.classList.remove("disabled");
+                        break; // Exit the loop after removing the class from the first element
+                    }
+                }
+            }
+        }
+    }, [completed]);
+
 
     return (
         <div 
@@ -116,5 +145,3 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         </div>
     );
 };
-
-export default WriteOver;

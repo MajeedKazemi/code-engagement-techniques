@@ -4,7 +4,7 @@ import { apiGetGeneratedCodeCodex, apiGetPseudoCodex, logError } from '../../api
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
-import WriteOver from '../responses/write-over';
+import {  WriteOver } from '../responses/write-over';
 
 export let writeOverCancelClicked = false;
 
@@ -41,7 +41,6 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
             if (position) {
               const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
               const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
-              console.log(userInputCode);
               editor.executeEdits("insertCodeAfterCursor", [op]);
             }
           }
@@ -217,6 +216,7 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
 
         generateCode();
     }
+    
 
     const writeRef = React.useRef<HTMLDivElement>();
         useEffect(() => {
@@ -298,14 +298,14 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
                         className="writeover-code-reader" 
                         tabIndex={-1} 
                         onKeyDown={(e) => e.key === 'Tab' && e.preventDefault()} >
-                        {generatedCode && !waiting && <WriteOver text={generatedCode} />}
+                        {generatedCode && !waiting && <WriteOver text={generatedCode}/>}
                     </div>
                     </>
                 }
             </div>
             <div className="button-container" style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
                 <button disabled={waiting} className="gpt-button" onClick={cancelClick}>Cancel</button>
-                <button disabled={waiting} className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
+                <button disabled={waiting} className="gpt-button insert-button disabled" onClick={handleInsertCodeClick}>Insert Code</button>
             </div>
         </>
     );
