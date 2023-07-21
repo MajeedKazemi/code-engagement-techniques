@@ -1,9 +1,11 @@
 .accordion-container {
     border: solid 1px #e5e5e5;
     border-radius: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+    margin-top: 8px;
     margin-right: 12px;
     overflow: hidden;
+    max-width: 100%;
 }
 
 .accordion-header {
@@ -46,8 +48,8 @@
 }
 
 .accordion-title {
-    font-size: 24px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight:400;
     margin: 0;
 }
 

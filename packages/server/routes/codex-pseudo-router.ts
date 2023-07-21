@@ -92,7 +92,7 @@ pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
             // });
             messages.push({
                 role: "user",
-                content: `[context-code]:\n${context}\n[intended-behavior]: use the above [context-code] as context and write a Python program (exclude the context-code, only include context-code if context-code is incorrect) ${description}\n[code]:`,
+                content: `[context-code]:\n${context}\n[intended-behavior]: use the above [context-code] as context and write a Python program pseudocode (exclude the context-code, only include context-code if context-code is incorrect) ${description}\n[code]:`,
    
             });
         } else {

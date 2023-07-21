@@ -211,6 +211,7 @@ mark {
     box-shadow: .5rem .5rem 0 var(--color-shadow, currentColor);
     max-height: 86vh;
     overflow: auto;
+    max-width: 35vw;
     
     &--inverted {
       --color-background: var(--color-dark);

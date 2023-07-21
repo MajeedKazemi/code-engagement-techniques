@@ -5,12 +5,15 @@ import { apiGetBaselineCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
-import ParsonsGenerateCode from './techniques/parsons-generator';
+import ParsonsGenerateCode, { parsonsCancelClicked } from './techniques/parsons-generator';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
-import PseudoGenerateCode, { cancelClicked } from './techniques/pseudo-generator';
+import PseudoGenerateCode, { pseudoCancelClicked } from './techniques/pseudo-generator';
 import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
+import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/hierarchical-generator';
+import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-generator';
+import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/write-over-generator';
 
 let insertedCode = "";
 
@@ -146,8 +149,20 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "parsons":
         generatedCodeComponent = 
           <DndProvider backend={HTML5Backend}>
-            <ParsonsGenerateCode prompt={userInput} editor={editor} />;
+            <ParsonsGenerateCode prompt={userInput} editor={editor} />
           </DndProvider>
+        break;
+      case "hierarchical":
+        generatedCodeComponent = 
+          <HierachicalGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+        break;
+      case "token":
+        generatedCodeComponent =
+          <TokenGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+        break;
+      case "writeover":
+        generatedCodeComponent = 
+          <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
@@ -330,7 +345,28 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       <div style={{ whiteSpace: 'pre-wrap' }}>
         <b>prompts: </b> {userInput}
       </div>
-      <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
+      {/* <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2> */}
+      <div className="wait-message preloader-2 ${waiting ? '' : 'hidden'}`}">
+          <span className="line line-1"></span>
+          <span className="line line-2"></span>
+          <span className="line line-3"></span>
+          <span className="line line-4"></span>
+          <span className="line line-5"></span>
+          <span className="line line-6"></span>
+          <span className="line line-7"></span>
+          <span className="line line-8"></span>
+          <span className="line line-9"></span>
+          <span className="line line-10"></span>
+          <span className="line line-11"></span>
+          <span className="line line-12"></span>
+          <span className="line line-13"></span>
+          <span className="line line-14"></span>
+          <span className="line line-15"></span>
+          <span className="line line-16"></span>
+          <span className="line line-17"></span>
+          <span className="line line-18"></span>
+          <div>Generating</div>
+      </div>
       <div ref={baselineRef} className="read-only-editor"></div>
       <div ref={explainRef}> </div>
       <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
@@ -449,11 +485,15 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [cancelClicked]);
+  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked]);
 
   // define the current technique
   // const technique = 'baseline';
-  const technique = 'pseudo';
+  // const technique = 'pseudo';
+  // const technique = 'hierarchical';
+  // const technique = 'token';
+  // const technique = 'parsons';
+  const technique = 'writeover'
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

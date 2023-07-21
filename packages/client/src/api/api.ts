@@ -236,6 +236,24 @@ export const apiGetSavedUserCode = (
         },
     });
 
+export const apiGetGeneratedCodeCodex = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-baseline/generatecode", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
 export const apiGetBaselineCodex = (
     token: string | null | undefined,
     description: string,
@@ -268,6 +286,61 @@ export const apiGetPseudoCodex = (
         },
         body: JSON.stringify({
             description: description,
+            context: context,
+        }),
+    });
+
+export const apiGetHierarchicalCodex = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-hierarchical/generate", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
+export const apiGetCodeToTokenCodex = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-token/codetotoken", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
+
+export const apiGetCodeToPseudoCodex = (
+    token: string | null | undefined,
+    code: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-hierarchical/codetopseudocode", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
             context: context,
         }),
     });
