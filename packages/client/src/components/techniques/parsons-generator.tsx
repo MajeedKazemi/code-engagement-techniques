@@ -4,10 +4,10 @@ import { XYCoord, useDrag, useDrop } from 'react-dnd';
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import Parser from 'web-tree-sitter';
 import { apiGetBaselineCodex, apiGetGeneratedCodeCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
+import ParsonsGame from '../responses/parsons-game';
 
 export let parsonsCancelClicked = false;
 
@@ -50,136 +50,6 @@ interface ParsonsGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
 }
-
-var highestIndex = 0;
-
-const CodeBlockItem: React.FC<{ codeBlock: CodeBlock, index: number, moveCodeBlock: (dragIndex: number, hoverIndex: number) => void }> = ({ codeBlock, index, moveCodeBlock }) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const [dragIndex, setDragIndex] = useState<number>(0);
-    const [hoverIndex, setHoverIndex] = useState<number>(0);
-    const [initialClientOffset, setInitialClientOffset] = useState<{ x: number, y: number } | null>(null);
-    const [indentationLevel, setIndentationLevel] = useState<number>(0);
-    const [isDropping, setIsDropping] = useState<boolean>(false);
-    const [canDrag, setCanDrag] = useState<boolean>(true);
-  
-    const [{ isDragging }, drag, preview] = useDrag({
-        type: ItemTypes.CODE_BLOCK,
-        item: { codeBlock, type: ItemTypes.CODE_BLOCK, index },
-        collect: (monitor) => ({
-          isDragging: monitor.isDragging(),
-        }),
-        end(item, monitor) {
-            setInitialClientOffset(monitor.getClientOffset());
-        }
-    });
-  
-    const [, drop] = useDrop({
-      accept: ItemTypes.CODE_BLOCK,
-      hover(item: DragItem, monitor) {
-        if (!ref.current) {
-          return;
-        }
-        const dragIndex = item.index;
-        const hoverIndex = index;
-        setDragIndex(dragIndex);
-        setHoverIndex(hoverIndex);
-        if (dragIndex === hoverIndex) {
-            const rightSectionElement = document.getElementsByClassName('right-section')[0];
-            if (rightSectionElement) {
-                if(initialClientOffset == null){
-                    setInitialClientOffset(monitor.getClientOffset());
-                }
-                const { x } = rightSectionElement.getBoundingClientRect();
-                if (x < monitor.getClientOffset()!.x) {
-                    //setInitialClientOffset(monitor.getClientOffset());
-                    if(monitor.getClientOffset() && initialClientOffset) {
-                        console.log(monitor.getClientOffset()!.x, initialClientOffset?.x);
-                        const dragOffsetX = monitor.getClientOffset()!.x - initialClientOffset?.x;
-                        let newIndentationLevel;
-                        if (dragOffsetX > 50) {
-                            if (indentationLevel < 6)
-                            {
-                                newIndentationLevel = indentationLevel + 1;
-                                // const indentElement = document.getElementById(`indent${indentationLevel+1}`);
-                                // if (indentElement) {
-                                //     indentElement.classList.remove('hidden');
-                                // }
-                                if(highestIndex < newIndentationLevel) {
-                                    highestIndex = newIndentationLevel;
-                                }
-                                console.log(newIndentationLevel+1);
-                            } else {
-                                newIndentationLevel = indentationLevel;
-                            }
-                        } else if (dragOffsetX < -50) {
-                            if (indentationLevel > 0)                    
-                            {
-                                newIndentationLevel = indentationLevel - 1;
-                                if(highestIndex == indentationLevel) {
-                                    highestIndex -= 1;
-                                }
-                                // const indentElement = document.getElementById(`indent${indentationLevel}`);
-                                // if (indentElement) {
-                                //     indentElement.classList.add('hidden');
-                                // }
-                            } else {
-                                newIndentationLevel = indentationLevel;
-                            }
-                        } else {
-                            setIsDropping(true);
-                            //setInitialClientOffset(monitor.getClientOffset());
-                            return;
-                        }
-                        setIsDropping(true);
-                        setInitialClientOffset(monitor.getClientOffset());
-                        if (newIndentationLevel !== indentationLevel) {
-                            setIndentationLevel(newIndentationLevel);
-                        }
-                    }
-                }
-            }
-            
-            return;
-        }
-
-        
-        
-        moveCodeBlock(dragIndex, hoverIndex);
-        item.index = hoverIndex;
-      },
-      collect: monitor => ({
-        isOver: monitor.isOver(),
-      }),
-    });
-  
-    useEffect(() => {
-        if (isDragging) {
-          // Disable dragging for 1 second
-          setCanDrag(false);
-          const timeout = setTimeout(() => {
-            setCanDrag(true);
-            setIsDropping(false);
-          }, 1000);
-    
-          return () => clearTimeout(timeout);
-        }
-      }, [isDropping]);
-
-    drag(drop(ref));
-
-    return (<div
-    ref={ref}
-    className="code-block"
-    style={{
-        opacity: isDragging ? 0.5 : 1,
-        display: 'flex',
-        alignItems: 'center',
-        marginLeft: `${indentationLevel * 4}rem`,
-    }}
-    >
-    {codeBlock.code}
-    </div>);
-  };
   
 
 const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor })  => {
@@ -409,7 +279,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     useEffect(() => {
         const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedCode);
         setInitialCodeBlocks(responseCodeObject);
-        sectionHeightRef.current = (responseCodeObject.length + 1) * 60;
+        sectionHeightRef.current = (responseCodeObject.length + 2) * 60;
     }, [generatedCode]);
 
     const checkCode = () => {
@@ -457,11 +327,11 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
             const updatedCodeBlocks = [...initialCodeBlocks];
 
             if (dragIndex < hoverIndex) {
-            updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
-            updatedCodeBlocks.splice(dragIndex, 1);
+                updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
+                updatedCodeBlocks.splice(dragIndex, 1);
             } else {
-            updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
-            updatedCodeBlocks.splice(dragIndex + 1, 1);
+                updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
+                updatedCodeBlocks.splice(dragIndex + 1, 1);
             }
         
             setInitialCodeBlocks(updatedCodeBlocks);
@@ -580,27 +450,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   )}
                   {!waiting && (
                   <div className="parsons-problem">
-                    <div className="left-section-container" ref={leftDropRef}>
-                      <h2>Code Blocks</h2>
-                      <div className="left-section" ref={leftDrop} style={{ height: `${sectionHeightRef.current}px`}}>
-                        {initialCodeBlocks.map((codeBlock, index) => (
-                          <CodeBlockItem key={codeBlock.id} codeBlock={codeBlock} index={index} moveCodeBlock={(dragIndex, hoverIndex) => moveCodeBlock(dragIndex, hoverIndex, false)} />
-                        ))}
-                      </div>
-                    </div>
-                    <div className="right-section-container" ref={rightDropRef}>
-                      <h2>Ordered Code</h2>
-                      <div className="right-section" ref={rightDrop} style={{ height: `${sectionHeightRef.current}px`}}>
-                        {orderedCodeBlocks.map((codeBlock, index) => (
-                          <React.Fragment key={codeBlock.id}>
-                            <CodeBlockItem codeBlock={codeBlock} index={index} moveCodeBlock={(dragIndex, hoverIndex) => moveCodeBlock(dragIndex, hoverIndex, true)} />
-                          </React.Fragment>
-                        ))}
-                        {Array.from({ length: 7 }).map((_, index) => (
-                          <div key={index} className="vertical-line hidden" id={`indent${index + 1}`} style={{ left: `${4 * (index + 1)}rem` }}></div>
-                        ))}
-                      </div>
-                    </div>
+                    <ParsonsGame sectionHeight={sectionHeightRef.current}/>
                   </div>
                   )}
                 </div>

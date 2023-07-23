@@ -1,33 +1,13 @@
-@keyframes shake {
-    10%, 90% {
-      transform: translate3d(-1px, 0, 0);
-    }
-    
-    20%, 80% {
-      transform: translate3d(2px, 0, 0);
-    }
-  
-    30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
-    }
-  
-    40%, 60% {
-      transform: translate3d(4px, 0, 0);
-    }
-  }
-  
-  .shake {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    animation-iteration-count: infinite;
-  }
 
+.write-over-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
   .writeover-code-reader {
     padding: 1rem;
     background-color: #fff;
-    font-size: 24px;
+    font-size: 20px;
+    overflow: auto;
   }
 
   .writeover-code-reader:focus {
@@ -38,18 +18,6 @@
     margin: 0;
   }
 
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-    20%, 40%, 60%, 80% { transform: translateX(10px); }
-}
-
-.shake {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-}
 
 .writeover-cursor {
     background: rgba(0, 0, 0, 0.474);
@@ -62,3 +30,58 @@
   @keyframes blink {
     50% { opacity: 0; }
   }
+
+  .shake-char {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    color: red;
+  }
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
+.highlight-correct-char{
+    border-bottom: red 2px solid;
+    background-color: red;
+}
+
+.enter-sign {
+    margin-left: 1rem;
+    font-size: 1.2rem;
+}
+
+.write-over-wrapper .score {
+    margin: 0;
+    padding: 0;
+    margin-left: 2rem;
+    font-size:20px;
+    margin-top: -1rem;
+    margin-right: 0;
+    opacity: 0.8;
+}
+
+.write-over-wrapper .red {
+    color: red;
+}
+.write-over-wrapper .yellow {
+    color: rgb(143, 143, 5);
+}
+.write-over-wrapper .yellowGreen {
+    color: rgb(94, 126, 31);
+}
+.write-over-wrapper .green {
+    color: green;
+}

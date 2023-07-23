@@ -493,7 +493,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';
-  const technique = 'writeover'
+  const technique = 'writeover';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

@@ -127,31 +127,29 @@
     max-height: 60vh;
 }
 
-.left-section-container {
+.parsons-game-0  {
     width: 33%;
 }
 
-.right-section-container {
+.parsons-game-1  {
     flex: 1;
     width: 67%;
     margin-left: 2rem;
 }
 
-.left-section {
+.parsons-game-0 div{
     background-color: lightblue;
     padding: 10px;
 }
 
-.right-section {
+.parsons-game-1 div{
     background-color: lightgray;
     padding: 10px;
     position: relative;
 }
 
-.code-block {
-    height: 40px;
-    padding: 8px;
-    background-color: #fff;
+.parsons-game-draggable {
+    background-color: #fff !important;
     margin: 10px 0.5rem;
     border-radius: 15px;
     border: #6c757d 1px solid;
@@ -159,11 +157,8 @@
     position: relative;
 }
 
-.vertical-line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    border-left: 1.5px dashed #66666654; 
-    z-index: 1;
-  }
+.parsons-game-draggable .parsons-token{
+  margin-left: 8px;
+  background-color: #fff !important;
+}
+

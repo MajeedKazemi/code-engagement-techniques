@@ -177,15 +177,7 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[], tree:Tree
         {!isAutoMode && (
             tree.map((treeObjects, animationIndex) => (
                 <div className="tokens-container" key={animationIndex}>
-                    {animationIndex === prevCurrentIteration && (
-                    <>
-                        {prevContent && prevContent.length > 0 && (
-                        <div className="goal-container">
-                            <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlockCode(prevContent)) }} />
-                        </div>
-                        )}
-                    </>
-                    )}
+                    
                   {treeObjects.treeObject.map((treeToken, tokenIndex) => (
               <React.Fragment key={tokenIndex}>
                 {tokens[animationIndex].tokens[tokenIndex].parent == null && (
@@ -206,19 +198,19 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[], tree:Tree
               </React.Fragment>
             
             ))}
+                {animationIndex === prevCurrentIteration && (
+                    <>
+                        {prevContent && prevContent.length > 0 && (
+                        <div className="goal-container">
+                            <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlockCode(prevContent)) }} />
+                        </div>
+                        )}
+                    </>
+                    )}
                 </div>
               )))}
         {isAutoMode && tree.map((treeObjects, animationIndex) => (
           <div className="tokens-container" key={animationIndex}>
-            {animationIndex === currentIteration && (
-              <>
-                {fullWidthDivContent.length > 0 && (
-                  <div className="goal-container" >
-                    <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlockCode(fullWidthDivContent)) }} />
-                  </div>
-                )}
-              </>
-            )}
             {treeObjects.treeObject.map((treeToken, tokenIndex) => (
               <React.Fragment key={tokenIndex}>
                 {tokens[animationIndex].tokens[tokenIndex].parent == null && (
@@ -238,6 +230,15 @@ export const AnimatedTokens: React.FC<{ tokens: AnimatedTokensProps[], tree:Tree
               </React.Fragment>
             
             ))}
+            {animationIndex === currentIteration && (
+              <>
+                {fullWidthDivContent.length > 0 && (
+                  <div className="goal-container" >
+                    <span className="hoverable-code" dangerouslySetInnerHTML={{ __html: highlightCode(highlightCodeBlockCode(fullWidthDivContent)) }} />
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ))}
         <div className="quick-sliding-buttons-container">
