@@ -16,6 +16,7 @@ import { tasksRouter } from "./routes/tasks-router";
 import { pseudoRouter } from "./routes/codex-pseudo-router";
 import { tokenRouter } from "./routes/codex-token-router";
 import { hierarchicalRouter } from "./routes/codex-hierarchical-router";
+import { writeOverRouter } from "./routes/codex-writeover-router";
 import { initLanguageService } from "./sockets/intellisense";
 import { initPythonShell } from "./sockets/python-shell";
 import env from "./utils/env";
@@ -71,6 +72,7 @@ mongoose
         app.use("/api/technique-pseudo/", pseudoRouter);
         app.use("/api/technique-hierarchical/", hierarchicalRouter);
         app.use("/api/technique-token/", tokenRouter);
+        app.use("/api/technique-writeover/", writeOverRouter);
 
         const server = app.listen(
             env.PORT_PREFIX + env.NODE_APP_INSTANCE,
