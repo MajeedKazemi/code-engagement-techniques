@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, useContext } from 'react';
 import { BsArrowReturnLeft, BsFillQuestionSquareFill, BsQuestionCircle } from 'react-icons/bs';
+import { MdKeyboardTab } from 'react-icons/md';
 import { apiGetExplanationPerLineCodex, logError } from '../../api/api';
 import { AuthContext } from '../../context';
 import { highlightCode } from '../../utils/utils';
@@ -99,31 +100,72 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         setErrorIndexes(Array.from<number, number[]>({ length: lines.length }, () => []));
     }, []);
 
-    function wrapCharsWithSpan(text: string, indexes: number[], className: string): string {
-        let result = '';
-        for (let i = 0, charCount = 0; i < text.length; i++) {
-            // Exclude characters within HTML tags for counting
-            if (text[i] == '<') {
-                while (text[i] != '>') {
-                    result += text[i];
-                    i++;
+    function wrapCharsWithSpan(html: string, indexes: number[], className: string): string {
+        let parser = new DOMParser();
+        let doc: Document = parser.parseFromString(html, 'text/html');
+        let textNodes: Node[] = [];
+        
+        // A helper function to find all text nodes
+        function getTextNodes(node: Node): void {
+            if (node.nodeType === 3) {
+                textNodes.push(node);
+            } else {
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    getTextNodes(node.childNodes[i]);
                 }
             }
-            result += text[i];
-            if (text[i] != ' ' && text[i] != '\t' && text[i] != '\n' && text[i] != '\r') charCount++; // Exclude white spaces from counting
-            // If the next character position is in error indexes
-            if (indexes.includes(charCount)) {
-                if (text[i+1] != '<') { // Avoid inserting span within tags
-                    result += `<span class="${className}">`;
-                    while (text[i+1] != ' ' && text[i+1] != '<') { // Stop at next space or tag
-                        result += text[++i];
-                    }
-                    result += '</span>';
-                }
-            }        
         }
-        return result;
+        
+        getTextNodes(doc.body);
+    
+        let totalChars = 0;
+    
+        for (let node of textNodes) {
+            let splitText: string[] = [];
+            if(node.nodeValue) splitText = node.nodeValue.split('');
+            let newHTML: string = '';
+            for (let i = 0; i < splitText.length; i++) {
+                if (indexes.includes(totalChars)) {
+                    newHTML += `<span class="${className}">${splitText[i]}</span>`;
+                } else {
+                    newHTML += splitText[i];
+                }
+                totalChars++;
+            }
+    
+            let newNode = parser.parseFromString(newHTML, 'text/html').body;
+            while(newNode.firstChild) node.parentNode?.insertBefore(newNode.firstChild, node);
+            node.parentNode?.removeChild(node);
+        }
+        return doc.body.innerHTML;
     }
+
+    // function wrapCharsWithSpan(text: string, indexes: number[], className: string): string {
+    //     let result = '';
+    //     for (let i = 0, charCount = 0; i < text.length; i++) {
+    //         // Exclude characters within HTML tags for counting
+    //         if (text[i] == '<') {
+    //             while (text[i] != '>') {
+    //                 result += text[i];
+    //                 i++;
+    //             }
+    //         }
+    //         result += text[i];
+    //         if (text[i] != ' ' && text[i] != '\t' && text[i] != '\n' && text[i] != '\r') charCount++; // Exclude white spaces from counting
+    //         // If the next character position is in error indexes
+    //         if (indexes.includes(charCount)) {
+    //             console.log('charCount: ' + charCount);
+    //             if (text[i+1] != '<') { // Avoid inserting span within tags
+    //                 result += `<span class="${className}">`;
+    //                 while (text[i+1] != ' ' && text[i+1] != '<') { // Stop at next space or tag
+    //                     result += text[++i];
+    //                 }
+    //                 result += '</span>';
+    //             }
+    //         }        
+    //     }
+    //     return result;
+    // }
     
 
     useEffect(() => {
@@ -163,6 +205,17 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
 
         const value = e.key;
 
+        if (e.key == 'Tab') {
+            e.preventDefault();
+            const currentChar = lines[currentLineIndex].original[userInput.length];
+            const isCharacterFromAtoZ = /^[a-z]$/i.test(currentChar);
+
+            if(lines[currentLineIndex].leadSpaces > 0 && /^\s*$/.test(userInput) && !isCharacterFromAtoZ) { 
+                setUserInput(prevInput => prevInput + '    ');
+                return;
+            }
+        }
+
         if (scores[currentLineIndex] < 50+Math.round(scores[currentLineIndex]*(1/lines[currentLineIndex].trimmed.length))) {
             setUserInput('');
             scores[currentLineIndex] = 100;
@@ -173,7 +226,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         }
     
         if (e.key === 'Enter' && scores[currentLineIndex] > 50) {
-            if (lines[currentLineIndex].trimmed === userInput) {
+            if (lines[currentLineIndex].original === userInput) {
                 setUserInput('');
                 setCurrentLineIndex(currentIndex => currentIndex + 1);
                 // Remove error effect from every character in line
@@ -185,18 +238,17 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
             e.preventDefault();
             return;
         }
-    
-    
-        if (lines[currentLineIndex].trimmed[userInput.length] !== value) {
+
+        if (lines[currentLineIndex].original[userInput.length] !== value) {
             // Get the next character to user input in line
             inputRef.current = document.getElementById(`line-${currentLineIndex}`) as HTMLDivElement;
-            const nextCharInLine = inputRef.current?.querySelector(`.char-${userInput.length+lines[currentLineIndex].leadSpaces}`);
+            const nextCharInLine = inputRef.current?.querySelector(`.char-${userInput.length}`);
             // Apply shake error effect to the next character
             if (nextCharInLine) nextCharInLine.classList.add("shake-char");
             setShakeError(true);
 
             let newErrorTracker = errorTracker.slice();
-            const index = userInput.length+lines[currentLineIndex].leadSpaces; // Calculate current char index
+            const index = userInput.length // Calculate current char index
       
             if (newErrorTracker[index]) {
               newErrorTracker[index] = newErrorTracker[index] + 1; // If error already exists, increment it
@@ -208,9 +260,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
       
             if(newErrorTracker[index] > 2) {
               // Error occurred more than once on same character
-              const highlightedChar = inputRef.current?.querySelector(`.char-${userInput.length+lines[currentLineIndex].leadSpaces}`);
+              const highlightedChar = inputRef.current?.querySelector(`.char-${userInput.length}`);
               if(highlightedChar) highlightedChar.classList.add('highlight-correct-char');
-              setUserInput(prevInput => prevInput + lines[currentLineIndex].trimmed[userInput.length]);
+              setUserInput(prevInput => prevInput + lines[currentLineIndex].original[userInput.length]);
               scores[currentLineIndex] -= Math.round(scores[currentLineIndex]*(1/lines[currentLineIndex].trimmed.length));
               errorIndexes[currentLineIndex].push(userInput.length);
             }
@@ -222,7 +274,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         inputRef.current?.querySelectorAll(".shake-char").forEach(element => element.classList.remove("shake-char"));
     
         const nextInput = userInput + value;
-        if (currentLineIndex === lines.length - 1 && lines[currentLineIndex].trimmed === nextInput) {
+        if (currentLineIndex === lines.length - 1 && lines[currentLineIndex].original === nextInput) {
             setCompleted(true);
         }
         
@@ -261,34 +313,67 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         }
     }
 
-    function findError(target: number, currIndex: number) {
-        if(errorIndexes[currIndex].includes(target)) {
-            return "highlight-correct-char";
-        }
-    }
-
-    
-
+    // async function colorize() {
+    //     if(!userInput || !monaco || !monaco.editor || userInput.length == 0) return <span className="writeover-cursor" />;
+        
+    //     const coloredCode = await monaco.editor.colorize(userInput, 'python',{});
+    //     return (
+    //       <div dangerouslySetInnerHTML={{ __html: coloredCode }}>
+    //         <span className="writeover-cursor" />
+    //       </div>
+    //     );
+    // }
 
     return (
         <div className='write-over-wrapper'>
             <div 
             className="write-over-container" 
-            onKeyPress={handleKeyPress} 
+            onKeyUp={handleKeyPress} 
             tabIndex={0} 
             ref={containerRef}
         >
             {isReady && lines.map((line, index) => (
-                <div id={`line-${index}`} key={index} className='write-over-tracker'>
-                    {index === currentLineIndex ? (
+                <div id={`line-${index}`} key={index} className='write-over-tracker'
+                onMouseEnter={() => {
+                    if(index < currentLineIndex) {
+                        const updatedHoveringStates = [...hoveringStates];
+                        for(let i = 0; i < hoveringStates.length; i++) {
+                            if (index == i) {
+                                updatedHoveringStates[index] = true;
+                            } else {
+                                updatedHoveringStates[i] = false;
+                            }
+                        }
+                        setHoveringStates(updatedHoveringStates);
+                    }}
+                    }
+                onMouseLeave={() => {
+                    if(index < currentLineIndex) {
+                        const updatedHoveringStates = [...hoveringStates];
+                        updatedHoveringStates[index] = false;
+                        setHoveringStates(updatedHoveringStates);
+                    }
+
+                }}>
+                    {hoveringStates[index] && (
+                    <div
+                        className="hoverable-code-line-explanation"
+                        dangerouslySetInnerHTML={{
+                        __html: highlightCode(
+                            keywordsList[index].explanation,
+                            "exp-inline-code"
+                        ),
+                        }}
+                    ></div>
+                    )}
+                    {index == currentLineIndex ? (
                         <>
                         <div style={{position: 'relative'}} className='write-over-code-container'>
                             <pre 
                                 className="user-input" 
                                 style={{opacity: 1, position: 'absolute', zIndex: 2, backgroundColor: 'transparent'}}
                             >
-                                {String(' ').repeat(line.leadSpaces)}
-                                {userInput.replace(/\t/g, '    ').split('').map((char, i) => <span className={`${findIndex(i, currentLineIndex)}`}>{char}</span>)}
+                                {userInput}
                                 <span className="writeover-cursor" />
                             </pre>
                             <pre 
@@ -296,7 +381,16 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                                 style={{opacity: 0.2}}
                             >
                             {/* map each character to a span */}
-                            {line.original.replace(/\t/g, '    ').split('').map((char, i) => <span className={`char-${i}`}>{char}</span>)}
+                            {/* {lines[index].leadSpaces > 0 && <MdKeyboardTab className='enter-sign'/>}
+                            {line.original.replace(/\t/g, '    ').split('').map((char, i) => <span className={`char-${i}`}>{char}</span>)} */}
+                            <span style={{ position: 'absolute', zIndex: 3 }}>
+                            {lines[index].leadSpaces > 0 && <MdKeyboardTab className='tab-sign' />}
+                            </span>
+                            <span style={{ position: 'relative', zIndex: 1 }}>
+                            {line.original.replace(/\t/g, '    ').split('').map((char, i) => (
+                                <span key={i} className={`char-${i}`}>{char}</span>
+                            ))}
+                            </span>
                             {index != lines.length-1 && <BsArrowReturnLeft className='enter-sign'/>}
                             </pre>
                         </div>
@@ -314,8 +408,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                         <>
                         <pre 
                             className={index > currentLineIndex ? "pending-text" : ""} 
-                            style={{opacity: index === currentLineIndex + 1 ? 0.2 : index < currentLineIndex ? 1 : 0 }}
-                            dangerouslySetInnerHTML={{ __html: colorizedText[index] }}
+                            style={{opacity: index < currentLineIndex ? 1 : 0 }}
+                            dangerouslySetInnerHTML={{ __html: colorizedText[index] }
+                        }
                         >
                            
                         </pre>
@@ -330,7 +425,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
             ))}
         </div>
         <div className='writeover-hoverable'>
-        {scores.map((score, index) => {
+        {/* {scores.map((score, index) => {
             if (index > currentLineIndex) {
             return null;
             }
@@ -364,7 +459,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                 )}
             </div>
             );
-        })}
+        })} */}
         </div>
 
         <div className='score'>

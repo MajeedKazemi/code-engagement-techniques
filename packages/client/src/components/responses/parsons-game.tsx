@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, DragStart, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable } from "react-beautiful-dnd";
 
 interface ParsonsGameProps {
-  sectionHeight?: number;
+    tasks: IDraggableTask[];
+    sectionHeight?: number;
 }
 
 interface IColumn {
@@ -22,29 +23,28 @@ interface IColumn {
   }
 
 // Add indentationLevel to each task
-const tasks = [
-  { id: "1", content: "First task", indentationLevel: 0, onDest: false},
-  { id: "2", content: "Second task", indentationLevel: 0, onDest: false},
-  { id: "3", content: "Third task", indentationLevel: 0, onDest: false },
-  { id: "4", content: "Fourth task", indentationLevel: 0, onDest: false },
-  { id: "5", content: "Fifth task", indentationLevel: 0, onDest: false},
-];
-
-const taskStatus = {
-  requested: { name: "Code Blocks", description: "Drag from here", items: tasks },
-  done: { name: "Ordered Code", description: "Construct your solution here, including indents", items: [] },
-};
+// const tasks = [
+//   { id: "1", content: "First task", indentationLevel: 0, onDest: false},
+//   { id: "2", content: "Second task", indentationLevel: 0, onDest: false},
+//   { id: "3", content: "Third task", indentationLevel: 0, onDest: false },
+//   { id: "4", content: "Fourth task", indentationLevel: 0, onDest: false },
+//   { id: "5", content: "Fifth task", indentationLevel: 0, onDest: false},
+// ];
 
 
 
 
-const ParsonsGame: React.FC<ParsonsGameProps> = ({ sectionHeight }) => {
-  const [columns, setColumns] = useState<ColumnsType>(taskStatus);
-  const [taskBeingDragged, setTaskBeingDragged] = useState<IDraggableTask | null>(null);
+const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasks, sectionHeight }) => {
+    const taskStatus = {
+        requested: { name: "Code Blocks", description: "Drag from here", items: tasks },
+        done: { name: "Ordered Code", description: "Construct your solution here, including indents", items: [] },
+      };
+    const [columns, setColumns] = useState<ColumnsType>(taskStatus);
+    const [taskBeingDragged, setTaskBeingDragged] = useState<IDraggableTask | null>(null);
 
-  const onDragEnd = (result: DropResult, columns: any, setColumns: React.Dispatch<React.SetStateAction<any>>) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
+    const onDragEnd = (result: DropResult, columns: any, setColumns: React.Dispatch<React.SetStateAction<any>>) => {
+        if (!result.destination) return;
+        const { source, destination } = result;
   
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];

@@ -64,12 +64,19 @@
     font-size: 1.2rem;
 }
 
+.tab-sign {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+}
+
 .write-over-wrapper .score {
     margin-left: 2rem;
     font-size:20px;
     margin-right: 0;
     opacity: 0.8;
 }
+
 
 .write-over-wrapper .red {
     color: red;
@@ -119,6 +126,10 @@
 
 .write-over-explanation{
     font-size: 14px;
+    background-color: rgba(204, 202, 202, 0.593);
+    padding: 5px;
+    border-radius: 15px;
+    margin-top: 5px;
 }
 
 .hoverable-writeover-icon{

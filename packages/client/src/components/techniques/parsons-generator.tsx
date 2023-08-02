@@ -30,20 +30,20 @@ function convertToCodeBlocks(text: string): CodeBlock[] {
 }
   
 
-const ItemTypes = {
-  CODE_BLOCK: 'codeBlock',
-};
 
 interface CodeBlock {
   id: number;
   code: string;
 }
 
-interface DragItem {
-    codeBlock: CodeBlock;
-    type: string;
-    index: number;
-}
+
+interface IDraggableTask {
+    id: string;
+    content: string;
+    indentationLevel: number;
+    currentMouseXPosition?: number;
+    onDest: boolean;
+  }
   
 
 interface ParsonsGenerateCodeProps {
@@ -286,94 +286,26 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
         setIsOver(true);
     };
 
-    const handleDropLeft = (index: number, codeBlock: CodeBlock) => {
-        const updatedCodeBlocks = [...initialCodeBlocks];
-        updatedCodeBlocks.splice(index, 0, codeBlock);
-        setInitialCodeBlocks(updatedCodeBlocks);
-        setOrderedCodeBlocks(orderedCodeBlocks.filter(block => block.id !== codeBlock.id));
-    };
-
-    const handleDropRight = (index: number, codeBlock: CodeBlock) => {
-        const updatedCodeBlocks = [...orderedCodeBlocks];
-        updatedCodeBlocks.splice(index, 0, codeBlock);
-        setOrderedCodeBlocks(updatedCodeBlocks);
-        setInitialCodeBlocks(initialCodeBlocks.filter(block => block.id !== codeBlock.id));
-    };
-
-    const moveCodeBlock = (dragIndex: number, hoverIndex: number, isRight: boolean) => {
-        if (isRight) {
-            if (dragIndex == hoverIndex) {
-                return;
-            }
-            const dragCodeBlock = orderedCodeBlocks[dragIndex];
-            const updatedCodeBlocks = [...orderedCodeBlocks];
-        
-            if (dragIndex < hoverIndex) {
-                updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
-                updatedCodeBlocks.splice(dragIndex, 1);
-            } else {
-                updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
-                updatedCodeBlocks.splice(dragIndex + 1, 1);
-            }
-            
-            setOrderedCodeBlocks(updatedCodeBlocks);
-
-        } else {
-            if (dragIndex == hoverIndex) {
-                return;
-            }
-        
-            const dragCodeBlock = initialCodeBlocks[dragIndex];
-            const updatedCodeBlocks = [...initialCodeBlocks];
-
-            if (dragIndex < hoverIndex) {
-                updatedCodeBlocks.splice(hoverIndex + 1, 0, dragCodeBlock);
-                updatedCodeBlocks.splice(dragIndex, 1);
-            } else {
-                updatedCodeBlocks.splice(hoverIndex, 0, dragCodeBlock);
-                updatedCodeBlocks.splice(dragIndex + 1, 1);
-            }
-        
-            setInitialCodeBlocks(updatedCodeBlocks);
+    function shuffleArray(array: IDraggableTask[]): IDraggableTask[] {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
         }
-    };
+        return array;
+      }
 
-    const rightDropRef = useRef<HTMLDivElement>(null);
-    const leftDropRef = useRef<HTMLDivElement>(null);
 
-    const [, leftDrop] = useDrop({
-        accept: ItemTypes.CODE_BLOCK,
-        drop: (item: DragItem, monitor) => {
-        if (monitor.didDrop()) return;
-
-        const isHoveringRightSection = isHoveringOverSection(monitor.getInitialClientOffset(), rightDropRef.current);
-            if (
-                isHoveringRightSection
-            ) handleDropLeft(initialCodeBlocks.length, item.codeBlock);
-        },
-    });
-
-    const [, rightDrop] = useDrop({
-        accept: ItemTypes.CODE_BLOCK,
-        drop: (item: DragItem, monitor) => {
-        if (monitor.didDrop()) return;
-        const isHoveringLeftSection = isHoveringOverSection(monitor.getInitialClientOffset(), leftDropRef.current);
-        if (
-            isHoveringLeftSection
-        )
-        handleDropRight(orderedCodeBlocks.length, item.codeBlock);
-        },
-    });
-
-    const isHoveringOverSection = (clientOffset: XYCoord | null, sectionRef: HTMLDivElement | null): boolean => {
-        if (!clientOffset || !sectionRef) return false;
-    
-        const { left, top, right, bottom } = sectionRef.getBoundingClientRect();
-        const { x, y } = clientOffset;
-
-    
-        return x >= left && x <= right && y >= top && y <= bottom;
-    };
+    function toTask(generatedCode: string): IDraggableTask[] {
+        let lines = generatedCode.split('\n');
+        return lines
+          .filter((line) => line.trim() !== '') // Filter out empty lines
+          .map((line, index) => ({
+            id: (index + 1).toString(),
+            content: line,
+            indentationLevel: 0,
+            onDest: false,
+          }));
+      }
 
     const cancelClick = () => {
         
@@ -450,7 +382,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   )}
                   {!waiting && (
                   <div className="parsons-problem">
-                    <ParsonsGame sectionHeight={sectionHeightRef.current}/>
+                    <ParsonsGame tasks={shuffleArray(toTask(generatedCode))} sectionHeight={sectionHeightRef.current}/>
                   </div>
                   )}
                 </div>
