@@ -10,6 +10,7 @@
         "dev": "lerna run --parallel dev"
     },
     "devDependencies": {
+        "jaccard-index": "^0.2.0",
         "lerna": "^5.0.0",
         "tree-sitter-python": "^0.20.1",
         "typescript": "^4.7.3"

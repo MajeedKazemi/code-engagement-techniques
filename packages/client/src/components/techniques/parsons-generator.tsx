@@ -4,24 +4,26 @@ import { XYCoord, useDrag, useDrop } from 'react-dnd';
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetGeneratedCodeCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetGeneratedCodeCodex, apiGetParsonsCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
-import ParsonsGame from '../responses/parsons-game';
+import { ParsonsGame } from '../responses/parsons-game';
 
 export let parsonsCancelClicked = false;
 
-function convertToCodeBlocks(text: string): CodeBlock[] {
+function convertToCodeBlocks(text: string, answer: string): CodeBlock[] {
     const lines = text.split("\n");
-    console.log(lines);
+    const answerLines = answer.split("\n");
     const codeBlocks: CodeBlock[] = [];
     
     lines.forEach((line, index) => {
       const trimmedLine = line.trim();
-      if (trimmedLine !== '') {
+      const trimmedAnswerLine = answerLines[index].trim();
+      if (trimmedLine !== '' && trimmedAnswerLine !== '') {
         codeBlocks.push({
           id: index + 1,
           code: trimmedLine,
+          answer: trimmedAnswerLine,
         });
       }
     });
@@ -34,15 +36,19 @@ function convertToCodeBlocks(text: string): CodeBlock[] {
 interface CodeBlock {
   id: number;
   code: string;
+  answer: string;
 }
 
 
 interface IDraggableTask {
     id: string;
     content: string;
+    answer: string;
     indentationLevel: number;
+    wantedIndentation: number;
     currentMouseXPosition?: number;
     onDest: boolean;
+    inputCorrect: boolean;
   }
   
 
@@ -64,9 +70,10 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     const [orderedCodeBlocks, setOrderedCodeBlocks] = useState<CodeBlock[]>([]);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const sectionHeightRef = useRef<number>(0);
-    const [isOver, setIsOver] = useState<boolean>(false);
+    const [isOver, setIsOver] = useState(false);
     const baselineRef = useRef<HTMLDivElement | null>(null);
     const explainRef = useRef<HTMLDivElement | null>(null);
+    const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
 
     useEffect(() => {
         if (explainRef.current) {
@@ -255,7 +262,23 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                                 }
                                 setGeneratedCode(text);
                                 setGeneratedExplanation(data.bundle.explain);
-                                setWaiting(false);
+                                apiGetParsonsCodex(
+                                    context?.token,
+                                    text,
+                                    userCode ? userCode : ""
+                                )
+                                    .then(async (response) => {
+                    
+                                        if (response.ok) {
+                                            const data = await response.json();
+                                            setGeneratedQuestion(data.code);
+                                            setWaiting(false);
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        logError(error.toString());
+                                    });
+                                
                             } 
                         }
                     })
@@ -274,17 +297,22 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
 
     useEffect(() => {
         generateCode();
+
+        const interval = setInterval(() => {
+          if (document.getElementById('game-over')) {
+            setIsOver(true);
+            clearInterval(interval); 
+          }
+        }, 1000); 
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
-        const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedCode);
+        const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedQuestion, generatedCode);
         setInitialCodeBlocks(responseCodeObject);
         sectionHeightRef.current = (responseCodeObject.length + 2) * 60;
-    }, [generatedCode]);
+    }, [generatedQuestion]);
 
-    const checkCode = () => {
-        setIsOver(true);
-    };
 
     function shuffleArray(array: IDraggableTask[]): IDraggableTask[] {
         for (let i = array.length - 1; i > 0; i--) {
@@ -295,16 +323,24 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
       }
 
 
-    function toTask(generatedCode: string): IDraggableTask[] {
-        let lines = generatedCode.split('\n');
+    function toTask(generatedQuestion: string, generatedCode: string): IDraggableTask[] {
+        let lines = generatedQuestion.split('\n');
+        let answers = generatedCode.split('\n');
         return lines
-          .filter((line) => line.trim() !== '') // Filter out empty lines
-          .map((line, index) => ({
-            id: (index + 1).toString(),
-            content: line,
-            indentationLevel: 0,
-            onDest: false,
-          }));
+            .filter((line) => line.trim() !== '')
+            .map((line, index) => {
+            const indentationLevel = line.search(/\S|$/);
+
+            return {
+                id: (index + 1).toString(),
+                content: line,
+                answer: answers[index],
+                indentationLevel: 0,
+                onDest: false,
+                inputCorrect: !line.includes("{input}"),
+                wantedIndentation: Math.round(indentationLevel / 4),
+            };
+            });
       }
 
     const cancelClick = () => {
@@ -381,15 +417,11 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                     <p>Generating</p>
                   )}
                   {!waiting && (
-                  <div className="parsons-problem">
-                    <ParsonsGame tasks={shuffleArray(toTask(generatedCode))} sectionHeight={sectionHeightRef.current}/>
-                  </div>
+                  
+                    <ParsonsGame tasksOri={shuffleArray(toTask(generatedQuestion, generatedCode))} sectionHeight={sectionHeightRef.current}/>
                   )}
                 </div>
                 <div className="modal-footer">
-                  <button disabled={waiting} type="button" className="btn btn-secondary" onClick={checkCode}>
-                    Submit
-                  </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Cancel
                   </button>

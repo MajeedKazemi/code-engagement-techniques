@@ -162,3 +162,11 @@
   background-color: #fff !important;
 }
 
+.parsons-game-input {
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  transition: border-color 0.3s ease;
+}
+

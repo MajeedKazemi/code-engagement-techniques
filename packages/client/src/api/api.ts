@@ -326,6 +326,24 @@ export const apiGetHierarchicalCodex = (
         }),
     });
 
+export const apiGetParsonsCodex = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-parsons/generate", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
 export const apiGetCodeToTokenCodex = (
     token: string | null | undefined,
     description: string,
