@@ -1,6 +1,8 @@
 import React, { useEffect, createContext, useState } from "react";
 import { DragDropContext, DragStart, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable } from "react-beautiful-dnd";
 import { convertTime } from "../../utils/shared";
+import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
+
 
 
 interface ParsonsGameProps {
@@ -212,7 +214,6 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             // is there enough time to continue?
             if (elapsedTime / 1000 > timeLimit) {
               setTimeUp(true);
-                setCompleted(true);
             }
         }, 1000);
 
@@ -262,6 +263,10 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
               if (divElement) {
                 divElement.style.border = "none";
               }
+              const arrowElement = document.getElementById("indent" + i);
+                  if (arrowElement) {
+                    arrowElement.style.display = "none";
+              }
             }
             tasks.forEach(task => {
               task.content.split("{input}").forEach((part, index) => {
@@ -301,6 +306,15 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             }
             //if indentations are wrong
             if(!areWantedIndentationsEqual()){
+              columns.done.items.forEach(item => {
+                if (item.wantedIndentation !== item.indentationLevel) {
+                  const divElement = document.getElementById("indent" + item.id);
+                  if (divElement) {
+                    divElement.style.display = "block";
+                  }
+                }
+              });
+
             }
             //if the order is wrong
             if(!areIdsSequential()){
@@ -335,9 +349,18 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         </span>
         </>
         }
-        <button type="button" className="btn btn-secondary" onClick={checkCode}>
+        <button type="button" className="check-button btn btn-secondary" onClick={checkCode}>
         Check
         </button>
+        {timeUp &&
+        <button
+          type="button"
+          className="continue-button btn btn-secondary"
+          onClick={() => setGameOver(true)}
+        >
+          Continue
+        </button>
+        }
         {gameOver && <span id="game-over" style={{opacity:0}}>Game Over</span>}
     </div>
     }
@@ -366,6 +389,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                           id = {"drag"+item.id}
                           className="parsons-game-draggable"
                         >
+                          {item.wantedIndentation < item.indentationLevel ? <BsArrowBarLeft id={"indent"+item.id} className="arrow-left"/> : item.wantedIndentation > item.indentationLevel && <BsArrowBarRight id={"indent"+item.id} className="arrow-right"/> }
                           {item.content.split("{input}").map((part, index) => (
                             <React.Fragment key={index}>
                             {index > 0 ? (

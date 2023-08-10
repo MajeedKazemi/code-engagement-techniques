@@ -16,6 +16,7 @@
 @import "styles/parsons.css";
 @import "styles/tokens.css";
 @import "styles/writeover.css";
+@import "styles/self-explain.css";
 
 body {
     font-family: "Poppins", sans-serif;

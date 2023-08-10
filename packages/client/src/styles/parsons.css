@@ -168,5 +168,17 @@
   border-bottom: 1px solid #ccc;
   border-radius: 0;
   transition: border-color 0.3s ease;
+  font-size: 16px;
+}
+
+.arrow-left, .arrow-right {
+  display: none;
+  color: red;
+  margin-right: 5px;
+}
+
+.modal .check-button, .modal .continue-button {
+  background-color: #0baa0b;
+    border-color: #0baa0b;
 }
 

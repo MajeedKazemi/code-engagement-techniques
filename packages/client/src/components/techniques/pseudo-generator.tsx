@@ -171,22 +171,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                     <b>prompts: </b> {prompt}
                 </div>
                 {waiting?  
-                    // <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2>
-                    // <div className="loader-container ${waiting ? '' : 'hidden'}">
-                    //     <div className="loader">
-                    //         <span>G</span>
-                    //         <span>E</span>
-                    //         <span>N</span>
-                    //         <span>E</span>
-                    //         <span>R</span>
-                    //         <span>A</span>
-                    //         <span>T</span>
-                    //         <span>I</span>
-                    //         <span>N</span>
-                    //         <span>G</span>
-                    //     </div>
-                    //     <div className="hourglass"></div>
-                    // </div>
                     <div className="preloader-2 ${waiting ? '' : 'hidden'}`}">
                         <span className="line line-1"></span>
                         <span className="line line-2"></span>

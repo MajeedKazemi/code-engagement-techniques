@@ -1,0 +1,13 @@
+.self-explain-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0px;
+    width: 100%;
+}
+
+.monaco-editor-container {
+    height: 20vh;
+    width: 100%;
+}
