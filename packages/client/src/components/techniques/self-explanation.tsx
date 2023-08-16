@@ -39,6 +39,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     const [isOver, setIsOver] = useState(false);
     const baselineRef = useRef<HTMLDivElement | null>(null);
     const explainRef = useRef<HTMLDivElement | null>(null);
+    const [passed, setPassed] = useState(false);
 
     useEffect(() => {
         if (explainRef.current) {
@@ -247,19 +248,14 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
         generateCode();
 
         const interval = setInterval(() => {
-          if (document.getElementById('game-over')) {
-            setIsOver(true);
+          if (document.getElementById('passed')) {
+            setPassed(true);
             clearInterval(interval); 
           }
         }, 1000); 
         return () => clearInterval(interval);
     }, []);
 
-
-   
-
-
-    
 
     const cancelClick = () => {
         
@@ -339,6 +335,9 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                   )}
                 </div>
                 <div className="modal-footer">
+                <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                    Continue
+                    </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Cancel
                   </button>

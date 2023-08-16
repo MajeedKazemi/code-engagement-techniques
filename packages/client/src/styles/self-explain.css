@@ -28,11 +28,20 @@
 .self-explain-response #user-prompts{
     overflow-y: scroll;
     height: 35vh;
-
+    scroll-behavior: smooth;
 }
 
+.self-explain-response #user-prompts::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+.self-explain-response #user-prompts::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+
 .question-container.user {
-    background-color: #f4f4f8;
+    background-color: #eaeaec;
     border-radius: 10px;
     padding: 10px 15px;
     margin: 10px;
@@ -52,5 +61,14 @@
 
 .self-explain-response .gpt-button {
     width: 100%;
+}
+
+.inline-word {
+    display: inline-block; 
+    border: 1px solid grey; 
+    background-color: white; 
+    color: grey;
+    padding: 0px 5px;
+    border-radius: 15px;
 }
 

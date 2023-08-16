@@ -17,21 +17,32 @@ interface FeedbackProps {
 }
 
 export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
+    const userPromptsRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<any>(null);
     const [userCode, setUserCode] = useState("");
     const [userResponse, setUserResponse] = useState('');
+    const [userSecondResponse, setUserSecondResponse] = useState('');
     const { context } = useContext(AuthContext);
     const [generatedQuestion, setGeneratedQuestion] = useState('');
     const [selectedCode, setSelectedCode] = useState('');
     const [waiting, setWaiting] = useState(true);
     const [startLine, setStartLine] = useState(0);
     const [score, setScore] = useState(-1);
+    const [secondScore, setSecondScore] = useState(-1);
     const [feedback, setFeedback] = useState('');
+    const [secondFeedback, setSecondFeedback] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [secondSubmitted, setSecondSubmitted] = useState(false);
     const [endLine, setEndLine] = useState(0);
     const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
     const monacoEl = useRef(null);
+
+    useEffect(() => {
+        if (userPromptsRef.current) {
+          userPromptsRef.current.scrollTop = userPromptsRef.current.scrollHeight;
+        }
+      }, [userResponse, userSecondResponse, feedback, secondFeedback]);
 
     function getContentBetweenLines(startLine:number, endLine:number) {
         const lines = code.split('\n');
@@ -45,21 +56,27 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
         return extractedContent;
     }
 
-    const markResponse = () => {
+    const markResponse = (responseString: string, time: number) => {
         try {
             apiGetFeedbackByResponse(
                 context?.token,
                 code,
                 selectedCode,
                 generatedQuestion,
-                userResponse,
+                responseString,
             )
                 .then(async (response) => {
 
                     if (response.ok) {
                         const data = await response.json();
-                        setScore(data.score);
-                        setFeedback(data.feedback);
+                        if(time == 1){
+                            setScore(data.score);
+                            setFeedback(data.feedback);
+                        }else if(time == 2){
+                            setSecondScore(data.score);
+                            setSecondFeedback(data.feedback);
+                        }
+                        
                         } 
                 })
                 .catch((error) => { 
@@ -175,6 +192,10 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
         setUserResponse(event.target.value);
     }
 
+    function handleUserSecondInput(event: React.ChangeEvent<HTMLTextAreaElement>): void {
+        setUserSecondResponse(event.target.value);
+    }
+
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -184,21 +205,26 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
         }
     };
 
-    function handleClick(): void {
+    function handleClick(time: number): void {
         console.log(selectedCode);
-        setSubmitted(true);
-        markResponse();
+        if(time == 1){
+            setSubmitted(true);
+            markResponse(userResponse, 1);
+        } else if (time == 2){
+            setSecondSubmitted(true);
+            markResponse(userSecondResponse, 2);
+        }
     }
 
     return (
         <div className="self-explain-container">
             <div ref={monacoEl} className="monaco-editor-container" />
             <div className="self-explain-response">
-                <div id='user-prompts'>
+                <div id='user-prompts' ref={userPromptsRef}>
                 <>
                     <div className="question-container">
                     <img src={robot} className="gpt-image" />
-                    AI Assistance: <div className="assistant" dangerouslySetInnerHTML={{ __html: generatedQuestion ? highlightCode(generatedQuestion, "code-highlight") : "Loading..."}} />
+                    AI Assistance: <div className="assistant" dangerouslySetInnerHTML={{ __html: generatedQuestion ? highlightCode(generatedQuestion, "code-highlight") :  '...'}} />
                     </div>
                     {generatedQuestion && (!submitted ? <div className="question-container user">
                         <p className="response-name">User Response:</p>
@@ -212,7 +238,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
                         rows={4}
                         />
                         <div>
-                        <button className="gpt-button" onClick={handleClick} disabled={!userResponse.trim()}>
+                        <button className="gpt-button" onClick={() => handleClick(1)} disabled={!userResponse.trim()}>
                             Submit Response
                         </button>
                         </div>
@@ -225,30 +251,52 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
                         submitted && (
                             <div className="question-container">
                             <img src={robot} className="gpt-image" />
-                            AI Assistance: {score > 0 && `You scored ${score}`}
-                            <div className="assistant" dangerouslySetInnerHTML={{ __html: feedback ? highlightCode(feedback, "code-highlight") : "Loading..."}} />
+                            AI Assistance: {score > -1 && `You scored ${score}`}
+                            <div className="assistant" dangerouslySetInnerHTML={{ __html: feedback ? highlightCode(feedback, "code-highlight") : '...'}} />
                             </div>
                         )
                     }
                     {
-                        score > 0 && score <=  3 && (
+                        score > 3 && (
+                            <span id="passed" style={{opacity:0}}>You Passed</span>
+                        )
+                    }
+                    {
+                        score > -1 && score <=  3 && (!secondSubmitted ?
                             <div className="question-container user">
                                 <p className="response-name">User Response:</p>
                                 <textarea
                                 className="baseline-input"
                                 id="userInput"
-                                value={userResponse}
-                                onChange={handleUserInput}
+                                value={userSecondResponse}
+                                onChange={handleUserSecondInput}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Explain the prompt question..."
                                 rows={4}
                                 />
                                 <div>
-                                <button className="gpt-button" onClick={handleClick} disabled={!userResponse.trim()}>
+                                <button className="gpt-button" onClick={() => handleClick(2)} disabled={!userSecondResponse.trim()}>
                                     Submit Response
                                 </button>
                                 </div>
+                            </div> : <div className="question-container user">
+                        <p className="response-name">User Response:</p>
+                        {userSecondResponse}
+                        </div>
+                        )
+                    }
+                    {
+                        secondSubmitted && (
+                            <div className="question-container">
+                            <img src={robot} className="gpt-image" />
+                            AI Assistance: {secondScore > -1 && `You scored ${secondScore}`}
+                            <div className="assistant" dangerouslySetInnerHTML={{ __html: secondFeedback ? highlightCode(secondFeedback, "code-highlight") : '...'}} />
                             </div>
+                        )
+                    }
+                    {
+                        secondScore >= 0 && (
+                            <div className="question-container assistant" id="passed">Click on <span className="inline-word">Continue</span> button and check for the correct answer</div>
                         )
                     }
                 </>
@@ -256,4 +304,5 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code }) => {
             </div>
         </div>
     );
+
 };
