@@ -22,6 +22,7 @@
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
         "react-icons": "^4.10.1",
+        "react-monaco-editor": "^0.54.0",
         "styled-components": "^6.0.5",
         "tree-sitter": "^0.20.5",
         "web-tree-sitter": "^0.20.8"

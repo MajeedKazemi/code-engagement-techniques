@@ -2,7 +2,7 @@ import React, { useEffect, createContext, useState } from "react";
 import { DragDropContext, DragStart, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable } from "react-beautiful-dnd";
 import { convertTime } from "../../utils/shared";
 import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
-
+import { HighlightedPart } from "../docs/highlight-code";
 
 
 interface ParsonsGameProps {
@@ -29,26 +29,12 @@ interface IColumn {
     wantedIndentation: number;
   }
 
-// Add indentationLevel to each task
-// const tasks = [
-//   { id: "1", content: "First task", indentationLevel: 0, onDest: false},
-//   { id: "2", content: "Second task", indentationLevel: 0, onDest: false},
-//   { id: "3", content: "Third task", indentationLevel: 0, onDest: false },
-//   { id: "4", content: "Fourth task", indentationLevel: 0, onDest: false },
-//   { id: "5", content: "Fifth task", indentationLevel: 0, onDest: false},
-// ];
 function jaccardSimilarityIndex(str1: string, str2: string): boolean {
     // Remove spaces from both strings and compare for exact identity
     const trimmedStr1 = str1.replace(/\s/g, "");
     const trimmedStr2 = str2.replace(/\s/g, "");
     return trimmedStr1 === trimmedStr2;
   }
-
-  
-  
-  
-
-
 
 export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeight }) => {
     const [inputValues, setInputValues] = useState<Record<string, string[]>>({});
@@ -62,7 +48,8 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     const [startTime, setStartTime] = useState(Date.now());
     const [gameOver, setGameOver] = useState(false);
     const [wrongIds, setWrongIds] = useState<Number[]>([]);
-    //for each of the line, add 30 seconds
+    const [maxIndent, setMaxIndent] = useState(0);
+
     const timeLimit = 60 * tasks.length;
 
     const taskStatus = {
@@ -159,6 +146,13 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         };
     }, [columns]);
 
+    useEffect(() => {
+      const maxIndentFromDone = Math.max(...columns.done.items.map(item => item.indentationLevel));
+      setMaxIndent(maxIndentFromDone);
+
+  }, [columns.done.items]);
+
+
 
 
     const handleInputChange = (itemId: string, inputIndex: number, inputValue: string) => {
@@ -250,6 +244,29 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
       }
     
     }
+
+    const VerticalLines: React.FC = () => {
+      return (
+        <>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+            key={i}  
+            className="indent-line" 
+            style={{ 
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: `${3 * (i+1)}rem`,
+              width: '1px',
+              background: 'black',
+              opacity: i < maxIndent ? 0.2 : 0,
+            }}
+            id={`indent-line-${i+1}`} 
+            />
+          ))}
+        </>
+      );
+    };
          
   
     function checkCode(){
@@ -374,6 +391,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             <Droppable droppableId={columnId}>
               {(provided, snapshot) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} style={{ padding: 4, height: sectionHeight ? `${sectionHeight}px` : 'auto' }}>
+                  {columnId === 'done' && <VerticalLines/>}
                   {column.items.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>
                       {(provided, snapshot) => (
@@ -385,6 +403,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                             userSelect: "none",
                             marginLeft: `${3 * item.indentationLevel}rem`,
                             ...provided.draggableProps.style,
+                            display: "flex",
                           }}
                           id = {"drag"+item.id}
                           className="parsons-game-draggable"
@@ -401,8 +420,11 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                                 value={(inputValues[item.id] && inputValues[item.id][index - 1]) || ""}
                                 />
                             ) : null}
-                            {part}
+                            
+                            {/* {part} */}
+                            <HighlightedPart part={part} />
                             </React.Fragment>
+                            
                         ))}
                         </div>
                       )}

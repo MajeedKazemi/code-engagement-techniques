@@ -76,6 +76,15 @@
     font-family: "Courier New", Courier, monospace;
 }
 
+.code-highlight {
+    color:#00538c;
+    font-weight: 600;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 2px 8px;
+    font-family: "Courier New", Courier, monospace;
+}
+
 .build-in-function {
     color:#1e8c00;
     font-weight: 600;

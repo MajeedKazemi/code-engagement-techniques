@@ -1,8 +1,6 @@
 .self-explain-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     margin: 20px 0px;
     width: 100%;
 }
@@ -11,3 +9,48 @@
     height: 20vh;
     width: 100%;
 }
+
+.questionLineDecoration {
+    background-color: yellow;
+}
+
+.question-container {
+    margin-top: 2rem;
+    background-color: #0084ffab;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 10px;
+    width: 70%;
+    color: white;
+    float: left;
+}
+
+.self-explain-response #user-prompts{
+    overflow-y: scroll;
+    height: 35vh;
+
+}
+
+.question-container.user {
+    background-color: #f4f4f8;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 10px;
+    width: 70%;
+    color:black;
+    float: right;
+}
+
+.question-container .response-name{
+    text-align: right;
+    margin-right: 0;
+}
+
+.question-container .assistant {
+    color: white;
+}
+
+.self-explain-response .gpt-button {
+    width: 100%;
+}
+

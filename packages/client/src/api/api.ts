@@ -326,6 +326,46 @@ export const apiGetHierarchicalCodex = (
         }),
     });
 
+export const apiGetGenerateQuestionByCode = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-explain/question", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
+export const apiGetFeedbackByResponse = (
+    token: string | null | undefined,
+    code: string,
+    context: string,
+    question: string,
+    response: string,
+) =>
+    fetch(env.API_URL + "/api/technique-explain/feedback", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            context: context,
+            question: question,
+            response: response,
+        }),
+    });
+
 export const apiGetParsonsCodex = (
     token: string | null | undefined,
     description: string,
