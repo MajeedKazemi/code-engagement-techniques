@@ -16,7 +16,7 @@ selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                    "Based on the provided Python [code] snippets, the goal is to generate a random question base on a random highlight code block that asks the user to show their understanding of the code. the portion of [code] should be around 1 to 5 lines, related to a block of logic, the questions should be open-ended. Make sure to highlight the keywords with their types in the question. Make sure only highlight and ask the meaningful questions that related to the structure and logic of the code. (avoid highlighting print statements, variable initializations, module imports, etc.)",
+                    "Based on the provided Python [code] snippets, the goal is to generate a random question base on a random highlight code block that asks the user to show their understanding of the code. the portion of [code] should be 1 line of code, related to a block of logic, the questions should be open-ended (for example: is there a way to change the line to something else to acheive the same goal, explain the highlighted code, how does this line of code help the overall logic and goal, etc). Make sure to highlight the keywords with their types in the question. Make sure only highlight and ask the meaningful questions that related to the structure and logic of the code. If the code snippet is long, then you can ask multiple questions. i.e 10 lines of code, ask 2 questions, each question should be 1 line of code, 15 lines of code, ask 3 questions, etc.",
             },
             {
                 role: "user",
@@ -32,7 +32,24 @@ selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `[line]3[question]How does the selected portion of the code contribute to the overall functionality of the program?[end-question][end]`,
+                content: `[line]2[question]In the line \`total = sum(numbers)\`, can you explain what the built-in function \`sum(numbers){variable}\` does with the variable \`numbers{variable}\`[end-question]
+                [line]7[question]What can be the alternate ways to pass the arguments to the highlighted line, and does changing the way arguments are passed affect the output of the function in any way?[end-question][end]`,
+            },
+
+            {
+                role: "user",
+                content: `#some comment
+
+                def generate_fibonacci_sequence(n):
+                sequence = [0, 1]
+                while len(sequence) < n:
+                    next_num = sequence[-1] + sequence[-2]
+                    sequence.append(next_num)
+                return sequence`,
+            },
+            {
+                role: "assistant",
+                content: `[line]6[question]On the line \`next_num = sequence[-1] + sequence[-2]\`, can you explain the use of the negative indices \`sequence[-1]{variable}\` and \`sequence[-2]{variable}\` and how they contribute to the logic of the Fibonacci sequence? [end-question][end]`,
             },
 
             {
@@ -46,32 +63,33 @@ selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
             
             sequence_length = 8
             fib_sequence = generate_fibonacci_sequence(sequence_length)
-            print("Fibonacci Sequence:", fib_sequence)`,
-            },
-            {
-                role: "assistant",
-                content: `[line]4[question]In the context of generating a Fibonacci sequence, explain the significance of the selected code snippet and how it contributes to the construction of the sequence?[end-question][end]`,
-            },
-
-            {
-                role: "user",
-                content: `def analyze_student_performance(scores):
-                total_students = len(scores)
-                average_score = sum(scores) / total_students
-                highest_score = max(scores)
-                lowest_score = min(scores)
-                return average_score, highest_score, lowest_score
-            
-            student_scores = [85, 90, 78, 92, 88]
-            average, highest, lowest = analyze_student_performance(student_scores)
-            print("Average Score:", average)
-            print("Highest Score:", highest)
-            print("Lowest Score:", lowest)
+            print("Fibonacci Sequence:", fib_sequence)
             `,
             },
             {
                 role: "assistant",
-                content: `[line]2-5[question]How does the selected lines calculate and store the necessary statistical information about the student scores?[end-question][end]`,
+                content: `[line]3[question]In the highlighted line \`while len(sequence) < n:\`, explain the purpose of the condition \`len(sequence) < n\`. How does this control the length of the Fibonacci sequence generated? [end-question]
+                [line]8[question]Can you explain what the line \`fib_sequence = generate_fibonacci_sequence(sequence_length)\` does? What is the purpose of the variable \`fib_sequence{variable}\` in this context?[end-question][end]`,
+            },
+
+            {
+                role: "user",
+                content: `def assess_exam_results(results):
+                passed = 0
+                for result in results:
+                    if result >= 60:
+                        passed += 1
+                pass_percentage = (passed / len(results)) * 100
+                return passed, pass_percentage
+            
+            exam_results = [78, 92, 55, 60, 45, 70, 80]
+            passed_count, pass_percentage = assess_exam_results(exam_results)`,
+            },
+            {
+                role: "assistant",
+                content: `[line]4[question]In the line \`if result >= 60:\` can you explain the logic behind this condition? How does this help to drive the desired outcome of the overall function? [end-question]
+
+                [line]10[question]Can you explain what's happening in this line of code \`passed_count, pass_percentage = assess_exam_results(exam_results)\`? How does this line impact the display of the function's results? [end-question][end]`,
             },
 
             {
@@ -91,43 +109,8 @@ selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
             },
             {
                 role: "assistant",
-                content: `[line]2-5[question]Why is calculating the total number of students \`total_students{variable}\` important in this context, and how is it used later in the code?[end-question][end]`,
-            },
-
-            {
-                role: "user",
-                content: `def assess_exam_results(results):
-                passed = 0
-                for result in results:
-                    if result >= 60:
-                        passed += 1
-                pass_percentage = (passed / len(results)) * 100
-                return passed, pass_percentage
-            
-            exam_results = [78, 92, 55, 60, 45, 70, 80]
-            passed_count, pass_percentage = assess_exam_results(exam_results)`,
-            },
-            {
-                role: "assistant",
-                content: `[line]3-5[question]Describe how the selected lines iterates through the exam results and update the \`passed{variable}\` variable based on the condition.[end-question][end]`,
-            },
-
-            {
-                role: "user",
-                content: `def assess_exam_results(results):
-                passed = 0
-                for result in results:
-                    if result >= 60:
-                        passed += 1
-                pass_percentage = (passed / len(results)) * 100
-                return passed, pass_percentage
-            
-            exam_results = [78, 92, 55, 60, 45, 70, 80]
-            passed_count, pass_percentage = assess_exam_results(exam_results)`,
-            },
-            {
-                role: "assistant",
-                content: `[line]6[question]In the function \`assess_exam_results()\`, explain \`pass_percentage = (passed / len(results)) * 100\` statement and describe its role in the overall function.[end-question][end]`,
+                content: `[line]3[question]On the line \`average_score = sum(scores) / total_students\`, can you explain what the built-in function \`sum(scores){variable}\` does? How does it help in the calculation of the average score? [end-question]
+                [line]8[question]Could you describe what the highlighted line of code \`average, highest, lowest = analyze_student_performance(student_scores)\` does? Why is the \`analyze_student_performance{function}\` function called on the variable \`student_scores{variable}\`?[end-question][end]`,
             },
         ];
 
@@ -149,11 +132,9 @@ selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
         if (result.data.choices && result.data.choices?.length > 0) {
             const questions = result.data.choices[0].message?.content;
             if(questions){
-                const resultString = convertStringToInterface(questions);
+                const resultArray = convertStringToInterface(questions);
                 res.json({
-                    start: resultString.start,
-                    end: resultString.end,
-                    question: resultString.question,
+                    result: resultArray,
                     success: true,
                 });
             }
@@ -166,40 +147,27 @@ selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
 });
 
 interface QuestionInterface {
-    start: number;
-    end: number;
+    line: number;
     question: string;
 }
 
-function convertStringToInterface(str: string): QuestionInterface {
-    let start: number = 0, end: number = 0, question: string = '';
-    // extract the line(s) and question using regex
-    const lineMatch = str.match(/\[line\](.+)\[question\]/);
-    const questionMatch = str.match(/\[question\](.+)\[end-question\]/);
+function convertStringToInterface(str: string): QuestionInterface[] {
+    const strQuestions = str.split('[end-question]');
+    
+    let questions: QuestionInterface[] = strQuestions
+        .filter(questionStr => questionStr.includes('[line]') && questionStr.includes('[question]')) 
+        .map(questionStr => {
+            let lineStrSplit = questionStr.split('[line]');
+            let lineStr = lineStrSplit[1];
+            let lineQuestionSplit = lineStr.split('[question]');
+            
+            let line = lineQuestionSplit[0] ? parseInt(lineQuestionSplit[0]) : 0; // defaulting to 0
+            let question = lineQuestionSplit[1] ? lineQuestionSplit[1].trim() : ''; // defaulting to empty string
 
+            return { line, question };
+        });
 
-    // If the line has dash, split and convert it into number
-    if (lineMatch && lineMatch[1].includes('-')) {
-        const lines = lineMatch[1].split('-');
-        start = parseInt(lines[0], 10);
-        end = parseInt(lines[1], 10);
-    }
-    // If the line doesn't have dash, convert the line into number
-    else if (lineMatch) {
-        start = parseInt(lineMatch[1], 10);
-        end = start;
-    }
-
-    // Extract the question
-    if (questionMatch) {
-        question = questionMatch[1];
-    }
-
-    return {
-        start,
-        end,
-        question,
-    };
+    return questions;
 }
 
 selfExplainRouter.post("/feedback", verifyUser, async (req, res, next) => {

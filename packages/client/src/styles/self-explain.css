@@ -25,17 +25,58 @@
     float: left;
 }
 
-.self-explain-response #user-prompts{
+.self-explain-response .user-prompts{
     overflow-y: scroll;
     height: 35vh;
     scroll-behavior: smooth;
 }
 
-.self-explain-response #user-prompts::-webkit-scrollbar {
+.self-explain-response .user-prompts::-webkit-scrollbar {
     width: 8px;
   }
+
+.buttons-control {
+    display: flex;
+    margin: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons-control button{
+    color: #007bff;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    margin:0 2px;
+    padding: .5em .75em;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: .25rem;
+    text-decoration: none;
+    transition: .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.buttons-control button:focus, .buttons-control button:hover {
+    color: #0056b3;
+    background-color: #eee;
+    border-color: #dee2e6;
+    text-decoration: none;
+    outline: 0;
+}
+
+.buttons-control button:active {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+
+.buttons-control button.active {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
   
-.self-explain-response #user-prompts::-webkit-scrollbar-thumb {
+.self-explain-response .user-prompts::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
   }
@@ -62,6 +103,11 @@
 .self-explain-response .gpt-button {
     width: 100%;
 }
+.self-explain-response .gpt-button.next-button{
+    margin-top: 2rem;
+    width: 40%;
+    margin-left: auto;
+}
 
 .inline-word {
     display: inline-block; 
@@ -71,4 +117,8 @@
     padding: 0px 5px;
     border-radius: 15px;
 }
+
+.no-copy {
+    user-select: none;
+  }
 

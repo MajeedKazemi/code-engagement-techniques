@@ -18,6 +18,7 @@
     "dependencies": {
         "@types/react-beautiful-dnd": "^13.1.4",
         "bootstrap": "^5.3.0",
+        "framer-motion": "^10.16.1",
         "react-beautiful-dnd": "^13.1.1",
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",

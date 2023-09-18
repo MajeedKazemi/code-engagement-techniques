@@ -8,6 +8,7 @@ import { apiGetBaselineCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import { SelfExplain } from '../responses/self-explain';
+import { GPTLoader } from '../loader';
 
 export let selfExplainCancelClicked = false;
   
@@ -327,7 +328,9 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                   </p>
 
                   {waiting && (
-                    <p>Generating</p>
+                    <div className="gptLoader">
+                      <GPTLoader />
+                    </div>
                   )}
                   {!waiting && (
                   
@@ -336,7 +339,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                 </div>
                 <div className="modal-footer">
                 <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                    Continue
+                    Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Cancel
