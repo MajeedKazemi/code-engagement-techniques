@@ -384,6 +384,7 @@ export const apiGetParsonsCodex = (
         }),
     });
 
+
 export const apiGetCodeToTokenCodex = (
     token: string | null | undefined,
     description: string,
@@ -420,6 +421,24 @@ export const apiGetCodeToPseudoCodex = (
             context: context,
         }),
     });
+
+export const apiGetLinesToRewrite = (
+        token: string | null | undefined,
+        code: string,
+        context: string
+    ) =>
+        fetch(env.API_URL + "/api/technique-tracing/linesToRewrite", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                code: code,
+                context: context,
+            }),
+        });
 
 export const apiLogEvents = (
     token: string | null | undefined,

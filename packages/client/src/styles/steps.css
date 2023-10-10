@@ -1,0 +1,159 @@
+/* Timeline container */
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: -5px;
+    margin-top: 20px;
+  }
+
+  .excution-generator{
+    padding-bottom: 2rem;
+    overflow-y: scroll;
+    height: 55vh;
+  }
+  
+
+  .timeline-slider {
+    width: 100%; /* Make the slider 100% wide */
+    padding: 0 20px; /* Add padding for handle visibility */
+  }
+  
+  .slider {
+    width: 42vw; /* Make the slider track 100% wide */
+    background-color: #ccc; /* Track color */
+    position: relative;
+    border-radius: 20px; /* Add border-radius for rounded edges */
+  }
+  
+  /* Slider handle (rectangle) */
+  .slider::-webkit-slider-thumb {
+    width: 16px; /* Width of the rectangle handle */
+    height: 20px; /* Height of the rectangle handle */
+    background-color: #007bff; /* Handle color */
+    border: none;
+    border-radius: 0; /* Remove border-radius to make it rectangular */
+  }
+  
+  /* Slider handle (rectangle) on hover */
+  .slider::-webkit-slider-thumb:hover {
+    background-color: #0056b3; /* Handle hover color */
+  }
+
+  
+  /* Timeline controls (buttons) */
+  .controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  /* Button styles (customize as needed) */
+  .timeline-container button {
+    padding: 8px 28px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e4e5e6;
+    color: #0056b3;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Button hover effect */
+  }
+  
+  .timeline-container button:hover {
+    background-color: #b6b8b9; /* Button hover color */
+  }
+  
+  .print-output {
+    background-color: #023231;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
+    overflow-y: auto;
+    border-radius: 6px;
+    position: relative;
+    width: 40vw;
+    height: 25vh;
+    padding: 12px 0 12px 0;
+}
+
+.print-output p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 2px 12px 2px 12px;
+}
+
+.content-wrapper {
+    display: flex;
+  }
+  
+  .frame,
+  .objects {
+    flex: 1; /* Each div takes equal width */
+    margin-right: 10px; /* Add margin for spacing */
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Adjust the margin as needed */
+  }
+
+  
+  .green-arrow {
+    color: green;
+    font-size: 30px;
+    opacity: 0.5;
+    margin-top: -7px;
+  }
+  
+  .red-arrow {
+    color: red;
+    font-size: 30px;
+    margin-top: -7px;
+  }
+
+  .myCurrentLineDecoration {
+    background: green;
+    opacity: 0.3;
+  }
+  
+  .myNextLineDecoration {
+    background: red;
+    opacity: 0.3;
+  }
+
+  .excution-container{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .print-container{
+    width: 50%;
+    margin-right: 2rem;
+  }
+
+  .code-editor {
+    width: 100%;
+    background: #fafafa;
+    color: #353535;
+    padding: 10px;
+    font-family: Menlo, Monaco, 'Courier New';
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  
+  .code-editor .line {
+    display: flex;
+    height: 40px;
+  }
+  
+  .code-editor .line-number {
+    width: 30px;
+    opacity: 0.5;
+  }
+  
+  .code-editor .line-content {
+    white-space: pre;
+  }
+  

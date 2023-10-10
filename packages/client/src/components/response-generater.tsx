@@ -15,6 +15,7 @@ import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/
 import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-generator';
 import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/write-over-generator';
 import SelfExplainGenerateCode, { selfExplainCancelClicked } from './techniques/self-explanation';
+import ExcutionGenerateCode from './techniques/excution-generator';
 
 let insertedCode = "";
 
@@ -168,6 +169,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "selfexplain":
         generatedCodeComponent =
           <SelfExplainGenerateCode prompt={userInput} editor={editor}/>
+        break;
+      case "stepByStep":
+        generatedCodeComponent =
+          <ExcutionGenerateCode prompt={userInput} editor={editor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
@@ -499,7 +504,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'token';
   // const technique = 'parsons';
   // const technique = 'writeover';
-  const technique = 'selfexplain';
+  // const technique = 'selfexplain';
+  const technique = 'stepByStep';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

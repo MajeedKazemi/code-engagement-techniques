@@ -43,9 +43,165 @@ export function initPythonShell(server: http.Server) {
                 });
 
                 socket.on("python", async (data: any) => {
-                    const code = `${CPU_LIMITER_CODE}\n${data.code}`;
+                
+
+                    if(data.type === 'trace') {
+                        const code = `${CPU_LIMITER_CODE}\ndef main():\n${data.code.split('\n').map((line: string) => '    ' + line).join('\n')}\n${TRACING_CODE}`;
+                        try {
+                            fs.writeFileSync("main.py", code);
+                        } catch (err) {
+                            console.error("fs: ", err);
+                        }
+
+                        let startTime = Date.now();
+                        let msgCount = 0;
+
+                        pyshell = new PythonShell(
+                            "main.py",
+                            {},
+                            new Transform({
+                                transform(chunk, encoding, callback) {
+                                    callback(null, chunk.toString());
+                                },
+                            })
+                        );
+
+                        pyshell.on("error", (err: any) => {
+                            console.error("error: ", err);
+                        });
+
+                        pyshell.on("close", () => {
+                            io.to(data.from).emit("python", {
+                                type: "close",
+                            });
+                        });
+
+                        pyshell.on("pythonError", (err: any) => {
+                            let error = "";
+
+                            if (err.traceback && err.traceback !== "") {
+                                error = err.traceback;
+                            } else {
+                                error = err.message;
+                            }
+
+                            const lineNumber = error.match(/line (\d+)/);
+
+                            if (lineNumber) {
+                                error = error.replace(
+                                    lineNumber[1],
+                                    (parseInt(lineNumber[1]) - 10).toString()
+                                );
+                            }
+
+                            error = error.replace(/File ".*", /, "");
+
+                            io.to(data.from).emit("python", {
+                                type: "stderr",
+                                err: error,
+                            });
+                        });
+
+                        pyshell.on("message", async (message) => {
+                            msgCount += message.length;
+
+                            io.to(data.from).emit("python", {
+                                type: "stdout",
+                                out: message,
+                            });
+
+                            // limit the number of messages per second
+                            if (msgCount > 10000) {
+                                if (Date.now() - startTime < 1000) {
+                                    pyshell.kill();
+                                }
+
+                                msgCount = 0;
+                                startTime = Date.now();
+                            }
+                        });
+                    }
+
+                    if(data.type === 'track') {
+                        const code = `${CPU_LIMITER_CODE}\ndef main():\n${data.code.split('\n').map((line: string) => '    ' + line).join('\n')}\n${data.input}\n${TRACK_VARIABLE}`;
+                        // console.log(code);
+                        try {
+                            fs.writeFileSync("main.py", code);
+                        } catch (err) {
+                            console.error("fs: ", err);
+                        }
+
+                        let startTime = Date.now();
+                        let msgCount = 0;
+
+                        pyshell = new PythonShell(
+                            "main.py",
+                            {},
+                            new Transform({
+                                transform(chunk, encoding, callback) {
+                                    callback(null, chunk.toString());
+                                },
+                            })
+                        );
+
+                        pyshell.on("error", (err: any) => {
+                            console.error("error: ", err);
+                        });
+
+                        pyshell.on("close", () => {
+                            io.to(data.from).emit("python", {
+                                type: "close",
+                            });
+                        });
+
+                        pyshell.on("pythonError", (err: any) => {
+                            let error = "";
+
+                            if (err.traceback && err.traceback !== "") {
+                                error = err.traceback;
+                            } else {
+                                error = err.message;
+                            }
+
+                            const lineNumber = error.match(/line (\d+)/);
+
+                            if (lineNumber) {
+                                error = error.replace(
+                                    lineNumber[1],
+                                    (parseInt(lineNumber[1]) - 10).toString()
+                                );
+                            }
+
+                            error = error.replace(/File ".*", /, "");
+
+                            io.to(data.from).emit("python", {
+                                type: "stderr",
+                                err: error,
+                            });
+                        });
+
+                        pyshell.on("message", async (message) => {
+                            msgCount += message.length;
+
+                            io.to(data.from).emit("python", {
+                                type: "stdout",
+                                out: message,
+                            });
+
+                            // limit the number of messages per second
+                            if (msgCount > 10000) {
+                                if (Date.now() - startTime < 1000) {
+                                    pyshell.kill();
+                                }
+
+                                msgCount = 0;
+                                startTime = Date.now();
+                            }
+                        });
+                    }
 
                     if (data.type === "run") {
+                        const code = `${CPU_LIMITER_CODE}\n${data.code}`;
                         try {
                             fs.writeFileSync("main.py", code);
                         } catch (err) {
@@ -156,3 +312,35 @@ const CPU_LIMITER_CODE = [
     `    signal.signal(signal.SIGXCPU, time_expired)`,
     `set_cpu_runtime()`,
 ].join("\n");
+
+// put it at the end
+
+const TRACING_CODE = [
+    `import sys`,
+    `import trace`,
+    `tracer = trace.Trace(
+        ignoredirs=[sys.prefix, sys.exec_prefix],
+        trace=1)`,
+    `tracer.run('main()')`
+].join("\n")
+
+//inputs is the array of storedInputs, +\n for each element
+
+const TRACK_VARIABLE = [
+    `import sys`,
+    `import io`,
+    `def localtrace(frame, why, arg):`,
+    `   if why == 'call':`,
+    `       return localtrace`,
+    `   elif why == 'line':`,
+    `       locals_filtered = {k: v for k, v in frame.f_locals.items() if not callable(v)}`,
+    `       print(locals_filtered)`,
+    `   return localtrace`,
+    `sys.stdin = io.StringIO(''.join(inputs))`,
+    `sys.settrace(localtrace)`,
+    `main()`,
+    `sys.settrace(None)`
+].join("\n")
+
+
+

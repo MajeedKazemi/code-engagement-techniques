@@ -18,6 +18,7 @@ import {
 import { Baseline } from "./response-generater";
 import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
+import ExcutionTimeline from "./excution-timeline";
 
 interface EditorProps {
     taskId: string;
@@ -40,6 +41,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     >([]);
     const [terminalInput, setTerminalInput] = useState<string>("");
     const [running, setRunning] = useState(false);
+    const [excution, setExcution] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const [lastEditedAt, setLastEditedAt] = useState<Date | null>(null);
     const [saved, setSaved] = useState(true);
@@ -224,6 +226,26 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         };
     }, []);
 
+    const handleClickStartExcution = () => {
+        if(!excution){
+            //change output height
+            const outputElement = document.querySelector('.output') as HTMLElement;
+            if (outputElement) {
+                outputElement.style.height = 'calc(45% - 220px)';
+            }
+            //get the excution steps
+
+            setExcution(true);
+        }else{
+            //change output height
+            const outputElement = document.querySelector('.output') as HTMLElement;
+            if (outputElement) {
+                outputElement.style.height = 'calc(45% - 88px)';
+            }
+            setExcution(false);
+        }
+    }
+
     const handleClickRun = () => {
         if (!running) {
             socket?.emit("python", {
@@ -317,6 +339,36 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         )}
                     </button>
 
+                    {/* <button
+                        className={`editor-button ${
+                            excution ? "stop-button" : "run-button"
+                        }`}
+                        style={{marginLeft: '0.5rem'}}
+                        onClick={handleClickStartExcution}
+                    >
+                        {" "}
+                        {!excution ? (
+                            <Fragment>
+                                {" "}
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    color="currentColor"
+                                    stroke="none"
+                                    strokeWidth="0"
+                                    fill="currentColor"
+                                    className="play-icon"
+                                >
+                                    <path d="M20.2253 11.5642C20.5651 11.7554 20.5651 12.2446 20.2253 12.4358L5.74513 20.5809C5.41183 20.7683 5 20.5275 5 20.1451L5 3.85492C5 3.47251 5.41183 3.23165 5.74513 3.41914L20.2253 11.5642Z"></path>
+                                </svg>
+                                Start
+                            </Fragment>
+                        ) : (
+                            <Fragment>Stop</Fragment>
+                        )}
+                    </button> */}
+
                     <div className="quick-editing-buttons-container">
                         <button
                             className={`editor-button ${
@@ -346,6 +398,9 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         </button>
                     </div>
                 </div>
+                {/* {excution && <div>
+                    <ExcutionTimeline totalSteps={10} setCurrentStep={setCurrentStep} currentStep={currentStep} />
+                </div>} */}
                 <div className="output">
                     {output.map((i, index) => (
                         <p
@@ -399,7 +454,8 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            <Baseline editor={editor}/>
+            {!excution && <Baseline editor={editor}/>}
+            {/* {excution && <ExcutionSteps editor={editor} currentStep={currentStep}/>} */}
         </Fragment>
     );
 });
