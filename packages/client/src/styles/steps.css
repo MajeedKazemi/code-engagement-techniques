@@ -83,9 +83,9 @@
     padding: 2px 12px 2px 12px;
 }
 
-.content-wrapper {
+/* .content-wrapper {
     display: flex;
-  }
+  } */
   
   .frame,
   .objects {
@@ -156,4 +156,60 @@
   .code-editor .line-content {
     white-space: pre;
   }
-  
+
+
+.frame-container {
+  color: #333; /* default color for font */
+  border: 1px solid #ccc; /* Adding border */
+  padding: 10px; /* Adding some padding */
+  margin-bottom: 10px; /* Adding some margin */
+  border-radius: 5px; /* Rounding corners */
+  font-family: 'Courier New', Courier, monospace; /* Changing font */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+  background-color: #f0f0f0; /* Adding light grey background */
+}
+
+.frame-container p:first-child {
+  font-weight: bold; /* Making the item.name bold */
+  margin-right: 10px; /* Adding some margin to the right for spacing */
+}
+
+.frame-container p:last-child {
+  flex-grow: 1;
+}
+
+.frame-container.int {
+  color: rgb(63, 81, 181); /* Indigo color */
+}
+
+.frame-container.str {
+  color: rgb(0, 188, 212); /* Cyan color */
+}
+
+.frame-container.bool {
+  color: rgb(46, 125, 50); /* Dark green color */
+}
+
+.frame-container.dict {
+  color: rgb(255, 87, 34); /* Deep orange color */
+}
+
+.frame-container.list {
+  color: rgb(233, 30, 99); /* Pink color */
+}
+
+.frame-container.tuple {
+  color: rgb(156, 39, 176); /* Purple color */
+}
+
+.timeline-container .controls button:disabled{
+  background-color: #bbbdbf;
+  cursor: not-allowed;
+}
+
+.frame .hint{
+  color: red;
+}

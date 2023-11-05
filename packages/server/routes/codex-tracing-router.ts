@@ -255,6 +255,174 @@ function convertStringToCodeObject(codeString: string): CodeObject {
     return { format, codes };
 }
 
+interface  questionObject{
+    step: number,
+    variable: string,
+}
+
+function convertStringToQuestionObject(codeString: string): questionObject[] {
+    return codeString
+        .split('\n') // split the string into individual parts based on \n
+        .map(line => {
+            const [stepPart, variablePart] = line.split(','); // split each line into step and variable parts
+            const step = Number(stepPart.split(': ')[1]); // extract the number from the step part
+            const variable = variablePart.split(': ')[1]; // extract the name from the variable part
+            return { step, variable };
+        });
+}
+ 
+
+tracingRouter.post("/generateQuestion", verifyUser, async (req, res, next) => {
+    const { code, context } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (code !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+                    "Given the code snippet in python, the goal for showing these code is for noive python programmer to understand the changes of variables when tracing the code.  By the given {excutionsteps} and {code},  generate a list of questions {step, variable} regarding the next value for tracing steps. for each question, generate the step number and trace step number. Only ask meaningful questions, for example, changes of object that will change value in each step. ask 2-3 questions per code snippet. Make sure do not include any questions involving the user input or random. ",
+            },
+            {
+                role: "user",
+                content: 
+`{excutionSteps}:[{"step":1,"currLine":1,"nextLine":14,"printOutput":[],"frame":[]},{"step":2,"currLine":14,"nextLine":15,"printOutput":[],"frame":[{"name":"n","type":"int","value":5}]},{"step":3,"currLine":15,"nextLine":2,"printOutput":[],"frame":[{"name":"n","type":"int","value":5}]},{"step":4,"currLine":2,"nextLine":4,"printOutput":[],"frame":[{"name":"n","type":"int","value":5}]},{"step":5,"currLine":4,"nextLine":6,"printOutput":[],"frame":[{"name":"n","type":"int","value":5}]},{"step":6,"currLine":6,"nextLine":9,"printOutput":[],"frame":[{"name":"n","type":"int","value":5}]},{"step":7,"currLine":9,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1]}]},{"step":8,"currLine":10,"nextLine":11,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1]}]},{"step":9,"currLine":11,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1,1]}]},{"step":10,"currLine":10,"nextLine":11,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1,1]}]},{"step":11,"currLine":11,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1,1,2]}]},{"step":12,"currLine":10,"nextLine":11,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1,1,2]}]},{"step":13,"currLine":11,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1,1,2,3]}]},{"step":14,"currLine":10,"nextLine":12,"printOutput":[],"frame":[{"name":"n","type":"int","value":5},{"name":"fib","type":"str","value":[0,1,1,2,3]}]},{"step":15,"currLine":12,"nextLine":null,"printOutput":[],"frame":[]}]
+{code}:
+def generate_fibonacci(n):
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    else:
+        fib = [0, 1]
+        while len(fib) < n:
+            fib.append(fib[-1] + fib[-2])
+        return fib
+n = int(input("Enter a number: "))
+print(generate_fibonacci(n))`,
+            },
+            {
+                role: "system",
+                content: 
+`step: 10,variable: fib
+step: 12,variable: fib[end]`,
+            },
+            {
+                role: "user",
+                content: 
+`{excutionSteps}:[{"step":1,"currLine":1,"nextLine":14,"printOutput":[],"frame":[]},{"step":2,"currLine":14,"nextLine":15,"printOutput":[],"frame":[{"name":"n","type":"int","value":4}]},{"step":3,"currLine":15,"nextLine":2,"printOutput":[],"frame":[{"name":"n","type":"int","value":4}]},{"step":4,"currLine":2,"nextLine":4,"printOutput":[],"frame":[{"name":"n","type":"int","value":4}]},{"step":5,"currLine":4,"nextLine":6,"printOutput":[],"frame":[{"name":"n","type":"int","value":4}]},{"step":6,"currLine":6,"nextLine":9,"printOutput":[],"frame":[{"name":"n","type":"int","value":4}]},{"step":7,"currLine":9,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":4},{"name":"fib","type":"str","value":[0,1]}]},{"step":8,"currLine":10,"nextLine":11,"printOutput":[],"frame":[{"name":"n","type":"int","value":4},{"name":"fib","type":"str","value":[0,1]},{"name":"i","type":"int","value":2}]},{"step":9,"currLine":11,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":4},{"name":"fib","type":"str","value":[0,1,1]},{"name":"i","type":"int","value":2}]},{"step":10,"currLine":10,"nextLine":11,"printOutput":[],"frame":[{"name":"n","type":"int","value":4},{"name":"fib","type":"str","value":[0,1,1]},{"name":"i","type":"int","value":3}]},{"step":11,"currLine":11,"nextLine":10,"printOutput":[],"frame":[{"name":"n","type":"int","value":4},{"name":"fib","type":"str","value":[0,1,1,2]},{"name":"i","type":"int","value":3}]},{"step":12,"currLine":10,"nextLine":12,"printOutput":[],"frame":[{"name":"n","type":"int","value":4},{"name":"fib","type":"str","value":[0,1,1,2]},{"name":"i","type":"int","value":3}]},{"step":13,"currLine":12,"nextLine":null,"printOutput":[],"frame":[]}]
+{code}:
+def generate_fibonacci(n):
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    else:
+        fib = [0, 1]
+        for i in range(2, n):
+            fib.append(fib[i-1] + fib[i-2])
+        return fib
+
+n = int(input("Enter the length of the Fibonacci sequence: "))
+print(generate_fibonacci(n))`,
+            },
+            {
+                role: "system",
+                content: 
+`step: 8,variable: i
+step 11, variable: fib[end]`,
+            },
+            {
+                role: "user",
+                content: 
+`{excutionSteps}:[
+    {"step":1,"currLine":1,"nextLine":22,"printOutput":[],"frame":[]},
+    {"step":2,"currLine":22,"nextLine":23,"printOutput":[],"frame":[]},
+    {"step":3,"currLine":23,"nextLine":3,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]}]},
+    {"step":4,"currLine":3,"nextLine":3,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]}]},{"step":5,"currLine":3,"nextLine":3,"printOutput":[],"frame":[{"name":"x","type":"str","value":[1,3]}]},
+    {"step":6,"currLine":3,"nextLine":3,"printOutput":[],"frame":[{"name":"x","type":"str","value":[2,6]}]},
+    {"step":7,"currLine":3,"nextLine":3,"printOutput":[],"frame":[{"name":"x","type":"str","value":[8,10]}]},
+    {"step":8,"currLine":3,"nextLine":6,"printOutput":[],"frame":[{"name":"x","type":"str","value":[15,18]}]},
+    {"step":9,"currLine":6,"nextLine":8,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]}]},
+    {"step":10,"currLine":8,"nextLine":10,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]}]},{"step":11,"currLine":10,"nextLine":13,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[1,3]}]},
+    {"step":12,"currLine":13,"nextLine":14,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[1,3]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":13,"currLine":14,"nextLine":8,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[1,3]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":14,"currLine":8,"nextLine":10,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[1,3]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":15,"currLine":10,"nextLine":13,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[2,6]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":16,"currLine":13,"nextLine":14,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[2,6]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":17,"currLine":14,"nextLine":8,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3]]},{"name":"current","type":"str","value":[2,6]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":18,"currLine":8,"nextLine":10,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3],[8,10]]},{"name":"current","type":"str","value":[2,6]},{"name":"last","type":"str","value":[1,3]}]},
+    {"step":19,"currLine":10,"nextLine":13,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3],[8,10]]},{"name":"current","type":"str","value":[8,10]},{"name":"last","type":"str","value":[1,3]}]},{"step":20,"currLine":13,"nextLine":17,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3],[8,10]]},{"name":"current","type":"str","value":[8,10]},{"name":"last","type":"str","value":[1,3]}]},{"step":21,"currLine":17,"nextLine":8,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3],[8,10]]},{"name":"current","type":"str","value":[8,10]},{"name":"last","type":"str","value":[1,3]}]},{"step":22,"currLine":8,"nextLine":19,"printOutput":[],"frame":[{"name":"intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"sorted_intervals","type":"str","value":[[1,3],[2,6],[8,10],[15,18]]},{"name":"merged","type":"str","value":[[1,3],[8,10],[15,18]]},{"name":"current","type":"str","value":[8,10]},{"name":"last","type":"str","value":[1,6]}]},{"step":23,"currLine":19,"nextLine":null,"printOutput":[],"frame":[]}
+]
+{code}:
+def merge_intervals(intervals):
+    # Sort the intervals by their starting values
+    sorted_intervals = sorted(intervals, key=lambda x: x[0])
+
+    # Initialize the merged list with the first interval
+    merged = [sorted_intervals[0]]
+
+    for current in sorted_intervals:
+        # Get the last interval in the merged list
+        last = merged[-1]
+
+        # If the current interval overlaps with the last interval, merge them
+        if current[0] <= last[1]:
+            merged[-1] = (last[0], max(last[1], current[1]))
+        else:
+            # Otherwise, add the current interval to the merged list
+            merged.append(current)
+
+    return merged
+
+intervals = [(1, 3), (2, 6), (8, 10), (15, 18)]
+print(merge_intervals(intervals))  # Output: [(1, 6), (8, 10), (15, 18)]`,
+            },
+            {
+                role: "system",
+                content: 
+`step: 9, variable: sorted_intervals
+step: 11, variable: current
+step: 18, variable: merged[end]`,
+            },
+            
+        ];
+
+
+        messages.push({
+            role: "user",
+            content: `{excutionSteps}: ${context}\n{code}: ${code}`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo-16k",
+            messages,
+            temperature: 0.1,
+            max_tokens: 256,
+            stop: ["[end]"],
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+
+            if(response){
+                res.json({
+                    response: convertStringToQuestionObject(response),
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
 
   
   

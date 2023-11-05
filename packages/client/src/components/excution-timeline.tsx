@@ -5,9 +5,10 @@ interface TimelineProps {
   totalSteps: number;
   setCurrentStep: (currentStep: number) => void;
   currentStep: number;
+  stop: number;
 }
 
-const ExcutionTimeline: React.FC<TimelineProps> = ({ totalSteps, setCurrentStep, currentStep }) => {
+const ExcutionTimeline: React.FC<TimelineProps> = ({ totalSteps, setCurrentStep, currentStep, stop}) => {
 
   const handleStepChange = (newStep: number) => {
     setCurrentStep(newStep);
@@ -29,14 +30,21 @@ const ExcutionTimeline: React.FC<TimelineProps> = ({ totalSteps, setCurrentStep,
   };
 
   const handleNextClick = () => {
-    if (currentStep < totalSteps - 1) {
+    if (currentStep <= totalSteps - 1) {
       handleStepChange(currentStep + 1);
     }
   };
 
   const handleLastClick = () => {
-    handleStepChange(totalSteps - 1);
+      if(currentStep < stop){
+        handleStepChange(stop);
+      }else{
+        handleStepChange(totalSteps - 1);
+      }
   };
+
+  const isLastStep = currentStep >= totalSteps - 1;
+  const isNextStepAfterStop = currentStep >= stop;
 
   return (
     <div className="timeline-container">
@@ -55,8 +63,8 @@ const ExcutionTimeline: React.FC<TimelineProps> = ({ totalSteps, setCurrentStep,
       <div className="controls">
         <button onClick={handleFirstClick}>&lt;&lt; First</button>
         <button onClick={handlePrevClick}>&lt; Prev</button>
-        <button onClick={handleNextClick}>Next &gt;</button>
-        <button onClick={handleLastClick}>Last &gt;&gt;</button>
+        <button disabled={isLastStep || isNextStepAfterStop} onClick={handleNextClick}>Next &gt;</button>
+        <button disabled={isLastStep || isNextStepAfterStop} onClick={handleLastClick}>Last &gt;&gt;</button>
       </div>
       <p style={{ fontSize: '14px', marginTop: '1rem'}}>
         Step {currentStep + 1} of {totalSteps}

@@ -197,7 +197,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         const isSequential = areIdsSequential();
         console.log(allTrue, isSequential, areWantedIndentationsEqual());
         // setCompleted(allTrue);
-        setCompleted(allTrue && isSequential && areWantedIndentationsEqual());
+        setCompleted(isSequential && areWantedIndentationsEqual());
       }, [tasks, columns]);
 
 

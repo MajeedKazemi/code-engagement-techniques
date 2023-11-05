@@ -191,13 +191,25 @@ export const CodingTasks = [
     // ),
     new AuthoringTask(
         "1a",
-        "Write a program that creates a variable called <i>sum_even</i> will compute the sum of even numbers from 1 to 100 (inclusive), and print the sum.\n Then, generate the two random values from 1 to the <i>sum_even</i>, and check if both values are <b>odd</b> numbers.",
-        [["output: <b>The sum is 2550</b>"]],
-        [`print("I'm Wall-E!")`].join("\n"),
+        "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.:<br>\
+        Examples:<br>\
+        <b>Input</b>: [(1, 3), (2, 6), (8, 10), (15, 18)]:<br>\
+        <b>Output</b>: [(1, 6), (8, 10), (15, 18)]",
+        [["merge_intervals([(1, 4), (4, 5)])"], ["merge_intervals([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])"]],
+        [`[(1, 5)]`, `[(0, 1), (3, 8), (9, 12)]`].join("\n"),
         60 * 3,
         TaskTopic.basics,
         TaskStage.train
     ),
+    // new AuthoringTask(
+    //     "1a",
+    //     "Write a program that creates a variable called <i>sum_even</i> will compute the sum of even numbers from 1 to 100 (inclusive), and print the sum.\n Then, generate the two random values from 1 to the <i>sum_even</i>, and check if both values are <b>odd</b> numbers.",
+    //     [["output: <b>The sum is 2550</b>"]],
+    //     [`print("I'm Wall-E!")`].join("\n"),
+    //     60 * 3,
+    //     TaskTopic.basics,
+    //     TaskStage.train
+    // ),
     // print another string
     new ModifyingTask(
         "1b",

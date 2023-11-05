@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import * as monaco from 'monaco-editor';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { AuthContext, SocketContext } from '../../context';
-import { log } from '../../utils/logger';
 import ExcutionTimeline from '../excution-timeline';
+import { apiGenerateTracingQuestion, logError } from '../../api/api';
 
 
 
@@ -34,7 +33,10 @@ interface o{
     value: any;
 }
 
-
+interface  questionObject{
+    step: number,
+    variable: string,
+}
 
 export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode, format, backendCodes }) => {
     const { context } = useContext(AuthContext);
@@ -48,18 +50,25 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     const [backendCode, setBackendCode] = useState<string>("");
     const [traceId, setTraceId] = useState(0);
     const [tracing, setTracing] = useState(false);
+    const [finishedTracing, setFinishedTracing] = useState(false);
     const [tracking, setTracking] = useState(false);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [currentLine, setCurrentLine] = useState<number>(0);
     const [terminalInput, setTerminalInput] = useState<string>("");
+    const [currentQuestion, setCurrentQuestion] = useState<questionObject | null>();
+    const [questions, setQuestions] = useState<questionObject[]>([]);
+    const [questionStop, setQuestionStop] = useState<number>(0);
+    const [currCount, setCurrCount] = useState<number>(0);
+    const [inputValue, setInputValue] = useState<string>("");
+    const [needHint, setNeedHint] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const [output, setOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
 
-    const extractLineNum = (line: string): number | null => {
+    const extractLineNum = (line: string): number => {
         const match = line.match(/main.py\((\d+)\)/);
-        return match ? Number(match[1])-11 : null;
+        return match ? Number(match[1])-2 : 0;
     };
 
     useEffect(() => {
@@ -69,7 +78,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
             // console.log("The tracing contains "+traceOutputLength+" steps");
             // find the total number of lines in traceOutput
             if(traceOutputLength >= 1){
+                // console.log("traceOutput", traceOutput);
                 let flattenedTraceOutput = traceOutput.flat();
+                // console.log("flattenedTraceOutput", flattenedTraceOutput);
 
                 let objectArray: ExcutionSteps[] = flattenedTraceOutput.map((line, index) => {
                     let currLineNum = extractLineNum(line);
@@ -82,69 +93,48 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                         frame: [] 
                     };
                 });
-                console.log("objectArray", objectArray);
                 setExcutionSteps(objectArray);
             }
             
         } 
     }, [traceOutput]);
 
+
+    const generateQuestion = () => {
+        try {
+            apiGenerateTracingQuestion(
+                context?.token,
+                backendCode,
+                excutionSteps ? JSON.stringify(excutionSteps) : ""
+            ).then(async (response) => {
+                                      
+                if (response.ok) {
+                    const data = await response.json();
+                    setQuestions(data.response);
+                }
+            })
+        } catch (error: any) {
+            logError(error.toString());
+        }
+
+    };
+
+    useEffect(() => {
+        if(questions.length > 0){
+            setCurrentQuestion(questions[0]);
+            setQuestionStop(questions[0].step-1);
+            console.log("questions", questions);
+        }
+    }, [questions]);
+
+
     useEffect(() => {
         if (excutionSteps.length > 0) {
             setCurrStep(excutionSteps[0]);
+
         } 
-            //hard code one
-            // setExcutionSteps([
-            //     {
-            //         step: 1,
-            //         currLine: 1,
-            //         nextLine: 2,
-            //         printOutput: [],
-            //         frame: [
-            //           { name: 'n', type: 'int', value: 5 }
-            //         ],
-            //     },
-            //     {
-            //         step: 2,
-            //         currLine: 2,
-            //         nextLine: 3,
-            //         printOutput: [],
-            //         frame: [
-            //           { name: 'n', type: 'int', value: 5 },
-            //           { name: 'fibonacci_sequence', type: 'list', value: [0, 1] }
-            //         ],
-            //     },
-            //     {
-            //         step: 3,
-            //         currLine: 3,
-            //         nextLine: 4,
-            //         printOutput: [],
-            //         frame: [
-            //           { name: 'n', type: 'int', value: 5 },
-            //           { name: 'fibonacci_sequence', type: 'list', value: [0, 1] }
-            //         ],
-            //     },
-            //     {
-            //         step: 4,
-            //         currLine: 4,
-            //         nextLine: 5,
-            //         printOutput: [],
-            //         frame: [
-            //           { name: 'n', type: 'int', value: 5 },
-            //           { name: 'fibonacci_sequence', type: 'list', value: [0, 1, 1] }
-            //         ],
-            //     },
-            //     {
-            //         step: 5,
-            //         currLine: 5,
-            //         nextLine: 3,
-            //         printOutput: [],
-            //         frame: [
-            //           { name: 'n', type: 'int', value: 5 },
-            //           { name: 'fibonacci_sequence', type: 'list', value: [0, 1, 1] }
-            //         ],
-            //     }
-            // ])
+        
+        console.log("excution Steps", excutionSteps);   
     }, [excutionSteps]);
 
     useEffect(() => {
@@ -158,8 +148,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                         const currOutput = data.out.split("\n");
                         var tempTrace: string[] = [];
                         currOutput.forEach((line: string) => {
+                            // console.log("line", line);
                             if (line.startsWith("main.py(")) {
                                 tempTrace.push(line);
+                            }
+                            else if(line.includes('<frozen codecs>') && line.includes("main.py(")){
+                                const index = line.indexOf('main.py');
+                                tempTrace.push(line.substring(index));
                             } else {
                                 setOutput([
                                     ...output,
@@ -189,6 +184,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                 if (data.type === "close") {
                     setTraceId(traceId + 1);
                     setTracing(false);
+                    setFinishedTracing(true);
                 }
             });
         }
@@ -199,6 +195,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
         if(tracking){
             socket?.on("python", (data: any) => {
                 if (data.type === "stdout") {
+                    // console.log("data.out", data.out);
                     if (data.out.split("\n").length > 0) {
                         //for each line in terminalInput, check if the line starts with {}
                         //the number of lines should be match with traceOutput
@@ -209,7 +206,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                 tempTrack.push(line);
                             }
                         });
-                        setTrackOutput((prevTrackOutput) => [...prevTrackOutput.slice(0, -1), ...tempTrack]);
+                        // setTrackOutput((prevTrackOutput) => [...prevTrackOutput.slice(0, -1), ...tempTrack]);
+                        setTrackOutput((prevTrackOutput) => [...prevTrackOutput, ...tempTrack]);
                     } 
                 }
                 
@@ -288,9 +286,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
             backendCodes: backendCodes
         };
         let tempCodes = combineCodes(input).join("\n");
-        let cleanedCode = tempCodes.split('\n').filter(line => line.trim() !== '').join('\n');
+        // let cleanedCode = tempCodes.split('\n').filter(line => line.trim() !== '').join('\n');
 
-        setBackendCode(cleanedCode);
+        setBackendCode(tempCodes);
     }, []);
 
     function combineCodes({ code, contextCode, format, backendCodes }: ExcutionStepsProps): string[] {
@@ -311,36 +309,128 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     }, [backendCode]);
 
     useEffect(() => {
+        if (storedInput.length == 0 && finishedTracing){
+            generateTrack();
+        }
         if (storedInput.length > 0 && !tracing){
             // console.log("storedInput", storedInput);
             generateTrack();
         }
-    }, [storedInput, tracing]);
+    }, [storedInput, tracing, finishedTracing]);
+
 
 
     useEffect(() => {
         let fElements: f[][] = trackOutput.map(item => {
-            let parsedItem = JSON.parse(item.replace(/'/g, '"'));
-            return Object.keys(parsedItem).map(key => ({
-                name: key,
-                type: typeof parsedItem[key],
-                value: parsedItem[key]
-            }));
+            // console.log("item", item);
+            let parsedItem = JSON.parse(item.replace(/'/g, '"').replace(/\(/g, '[').replace(/\)/g, ']'));
+            return Object.keys(parsedItem).map(key => {
+                let value = parsedItem[key];
+                let valueType = "str";  // Default to str
+            
+                if (typeof value === 'number') {
+                    // value is a number
+                    valueType = "int";
+                } else if (typeof value === 'boolean') {
+                    // value is a boolean
+                    valueType = "bool";
+                } else if (typeof value === 'string') {
+                    // Check first character to identify string type
+                    if (value.startsWith("{")) {
+                        valueType = "dict";
+                    } else if (value.startsWith("[")) {
+                        valueType = "list";
+                    } else if (value.startsWith("(")) {
+                        valueType = "tuple";
+                    }
+                }
+            
+                return {
+                    name: key,
+                    type: valueType,
+                    value: value
+                };
+            });
         });
-        console.log("trackOutput", fElements);
+
+        let objectArray = excutionSteps;
+
+        let minLength = Math.min(fElements.length, objectArray.length);
+
+        for(let i = 0; i < minLength; i++) {
+            objectArray[i].frame = fElements[i];
+        }
+
+        if(objectArray.length > fElements.length) {
+            let lastElement = fElements[fElements.length - 1];
+        
+            for(let i = fElements.length; i < objectArray.length; i++) {
+                objectArray[i].frame = lastElement;
+            }
+        }
+
+        if(backendCode.length > 0){
+            // check if the current excutionstep requires input
+            let lineObjects = backendCode.split('\n');
+            if(!lineObjects[objectArray[objectArray.length-1].currLine-1].includes('input(') && 
+            objectArray.some(step => step.frame.length !== 0)){
+                // we know the tracing is done, generate questions
+                generateQuestion();
+            }
+        }
+
+        //also assign print outputs
+        //find the print statement lines
+        //iterate through the objectArray
+        // objectArray.forEach((step) => {
+        //     // Check if the current line is a print statement
+        //     let currCode = backendCode.split('\n')[step.currLine - 1];
+        //     if (currCode.includes('print(')) {
+        //         console.log(step.currLine, currCode);
+        //     }
+        // });
+        setExcutionSteps(objectArray);
     }, [trackOutput]);
 
-    // [1][1][2][n=5][None][None]
-    // [2][2][3][n=5, fibonacci_sequence=[0, 1]][None][None]
-    // [3][3][4][n=5, fibonacci_sequence=[0, 1]][None][None]
-    // [4][4][3][n=5, fibonacci_sequence=[0, 1, 1]][None][None]
-    // [5][3][4][n=5, fibonacci_sequence=[0, 1, 1]][None][None]
-    // [6][4][3][n=5, fibonacci_sequence=[0, 1, 1, 2]][None][None]
-    // [7][3][4][n=5, fibonacci_sequence=[0, 1, 1, 2]][None][None]
-    // [8][4][3][n=5, fibonacci_sequence=[0, 1, 1, 2, 3]][None][None]
-    // [9][3][7][n=5, fibonacci_sequence=[0, 1, 1, 2, 3]][None][None]
-    // [10][7][8][n=5, fibonacci_sequence=[0, 1, 1, 2, 3]][None][print-log=Fibonacci Sequence of length 5 :]
-    // [11][8][None][n=5, fibonacci_sequence=[0, 1, 1, 2, 3]][None][print-log=Fibonacci Sequence of length 5 :, [0, 1, 1, 2, 3]]
+    
+
+    const getCurrQuestionSolution = () => {
+        if(currentQuestion && currentStep){
+            let currStep = currentQuestion.step;
+            let currFrame = excutionSteps[currStep].frame;
+            let currVariable = currentQuestion.variable;
+            let currValue = currFrame.find(item => item.name === currVariable)?.value;
+            if(typeof currValue != 'number'){
+                return JSON.stringify(currValue);
+            }else{
+                return currValue;
+            }
+        }
+    }
+
+    const updateQuestion = (currentQuestion:questionObject) => {
+        const newQuestions = questions.filter((item, index) => index !== questions.indexOf(currentQuestion));
+        setQuestions(newQuestions);
+    
+        if (newQuestions.length > 0) {
+            setCurrentQuestion(newQuestions[0]);
+            setQuestionStop(newQuestions[0].step-1);
+            setCurrCount(0);
+            setNeedHint(false);
+        }
+        else {
+            setCurrentQuestion(null);
+            setQuestionStop(excutionSteps.length);
+            setCurrCount(0);
+            setNeedHint(false);
+        }
+    }
+
+    useEffect(() => {
+        if(needHint){
+            //get hint from codex
+        }
+    }, [needHint]);
 
     useEffect(() => {
     }, [currStep]);
@@ -392,7 +482,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
             })()}
                      
             </div>
-            <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} />
+            <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} stop={questionStop}/>
           </div>
             <div className='legend'>
                 <div className='legend-item'>
@@ -459,10 +549,65 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                     <h4>Frame</h4>
                     <div className="frame">
                     {/* Your frame content goes here */}
+                    {currStep?.frame.map((item, index) => (
+                        <>  
+                            {/* {currentQuestion && <p>{currentQuestion.step}, {currStep.step}, {currCount}, {currentQuestion.variable}, {item.name}</p>} */}
+                            {currCount < 2 && currentQuestion && currStep && currentQuestion.step === currStep.step ? 
+                                currentQuestion.variable == item.name ?
+                                
+                                <>
+                                    <p className="question">What is the value of <b>{currentQuestion.variable}</b> after <b>Step {currentQuestion.step+1} </b>is excuted?</p>
+                                    {needHint && <p className="hint">Hint: {getCurrQuestionSolution()}</p>}
+                                    <div className={`frame-container ${item.type}`}>
+                                        <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
+                                        <input 
+                                            className="question-input" 
+                                            value={inputValue}
+                                            onChange={e => setInputValue(e.target.value)} 
+                                        />
+                                    </div>
+                                    <button 
+                                        onClick={() => {
+                                            let solution = getCurrQuestionSolution();
+                                            if ((solution && typeof(solution) == 'string' && inputValue.replace(/\s+/g, '') === solution.replace(/\s+/g, '')) || Number(inputValue) === getCurrQuestionSolution()) {
+                                                updateQuestion(currentQuestion);
+                                            } else{
+                                                //if currcount = 0, then show hint
+                                                if(currCount === 0){
+                                                    setNeedHint(true);
+                                                    setCurrCount(1);
+                                                }
+                                                else if(currCount === 1){
+                                                    updateQuestion(currentQuestion);
+                                                    setCurrCount(0);
+                                                }
+
+                                            }
+                                        }}
+                                    >
+                                        Check answer
+                                    </button>
+                                </>
+
+                                :
+
+                                <div className={`frame-container ${item.type}`}>
+                                    <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
+                                    <p>{JSON.stringify(item.value)}</p>
+                                </div>
+                                
+                            : 
+                                <div className={`frame-container ${item.type}`}>
+                                    <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
+                                    <p>{JSON.stringify(item.value)}</p>
+                                </div>
+                            }
+                        </>
+                    ))}
                     </div>
 
                 </div>
             </div>
           </div>
       );
-};
+}; 

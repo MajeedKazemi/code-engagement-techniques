@@ -186,7 +186,7 @@ setInterval(() => {
             // it has been updated in the last 5 minutes
             // and it has been updated in the last 5 seconds
             // -> needs to get saved
-            localStorage.setItem(`log-${key}`, JSON.stringify(logObj));
+            // localStorage.setItem(`log-${key}`, JSON.stringify(logObj));
             localStorage.setItem(
                 `log-lastUpdate-${key}`,
                 Date.now().toString()

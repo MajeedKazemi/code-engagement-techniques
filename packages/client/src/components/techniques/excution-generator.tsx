@@ -265,6 +265,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                                                   setFormat(format);
                                                   setBackendCodes(oldCodes);
                                                   setGeneratedCode(code);
+                                                  // THIS PART IS COMMENTED BECAUSE WE ASSUME THE PREV GENERATED CODE ARE CORRECT
                                                   let tempContext: CodeRepresentation[] = [];
                                                   if(oldCodes.length == 1){
                                                     apiGetCodeToPseudoCodex(
@@ -319,9 +320,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                                                       });
                                                   }else{
                                                     setWaiting(false);
-                                                  }
-
-                                                                                      
+                                                  }                                   
                                               } 
                                           }
                                       })

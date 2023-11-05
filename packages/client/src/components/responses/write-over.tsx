@@ -18,14 +18,14 @@ interface LineWithLeadSpaces {
     leadSpaces: number;
 }
 
-interface Keyword{
-    start: number;
-    end: number;
-    type: string;
-}
+// interface Keyword{
+//     start: number;
+//     end: number;
+//     type: string;
+// }
 
 interface KeywordLine{
-    keyword: Keyword[];
+    // keyword: Keyword[];
     explanation: string;
 }
 
@@ -301,17 +301,17 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         }
     }, [completed]);
 
-    function findIndex(target: number, currIndex: number) {
-        const currentLine = keywordsList[currIndex].keyword;
-        if (currentLine) {
-            //the currentLine contains start and end, find the index where between target is between start and end inclusive
-            for (let i = 0; i < currentLine.length; i++) {
-                if (currentLine[i].start <= target && currentLine[i].end >= target) {
-                    return keywordsList[currIndex].keyword[i].type+"-writeover";
-                }
-            }
-        }
-    }
+    // function findIndex(target: number, currIndex: number) {
+    //     const currentLine = keywordsList[currIndex].keyword;
+    //     if (currentLine) {
+    //         //the currentLine contains start and end, find the index where between target is between start and end inclusive
+    //         for (let i = 0; i < currentLine.length; i++) {
+    //             if (currentLine[i].start <= target && currentLine[i].end >= target) {
+    //                 return keywordsList[currIndex].keyword[i].type+"-writeover";
+    //             }
+    //         }
+    //     }
+    // }
 
     // async function colorize() {
     //     if(!userInput || !monaco || !monaco.editor || userInput.length == 0) return <span className="writeover-cursor" />;

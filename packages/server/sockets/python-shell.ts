@@ -46,84 +46,19 @@ export function initPythonShell(server: http.Server) {
                 
 
                     if(data.type === 'trace') {
-                        const code = `${CPU_LIMITER_CODE}\ndef main():\n${data.code.split('\n').map((line: string) => '    ' + line).join('\n')}\n${TRACING_CODE}`;
-                        try {
-                            fs.writeFileSync("main.py", code);
-                        } catch (err) {
-                            console.error("fs: ", err);
+                        // isolate the import statements from data.code
+                        let importStatements:string[] = [];
+                        let otherCode:string[] = [];
+
+                        data.code.split('\n').forEach((line: string) => {
+                        if (line.trim().startsWith('import')) {
+                            importStatements.push(line);
+                        } else {
+                            otherCode.push(line);
                         }
-
-                        let startTime = Date.now();
-                        let msgCount = 0;
-
-                        pyshell = new PythonShell(
-                            "main.py",
-                            {},
-                            new Transform({
-                                transform(chunk, encoding, callback) {
-                                    callback(null, chunk.toString());
-                                },
-                            })
-                        );
-
-                        pyshell.on("error", (err: any) => {
-                            console.error("error: ", err);
                         });
 
-                        pyshell.on("close", () => {
-                            io.to(data.from).emit("python", {
-                                type: "close",
-                            });
-                        });
-
-                        pyshell.on("pythonError", (err: any) => {
-                            let error = "";
-
-                            if (err.traceback && err.traceback !== "") {
-                                error = err.traceback;
-                            } else {
-                                error = err.message;
-                            }
-
-                            const lineNumber = error.match(/line (\d+)/);
-
-                            if (lineNumber) {
-                                error = error.replace(
-                                    lineNumber[1],
-                                    (parseInt(lineNumber[1]) - 10).toString()
-                                );
-                            }
-
-                            error = error.replace(/File ".*", /, "");
-
-                            io.to(data.from).emit("python", {
-                                type: "stderr",
-                                err: error,
-                            });
-                        });
-
-                        pyshell.on("message", async (message) => {
-                            msgCount += message.length;
-
-                            io.to(data.from).emit("python", {
-                                type: "stdout",
-                                out: message,
-                            });
-
-                            // limit the number of messages per second
-                            if (msgCount > 10000) {
-                                if (Date.now() - startTime < 1000) {
-                                    pyshell.kill();
-                                }
-
-                                msgCount = 0;
-                                startTime = Date.now();
-                            }
-                        });
-                    }
-
-                    if(data.type === 'track') {
-                        const code = `${CPU_LIMITER_CODE}\ndef main():\n${data.code.split('\n').map((line: string) => '    ' + line).join('\n')}\n${data.input}\n${TRACK_VARIABLE}`;
+                        const code = `${importStatements.join('\n')}\ndef main():\n${otherCode.map((line: string) => '    ' + line).join('\n')}\n${TRACING_CODE}`;
                         // console.log(code);
                         try {
                             fs.writeFileSync("main.py", code);
@@ -168,7 +103,97 @@ export function initPythonShell(server: http.Server) {
                             if (lineNumber) {
                                 error = error.replace(
                                     lineNumber[1],
-                                    (parseInt(lineNumber[1]) - 10).toString()
+                                    (parseInt(lineNumber[1]) - 1).toString()
+                                );
+                            }
+
+                            error = error.replace(/File ".*", /, "");
+
+                            io.to(data.from).emit("python", {
+                                type: "stderr",
+                                err: error,
+                            });
+                        });
+
+                        pyshell.on("message", async (message) => {
+                            msgCount += message.length;
+
+                            io.to(data.from).emit("python", {
+                                type: "stdout",
+                                out: message,
+                            });
+
+                            // limit the number of messages per second
+                            if (msgCount > 10000) {
+                                if (Date.now() - startTime < 1000) {
+                                    pyshell.kill();
+                                }
+
+                                msgCount = 0;
+                                startTime = Date.now();
+                            }
+                        });
+                    }
+
+                    if(data.type === 'track') {
+                        // isolate the import statements from data.code
+                        let importStatements:string[] = [];
+                        let otherCode:string[] = [];
+
+                        data.code.split('\n').forEach((line: string) => {
+                        if (line.trim().startsWith('import')) {
+                            importStatements.push(line);
+                        } else {
+                            otherCode.push(line);
+                        }
+                        });
+
+                        const code = `${importStatements.join('\n')}\ndef main():\n${otherCode.map((line: string) => '    ' + line).join('\n')}\n${data.input}\n${TRACK_VARIABLE}`;
+                        // console.log(code);
+                        try {
+                            fs.writeFileSync("main.py", code);
+                        } catch (err) {
+                            console.error("fs: ", err);
+                        }
+
+                        let startTime = Date.now();
+                        let msgCount = 0;
+
+                        pyshell = new PythonShell(
+                            "main.py",
+                            {},
+                            new Transform({
+                                transform(chunk, encoding, callback) {
+                                    callback(null, chunk.toString());
+                                },
+                            })
+                        );
+
+                        pyshell.on("error", (err: any) => {
+                            console.error("error: ", err);
+                        });
+
+                        pyshell.on("close", () => {
+                            io.to(data.from).emit("python", {
+                                type: "close",
+                            });
+                        });
+
+                        pyshell.on("pythonError", (err: any) => {
+                            let error = "";
+
+                            if (err.traceback && err.traceback !== "") {
+                                error = err.traceback;
+                            } else {
+                                error = err.message;
+                            }
+
+                            const lineNumber = error.match(/line (\d+)/);
+
+                            if (lineNumber) {
+                                error = error.replace(
+                                    lineNumber[1],
+                                    (parseInt(lineNumber[1]) - 1).toString()
                                 );
                             }
 
