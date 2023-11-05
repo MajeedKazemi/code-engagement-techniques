@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { AuthContext, SocketContext } from '../../context';
 import ExcutionTimeline from '../excution-timeline';
-import { apiGenerateTracingQuestion, logError } from '../../api/api';
+import { apiGenerateQuestionHint, apiGenerateTracingQuestion, logError } from '../../api/api';
+import { ChatLoader } from '../loader';
 
 
 
@@ -61,6 +62,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     const [currCount, setCurrCount] = useState<number>(0);
     const [inputValue, setInputValue] = useState<string>("");
     const [needHint, setNeedHint] = useState<boolean>(false);
+    const [questionHint, setQuestionHint] = useState<string>("");
+    const [hintGenerating, setHintGenerating] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const [output, setOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
@@ -397,7 +400,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     const getCurrQuestionSolution = () => {
         if(currentQuestion && currentStep){
             let currStep = currentQuestion.step;
-            let currFrame = excutionSteps[currStep].frame;
+            let currFrame = excutionSteps[currStep-1].frame;
             let currVariable = currentQuestion.variable;
             let currValue = currFrame.find(item => item.name === currVariable)?.value;
             if(typeof currValue != 'number'){
@@ -427,8 +430,41 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     }
 
     useEffect(() => {
-        if(needHint){
+        if(needHint && currentQuestion){
             //get hint from codex
+            //code is the previous step's currline + nextline
+            //frame is the previous step's frame
+            //correct is getCurrQuestionSolution()
+            //target is the current question's variable
+            //answer is input value
+            let prevStep = excutionSteps[currentQuestion.step-2]
+            let currCode = backendCode.split("\n")[prevStep.currLine];
+            let prevCode = backendCode.split("\n")[prevStep.nextLine!];
+            let correct = getCurrQuestionSolution();
+            setQuestionHint("");
+            setHintGenerating(true);
+            try {
+                apiGenerateQuestionHint(
+                    context?.token,
+                    prevCode,
+                    currCode,
+                    JSON.stringify(prevStep.frame),
+                    correct ? correct.toString() : "",
+                    currentQuestion.variable,
+                    inputValue
+                    
+                ).then(async (response) => {
+                                     
+                    if (response.ok) {
+                        const data = await response.json();
+                        setQuestionHint(data.response);
+                        setHintGenerating(false);
+                    }
+                })
+            } catch (error: any) {
+                logError(error.toString());
+                setHintGenerating(false);
+            }                
         }
     }, [needHint]);
 
@@ -556,8 +592,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                 currentQuestion.variable == item.name ?
                                 
                                 <>
-                                    <p className="question">What is the value of <b>{currentQuestion.variable}</b> after <b>Step {currentQuestion.step+1} </b>is excuted?</p>
-                                    {needHint && <p className="hint">Hint: {getCurrQuestionSolution()}</p>}
+                                    <p className="question">What is the value of <b>{currentQuestion.variable}</b> after <b>Step {currentQuestion.step-1} </b>is excuted?</p>
+                                    {needHint && <p className="hint">Hint: {hintGenerating ? <ChatLoader/> : questionHint}</p>}
                                     <div className={`frame-container ${item.type}`}>
                                         <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
                                         <input 
@@ -571,6 +607,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                             let solution = getCurrQuestionSolution();
                                             if ((solution && typeof(solution) == 'string' && inputValue.replace(/\s+/g, '') === solution.replace(/\s+/g, '')) || Number(inputValue) === getCurrQuestionSolution()) {
                                                 updateQuestion(currentQuestion);
+                                                setInputValue("");
                                             } else{
                                                 //if currcount = 0, then show hint
                                                 if(currCount === 0){
@@ -580,6 +617,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                                 else if(currCount === 1){
                                                     updateQuestion(currentQuestion);
                                                     setCurrCount(0);
+                                                    setInputValue("");
                                                 }
 
                                             }

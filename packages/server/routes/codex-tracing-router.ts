@@ -424,6 +424,106 @@ step: 18, variable: merged[end]`,
 });
 
 
+tracingRouter.post("/generateHint", verifyUser, async (req, res, next) => {
+    const { prevCode, currCode, currentFrames, correct, target, answer } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (currCode !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+                    "Base on the given line of the {code}, the current status of {currentFrames}, the {currentFrames} are the correct value at this step, and {correct} is the correct value for {target} in this step. the user's prediction for the {target} frame is {answer} is wrong, give out one line of hints that help novice python program to answer correctly.   Only focus on the {target}, do not talk about other variables. The correct answer for {target} is {correct}. The hint should not contain the correct answer.",
+            },
+            {
+                role: "user",
+                content: 
+`{prevcode}:sorted_intervals = sorted(intervals, key=lambda x: x[0])
+{currCode}:merged = [sorted_intervals[0]]
+{currentFrames}: '[{"name": "intervals", "type": "str", "value": [[1, 3], [2, 6], [8, 10], [15, 18]]}]'
+{correct}: [[1,3],[2,6],[8,10],[15,18]]
+{target}: sorted_interval
+{answer}: [1,2,3,6,8,10,15,18]`,
+            },
+            {
+                role: "system",
+                content: 
+`Hint: The \`sorted_intervals\` list should contain the sorted intervals based on the first element of each interval. Make sure you are correctly using the \`key\` parameter in the \`sorted()\` function to specify the sorting criteria.[end]`,
+            },
+            {
+                role: "user",
+                content: 
+`{prevCode}:
+while len(fib) < n:
+{currCode}
+    fib.append(fib[-1] + fib[-2])
+{currentFrames}: [{"name": "n", "type": "int", "value": 5}, {"name": "fib", "type": "str", "value": [0, 1]}]
+{correct}:[0,1,1]
+{target}: 'fib'
+{answer}:[0,1,2]`,
+            },
+            {
+                role: "system",
+                content: 
+`Hint: The \`fib\` list should continue to grow until its length reaches \`n\`. Make sure you are correctly updating the \`fib\` list by appending the sum of the last two elements. In this case, the last two elements are 0 and 1, so the next value should be the sum of these two.[end]`,
+            },
+            {
+                role: "user",
+                content: 
+`{prevCode}:
+while len(fib) < n:
+{currCode}
+    fib.append(fib[-1] + fib[-2])
+{currentFrames}: [{"name": "n", "type": "int", "value": 5}, {"name": "fib", "type": "str", "value": [0, 1, 1,2]}]
+{correct}:[0,1,1,2,3]
+{target}: 'fib'
+{answer}:[0,1,1]`,
+            },
+            {
+                role: "system",
+                content: 
+`Hint: The \`fib\` list should continue to grow until its length reaches \`n\`. Make sure you are correctly updating the \`fib\` list by appending the sum of the last two elements. In this case, the last two elements are 1 and 2, so the next value should be the sum of these two.[end]`,
+            },
+
+            
+        ];
+
+
+        messages.push({
+            role: "user",
+            content: `{prevCode}: ${prevCode}\n{currCode}: ${currCode}\n{currentFrames}: ${currentFrames}\n{correct}:${correct}\n{target}:${target}\n{answer}: ${answer}`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo-16k",
+            messages,
+            temperature: 0.1,
+            max_tokens: 256,
+            stop: ["[end]"],
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+
+            if(response){
+                res.json({
+                    response: response,
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
+
+
+
+
+
   
   
   

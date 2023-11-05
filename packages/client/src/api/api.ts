@@ -458,6 +458,34 @@ export const apiGenerateTracingQuestion = (
         }),
     });
 
+
+
+export const apiGenerateQuestionHint = (
+    token: string | null | undefined,
+    prevCode: string,
+    currCode: string,
+    currentFrames: string,
+    correct: string,
+    target: string,
+    answer: string,
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/generateHint", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            prevCode: prevCode,
+            currCode: currCode,
+            currentFrames: currentFrames,
+            correct: correct,
+            target: target,
+            answer: answer,
+        }),
+    });
+
 export const apiLogEvents = (
     token: string | null | undefined,
     taskId: string,
