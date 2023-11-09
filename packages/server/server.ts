@@ -19,9 +19,11 @@ import { hierarchicalRouter } from "./routes/codex-hierarchical-router";
 import { selfExplainRouter } from "./routes/codex-selfexplain-router";
 import { writeOverRouter } from "./routes/codex-writeover-router";
 import { tracingRouter } from "./routes/codex-tracing-router";
+import { verifyRouter } from "./routes/codex-verify-router";
 import { initLanguageService } from "./sockets/intellisense";
 import { initPythonShell } from "./sockets/python-shell";
 import env from "./utils/env";
+import { verify } from "crypto";
 
 const corsOptions = {
     origin: (origin: any, callback: any) => {
@@ -77,6 +79,7 @@ mongoose
         app.use("/api/technique-writeover/", writeOverRouter);
         app.use("/api/technique-explain/", selfExplainRouter);
         app.use("/api/technique-tracing/", tracingRouter);
+        app.use("/api/technique-verify/", verifyRouter);
 
         const server = app.listen(
             env.PORT_PREFIX + env.NODE_APP_INSTANCE,

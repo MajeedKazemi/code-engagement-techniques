@@ -422,6 +422,24 @@ export const apiGetCodeToPseudoCodex = (
         }),
     });
 
+export const apiGetIssueCodes = (
+    token: string | null | undefined,
+    code: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateIssue", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            context: context,
+        }),
+    });
+
 export const apiGetLinesToRewrite = (
         token: string | null | undefined,
         code: string,

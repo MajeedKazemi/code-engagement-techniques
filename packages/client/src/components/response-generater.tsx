@@ -16,6 +16,7 @@ import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-genera
 import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/write-over-generator';
 import SelfExplainGenerateCode, { selfExplainCancelClicked } from './techniques/self-explanation';
 import ExcutionGenerateCode from './techniques/excution-generator';
+import VerifyGenerateCode, { verifyCancelClicked } from './techniques/verify-review-generator';
 
 let insertedCode = "";
 
@@ -173,6 +174,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "stepByStep":
         generatedCodeComponent =
           <ExcutionGenerateCode prompt={userInput} editor={editor}/>
+        break;
+      case "verify":
+        generatedCodeComponent =
+          <VerifyGenerateCode prompt={userInput} editor={editor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
@@ -495,7 +500,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked]);
+  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked]);
 
   // define the current technique
   // const technique = 'baseline';
@@ -505,7 +510,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
-  const technique = 'stepByStep';
+  // const technique = 'stepByStep';
+  const technique = 'verify';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

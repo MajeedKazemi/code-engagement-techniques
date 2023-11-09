@@ -519,6 +519,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                      
             </div>
             <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} stop={questionStop}/>
+            {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
           </div>
             <div className='legend'>
                 <div className='legend-item'>
@@ -615,6 +616,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                                     setCurrCount(1);
                                                 }
                                                 else if(currCount === 1){
+                                                    setNeedHint(true);
+                                                    setCurrCount(1);
+                                                }
+                                                else if(currCount === 2){
                                                     updateQuestion(currentQuestion);
                                                     setCurrCount(0);
                                                     setInputValue("");

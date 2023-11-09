@@ -220,11 +220,19 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     }, [output, runId]);
 
     useEffect(() => {
+        const interval = setInterval(() => {
+            if (document.getElementById('game-over')) {
+              setOutput([]);
+              clearInterval(interval); 
+            }
+          }, 1000); 
         return () => {
             stopLanguageClient();
-            // stopPythonShell();
+            clearInterval(interval)
         };
+        
     }, []);
+
 
     const handleClickStartExcution = () => {
         if(!excution){

@@ -32,7 +32,7 @@ tracingRouter.post("/linesToRewrite", verifyUser, async (req, res, next) => {
     else:`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
                 
 `{new}:def generate_fibonacci(n):
@@ -71,7 +71,7 @@ else:
     print(fibonacci_sequence)`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content:
 `{old}:n = int(input("Enter the length of the Fibonacci sequence (greater than 2): "))
 {new}:fibonacci_sequence = [0, 1]
@@ -104,7 +104,7 @@ except ValueError:
     print("Invalid input. Please enter a valid positive integer.")`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content:
 `{new}:def generate_fibonacci(n):
 if n <= 0:
@@ -149,7 +149,7 @@ else:
     print(f"{random_value1} and {random_value2} are not both odd numbers.")`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content:
 `{old}:import random
 {new}:sum_even = 0
@@ -183,7 +183,7 @@ for num in range(1, 101):
 print("Sum of even numbers from 1 to 100:", sum_even)`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content:
 `{old}:import random
 
@@ -303,7 +303,7 @@ n = int(input("Enter a number: "))
 print(generate_fibonacci(n))`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
 `step: 10,variable: fib
 step: 12,variable: fib[end]`,
@@ -330,7 +330,7 @@ n = int(input("Enter the length of the Fibonacci sequence: "))
 print(generate_fibonacci(n))`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
 `step: 8,variable: i
 step 11, variable: fib[end]`,
@@ -382,7 +382,7 @@ intervals = [(1, 3), (2, 6), (8, 10), (15, 18)]
 print(merge_intervals(intervals))  # Output: [(1, 6), (8, 10), (15, 18)]`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
 `step: 9, variable: sorted_intervals
 step: 11, variable: current
@@ -432,7 +432,7 @@ tracingRouter.post("/generateHint", verifyUser, async (req, res, next) => {
             {
                 role: "system",
                 content:
-                    "Base on the given line of the {code}, the current status of {currentFrames}, the {currentFrames} are the correct value at this step, and {correct} is the correct value for {target} in this step. the user's prediction for the {target} frame is {answer} is wrong, give out one line of hints that help novice python program to answer correctly.   Only focus on the {target}, do not talk about other variables. The correct answer for {target} is {correct}. The hint should not contain the correct answer.",
+                    "Base on the given line of the {code}, the current status of {currentFrames}, the {currentFrames} are the correct value at this step, and {correct} is the correct value for {target} in this step. the user's prediction for the {target} frame is {answer} is wrong, give out one line of hints that help novice python program to answer correctly.   Only focus on the {target}, do not talk about other variables. The correct answer for {target} is {correct}. The hint should not contain the correct answer. Be sure to check the {answer}'s data type as well as the value, if the value is correct but data type is wrong, still show corrresponding hint.",
             },
             {
                 role: "user",
@@ -445,9 +445,9 @@ tracingRouter.post("/generateHint", verifyUser, async (req, res, next) => {
 {answer}: [1,2,3,6,8,10,15,18]`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
-`Hint: The \`sorted_intervals\` list should contain the sorted intervals based on the first element of each interval. Make sure you are correctly using the \`key\` parameter in the \`sorted()\` function to specify the sorting criteria.[end]`,
+`The \`sorted_intervals\` list should contain the sorted intervals based on the first element of each interval. Make sure you are correctly using the \`key\` parameter in the \`sorted()\` function to specify the sorting criteria.[end]`,
             },
             {
                 role: "user",
@@ -462,9 +462,9 @@ while len(fib) < n:
 {answer}:[0,1,2]`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
-`Hint: The \`fib\` list should continue to grow until its length reaches \`n\`. Make sure you are correctly updating the \`fib\` list by appending the sum of the last two elements. In this case, the last two elements are 0 and 1, so the next value should be the sum of these two.[end]`,
+`The \`fib\` list should continue to grow until its length reaches \`n\`. Make sure you are correctly updating the \`fib\` list by appending the sum of the last two elements. In this case, the last two elements are 0 and 1, so the next value should be the sum of these two.[end]`,
             },
             {
                 role: "user",
@@ -476,12 +476,12 @@ while len(fib) < n:
 {currentFrames}: [{"name": "n", "type": "int", "value": 5}, {"name": "fib", "type": "str", "value": [0, 1, 1,2]}]
 {correct}:[0,1,1,2,3]
 {target}: 'fib'
-{answer}:[0,1,1]`,
+{answer}:0,1,1,2,3`,
             },
             {
-                role: "system",
+                role: "assistant",
                 content: 
-`Hint: The \`fib\` list should continue to grow until its length reaches \`n\`. Make sure you are correctly updating the \`fib\` list by appending the sum of the last two elements. In this case, the last two elements are 1 and 2, so the next value should be the sum of these two.[end]`,
+`The new element should be appended to the \`fib\` list within square brackets to indicate that it is a list and not individual numbers. Make sure the next element you append is the sum of the previous two elements in the sequence and encased within [].[end]`,
             },
 
             
@@ -494,9 +494,9 @@ while len(fib) < n:
         });
 
         const result = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo-16k",
+            model: "gpt-4-1106-preview",
             messages,
-            temperature: 0.1,
+            temperature: 1,
             max_tokens: 256,
             stop: ["[end]"],
             user: userId,

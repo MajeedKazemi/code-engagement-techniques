@@ -1,0 +1,122 @@
+.verify-review-container {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0px;
+    width: 100%;
+}
+
+.print-output {
+    background-color: #023231;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
+    overflow-y: auto;
+    border-radius: 6px;
+    position: relative;
+    width: 30vw;
+    padding: 12px 0 12px 0;
+}
+
+.print-output p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 2px 12px 2px 12px;
+}
+
+.editor-buttons-container {
+    width: 40vw;
+}
+
+.console-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100vw;
+    height: 25vh;
+}
+
+.myLineHighlight {
+    background-color: rgb(243, 173, 173); 
+}
+
+.verify-review-container .monaco-editor-container{
+    width: 45vw;
+}
+
+.verify-code-editor-container{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 25vh;
+}
+
+.verify-buttons-container, .verify-code-editor-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.status-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #f7f7f7;
+    width: 45vw;
+    height: 60vh;
+    overflow: visible;
+    overflow-y: auto;
+    z-index: 99;
+  }
+  .status-header {
+    font-weight: bold;
+    font-size: 1em;
+  }
+  .issues-info {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 3px;
+  }
+  .current-issues {
+    background-color: #ffcccc;
+  }
+  .fixed-issues {
+    background-color: #ccffcc;
+  }
+
+  .verify-answer-container{
+    margin-top: 20px;
+  }
+
+  .issue-container {
+    background-color: #f7f7f7;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.issue-content {
+    font-family: "Consolas", "Monaco", "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 1em;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin-bottom: 5px;
+}
+
+.hint {
+    margin-top: 5px;
+    font-style: italic;
+    color: #666666;
+}
+
+/* Optional: Just to make sure the code stands out, if you like line numbers */
+.issue-content::before {
+    content: attr(data-line-number);
+    display: inline-block;
+    text-align: right;
+    color: #75715e;
+}

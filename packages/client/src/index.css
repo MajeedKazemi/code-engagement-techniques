@@ -17,6 +17,7 @@
 @import "styles/tokens.css";
 @import "styles/writeover.css";
 @import "styles/self-explain.css";
+@import "styles/verify.css";
 @import "styles/steps.css";
 
 body {
