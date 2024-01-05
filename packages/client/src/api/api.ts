@@ -476,6 +476,25 @@ export const apiGenerateTracingQuestion = (
         }),
     });
 
+export const apiGenerateRevealQuestion = (
+    token: string | null | undefined,
+    code: string,
+    task: string
+) =>
+    fetch(env.API_URL + "/api/technique-reveal/generateQuestion", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            task: task,
+        }),
+    });
+
+
 
 
 export const apiGenerateQuestionHint = (
@@ -526,18 +545,4 @@ export const logError = (message: string) => {
     console.error(message);
 };
 
-// export const parsonsGetAst = (
-//     token: string | null | undefined,
-//     context: string
-// ) => fetch(env.API_URL + "/api/technique-parsons/ast", {
-//     method: "POST",
-//     credentials: "include",
-//     headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//         type: "block",
-//         context: context,
-//     }),
-// });
+

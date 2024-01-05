@@ -19,6 +19,7 @@
 @import "styles/self-explain.css";
 @import "styles/verify.css";
 @import "styles/steps.css";
+@import "styles/reveal.css";
 
 body {
     font-family: "Poppins", sans-serif;

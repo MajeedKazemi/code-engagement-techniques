@@ -200,8 +200,9 @@
 
 .gpt-image {
     display: inline-block;
-    width: 2em;
+    width: 2rem;
     margin-right: .5em;
+    color: white;
 }
 
 .gpt-button {

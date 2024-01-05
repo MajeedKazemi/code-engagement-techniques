@@ -17,6 +17,7 @@ import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/writ
 import SelfExplainGenerateCode, { selfExplainCancelClicked } from './techniques/self-explanation';
 import ExcutionGenerateCode from './techniques/excution-generator';
 import VerifyGenerateCode, { verifyCancelClicked } from './techniques/verify-review-generator';
+import RevealGenerateCode from './techniques/lead-reveal-generator';
 
 let insertedCode = "";
 
@@ -178,6 +179,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "verify":
         generatedCodeComponent =
           <VerifyGenerateCode prompt={userInput} editor={editor}/>
+        break;
+      case "leadReveal":
+        generatedCodeComponent =
+          <RevealGenerateCode prompt={userInput} editor={editor}/>
         break;
       default:
         generatedCodeComponent =  BaselineGenerateCode();
@@ -511,7 +516,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'writeover';
   // const technique = 'selfexplain';
   // const technique = 'stepByStep';
-  const technique = 'verify';
+  // const technique = 'verify';
+  const technique = 'leadReveal';
 
   const handleClick = () => {
     const isUserPromptsVisible = false;

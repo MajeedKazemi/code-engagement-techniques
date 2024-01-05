@@ -3,28 +3,275 @@ import robot from "../../assets/shining.png";
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetIssueCodes, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGenerateRevealQuestion, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
-import { VerifyReview } from '../responses/verify-review';
+import RevealQuestionComponent from '../responses/reveal-question-container';
 
-export let verifyCancelClicked = false;
+export let revealCancelClicked = false;
   
 
-interface VerifyGenerateCodeProps {
+interface RevealGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
 }
 
-interface QuestionInterface {
-    type: string;
-    line: number;
-    content: string;
+interface QuestionObject {
+    correct: boolean;
+    text: string;
 }
+
+interface QuestionInterface {
+    title: string;
+    question: string;
+    choices: QuestionObject[];
+    revealLine: string;
+}
+
+function shuffleArray(array: any[]): any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+
+function responseToQuestion(response: any, code:string): QuestionInterface[] {
+    return response.subgoals.map((item: any) => {
+        // question details:
+        const questionDetails = item["sub-subgoal-items"][0]["leading-questions"][0];
+        const questionLines = item["sub-subgoal-items"][0]["code-lines-to-be-revealed"];
+        // randomize choices, save them in questionObject format
+        const choices = shuffleArray([
+            { correct: true, text: questionDetails["correct-choice"] },
+            { correct: false, text: questionDetails["incorrect-choice-1"] },
+            { correct: false, text: questionDetails["incorrect-choice-2"] },
+            { correct: false, text: questionDetails["incorrect-choice-3"] },
+        ]);
+
+        // revealLines
+        const codeLines = code.split('\n');
+        const revealLines = Array.isArray(questionLines) ? questionLines : [];
+        const lines = revealLines
+            .map((index: number) => codeLines[index-1])
+            .filter((line: string) => typeof line === 'string')
+            .join('\n');
+
+        return {
+            title: item.title,
+            question: questionDetails["mcq-question"],
+            choices: choices,
+            revealLine: lines,
+        };
+    });
+}
+
+// index
+// response.subgoals[index].title
+// response.subgoals[index].sub-subgoal-items[index].leading-questions[index].mcq-question
+
+// below are random ordered should be
+// response.subgoals[index].sub-subgoal-items[index].leading-questions[index].correct-choice
+// response.subgoals[index].sub-subgoal-items[index].leading-questions[index].incorrect-choice-1
+// response.subgoals[index].sub-subgoal-items[index].leading-questions[index].incorrect-choice-2
+// response.subgoals[index].sub-subgoal-items[index].leading-questions[index].incorrect-choice-3
+
+// response.subgoals[index].sub-subgoal-items[index].code-lines-to-be-revealed[index]
+
+// {
+//     "response": {
+//         "subgoals": [
+//             {
+//                 "title": "Function Definition",
+//                 "sub-subgoal-items": [
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "What should be the input to the function?",
+//                                 "correct-choice": "A list of intervals",
+//                                 "incorrect-choice-1": "A single interval",
+//                                 "incorrect-choice-2": "Two lists of intervals",
+//                                 "incorrect-choice-3": "A list of numbers"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             1
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 "title": "Sort Intervals",
+//                 "sub-subgoal-items": [
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "Why do we need to sort the intervals?",
+//                                 "correct-choice": "To ensure we process intervals in increasing order",
+//                                 "incorrect-choice-1": "To make the intervals look neat",
+//                                 "incorrect-choice-2": "To reduce the complexity of the function",
+//                                 "incorrect-choice-3": "Sorting is not necessary"
+//                             },
+//                             {
+//                                 "mcq-question": "On what basis should we sort the intervals?",
+//                                 "correct-choice": "The start of each interval",
+//                                 "incorrect-choice-1": "The end of each interval",
+//                                 "incorrect-choice-2": "The length of each interval",
+//                                 "incorrect-choice-3": "The middle point of each interval"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             2
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 "title": "Initialize Merged List",
+//                 "sub-subgoal-items": [
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "Why do we need to initialize the merged list with the first interval?",
+//                                 "correct-choice": "To have a starting point for merging",
+//                                 "incorrect-choice-1": "To ensure the merged list is not empty",
+//                                 "incorrect-choice-2": "To make the code look neat",
+//                                 "incorrect-choice-3": "Initialization is not necessary"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             3
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 "title": "Iterate Over Sorted Intervals",
+//                 "sub-subgoal-items": [
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "Why do we need to iterate over the sorted intervals?",
+//                                 "correct-choice": "To check and merge overlapping intervals",
+//                                 "incorrect-choice-1": "To find the longest interval",
+//                                 "incorrect-choice-2": "To find the shortest interval",
+//                                 "incorrect-choice-3": "Iteration is not necessary"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             4
+//                         ]
+//                     },
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "Why do we need to keep track of the previous interval?",
+//                                 "correct-choice": "To check if the current interval overlaps with it",
+//                                 "incorrect-choice-1": "To find the longest interval",
+//                                 "incorrect-choice-2": "To find the shortest interval",
+//                                 "incorrect-choice-3": "Keeping track of the previous interval is not necessary"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             5
+//                         ]
+//                     },
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "How can we check if two intervals overlap?",
+//                                 "correct-choice": "If the start of the current interval is less than or equal to the end of the previous interval",
+//                                 "incorrect-choice-1": "If the start of the current interval is greater than the end of the previous interval",
+//                                 "incorrect-choice-2": "If the end of the current interval is less than the start of the previous interval",
+//                                 "incorrect-choice-3": "If the end of the current interval is greater than the start of the previous interval"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             6
+//                         ]
+//                     },
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "How can we merge two overlapping intervals?",
+//                                 "correct-choice": "Take the start of the previous interval and the maximum of the ends of the two intervals",
+//                                 "incorrect-choice-1": "Take the start of the current interval and the end of the previous interval",
+//                                 "incorrect-choice-2": "Take the start of the previous interval and the end of the current interval",
+//                                 "incorrect-choice-3": "Take the start of the current interval and the maximum of the ends of the two intervals"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             7,
+//                             8
+//                         ]
+//                     },
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "What should we do if the current interval does not overlap with the previous interval?",
+//                                 "correct-choice": "Add the current interval to the merged list",
+//                                 "incorrect-choice-1": "Ignore the current interval",
+//                                 "incorrect-choice-2": "Remove the previous interval from the merged list",
+//                                 "incorrect-choice-3": "Replace the previous interval in the merged list with the current interval"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             9,
+//                             10
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 "title": "Return Merged Intervals",
+//                 "sub-subgoal-items": [
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "What should the function return?",
+//                                 "correct-choice": "The list of merged intervals",
+//                                 "incorrect-choice-1": "The list of sorted intervals",
+//                                 "incorrect-choice-2": "The list of original intervals",
+//                                 "incorrect-choice-3": "The length of the list of merged intervals"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             11
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 "title": "Test Function",
+//                 "sub-subgoal-items": [
+//                     {
+//                         "leading-questions": [
+//                             {
+//                                 "mcq-question": "Why should we test the function with different inputs?",
+//                                 "correct-choice": "To ensure the function works correctly in all cases",
+//                                 "incorrect-choice-1": "To make the code look neat",
+//                                 "incorrect-choice-2": "To increase the length of the code",
+//                                 "incorrect-choice-3": "Testing is not necessary"
+//                             }
+//                         ],
+//                         "code-lines-to-be-revealed": [
+//                             13,
+//                             14,
+//                             15
+//                         ]
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+//     "success": true
+// }
+
 
   
 
-const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor })  => {
+const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -32,8 +279,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
     const [checked, setChecked] = useState(true);
     const [generatedCode, setGeneratedCode] = useState('');
     const [generatedExplanation, setGeneratedExplanation] = useState('');
-    const [issueCode, setIssueCode] = useState('');
-    const [questons, setQuestions] = useState<QuestionInterface[]>([]);
+    const [questions, setQuestions] = useState<QuestionInterface[]>([]);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [isOver, setIsOver] = useState(false);
     const baselineRef = useRef<HTMLDivElement | null>(null);
@@ -224,20 +470,17 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
                                 }
                                 setGeneratedCode(text);
                                 setGeneratedExplanation(data.bundle.explain);
-                                
-                                console.log(text);
-                                apiGetIssueCodes(
+                                apiGenerateRevealQuestion(
                                     context?.token,
                                     text,
-                                    userCode ? userCode : "",
+                                    prompt,
                                 )
                                     .then(async (response) => {
                 
                                         if (response.ok && props.editor) {
                                             const data = await response.json();
-                                            
-                                            setIssueCode(data.result.issueCode);
-                                            setQuestions([data.result.question1, data.result.question2]);
+                                            console.log(data.response);
+                                            setQuestions(responseToQuestion(data.response, text));
                                             setWaiting(false);
                                             
                                         }
@@ -286,7 +529,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
-        verifyCancelClicked = !verifyCancelClicked;
+        revealCancelClicked = !revealCancelClicked;
     };
     
     const handleInsertCodeClick = () => {
@@ -304,7 +547,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
-        verifyCancelClicked = !verifyCancelClicked;
+        revealCancelClicked = !revealCancelClicked;
     };
   
 
@@ -316,7 +559,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
-        verifyCancelClicked = !verifyCancelClicked;
+        revealCancelClicked = !revealCancelClicked;
     };
 
     return (
@@ -339,7 +582,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
                 <div className="modal-header">
                   <p>
                     <img src={robot} className="gpt-image" />
-                    <b>AI Assistance: </b> Here is a code snippet purposefully added some logical issues for you to fix it.
+                    AI Assistance:
                   </p>
                 </div>
                 <div className="modal-body">
@@ -352,7 +595,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
                     <p>Generating</p>
                   )}
                   {(!waiting) && (
-                    <VerifyReview code={generatedCode} issueCode={issueCode} questions={questons}/>
+                    <RevealQuestionComponent data={questions}/>
                     
                   )}
                 </div>
@@ -371,4 +614,4 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
       
 };
 
-export default VerifyGenerateCode;
+export default RevealGenerateCode;
