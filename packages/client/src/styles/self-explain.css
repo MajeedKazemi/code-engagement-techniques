@@ -1,28 +1,95 @@
 .self-explain-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin: 20px 0px;
     width: 100%;
 }
 
-.monaco-editor-container {
-    height: 20vh;
-    width: 100%;
+.self-explain-container .monaco-editor-container {
+    width: 45%;
+    height: 50vh;
 }
+
+
 
 .questionLineDecoration {
     background-color: yellow;
 }
 
 .question-container {
-    margin-top: 2rem;
-    background-color: #0084ffab;
+    padding-top: 1rem;
     border-radius: 10px;
-    padding: 10px 15px;
+    width: 55%;
+    padding-left: 1rem;
+    overflow-y: scroll;
+    height: 60vh;
+}
+
+.self-explain-question-container {
+    background-color: rgba(220,230,255,255);
+    border-radius: 10px;
+    border: black solid 1px;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.self-explain-question-container.active{
+    display: block;
+}
+
+.self-explain-question-container.answered{
+    opacity: 0.4;
+}
+
+.self-explain-question-header {
+    border-bottom: black solid 1px;
+    background-color: rgba(186,206,255,255);
+    padding: 5px 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 16px;
+}
+
+.self-explain-question-content-container {
+    padding: 10px;
+}
+
+.self-explain-short-answer-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+
+.self-explain-textbox {
+    width: 80%;
+}
+
+.self-explain-submit {
     margin: 10px;
-    width: 70%;
-    color: white;
-    float: left;
+    width: 20%;
+}
+
+.code-self-explain-container{
+    margin-top:1.5rem;
+    margin-bottom: 1rem;
+    width: 80%;
+}
+
+
+.self-explain-mc-container{
+    margin-top: 1rem;
+}
+
+.explain-question-content {
+    background-color: rgba(204,227,255,255);
+    padding: 10px;
+    display: inline;
+    line-height: 2;
+    border-radius: 15px;
+}
+
+.self-explain-mc-container.inactive{
+    pointer-events: none;
 }
 
 .self-explain-response .user-prompts{

@@ -33,6 +33,7 @@
     text-align: left;
     width: 0.8rem;
     height: 0.8rem;
+    background-color: white;
 }
 
 .reveal-select-container {
@@ -71,10 +72,12 @@
 
 .reveal-correct-answer {
     background-color: aquamarine;
+    border-radius: 15px;
 }
 
 .reveal-wrong-answer {
     background-color: rgba(238, 142, 174, 0.634);
+    border-radius: 15px;
 }
 
 .reveal-wrong-answer-container, .reveal-correct-answer-container {

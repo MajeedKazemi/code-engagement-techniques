@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../../assets/robot.png";
+import robot from "../../assets/shining.png";
 import { XYCoord, useDrag, useDrop } from 'react-dnd';
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetGenerateQuestionForSelfExplain, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import { SelfExplain } from '../responses/self-explain';
@@ -12,20 +12,119 @@ import { GPTLoader } from '../loader';
 
 export let selfExplainCancelClicked = false;
   
-
-
-interface CodeBlock {
-  id: number;
-  code: string;
-  answer: string;
-}
-
-  
-
 interface SelfExplainGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
 }
+
+
+interface MultipleChoiceQuestion {
+  correct: boolean;
+  text: string;
+}
+
+interface SelfExplainQuestion {
+  type: string;
+  question: string;
+  answer?: string;
+  choices?: MultipleChoiceQuestion[];
+  questionCodeLines: string;
+  questionCodeLinesExplained: string;
+}
+
+function shuffleArray(array: any[]): any[] {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
+  return response.map((item: any) => {
+
+      // revealLines
+      const codeLines = code.split('\n');
+      const revealLines = item["question-code-lines"].map(Number);
+      const lines = revealLines
+          .map((index: number) => codeLines[index-1])
+          .filter((line: string) => typeof line === 'string')
+          .join('\n');
+
+      if (item.type === 'Multiple Choice') {
+          // randomize choices, save them in questionObject forml
+          var answer = item.answer;
+          const choices = shuffleArray([
+            { correct: true, text: answer["correct-choice"] },
+            { correct: false, text: answer["incorrect-choice-1"] },
+            { correct: false, text: answer["incorrect-choice-2"] },
+            { correct: false, text: answer["incorrect-choice-3"] },
+          ]);
+
+          return {
+            type: item.type,
+            question: item.question,
+            questionCodeLines: lines,
+            questionCodeLinesExplained: item["question-code-lines-explained"],
+            choices: choices as MultipleChoiceQuestion[],
+          };
+
+        }else{
+          return {
+            type: item.type,
+            question: item.question,
+            answer: item.answer,
+            questionCodeLines: lines,
+            questionCodeLinesExplained: item["question-code-lines-explained"],
+        };
+        }
+
+
+  });
+}
+
+// {
+//   "format": [
+//       "short-answer",
+//       "multiple-choice",
+//       "short-answer"
+//   ],
+//   "questions": [
+//       {
+//           "type": "short-answer",
+//           "question": "What does the 'lambda' function do in this context?",
+//           "answer": "It sorts the intervals based on the first element of each tuple.",
+//           "question-code-lines": [
+//               "2"
+//           ],
+//           "question-code-lines-explained": "sorted_intervals = sorted(intervals, key=lambda x: x[0]) # This line sorts the intervals based on the first element of each tuple."
+//       },
+//       {
+//           "type": "multiple-choice",
+//           "question": "What does the 'if' condition check?",
+//           "answer": {
+//               "correct-choice": "It checks if the start of the current interval is less than or equal to the end of the previous interval.",
+//               "incorrect-choice-1": "It checks if the start of the current interval is greater than the end of the previous interval.",
+//               "incorrect-choice-2": "It checks if the end of the current interval is less than or equal to the start of the previous interval.",
+//               "incorrect-choice-3": "It checks if the end of the current interval is greater than the start of the previous interval."
+//           },
+//           "question-code-lines": [
+//               "6"
+//           ],
+//           "question-code-lines-explained": "if current[0] <= previous[1]: # This line checks if the start of the current interval is less than or equal to the end of the previous interval."
+//       },
+//       {
+//           "type": "short-answer",
+//           "question": "What does the 'else' condition do?",
+//           "answer": "It appends the current interval to the merged list if it does not overlap with the previous interval.",
+//           "question-code-lines": [
+//               "9",
+//               "10"
+//           ],
+//           "question-code-lines-explained": "else:\n    merged.append(current) # These lines append the current interval to the merged list if it does not overlap with the previous interval."
+//       }
+//   ]
+// }
   
 
 const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ prompt, editor })  => {
@@ -36,11 +135,25 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     const [checked, setChecked] = useState(true);
     const [generatedCode, setGeneratedCode] = useState('');
     const [generatedExplanation, setGeneratedExplanation] = useState('');
+    const [generatedQuestions, setGeneratedQuestions] = useState<SelfExplainQuestion[]>([]);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [isOver, setIsOver] = useState(false);
     const baselineRef = useRef<HTMLDivElement | null>(null);
     const explainRef = useRef<HTMLDivElement | null>(null);
     const [passed, setPassed] = useState(false);
+
+
+    useEffect(() => {
+      generateCode();
+      const interval = setInterval(() => {
+        if (document.getElementById('game-over')) {
+          // setIsOver(true);
+          setPassed(true);
+          clearInterval(interval); 
+        }
+      }, 1000); 
+      return () => clearInterval(interval);
+  }, []);
 
     useEffect(() => {
         if (explainRef.current) {
@@ -228,7 +341,34 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                                 }
                                 setGeneratedCode(text);
                                 setGeneratedExplanation(data.bundle.explain);
-                                setWaiting(false);
+                                if (text.length >= 0){
+                                  try {
+                                    apiGetGenerateQuestionForSelfExplain(
+                                        context?.token,
+                                        text,
+                                        prompt
+                                    )
+                                        .then(async (response) => {
+                        
+                                            if (response.ok) {
+                                                const data = await response.json();
+                                                
+                                                setGeneratedQuestions(responseToQuestion(data.response.questions, text));
+                                                console.log(data.response);
+                        
+                                                setWaiting(false);
+                                                } 
+                                        })
+                                        .catch((error) => {
+                                            setWaiting(false);
+                                            logError(error.toString());
+                                        });
+                                    } catch (error: any) {
+                                        setWaiting(false);
+                                        logError(error.toString());
+                                    }
+                                }
+                                
                             } 
                         }
                     })
@@ -244,18 +384,6 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
             }
         }
     };
-
-    useEffect(() => {
-        generateCode();
-
-        const interval = setInterval(() => {
-          if (document.getElementById('passed')) {
-            setPassed(true);
-            clearInterval(interval); 
-          }
-        }, 1000); 
-        return () => clearInterval(interval);
-    }, []);
 
 
     const cancelClick = () => {
@@ -319,7 +447,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                 <div className="modal-header">
                   <p>
                     <img src={robot} className="gpt-image" />
-                    <b>AI Assistance: </b> Explain the highlighted code.
+                    AI Assistance: 
                   </p>
                 </div>
                 <div className="modal-body">
@@ -334,7 +462,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                   )}
                   {!waiting && (
                   
-                    <SelfExplain code={generatedCode}/>
+                    <SelfExplain code={generatedCode} questions={generatedQuestions}/>
                   )}
                 </div>
                 <div className="modal-footer">

@@ -7,6 +7,105 @@ import { verifyUser } from "../utils/strategy";
 
 export const selfExplainRouter = express.Router();
 
+function getCodeWithLine(code: string) {
+    const lines = code.split('\n');
+    let output = '';
+    
+    lines.forEach((line, index) => {
+        output += `${index + 1}. ${line}\n`;
+    });
+
+    return output;
+};
+
+selfExplainRouter.post("/generateQuestion", verifyUser, async (req, res, next) => {
+    const { code, task } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (code !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+`
+you are helping novice programmers learn about coding.
+look at the above Python [practice-code], group it into questions, the question can be either [multiple-choice] or [short-answer] inside each question, include the lines of code from the above [practice-code]. 
+
+Use the following template:
+
+The format should be an array of n items, where n is a number that can average the questions per 4-5 code lines. For example, a 10-line code snippet could have 2 questions, and 12-line code could have 3 questions, combinations of [multiple-choice]  and [short-answer].
+
+example for <comma separated code line numbers based on solution-code> is [6] for the line 6, or [9,10] for line 9 and line 10.
+
+
+
+# Template:
+{
+"format": <a list of format in combinations of "Short Answer" or "Multiple Choice" depends on the number of questions, in this example, I use ["Short Answer", "Multiple Choice"]>
+"questions": [
+  {
+    "type": "Short Answer",
+    "question": "<5-10 word question for the student to think about the \"problem solving aspects\" of the task>",
+    "answer": "<10-15 word answer>",
+    "question-code-lines": [
+      "<comma separated code line numbers based on solution-code>"
+    ],
+    "question-code-lines-explained": "<exact lines of code> # <very concise explanation about the \"purpose\" and \"functionality\" of this code>"
+  },
+  {
+    "type": "Multiple Choice",
+    "question": "<5-10 word question for the student to think about the \"problem solving aspects\" of the task>",
+    "answer": {
+      "correct-choice": "<7-15 word correct answer>",
+      "incorrect-choice-1": "<7-15 word plausible distractor>",
+      "incorrect-choice-2": "<7-15 word plausible distractor>",
+      "incorrect-choice-3": "<7-15 word plausible distractor>"
+    },
+    "question-code-lines": [
+      "<comma separated code line numbers based on solution-code>"
+    ],
+    "question-code-lines-explained": "<exact lines of code> # <very concise explanation about the \"purpose\" and \"functionality\" of this code>"
+  }
+]
+}
+`,
+            }
+        ];
+
+
+        messages.push({
+            role: "user",
+            content: `[task-description]: ${task}\n[solution-code]: ${getCodeWithLine(code)}[end-solution-code]`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-4",
+            messages,
+            temperature: 0.25,
+            max_tokens: 4095,
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+
+            if(response){
+                res.json({
+                    response: parseResponse(response),
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
+function parseResponse(response: string): any {
+    return JSON.parse(response);
+}
+
 selfExplainRouter.post("/question", verifyUser, async (req, res, next) => {
     const { description, context } = req.body;
     const userId = (req.user as IUser)._id;

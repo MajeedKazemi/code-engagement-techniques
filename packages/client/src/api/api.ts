@@ -494,6 +494,24 @@ export const apiGenerateRevealQuestion = (
         }),
     });
 
+export const apiGetGenerateQuestionForSelfExplain = (
+    token: string | null | undefined,
+    code: string,
+    task: string
+) =>
+    fetch(env.API_URL + "/api/technique-explain/generateQuestion", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            task: task,
+        }),
+    });
+
 
 
 
