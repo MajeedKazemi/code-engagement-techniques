@@ -1,0 +1,147 @@
+.baseline-title{
+    background-color:rgba(235,209,255,255);
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-bottom: 1px solid black;
+}
+
+.baseline-title h3{
+    padding: 10px;
+    margin: 0 0 0 0;
+}
+
+.chat-user-prompt{
+    margin: 2rem 1rem;
+    overflow-y: scroll;
+}
+
+.baseline-generator-container{
+    display: flex;
+}
+
+.baseline-generator-container .gpt-button{
+    margin-left: auto;
+}
+
+.baseline-feedback {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-bubble {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+  
+.baseline-feedback-user {
+    background-color: rgba(197,255,241,255); 
+    position: relative;
+    left: -2.5rem;
+    align-self: flex-end;
+    top: -2rem;
+}
+
+.baseline-feedback-assistant {
+    background-color: rgba(252,191,249,255); 
+    position: relative;
+    left: 2.5rem;
+    top: -2rem;
+}
+
+.user-chat-container {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+}
+
+.assistant-chat-container {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+}
+
+.baseline-feedback-assistant-text .chat-loader-finish{
+    text-wrap: nowrap;
+}
+  
+  
+.baseline-feedback-user-text p,
+.baseline-feedback-assistant-text ul {
+    margin: 0;
+}
+
+.baseline-feedback-assistant-text ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .baseline-feedback-assistant-text li {
+    background-color: rgba(235,209,255,255); /* Background color for list items */
+    border-radius: 5px;
+    margin: 5px 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Adding a custom icon or bullet point */
+  .baseline-feedback-assistant-text li::before {
+    content: '-';
+    color: rgba(161,143,175,255); /* Color of the hyphen */
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  /* Adding hover effect for interactivity */
+  .baseline-feedback-assistant-text li:hover {
+    background-color: #b2dfdb; /* Hover background color */
+    transition: background-color 0.3s ease;
+  }
+
+.user-icon{
+    width: 2rem;
+    height: 2rem;
+    align-self: flex-end;
+    background-color: #3dffc2;
+    border-radius: 5px;
+}
+
+.assistant-icon {
+    width: 2rem;
+    height: 2rem;
+    align-items: flex-start;
+    background-color: rgba(235,209,255,255);
+    border-radius: 5px;
+}
+
+.icons-doc{
+    padding: 5px;
+}
+
+.chat-bubble p{
+    margin: 0;
+}
+
+.generated-code-component {
+    overflow-y: scroll;
+    height: 85vh;
+}
+.generated-button-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.generated-button-container.inactive{
+    display: none;
+}
+
+.read-only-explaination {
+    background-color: rgba(252,191,249,255); 
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+  
+  

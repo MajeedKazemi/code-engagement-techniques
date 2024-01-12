@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../../assets/robot.png";
+import robot from "../../assets/shining.png";
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetCodeToPseudoCodex, apiGetGeneratedCodeCodex, apiGetLinesToRewrite, apiGetParsonsCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetCodeToPseudoCodex, apiGetLinesToRewrite, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import { ExcutionSteps } from '../responses/excution-steps';
@@ -426,7 +426,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                 <div className="modal-header">
                   <p>
                     <img src={robot} className="gpt-image" />
-                    <b>AI Assistance: </b> Here is the step by step excution of your code.
+                    AI Assistance:
                   </p>
                 </div>
                 <div className="modal-body">

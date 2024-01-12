@@ -254,6 +254,25 @@ export const apiGetGeneratedCodeCodex = (
         }),
     });
 
+
+export const apiGetGeneratedFeedbackCodex = (
+    token: string | null | undefined,
+    prompt: string,
+    task: string
+) =>
+    fetch(env.API_URL + "/api/technique-baseline/generateFeedback", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+            task: task,
+        }),
+    });
+
 export const apiGetExplanationPerLineCodex = (
     token: string | null | undefined,
     description: string,

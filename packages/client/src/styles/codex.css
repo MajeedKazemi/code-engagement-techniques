@@ -213,30 +213,12 @@ mark {
 
   
   .card-question {
-    background: var(--color-background);
-    padding: 1vw;
-    border-radius: var(--size-radius);
-    border: 3px solid var(--color-shadow, currentColor);
-    box-shadow: .5rem .5rem 0 var(--color-shadow, currentColor);
-    max-height: 86vh;
-    overflow: auto;
-    max-width: 35vw;
-    
-    &--inverted {
-      --color-background: var(--color-dark);
-      color: var(--color-light);
-      --color-shadow: var(--color-accent);
-    }
-    
-    &--accent {
-      --color-background: var(--color-signal);
-      --color-accent: var(--color-light);
-      color: var(--color-dark);
-    }
-    
-    *:first-child {
-      margin-top: 0;
-    }
+    background-color: rgba(253,255,224,255);
+    border-radius: 6px;
+    width: 40vw;
+    right: 10px;
+    margin-left: 1vw;
+    height: 100%;
   }
   
   

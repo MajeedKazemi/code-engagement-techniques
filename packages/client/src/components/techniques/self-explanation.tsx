@@ -28,6 +28,7 @@ interface SelfExplainQuestion {
   question: string;
   answer?: string;
   choices?: MultipleChoiceQuestion[];
+  lines: number[];
   questionCodeLines: string;
   questionCodeLinesExplained: string;
 }
@@ -65,6 +66,7 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
             type: item.type,
             question: item.question,
             questionCodeLines: lines,
+            lines: revealLines,
             questionCodeLinesExplained: item["question-code-lines-explained"],
             choices: choices as MultipleChoiceQuestion[],
           };
@@ -74,6 +76,7 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
             type: item.type,
             question: item.question,
             answer: item.answer,
+            lines: revealLines,
             questionCodeLines: lines,
             questionCodeLinesExplained: item["question-code-lines-explained"],
         };

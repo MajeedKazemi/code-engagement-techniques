@@ -339,7 +339,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
                 <div className="modal-header">
                   <p>
                     <img src={robot} className="gpt-image" />
-                    <b>AI Assistance: </b> Here is a code snippet purposefully added some logical issues for you to fix it.
+                    AI Assistance:
                   </p>
                 </div>
                 <div className="modal-body">

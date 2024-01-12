@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as monaco from 'monaco-editor';
-import robot from "../assets/robot.png";
-import { apiGetBaselineCodex, logError } from "../api/api";
+import IconsDoc from './docs/icons-doc';
+import { apiGetBaselineCodex, apiGetGeneratedFeedbackCodex, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
@@ -18,18 +18,21 @@ import SelfExplainGenerateCode, { selfExplainCancelClicked } from './techniques/
 import ExcutionGenerateCode from './techniques/excution-generator';
 import VerifyGenerateCode, { verifyCancelClicked } from './techniques/verify-review-generator';
 import RevealGenerateCode from './techniques/lead-reveal-generator';
-
-let insertedCode = "";
+import { ChatLoader } from './loader';
+import BaselineGenerateCode, { baselineCancelClicked } from './responses/baseline-chat';
 
 interface BaselineGeneratorProps {
   editor: monaco.editor.IStandaloneCodeEditor | null;
 }
 
+interface BaselinePromptsProps {
+  user: string;
+  assistant: string[];
+}
+
 const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
   const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] = useState(false);
-  const baselineRef = useRef<HTMLDivElement | null>(null);
-  const explainRef = useRef<HTMLDivElement | null>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [userInput, setUserInput] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
@@ -37,10 +40,11 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [codeAboveCursor, setcodeAboveCursor] = useState('');
   const [cursorPosition, setCursorPosition] = useState<monaco.Position | null>(null);
   const { context, setContext } = useContext(AuthContext);
-  const [waiting, setWaiting] = useState(false);
-  const [feedback, setFeedback] = useState<string>("");
-  const [checked, setChecked] = useState(true);
   const [generatedCodeComponent, setGeneratedCodeComponent] = useState<React.ReactNode>(null);
+  const [satisfiedPrompt, setSatisfiedPrompt] = useState<boolean>(false);
+  const [unSatisfiedTime, setUnSatisfiedTime] = useState<number>(0);
+  const [prompts, setPrompts] = useState<BaselinePromptsProps[]>([]);
+  const [generatingFeedback, setGeneratingFeedback] = useState<boolean>(false);
 
   useEffect(() => {
     if (editor) {
@@ -93,50 +97,11 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     }
   };
 
-  const cancelClick = () => {
-    // clean up explination and generated code, remove the generatedCodeComponent to null
-
-    const overlayElement = document.querySelector('.overlay') as HTMLElement;
-    const editorElement = document.querySelector('.editor') as HTMLElement;
-    overlayElement!.style.display = 'none';
-    editorElement.style.zIndex = '1';
-
-    const generatedCodeComponentVisible = false;
-    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
-    const isUserPromptsVisible = true;
-    setIsUserPromptsVisible(isUserPromptsVisible);
-    setExplanation("");
-    setGeneratedCode("");
-  };
-
-  const handleInsertCodeClick = () => {
-    if (editor) {
-      const position = editor.getPosition();
-      if (position) {
-        const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-        const op = { identifier: { major: 1, minor: 1 }, range: range, text: insertedCode, forceMoveMarkers: true };
-        console.log(insertedCode);
-        editor.executeEdits("insertCodeAfterCursor", [op]);
-      }
-    }
-    const overlayElement = document.querySelector('.overlay') as HTMLElement;
-    const editorElement = document.querySelector('.editor') as HTMLElement;
-    overlayElement!.style.display = 'none';
-    editorElement.style.zIndex = '1';
-
-    const generatedCodeComponentVisible = false;
-    setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
-    const isUserPromptsVisible = true;
-    setIsUserPromptsVisible(isUserPromptsVisible);
-    setGeneratedCode("");
-    setExplanation("");
-    setUserInput("");
-  };
   
   const handleGenerateCode = (techniques: string) => {
-    const overlayElement = document.querySelector('.overlay') as HTMLElement;
+    // const overlayElement = document.querySelector('.overlay') as HTMLElement;
     const editorElement = document.querySelector('.editor') as HTMLElement;
-    overlayElement!.style.display = 'block';
+    // overlayElement!.style.display = 'block';
     editorElement.style.zIndex = '-99';
     
     let generatedCodeComponent = null;
@@ -144,7 +109,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     switch (techniques) {
       case "baseline":
-        generatedCodeComponent =  BaselineGenerateCode();
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor}/>;
         break;
       case "pseudo":
         generatedCodeComponent = 
@@ -185,311 +150,60 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
           <RevealGenerateCode prompt={userInput} editor={editor}/>
         break;
       default:
-        generatedCodeComponent =  BaselineGenerateCode();
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor}/>;
         break;
     }
     setGeneratedCodeComponent(generatedCodeComponent);
-  }
-
-  const BaselineGenerateCode = () => {
-    // Call the GPT API or any code generation logic here
-    // to generate code based on the userInput
- 
-    const props = {
-      taskId: "",
-      editor: editor
-    }
-
-    const generateCode = () => {
-      if (userInput.length === 0) {
-          setFeedback(
-              "You should write an instruction of the code that you want to be generated."
-          );
-      } else {
-          setWaiting(true);
-
-          const focusedPosition = props.editor?.getPosition();
-          const userCode = codeAboveCursor;
-          console.log("code to be use", userCode);
-          let codeContext = "";
-
-          if (focusedPosition && userCode && checked) {
-              codeContext = userCode
-                  .split("\n")
-                  .slice(0, focusedPosition.lineNumber + 1)
-                  .join("\n");
-          }
-
-          try {
-              apiGetBaselineCodex(
-                  context?.token,
-                  userInput,
-                  userCode ? userCode : ""
-              )
-                  .then(async (response) => {
-
-                      if (response.ok && props.editor) {
-                          const data = await response.json();
-
-                          let text = data.bundle.code;
-
-                          setExplanation(data.bundle.explain);
-
-                          if (text.length > 0) {
-                              setFeedback("");
-                              log(
-                                  props.taskId,
-                                  context?.user?.id,
-                                  LogType.PromptEvent,
-                                  {
-                                      code: text,
-                                      userInput: userInput,
-                                  }
-                              );
-
-                              let insertLine = 0;
-                              let insertColumn = 1;
-
-                              let curLineNumber = 0;
-                              let curColumn = 0;
-
-                              let highlightStartLine = 0;
-                              let highlightStartColumn = 0;
-                              let highlightEndLine = 0;
-                              let highlightEndColumn = 0;
-
-                              const curPos = props.editor.getPosition();
-                              const curCodeLines = props.editor
-                                  .getValue()
-                                  .split("\n");
-
-                              if (curPos) {
-                                  curLineNumber = curPos.lineNumber;
-                                  curColumn = curPos.column;
-                              }
-
-                              let curLineText =
-                                  curCodeLines[curLineNumber - 1];
-                              let nextLineText =
-                                  curLineNumber < curCodeLines.length
-                                      ? curCodeLines[curLineNumber]
-                                      : null;
-
-                              if (curColumn === 1) {
-                                  // at the beginning of a line
-                                  if (curLineText !== "") {
-                                      text += "\n";
-                                      insertLine = curLineNumber;
-                                      insertColumn = 1;
-
-                                      highlightStartLine = curLineNumber;
-                                      highlightStartColumn = curColumn;
-
-                                      const textLines = text.split("\n");
-
-                                      highlightEndLine =
-                                          curLineNumber +
-                                          textLines.length -
-                                          1;
-                                      highlightEndColumn = 1;
-                                  } else {
-                                      insertLine = curLineNumber;
-                                      insertColumn = 1;
-
-                                      highlightStartLine = curLineNumber;
-                                      highlightStartColumn = curColumn;
-
-                                      highlightEndLine =
-                                          curLineNumber +
-                                          text.split("\n").length;
-                                      highlightEndColumn = 1;
-                                  }
-                              } else if (curColumn !== 1) {
-                                  // in the middle of a line
-                                  if (nextLineText !== "") {
-                                      text = "\n" + text;
-                                      insertLine = curLineNumber;
-                                      insertColumn = curLineText.length + 1;
-
-                                      const textLines = text.split("\n");
-
-                                      highlightStartLine = curLineNumber + 1;
-                                      highlightStartColumn = 1;
-
-                                      highlightEndLine =
-                                          curLineNumber +
-                                          text.split("\n").length -
-                                          1;
-                                      highlightEndColumn =
-                                          textLines[textLines.length - 1]
-                                              .length + 1;
-                                  } else {
-                                      insertLine = curLineNumber + 1;
-                                      insertColumn = 1;
-
-                                      highlightStartLine = curLineNumber;
-                                      highlightStartColumn = curColumn;
-
-                                      highlightEndLine =
-                                          curLineNumber +
-                                          text.split("\n").length;
-                                      highlightEndColumn = 1;
-                                  }
-                              }
-                              setGeneratedCode(text);
-                              insertedCode = text;
-                          } 
-                      }else{
-                          setExplanation("No explanation available.");
-                          setGeneratedCode("No code generated.");
-                      }
-                      setWaiting(false);
-                  })
-                  .catch((error) => {
-                      props.editor?.updateOptions({ readOnly: false });
-                      setWaiting(false);
-                      logError(error.toString());
-                  });
-          } catch (error: any) {
-              props.editor?.updateOptions({ readOnly: false });
-              setWaiting(false);
-              logError(error.toString());
-          }
-      }
-    };
-    
-    generateCode();
-
-    const generatedCodeComponent =
-    <>
-      <div style={{ whiteSpace: 'pre-wrap' }}>
-        <b>prompts: </b> {userInput}
-      </div>
-      {/* <h2 className={`wait-message ${waiting ? '' : 'hidden'}`}>Generating Code<span className="ellipsis"></span></h2> */}
-      <div className="wait-message preloader-2 ${waiting ? '' : 'hidden'}`}">
-          <span className="line line-1"></span>
-          <span className="line line-2"></span>
-          <span className="line line-3"></span>
-          <span className="line line-4"></span>
-          <span className="line line-5"></span>
-          <span className="line line-6"></span>
-          <span className="line line-7"></span>
-          <span className="line line-8"></span>
-          <span className="line line-9"></span>
-          <span className="line line-10"></span>
-          <span className="line line-11"></span>
-          <span className="line line-12"></span>
-          <span className="line line-13"></span>
-          <span className="line line-14"></span>
-          <span className="line line-15"></span>
-          <span className="line line-16"></span>
-          <span className="line line-17"></span>
-          <span className="line line-18"></span>
-          <div>Generating</div>
-      </div>
-      <div ref={baselineRef} className="read-only-editor"></div>
-      <div ref={explainRef}> </div>
-      <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
-        <button className="gpt-button disabled" onClick={cancelClick}>Cancel</button>
-        <button className="gpt-button disabled" onClick={handleInsertCodeClick}>Insert Code</button>
-      </div>
-    </>
-
-    return generatedCodeComponent;
   };
 
-  useEffect(() => {
-    const waitMessageElement = document.querySelector('.wait-message');
-    const buttonElements = document.querySelectorAll('.generated-button-container .gpt-button');
-  
-    if (waiting) {
-      if (waitMessageElement){
-        waitMessageElement.classList.remove('hidden');
-      }
-      if (buttonElements) {
-        buttonElements.forEach((button) => {
-          button.classList.add('disabled');
-        });
-      }
-    } else {
-      if (waitMessageElement){
-        waitMessageElement.classList.add('hidden');
-      }
-      if (buttonElements) {
-        buttonElements.forEach((button) => {
-          button.classList.remove('disabled');
-        });
-      }
-    }
-  }, [waiting]);
-
-  // Move the baseline div based on the cursor position
-  useEffect(() => {
-    if (cursorPosition) {
-      const { lineNumber } = cursorPosition;
-      const baselineDiv = document.getElementById('baselineDiv');
-      if (baselineDiv && !generatedCodeComponentVisible) {
-        baselineDiv.style.top = `${lineNumber * 20}px`;
-      }else if(baselineDiv){
-        baselineDiv.style.top = `60px`;
-      }
-    }
-  }, [cursorPosition]);
-
-
-  useEffect(() => {
-    if (baselineRef.current && generatedCode && !editorRef.current) {
-      editorRef.current = monaco.editor.create(baselineRef.current, {
-        value: generatedCode,
-        language: 'python',
-        readOnly: true,
-        automaticLayout: true,
-      });
-      editorRef.current.onDidChangeModelContent(() => {
-        const model = editorRef.current?.getModel();
-        if (model) {
-          const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
-          const lineCount = Math.max(model.getLineCount(), 1);
-          const newHeight = lineHeight * (lineCount+2);
-          const maxHeight = window.innerHeight * 0.4;
-          const height = Math.min(newHeight, maxHeight);
-          baselineRef.current!.style.height = `${height}px`;
-          editorRef.current!.layout();
-        }
-      });
-    }
-
-    return () => {
-      if (editorRef.current) {
-        editorRef.current.dispose();
-        editorRef.current = null;
-      }
-    };
-  }, [generatedCode]);
-
-  useEffect(() => {
-    if (explainRef.current) {
-      const div = document.createElement('div');
-      // div.innerHTML = `<b>Explanation:</b> ${explanation}`;
-      const highlightedExplanation = highlightCode(explanation, "code-highlight");
-      div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
-      explainRef.current.appendChild(div);
-      const explainContainer = explainRef.current;
-      const maxHeight = window.innerHeight * 0.4;
-
-      if (explainContainer.scrollHeight > maxHeight) {
-        explainContainer.style.height = `${maxHeight}px`;
-        explainContainer.style.overflowY = 'scroll';
-      } else {
-        explainContainer.style.height = 'auto';
-        explainContainer.style.overflowY = 'unset';
-      }
-      return () => {
-        explainRef.current!.removeChild(div);
-      };
-    }
+  function generateFeedback(currPrompt: string) {
+    setGeneratingFeedback(true);
+    const taskContext = `Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.:
+    Examples:
+    Input: [(1, 3), (2, 6), (8, 10), (15, 18)]:
+    Output: [(1, 6), (8, 10), (15, 18)]
     
-  }, [explanation]);
+    Sample:
+    merge_intervals([(1, 4), (4, 5)])
+    
+    merge_intervals([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])`;
+
+    //hard coded for now, will be replaced with api call to get task descriptions later.
+
+    try {
+      apiGetGeneratedFeedbackCodex(
+          context?.token,
+          userInput,
+          taskContext,
+      )
+          .then(async (response) => {
+
+              if (response.ok) {
+                  const data = await response.json();
+                  const currPrompts = [...prompts];
+                  const currPromptObj = {
+                    user: currPrompt,
+                    assistant: data.response["missing-specifications"],
+                  }
+                  currPrompts.push(currPromptObj);
+                  console.log(currPrompts);
+                  setPrompts(currPrompts);
+
+                  if(data.response["accuracy-score"] == 5){
+                    setSatisfiedPrompt(true);
+                  }
+              }
+              setGeneratingFeedback(false);
+          })
+          .catch((error) => {
+            setGeneratingFeedback(false);
+            logError(error.toString());
+          });
+      } catch (error: any) {
+          setGeneratingFeedback(false);
+          logError(error.toString());
+      }
+  }
 
   useEffect(() => {
     const checkCancelClicked = () => {
@@ -505,47 +219,107 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked]);
+  }, [baselineCancelClicked, pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked]);
 
   // define the current technique
-  // const technique = 'baseline';
+  const technique = 'baseline';
   // const technique = 'pseudo';
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';
   // const technique = 'writeover';
-  const technique = 'selfexplain';
+  // const technique = 'selfexplain';
   // const technique = 'stepByStep';
-  // const technique = 'verify';
+  // const technique = 'verify'; (there is a bug)
   // const technique = 'leadReveal';
 
   const handleClick = () => {
-    const isUserPromptsVisible = false;
-    setIsUserPromptsVisible(isUserPromptsVisible);
-    const baselineDiv = document.getElementById('baselineDiv');
-    if (baselineDiv) {
-      baselineDiv.style.top = `60px`;
-    }
-    handleGenerateCode(technique);
+
+    //pass the prompt to gpt to check if the prompt is satisfied
+    const currPrompt = userInput;
+    generateFeedback(currPrompt);
+    setSatisfiedPrompt(false);
   };
+
+  useEffect(() => {
+    if(satisfiedPrompt || unSatisfiedTime > 4){
+      const isUserPromptsVisible = false;
+      setIsUserPromptsVisible(isUserPromptsVisible);
+      handleGenerateCode(technique);
+    }else{
+      setUnSatisfiedTime(unSatisfiedTime + 1);
+    }
+  }, [satisfiedPrompt]);
 
   return (
     <section className='response-container'>
-      <div className="task-baseline card-question" id="baselineDiv" style={{ position: 'absolute' }}>
+      <div className="task-baseline card-question">
+            <div className="baseline-title">
+              <h3>
+                <div className='gpt-image'><IconsDoc iconName="spark" /></div>
+                AI Assistance:
+              </h3>
+            </div>
           {/* Conditionally render the generated code component */}
           <div className={`generated-code-component ${generatedCodeComponentVisible ? '' : 'hidden'}`}>
             {generatedCodeComponent && (
                 generatedCodeComponent
             )}
           </div>
-          <div id='user-prompts' className={isUserPromptsVisible? '' : 'hidden'}>
-          <>
-            <h3>
-              <img src={robot} className="gpt-image" />
-              AI Assistance: <i>Describe the behavior of the code to be generated.</i>
-            </h3>
+          <div id='user-prompts' className={`chat-user-prompt ${isUserPromptsVisible? '' : 'hidden'}`}>
+          {!satisfiedPrompt && unSatisfiedTime <= 4 && (
+            <div className="baseline-feedback-chat">
+              {prompts.map((prompt, index) => {
+                return (
+                  <div key={index} className="baseline-feedback">
+                    <div className='user-chat-container'>
+                      <div className='user-icon'><IconsDoc iconName="person" /></div>
+                      <div className="baseline-feedback-user chat-bubble">
+                        <div className="baseline-feedback-user-text">
+                          <p>{prompt.user}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='assistant-chat-container'>
+                      <div className='assistant-icon'><IconsDoc iconName="spark" /></div>
+                      <div className="baseline-feedback-assistant chat-bubble">
+                        <div className="baseline-feedback-assistant-text">
+                          <p>You are missing the following details, please add them to your prompt before I can help you with code generation:</p>
+                          <ul>
+                            {prompt.assistant.map((specification, index) => (
+                              <li key={index}>{specification}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {generatingFeedback && (
+            <div className="baseline-feedback">
+             <div className='user-chat-container'>
+               <div className='user-icon'><IconsDoc iconName="person" /></div>
+               <div className="baseline-feedback-user chat-bubble">
+                 <div className="baseline-feedback-user-text">
+                   <p>{userInput}</p>
+                 </div>
+               </div>
+             </div>
+             <div className='assistant-chat-container'>
+               <div className='assistant-icon'><IconsDoc iconName="spark" /></div>
+               <div className="baseline-feedback-assistant chat-bubble">
+                 <div className="baseline-feedback-assistant-text">
+                    <div className='chat-loader'>Generating <ChatLoader/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+          )}
+          {!generatingFeedback && <>
             <div className="baseline-input-container">
-                  {/* <label className="input-question"> */}
                       <textarea
                       className="baseline-input"
                       id="userInput"
@@ -555,16 +329,14 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                       placeholder="Describe the intended behavior..."
                       rows={4}
                     />
-                    {/* <textarea className="input__field" placeholder=" " />
-                    <span className="input__label">Some Fancy Label</span> */}
-                  {/* </label> */}
             </div>
-            <div>
+            <div className='baseline-generator-container'>
               <button className="gpt-button" onClick={handleClick} disabled={!userInput.trim()}>
                 Generate Code
               </button>
             </div>
           </>
+          }
           </div>
       </div>
     </section>

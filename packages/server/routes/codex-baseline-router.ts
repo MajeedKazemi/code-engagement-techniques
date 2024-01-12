@@ -8,6 +8,95 @@ import { verifyUser } from "../utils/strategy";
 export const codexRouter = express.Router();
 
 
+codexRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
+    const { prompt, task } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (prompt !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+`
+# Overview:
+ycompare the specifications provided in the [student-prompt] with the [task-description]. First, score how fully and accurately the [student-prompt] describes the [task-description] using a number from 0 (completely irrelevant or under-specified) to 5 (fully specified and accurate). also if it is under-specified, provide a list of bullet points about what needs to be added to the [student-prompt] so that it fully describes the [task-description]. 
+
+Include all the missing specifications in the response. If an example is missing, include the example in the missing specifications as well.
+
+Use the following template:
+{
+    "accuracy-score": <number-0-to-5>,
+    "missing-specifications": [
+        "<10-15 word missing specification>",
+        "<10-15 word missing specification>",
+        "<10-15 word missing specification>",
+        ...
+    ]
+}
+`,
+            },
+            {
+                role: "user",
+                content: `[task-description]
+                Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.
+                Example Input/Outputs:
+                Input: [(1, 3), (2, 6), (8, 10), (15, 18)]
+                Output: [(1, 6), (8, 10), (15, 18)]
+                
+                [student-prompt]
+                merges the overlapping intervals.
+                [end-student-prompt]`,
+            },
+            {
+                role: "assistant",
+                content: `{
+                    "accuracy-score": 2,
+                    "missing-specifications": [
+                        "Function should take a list of intervals as input",
+                        "Intervals are represented as ranges of numbers",
+                        "Provide example input: [(1, 3), (2, 6), (8, 10), (15, 18)]",
+                        "Provide example output: [(1, 6), (8, 10), (15, 18)]"
+                    ]
+                }`,
+            }
+        ];
+
+
+        messages.push({
+            role: "user",
+            content: `[task-description]: ${task}\n[student-prompt]: ${prompt}[end-student-prompt]`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-4-1106-preview",
+            messages,
+            temperature: 0,
+            max_tokens: 1216,
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+
+            if(response){
+                res.json({
+                    response: parseResponse(response),
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
+function parseResponse(response: string): any {
+    return JSON.parse(response);
+}
+
+
+
 codexRouter.post("/generate", verifyUser, async (req, res, next) => {
     const { description, context } = req.body;
     const userId = (req.user as IUser)._id;

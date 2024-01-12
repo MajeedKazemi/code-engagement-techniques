@@ -40,20 +40,6 @@ export const GPTLoader: React.FC = () => {
 
 
 export const ChatLoader: React.FC = () => {
-    // return (
-    // //     <div className="dot-container">
-    // //     <div className="dot"></div>
-    // //     <div className="dot"></div>
-    // //     <div className="dot"></div>
-    // //   </div>
-    //     <motion.div
-    //     initial={{ opacity: 0 }} 
-    //     animate={{ opacity: 1 }} 
-    //     transition={{ duration: 1 }} 
-    // >
-    //     ...
-    // </motion.div>
-    // );
     return (
         <div className="loading-container">
           <motion.span className="loading-dot" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity }}>

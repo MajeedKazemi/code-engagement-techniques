@@ -18,7 +18,6 @@ import {
 import { Baseline } from "./response-generater";
 import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
-import ExcutionTimeline from "./excution-timeline";
 
 interface EditorProps {
     taskId: string;
@@ -316,8 +315,45 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         <Fragment>
             <section className="task-workspace">
                 <div className="editor" ref={monacoEl}></div>
-                <div className="overlay"></div>
                 <div className="editor-buttons-container">
+                    <div className="quick-editing-buttons-container">
+                        <Fragment>
+                            {" "}
+                            <div className="code-container-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+
+                            </div>
+                        </Fragment>
+                        Console Input and Output
+                        {/* <button
+                            className={`editor-button ${
+                                saved ? "editing-btn-disabled" : "editing-btn"
+                            }`}
+                            disabled={saved}
+                            onClick={handleClickSave}
+                        >
+                            {saved ? "Code Saved" : "Save Code"}
+                        </button>
+                        <button
+                            className={`editor-button ${
+                                canReset
+                                    ? "editing-btn"
+                                    : "editing-btn-disabled"
+                            } `}
+                            disabled={!canReset}
+                            onClick={handleClickReset}
+                        >
+                            Reset
+                        </button> */}
+                        {/* <button
+                            className="editor-button editing-btn"
+                            onClick={handleClickUndo}
+                        >
+                            Undo
+                        </button> */}
+                    </div>
                     <button
                         className={`editor-button ${
                             running ? "stop-button" : "run-button"
@@ -346,65 +382,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                             <Fragment>Stop</Fragment>
                         )}
                     </button>
-
-                    {/* <button
-                        className={`editor-button ${
-                            excution ? "stop-button" : "run-button"
-                        }`}
-                        style={{marginLeft: '0.5rem'}}
-                        onClick={handleClickStartExcution}
-                    >
-                        {" "}
-                        {!excution ? (
-                            <Fragment>
-                                {" "}
-                                <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    color="currentColor"
-                                    stroke="none"
-                                    strokeWidth="0"
-                                    fill="currentColor"
-                                    className="play-icon"
-                                >
-                                    <path d="M20.2253 11.5642C20.5651 11.7554 20.5651 12.2446 20.2253 12.4358L5.74513 20.5809C5.41183 20.7683 5 20.5275 5 20.1451L5 3.85492C5 3.47251 5.41183 3.23165 5.74513 3.41914L20.2253 11.5642Z"></path>
-                                </svg>
-                                Start
-                            </Fragment>
-                        ) : (
-                            <Fragment>Stop</Fragment>
-                        )}
-                    </button> */}
-
-                    <div className="quick-editing-buttons-container">
-                        <button
-                            className={`editor-button ${
-                                saved ? "editing-btn-disabled" : "editing-btn"
-                            }`}
-                            disabled={saved}
-                            onClick={handleClickSave}
-                        >
-                            {saved ? "Code Saved" : "Save Code"}
-                        </button>
-                        <button
-                            className={`editor-button ${
-                                canReset
-                                    ? "editing-btn"
-                                    : "editing-btn-disabled"
-                            }`}
-                            disabled={!canReset}
-                            onClick={handleClickReset}
-                        >
-                            Reset
-                        </button>
-                        <button
-                            className="editor-button editing-btn"
-                            onClick={handleClickUndo}
-                        >
-                            Undo
-                        </button>
-                    </div>
                 </div>
                 {/* {excution && <div>
                     <ExcutionTimeline totalSteps={10} setCurrentStep={setCurrentStep} currentStep={currentStep} />

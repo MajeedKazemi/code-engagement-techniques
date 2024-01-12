@@ -83,8 +83,13 @@
   .loading-container {
 	display: flex;
 	align-items: center;
+	font-size: 12px;
+	align-self: flex-end;
   }
 
+  .chat-loader {
+	display: flex;
+  }
 
 
   .gptLoader{
@@ -95,7 +100,7 @@
   }
   
   .loading-dot {
-	font-size: 3rem;
+	font-size: 20px;
 	margin-right: 0.5rem;
   }
   

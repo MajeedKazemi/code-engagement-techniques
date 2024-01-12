@@ -24,6 +24,7 @@ interface SelfExplainQuestion {
     question: string;
     answer?: string;
     choices?: MultipleChoiceQuestion[];
+    lines: number[];
     questionCodeLines: string;
     questionCodeLinesExplained: string;
 }
@@ -63,7 +64,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
             minimap: {
               enabled: false
             },
-            fontSize:18
+            fontSize:16,
           });
 
           editorInstances.current.push(editor);
@@ -130,11 +131,6 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
     // };
 
 
-    
-
-    useEffect(() => {
-        
-    }, [currentQuestionIndex]);
 
     useEffect(() => {
         const editor = monaco.editor.create(
@@ -170,22 +166,25 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                     endColumn: model.getLineMaxColumn(currentPosition.lineNumber - 1),
                   });
             
-                  console.log('Code above cursor:', codeAboveCursor);
                 }
             },
           });
         // console.log(code);
-        // console.log(startLine, endLine);
-        // if (startLine[currentQuestion] && endLine[currentQuestion]) {
-        //     editor.deltaDecorations([], [
-        //         {
-        //             range: new monaco.Range(startLine[currentQuestion], 1, endLine[currentQuestion], 1),
-        //             options: { isWholeLine: true, className: 'questionLineDecoration' }
-        //         }
-        //     ]);
-        //     editor.revealLineInCenterIfOutsideViewport(startLine[currentQuestion], monaco.editor.ScrollType.Smooth);
-        // }
+        // the the current highlighted lines
+        if(questions[currentQuestionIndex]){
+            const numOfLines = questions[currentQuestionIndex].lines.length;
+            let startLine = questions[currentQuestionIndex].lines[0];
+            let endLine =questions[currentQuestionIndex].lines[numOfLines-1];
+            console.log(startLine, endLine);
 
+            editor.deltaDecorations([], [
+                {
+                    range: new monaco.Range(startLine, 1, endLine, 1),
+                    options: { isWholeLine: true, className: 'questionLineDecoration' }
+                }
+            ]);
+            editor.revealLineInCenterIfOutsideViewport(startLine+1, monaco.editor.ScrollType.Smooth);
+        }
     
 
         editor.onDidPaste((e) => {
