@@ -1,7 +1,7 @@
 import * as monaco from "monaco-editor";
 import React, { useEffect, useRef, useState } from "react";
 
-import { highlightCode, highlightCodeBlock } from "../../utils/utils";
+import { highlightCode, highlightCodeBlock, highlightPsudo } from "../../utils/utils";
 
 interface IProps {
     content: string;
@@ -25,17 +25,20 @@ export const HoverableExplainCode = (props: IProps) => {
     return (
         <div
             className="hoverable-code-line-container"
-            onMouseEnter={() => {
+        >   
+            {/* <span className={"hoverable-code"}>
+                {highlightCodeBlock(props.content)}
+            </span> */}
+            <span onMouseEnter={() => {
                 setHovering(true);
             }}
             onMouseLeave={() => {
                 setHovering(false);
             }}
-        >   
-            {/* <span className={"hoverable-code"}>
-                {highlightCodeBlock(props.content)}
-            </span> */}
-            <span className={"hoverable-code"} dangerouslySetInnerHTML={{ __html: highlightCodeBlock(props.content) }} />
+            
+            className={"hoverable-code"} 
+            
+            dangerouslySetInnerHTML={{ __html: highlightPsudo(highlightCodeBlock(props.content)) }} />
             {hovering && props.explanation && (
                 <div
                     className="hoverable-code-line-explanation"
@@ -45,14 +48,10 @@ export const HoverableExplainCode = (props: IProps) => {
                     onMouseLeave={() => {
                         setHovering(false);
                     }}
-                    dangerouslySetInnerHTML={{
-                        __html: highlightCode(
-                            props.explanation,
-                            "exp-inline-code"
-                        ),
-                    }}
+                    dangerouslySetInnerHTML={{ __html: highlightPsudo(props.explanation) }}
                 ></div>
             )}
+            <div className="lightbulb">light</div>
         </div>
     );
 };

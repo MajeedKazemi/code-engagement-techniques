@@ -97,60 +97,71 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     }
   };
 
+  function addOverlay(){
+    const overlayElement = document.querySelector('.overlay') as HTMLElement;
+    const editorElement = document.querySelector('.editor') as HTMLElement;
+    overlayElement!.style.display = 'block';
+    editorElement.style.zIndex = '-99';
+  }
+
   
   const handleGenerateCode = (techniques: string) => {
-    // const overlayElement = document.querySelector('.overlay') as HTMLElement;
-    const editorElement = document.querySelector('.editor') as HTMLElement;
-    // overlayElement!.style.display = 'block';
-    editorElement.style.zIndex = '-99';
-    
     let generatedCodeComponent = null;
     const generatedCodeComponentVisible = true;
     setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     switch (techniques) {
       case "baseline":
-        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor}/>;
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""}/>;
         break;
       case "pseudo":
+        addOverlay();
         generatedCodeComponent = 
           <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       case "parsons":
+        addOverlay();
         generatedCodeComponent = 
           <DndProvider backend={HTML5Backend}>
             <ParsonsGenerateCode prompt={userInput} editor={editor} />
           </DndProvider>
         break;
-      case "hierarchical":
-        generatedCodeComponent = 
-          <HierachicalGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
-        break;
+      // case "hierarchical":
+      //   addOverlay();
+      //   generatedCodeComponent = 
+      //     <HierachicalGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+      //   break;
       case "token":
+        addOverlay();
         generatedCodeComponent =
           <TokenGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       case "writeover":
+        addOverlay();
         generatedCodeComponent = 
           <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
         break;
       case "selfexplain":
+        addOverlay();
         generatedCodeComponent =
           <SelfExplainGenerateCode prompt={userInput} editor={editor}/>
         break;
       case "stepByStep":
+        addOverlay();
         generatedCodeComponent =
           <ExcutionGenerateCode prompt={userInput} editor={editor}/>
         break;
       case "verify":
+        addOverlay();
         generatedCodeComponent =
           <VerifyGenerateCode prompt={userInput} editor={editor}/>
         break;
       case "leadReveal":
+        addOverlay();
         generatedCodeComponent =
           <RevealGenerateCode prompt={userInput} editor={editor}/>
         break;
       default:
-        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor}/>;
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""}/>;
         break;
     }
     setGeneratedCodeComponent(generatedCodeComponent);
@@ -222,8 +233,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [baselineCancelClicked, pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked]);
 
   // define the current technique
-  const technique = 'baseline';
-  // const technique = 'pseudo';
+  // const technique = 'baseline';
+  const technique = 'pseudo';
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';

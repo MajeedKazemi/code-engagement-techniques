@@ -13,9 +13,11 @@ export let baselineCancelClicked = false;
 interface BaselineGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    code: string;
+    exp: string;
 }
 
-const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor })  => {
+const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor, code, exp })  => {
     // Call the GPT API or any code generation logic here
     // to generate code based on the userInput
     const [generating, setGenerating] = useState(false);
@@ -220,7 +222,12 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
     };
 
     useEffect(() => {
-        generateCode();
+        if(code.length > 0 && exp.length > 0){
+            setGeneratedCode(code);
+            setGeneratedExplanation(exp);
+        }else{
+            generateCode();
+        }
     }, []);
 
     useEffect(() => {

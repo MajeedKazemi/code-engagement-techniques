@@ -312,7 +312,7 @@ export const apiGetBaselineCodex = (
 export const apiGetPseudoCodex = (
     token: string | null | undefined,
     description: string,
-    context: string
+    code: string
 ) =>
     fetch(env.API_URL + "/api/technique-pseudo/generate", {
         method: "POST",
@@ -323,7 +323,7 @@ export const apiGetPseudoCodex = (
         },
         body: JSON.stringify({
             description: description,
-            context: context,
+            code: code,
         }),
     });
 

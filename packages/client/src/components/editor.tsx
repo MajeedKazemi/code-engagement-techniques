@@ -232,27 +232,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         
     }, []);
 
-
-    const handleClickStartExcution = () => {
-        if(!excution){
-            //change output height
-            const outputElement = document.querySelector('.output') as HTMLElement;
-            if (outputElement) {
-                outputElement.style.height = 'calc(45% - 220px)';
-            }
-            //get the excution steps
-
-            setExcution(true);
-        }else{
-            //change output height
-            const outputElement = document.querySelector('.output') as HTMLElement;
-            if (outputElement) {
-                outputElement.style.height = 'calc(45% - 88px)';
-            }
-            setExcution(false);
-        }
-    }
-
     const handleClickRun = () => {
         if (!running) {
             socket?.emit("python", {
@@ -314,6 +293,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     return (
         <Fragment>
             <section className="task-workspace">
+                <div className="overlay"></div>
                 <div className="editor" ref={monacoEl}></div>
                 <div className="editor-buttons-container">
                     <div className="quick-editing-buttons-container">

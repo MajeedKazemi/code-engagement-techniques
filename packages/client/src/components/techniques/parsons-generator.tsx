@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../../assets/robot.png";
-import { XYCoord, useDrag, useDrop } from 'react-dnd';
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
@@ -8,6 +6,8 @@ import { apiGetBaselineCodex, apiGetGeneratedCodeCodex, apiGetParsonsCodex, logE
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import { ParsonsGame } from '../responses/parsons-game';
+import IconsDoc from '../docs/icons-doc';
+import BaselineGenerateCode from '../responses/baseline-chat';
 
 export let parsonsCancelClicked = false;
 
@@ -342,35 +342,6 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
             };
             });
       }
-
-    const cancelClick = () => {
-        
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        parsonsCancelClicked = !parsonsCancelClicked;
-    };
-    
-    const handleInsertCodeClick = () => {
-        if (editor) {
-            const position = editor.getPosition();
-            if (position) {
-              const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
-              editor.executeEdits("insertCodeAfterCursor", [op]);
-            }
-          }
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        parsonsCancelClicked = !parsonsCancelClicked;
-    };
   
 
     const closePopup = () => {
@@ -387,25 +358,13 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     return (
           <div>
             {isOver && (
-                <>
-                <div style={{ whiteSpace: 'pre-wrap' }}>
-                    <b>prompts: </b> {prompt}
-                </div>
-                <div ref={baselineRef} className="read-only-editor"></div>
-                <div ref={explainRef}> </div>
-                <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
-                  <button className="gpt-button" onClick={cancelClick}>Cancel</button>
-                  <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-                </div>
-                </>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
                 <div className="modal-header">
-                  <p>
-                    <img src={robot} className="gpt-image" />
-                    <b>AI Assistance: </b> Solve the Parson's problem to use the generated code.
-                  </p>
+                    <div className='spark-icon'><IconsDoc iconName="spark" /></div>
+                    AI Assistance:
                 </div>
                 <div className="modal-body">
                   <p>

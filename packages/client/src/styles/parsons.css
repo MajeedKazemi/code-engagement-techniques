@@ -30,8 +30,8 @@
   
   .modal-header {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     padding-bottom: 0.5rem;
     background-color: #056794;
     color:aliceblue;
@@ -40,6 +40,12 @@
     border-top-right-radius: 20px;
     font-size: 1.5rem;
   }
+
+.spark-icon{
+    width: 3rem;
+    height: 3rem;
+    margin-right: 10px;
+}
   
   .modal-title {
     margin: 0;
