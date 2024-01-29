@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { FaLongArrowAltRight } from 'react-icons/fa';
+import React, { useState, useEffect, useRef, useContext, Fragment } from 'react';
+import { FaLongArrowAltRight, FaQuestionCircle } from 'react-icons/fa';
 import { AuthContext, SocketContext } from '../../context';
 import ExcutionTimeline from '../excution-timeline';
 import { apiGenerateQuestionHint, apiGenerateTracingQuestion, logError } from '../../api/api';
 import { ChatLoader } from '../loader';
+import { highlightCode } from '../../utils/utils';
+import * as monaco from "monaco-editor";
+import IconsDoc from '../docs/icons-doc';
 
 
 
@@ -39,9 +42,15 @@ interface  questionObject{
     variable: string,
 }
 
+function deepCopy(arr: any[]): any[] {
+    return arr.map(item => Array.isArray(item) ? deepCopy(item) : item);
+}
+
 export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode, format, backendCodes }) => {
     const { context } = useContext(AuthContext);
     const { socket } = useContext(SocketContext);
+    const [editor, setEditor] =
+    useState<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [excutionSteps, setExcutionSteps] = useState<ExcutionSteps[]>([]);
     const [currStep, setCurrStep] = useState<ExcutionSteps | null>(null);
     const [traceOutput, setTraceOutput] = useState<string[][]>([]); 
@@ -56,18 +65,67 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [currentLine, setCurrentLine] = useState<number>(0);
     const [terminalInput, setTerminalInput] = useState<string>("");
-    const [currentQuestion, setCurrentQuestion] = useState<questionObject | null>();
     const [questions, setQuestions] = useState<questionObject[]>([]);
     const [questionStop, setQuestionStop] = useState<number>(0);
-    const [currCount, setCurrCount] = useState<number>(0);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const [inputValue, setInputValue] = useState<string>("");
-    const [needHint, setNeedHint] = useState<boolean>(false);
-    const [questionHint, setQuestionHint] = useState<string>("");
-    const [hintGenerating, setHintGenerating] = useState<boolean>(false);
+    const [showSolution, setShowSolution] = useState<boolean[]>();
+    const [currentWrongAnswers, setCurrentWrongAnswers] = useState<string[][]>();
+    const [solutions, setSolutions] = useState<string[]>();
     const inputRef = useRef<HTMLInputElement>(null);
+    const readerRef = useRef<HTMLDivElement>(null);
     const [output, setOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
+
+    useEffect(() => {
+        const editor = monaco.editor.create(
+            readerRef.current!,
+            {
+                value: code || '',
+                language: "python",
+                automaticLayout: true,
+                fontSize: 15,
+                lineHeight: 25,
+                minimap: { enabled: false },
+                wordWrap: "off",
+                wrappingIndent: "indent",
+                lineNumbers: 'on',
+                readOnly: true,
+                scrollbar: {
+                    vertical: 'hidden',
+                    horizontal: 'visible',
+                    useShadows: false,
+                    verticalHasArrows: false,
+                    horizontalHasArrows: false,
+                    verticalScrollbarSize: 0,
+                    horizontalScrollbarSize: 0,
+                    verticalSliderSize: 0,
+                    horizontalSliderSize: 0,
+                    handleMouseWheel: false,
+                    arrowSize: 30,
+                    alwaysConsumeMouseWheel: false
+                },
+            }
+        );
+        // console.log(code);
+        // the the current highlighted lines
+        if(questions[currentQuestionIndex] && questions[currentQuestionIndex].step == currentStep+1){
+            let startLine = excutionSteps[currentStep+1].currLine;
+
+            editor.deltaDecorations([], [
+                {
+                    range: new monaco.Range(startLine, 1, startLine, 1),
+                    options: { isWholeLine: true, className: 'questionLineDecoration' }
+                }
+            ]);
+            editor.revealLineInCenterIfOutsideViewport(startLine+1, monaco.editor.ScrollType.Smooth);
+        }
+
+        setEditor(editor);
+
+        return () => editor?.dispose();
+    }, [currentQuestionIndex, currentStep]);
 
     const extractLineNum = (line: string): number => {
         const match = line.match(/main.py\((\d+)\)/);
@@ -124,9 +182,20 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
 
     useEffect(() => {
         if(questions.length > 0){
-            setCurrentQuestion(questions[0]);
             setQuestionStop(questions[0].step-1);
             console.log("questions", questions);
+            // setCurrentQuestionWrongAnswers(new Array(questions.length).fill([]));
+            setCurrentQuestionIndex(0);
+            setShowSolution(new Array(questions.length).fill(false));
+            setCurrentWrongAnswers(new Array(questions.length).fill(["", "", ""]));
+            var solutions = new Array(questions.length).fill("");
+            for (let i = 0; i < questions.length; i++) {
+                solutions[i] = getCurrQuestionSolution(i)!;
+            
+            }
+            console.log("solutions", solutions);
+            setSolutions(solutions);
+                
         }
     }, [questions]);
 
@@ -271,6 +340,15 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
         if (excutionSteps.length > 0 && currentStep < excutionSteps.length) {
           setCurrStep(excutionSteps[currentStep]);
         }
+        const targetDivs = document.getElementsByClassName('step-by-step-questions-container');
+
+        for(let i = 0; i < targetDivs.length; i++) {
+            if (questionStop === currentStep) {
+                targetDivs[i].classList.add('active');
+            } else {
+                targetDivs[i].classList.remove('active');
+            }
+        }
     }, [currentStep]);
 
     useEffect(() => {
@@ -395,10 +473,25 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
         setExcutionSteps(objectArray);
     }, [trackOutput]);
 
+    useEffect(() => {
+        if (showSolution && showSolution.every(value => value === true)) {
+            setQuestionStop(excutionSteps.length-1);
+        }
+    }, [showSolution]);
+
+    const updateQuestion = (questionIndex: number) => {
+        const currentQuestion = questions[questionIndex];
+        if(currentQuestion){
+            setQuestionStop(currentQuestion.step-1);
+            setCurrentQuestionIndex(questionIndex);
+        }
+
+    };
     
 
-    const getCurrQuestionSolution = () => {
-        if(currentQuestion && currentStep){
+    const getCurrQuestionSolution = (index: number) => {
+        const currentQuestion = questions[index];
+        if(currentQuestion){
             let currStep = currentQuestion.step;
             let currFrame = excutionSteps[currStep-1].frame;
             let currVariable = currentQuestion.variable;
@@ -411,240 +504,200 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
         }
     }
 
-    const updateQuestion = (currentQuestion:questionObject) => {
-        const newQuestions = questions.filter((item, index) => index !== questions.indexOf(currentQuestion));
-        setQuestions(newQuestions);
     
-        if (newQuestions.length > 0) {
-            setCurrentQuestion(newQuestions[0]);
-            setQuestionStop(newQuestions[0].step-1);
-            setCurrCount(0);
-            setNeedHint(false);
-        }
-        else {
-            setCurrentQuestion(null);
-            setQuestionStop(excutionSteps.length);
-            setCurrCount(0);
-            setNeedHint(false);
-        }
-    }
-
-    useEffect(() => {
-        if(needHint && currentQuestion){
-            //get hint from codex
-            //code is the previous step's currline + nextline
-            //frame is the previous step's frame
-            //correct is getCurrQuestionSolution()
-            //target is the current question's variable
-            //answer is input value
-            let prevStep = excutionSteps[currentQuestion.step-2]
-            let currCode = backendCode.split("\n")[prevStep.currLine];
-            let prevCode = backendCode.split("\n")[prevStep.nextLine!];
-            let correct = getCurrQuestionSolution();
-            setQuestionHint("");
-            setHintGenerating(true);
-            try {
-                apiGenerateQuestionHint(
-                    context?.token,
-                    prevCode,
-                    currCode,
-                    JSON.stringify(prevStep.frame),
-                    correct ? correct.toString() : "",
-                    currentQuestion.variable,
-                    inputValue
-                    
-                ).then(async (response) => {
-                                     
-                    if (response.ok) {
-                        const data = await response.json();
-                        setQuestionHint(data.response);
-                        setHintGenerating(false);
-                    }
-                })
-            } catch (error: any) {
-                logError(error.toString());
-                setHintGenerating(false);
-            }                
-        }
-    }, [needHint]);
-
-    useEffect(() => {
-    }, [currStep]);
-
     return (
           <div className='excution-generator'>
-          <div className='code-container'>
-            <div className='code-editor' id='code-editor'>     
-            { format.length > 0 && pesudoCode.length == format.length-1 && (() =>{
-                let lineNumber = 1;  // Initialize line number
-                return format.map((snippet, index) => {
-                    var newIndex = format.indexOf('new');
-                    if(snippet === 'new'){
-                        return code.split('\n').map((line) => {
-                            let result = (
-                                <div className='line'>
-                                <span className='arrow' style={{padding:
-                                    (currStep?.currLine !== lineNumber && currStep?.nextLine !== lineNumber)
-                                    ? '1rem' : '0'
-                                }}>
-                                    {currStep?.currLine === lineNumber && <FaLongArrowAltRight className='green-arrow' />}
-                                    {currStep?.nextLine === lineNumber && <FaLongArrowAltRight className='red-arrow'/>}
+          <div className="step-by-step-read-container">
+            <div className='step-by-step-code-container'>
+                <div className='code-container'>
+                    <div className="current-arrows-container">
+                        {code.split('\n').map((line, index) => (
+                            <div className='line'>
+                                <span className='arrow'>
+                                    {currStep?.currLine === index+1 && <FaLongArrowAltRight className='green-arrow' />}
+                                    {currStep?.nextLine === index+1 && <FaLongArrowAltRight className='red-arrow' />}
                                 </span>
-                                <span className='line-number'>{lineNumber++}</span>
-                                <span className='line-content'>{line}</span>
-                                </div>
-                            );
-                            return result;
-                        });
-                    } else {
-                        return pesudoCode[index <= newIndex ? index : index-1].map((line) => {
-                            let result = (
-                                <div className='line'>
-                                <span className='arrow' style={{padding:
-                                    (currStep?.currLine !== lineNumber && currStep?.nextLine !== lineNumber)
-                                    ? '1rem' : '0'
-                                }}>
-                                    {currStep?.currLine === lineNumber && <FaLongArrowAltRight className='green-arrow' />}
-                                    {currStep?.nextLine === lineNumber && <FaLongArrowAltRight className='red-arrow'/>}
-                                </span>
-                                <span className='line-number'>{lineNumber++}</span>
-                                <span className='line-content'>{line.replace(/{indentation}/g, '    ')}</span>
-                                </div>
-                            );
-                            return result;
-                        });
-                    }
-                })
-            })()}
-                     
-            </div>
-            <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} stop={questionStop}/>
-            {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
-          </div>
-            <div className='legend'>
-                <div className='legend-item'>
-                    <FaLongArrowAltRight className='green-arrow' />
-                    <div className='legend-text'>Line that just executed</div>
-                </div>
-                <div className='legend-item'>
-                    <FaLongArrowAltRight className='red-arrow'/>
-                    <div className='legend-text'>Next line to execute</div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='code-editor' id='code-editor' ref={readerRef}>    
+                    </div>
                 </div>
             </div>
-            <div className = "excution-container">
-                <div className='print-container'>
-                    <h4>Print Output</h4>
-                    <div className="print-output">
-                    {output.map((i, index) => (
-                        <p
-                            className={
-                                i.type === "error" ? `console-output-error` : ""
-                            }
-                            key={"trackLine-" + index}
-                        >
-                            {i.line}
-                        </p>
-                    ))}
-                    {tracing && (
-                        <input
-                            autoFocus
-                            key={"trackInput-" + output.length.toString()}
-                            className="terminal-input"
-                            ref={inputRef}
-                            onKeyUp={(e) => {
-                                if (e.key === "Enter") {
-                                    socket?.emit("python", {
-                                        type: "stdin",
-                                        value: terminalInput,
-                                        from: socket.id,
-                                        userId: context?.user?.id,
-                                    });
 
-                                    //store the input in a local variable so I can reuse for tracking
-                                    setStoredInput([...storedInput, terminalInput]);
-                                   
-                                    setOutput([
-                                        ...output,
-                                        {
-                                            type: "input",
-                                            line: terminalInput,
-                                        },
-                                    ]);
-                                    
-                                    setTerminalInput("");
-                                }
-                            }}
-                            onChange={(event) => {
-                                setTerminalInput(event.target.value);
-                            }}
-                        />
-                    )}
+            <div className='step-by-step-timeline-container'>
+                <div className='legend'>
+                    {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
+                    <div className='legend-item'>
+                        <FaLongArrowAltRight className='green-arrow' />
+                        <div className='legend-text'>Line that just executed</div>
+                    </div>
+                    <div className='legend-item'>
+                        <FaLongArrowAltRight className='red-arrow'/>
+                        <div className='legend-text'>Next line to execute</div>
                     </div>
                 </div>
 
+                <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} stop={questionStop}/>
+            </div>
+
+            <div className='print-container'>
+                <div className="quick-editing-buttons-container">
+                    <Fragment>
+                        {" "}
+                        <div className="code-container-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+
+                        </div>
+                    </Fragment>
+                    Console Input and Output
+                </div>
+                <div className="print-output">
+                {output.map((i, index) => (
+                    <p
+                        className={
+                            i.type === "error" ? `console-output-error` : ""
+                        }
+                        key={"trackLine-" + index}
+                    >
+                        {i.line}
+                    </p>
+                ))}
+                {tracing && (
+                    <input
+                        autoFocus
+                        key={"trackInput-" + output.length.toString()}
+                        className="terminal-input"
+                        ref={inputRef}
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") {
+                                socket?.emit("python", {
+                                    type: "stdin",
+                                    value: terminalInput,
+                                    from: socket.id,
+                                    userId: context?.user?.id,
+                                });
+
+                                //store the input in a local variable so I can reuse for tracking
+                                setStoredInput([...storedInput, terminalInput]);
+                                
+                                setOutput([
+                                    ...output,
+                                    {
+                                        type: "input",
+                                        line: terminalInput,
+                                    },
+                                ]);
+                                
+                                setTerminalInput("");
+                            }
+                        }}
+                        onChange={(event) => {
+                            setTerminalInput(event.target.value);
+                        }}
+                    />
+                )}
+                </div>
+            </div>
+          
+          </div>
+            
+            <div className = "excution-container">
+                <div className='step-by-step-questions-container'>
+                    <div className='step-by-step-questions-header'>
+                        <FaQuestionCircle /> &nbsp;&nbsp;Questions
+                    </div>
+                    <div className="step-question-content">
+                        {questions.length > 0 && questions.map((item, index) => (
+                            questions[index].step-1 <= currentStep && 
+                            <div className='steps-question-div'>
+                                <p className="question">What will the value of <span>{questions[index].variable}</span> after <b>Step {questions[index].step-1} </b>?</p>
+                                {/* {needHint && <p className="hint">Hint: {hintGenerating ? <ChatLoader/> : questionHint}</p>} */}
+                                {currentWrongAnswers && currentWrongAnswers[index] && currentWrongAnswers[index].length > 0 && currentWrongAnswers[index].map((item) => (
+                                    item.length > 0 && <div className="step-answered-container">
+                                        <span className='wrong'>{item}</span>
+                                        <p style={{ color: 'red' }}>Incorrect!</p>
+                                        <p> Try Again</p>
+                                    </div>
+                                ))}
+                                {!showSolution![index] && index==currentQuestionIndex && <div className={`step-question-container`}>
+                                    <input 
+                                        className="question-input" 
+                                        value={inputValue}
+                                        onChange={e => setInputValue(e.target.value)} 
+                                    />
+                                    <button 
+                                        className="question-submission-button"
+                                        disabled={inputValue.trim().length === 0}
+                                        onClick={() => {
+                                            let solution = solutions![index];
+                                            if ((solution && typeof(solution) == 'string' && inputValue.replace(/\s+/g, '') == solution.replace(/\s+/g, '')) || Number(inputValue) === Number(solution)) {
+                                                setShowSolution!(prev => {
+                                                    let temp = [...prev!];
+                                                    temp[index] = true;
+                                                    return temp;
+                                                });
+                                                updateQuestion(index+1);
+                                                setInputValue("");
+                                            } else if (currentWrongAnswers && index==currentQuestionIndex){
+                                                //set the current wrong answers
+                                                //find the first empty string in the array
+                                                let temp = deepCopy(currentWrongAnswers);;
+                                                console.log(temp[currentQuestionIndex]);
+                                                let emptyIndex = temp[currentQuestionIndex].findIndex((item: string) => item === "");
+                                                if (emptyIndex <= 2 && emptyIndex >= 0){
+                                                    temp[currentQuestionIndex][emptyIndex] = inputValue;
+                                                    setCurrentWrongAnswers(temp);
+                                                    setInputValue("");
+                                                }
+                                                if (currentWrongAnswers[index][2] == "") {
+                                                    //means there is at least one more try
+                                                }else{
+                                                    // there is no more try, update question and reveal the answer
+                                                    setShowSolution!(prev => {
+                                                        let temp = [...prev!];
+                                                        temp[index] = true;
+                                                        return temp;
+                                                    });
+                                                    updateQuestion(index+1);
+                                                    setInputValue("");
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            }
+                            {showSolution![index] && <div className="step-answered-container">
+                                <p>Correct Answer: </p>
+                                <span className='correct'>{solutions![index]}</span>
+                            </div>
+                            }
+                            </div>  
+                        ))}
+
+                        
+                        {<p></p>
+                        }
+                    </div>
+
+                </div>
+
                 <div className="content-wrapper">
-                    <h4>Frame</h4>
+                    <div className='step-by-step-frame-header'>
+                        <div className='barIcon'><IconsDoc iconName='bar'/></div> Values of Variables
+                    </div>
                     <div className="frame">
                     {/* Your frame content goes here */}
                     {currStep?.frame.map((item, index) => (
                         <>  
-                            {/* {currentQuestion && <p>{currentQuestion.step}, {currStep.step}, {currCount}, {currentQuestion.variable}, {item.name}</p>} */}
-                            {currCount < 2 && currentQuestion && currStep && currentQuestion.step === currStep.step ? 
-                                currentQuestion.variable == item.name ?
-                                
-                                <>
-                                    <p className="question">What is the value of <b>{currentQuestion.variable}</b> after <b>Step {currentQuestion.step-1} </b>is excuted?</p>
-                                    {needHint && <p className="hint">Hint: {hintGenerating ? <ChatLoader/> : questionHint}</p>}
-                                    <div className={`frame-container ${item.type}`}>
-                                        <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
-                                        <input 
-                                            className="question-input" 
-                                            value={inputValue}
-                                            onChange={e => setInputValue(e.target.value)} 
-                                        />
-                                    </div>
-                                    <button 
-                                        onClick={() => {
-                                            let solution = getCurrQuestionSolution();
-                                            if ((solution && typeof(solution) == 'string' && inputValue.replace(/\s+/g, '') === solution.replace(/\s+/g, '')) || Number(inputValue) === getCurrQuestionSolution()) {
-                                                updateQuestion(currentQuestion);
-                                                setInputValue("");
-                                            } else{
-                                                //if currcount = 0, then show hint
-                                                if(currCount === 0){
-                                                    setNeedHint(true);
-                                                    setCurrCount(1);
-                                                }
-                                                else if(currCount === 1){
-                                                    setNeedHint(true);
-                                                    setCurrCount(1);
-                                                }
-                                                else if(currCount === 2){
-                                                    updateQuestion(currentQuestion);
-                                                    setCurrCount(0);
-                                                    setInputValue("");
-                                                }
-
-                                            }
-                                        }}
-                                    >
-                                        Check answer
-                                    </button>
-                                </>
-
-                                :
-
-                                <div className={`frame-container ${item.type}`}>
-                                    <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
-                                    <p>{JSON.stringify(item.value)}</p>
-                                </div>
-                                
-                            : 
-                                <div className={`frame-container ${item.type}`}>
-                                    <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
-                                    <p>{JSON.stringify(item.value)}</p>
-                                </div>
-                            }
+                            <div className={`frame-container ${item.type}`}>
+                                <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
+                                <p>{JSON.stringify(item.value)}</p>
+                            </div>
                         </>
                     ))}
                     </div>

@@ -621,7 +621,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                   Done
                   </button>
                 <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                  Cancel
+                  Next
                 </button>
               </div>
             </div>

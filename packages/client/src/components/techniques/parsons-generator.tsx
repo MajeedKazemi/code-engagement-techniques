@@ -71,56 +71,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const sectionHeightRef = useRef<number>(0);
     const [isOver, setIsOver] = useState(false);
-    const baselineRef = useRef<HTMLDivElement | null>(null);
-    const explainRef = useRef<HTMLDivElement | null>(null);
     const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
-
-    useEffect(() => {
-        if (explainRef.current) {
-          const div = document.createElement('div');
-          // div.innerHTML = `<b>Explanation:</b> ${explanation}`;
-          console.log(generatedExplanation);
-          const highlightedExplanation = highlightCode(generatedExplanation, "code-highlight");
-          div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
-          explainRef.current.appendChild(div);
-          const explainContainer = explainRef.current;
-          const maxHeight = window.innerHeight * 0.4;
-    
-          if (explainContainer.scrollHeight > maxHeight) {
-            explainContainer.style.height = `${maxHeight}px`;
-            explainContainer.style.overflowY = 'scroll';
-          } else {
-            explainContainer.style.height = 'auto';
-            explainContainer.style.overflowY = 'unset';
-          }
-          
-        }
-        
-      }, [isOver]);
-
-      useEffect(() => {
-        if (baselineRef.current && generatedCode && !editorRef.current) {
-          editorRef.current = monaco.editor.create(baselineRef.current, {
-            value: generatedCode,
-            language: 'python',
-            readOnly: true,
-            automaticLayout: true,
-          });
-          editorRef.current.onDidChangeModelContent(() => {
-            const model = editorRef.current?.getModel();
-            if (model) {
-              const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
-              const lineCount = Math.max(model.getLineCount(), 1);
-              const newHeight = lineHeight * (lineCount+2);
-              const maxHeight = window.innerHeight * 0.4;
-              const height = Math.min(newHeight, maxHeight);
-              baselineRef.current!.style.height = `${height}px`;
-              editorRef.current!.layout();
-            }
-          });
-        }
-    
-      }, [isOver]);
     
     const props = {
         taskId: "",
@@ -382,7 +333,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                 </div>
                 <div className="modal-footer">
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Cancel
+                    Next
                   </button>
                 </div>
               </div>

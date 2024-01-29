@@ -9,6 +9,7 @@ import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import { SelfExplain } from '../responses/self-explain';
 import { GPTLoader } from '../loader';
+import BaselineGenerateCode from '../responses/baseline-chat';
 
 export let selfExplainCancelClicked = false;
   
@@ -158,52 +159,6 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
       return () => clearInterval(interval);
   }, []);
 
-    useEffect(() => {
-        if (explainRef.current) {
-          const div = document.createElement('div');
-          console.log(generatedExplanation);
-          const highlightedExplanation = highlightCode(generatedExplanation, "code-highlight");
-          div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
-          explainRef.current.appendChild(div);
-          const explainContainer = explainRef.current;
-          const maxHeight = window.innerHeight * 0.4;
-    
-          if (explainContainer.scrollHeight > maxHeight) {
-            explainContainer.style.height = `${maxHeight}px`;
-            explainContainer.style.overflowY = 'scroll';
-          } else {
-            explainContainer.style.height = 'auto';
-            explainContainer.style.overflowY = 'unset';
-          }
-          
-        }
-        
-      }, [isOver]);
-
-      useEffect(() => {
-        if (baselineRef.current && generatedCode && !editorRef.current) {
-          editorRef.current = monaco.editor.create(baselineRef.current, {
-            value: generatedCode,
-            language: 'python',
-            readOnly: true,
-            automaticLayout: true,
-          });
-          editorRef.current.onDidChangeModelContent(() => {
-            const model = editorRef.current?.getModel();
-            if (model) {
-              const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
-              const lineCount = Math.max(model.getLineCount(), 1);
-              const newHeight = lineHeight * (lineCount+2);
-              const maxHeight = window.innerHeight * 0.4;
-              const height = Math.min(newHeight, maxHeight);
-              baselineRef.current!.style.height = `${height}px`;
-              editorRef.current!.layout();
-            }
-          });
-        }
-    
-      }, [isOver]);
-    
     const props = {
         taskId: "",
         editor: editor
@@ -387,36 +342,6 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
             }
         }
     };
-
-
-    const cancelClick = () => {
-        
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        selfExplainCancelClicked = !selfExplainCancelClicked;
-    };
-    
-    const handleInsertCodeClick = () => {
-        if (editor) {
-            const position = editor.getPosition();
-            if (position) {
-              const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
-              editor.executeEdits("insertCodeAfterCursor", [op]);
-            }
-          }
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        selfExplainCancelClicked = !selfExplainCancelClicked;
-    };
   
 
     const closePopup = () => {
@@ -433,17 +358,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     return (
           <div>
             {isOver && (
-                <>
-                <div style={{ whiteSpace: 'pre-wrap' }}>
-                    <b>prompts: </b> {prompt}
-                </div>
-                <div ref={baselineRef} className="read-only-editor"></div>
-                <div ref={explainRef}> </div>
-                <div className="generated-button-container" style={{ marginTop:'2rem', display: 'flex', justifyContent: 'space-between'  }}>
-                  <button className="gpt-button" onClick={cancelClick}>Cancel</button>
-                  <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-                </div>
-                </>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
@@ -473,7 +388,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                     Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Cancel
+                    Next
                   </button>
                 </div>
               </div>

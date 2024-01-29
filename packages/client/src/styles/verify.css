@@ -10,7 +10,8 @@
     color: #fff;
     font-family: "Courier New", Courier, monospace;
     overflow-y: auto;
-    border-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
     position: relative;
     width: 30vw;
     padding: 12px 0 12px 0;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
+import IconsDoc from './docs/icons-doc';
 
 interface TimelineProps {
   totalSteps: number;
@@ -61,10 +62,10 @@ const ExcutionTimeline: React.FC<TimelineProps> = ({ totalSteps, setCurrentStep,
         </div>
       </div>
       <div className="controls">
-        <button onClick={handleFirstClick}>&lt;&lt; First</button>
-        <button onClick={handlePrevClick}>&lt; Prev</button>
-        <button disabled={isLastStep || isNextStepAfterStop} onClick={handleNextClick}>Next &gt;</button>
-        <button disabled={isLastStep || isNextStepAfterStop} onClick={handleLastClick}>Last &gt;&gt;</button>
+        <button onClick={handleFirstClick} className="flexButton"><div className='timeline-icon'><IconsDoc iconName='backward'/></div> First</button>
+        <button onClick={handlePrevClick} className="flexButton">&lt; Prev</button>
+        <button disabled={isLastStep || isNextStepAfterStop} className="flexButton" onClick={handleNextClick}>Next &gt;</button>
+        <button disabled={isLastStep || isNextStepAfterStop} className="flexButton" onClick={handleLastClick}>Last <div className='timeline-icon'><IconsDoc iconName='forward'/></div></button>
       </div>
       <p style={{ fontSize: '14px', marginTop: '1rem'}}>
         Step {currentStep + 1} of {totalSteps}

@@ -281,56 +281,9 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
     const [generatedCode, setGeneratedCode] = useState('');
     const [generatedExplanation, setGeneratedExplanation] = useState('');
     const [questions, setQuestions] = useState<QuestionInterface[]>([]);
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [isOver, setIsOver] = useState(false);
-    const baselineRef = useRef<HTMLDivElement | null>(null);
-    const explainRef = useRef<HTMLDivElement | null>(null);
     const [buttonClickOver, setButtonClickOver] = useState(false);
 
-    useEffect(() => {
-        if (explainRef.current) {
-          const div = document.createElement('div');
-          const highlightedExplanation = highlightCode(generatedExplanation, "code-highlight");
-          div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
-          explainRef.current.appendChild(div);
-          const explainContainer = explainRef.current;
-          const maxHeight = window.innerHeight * 0.4;
-    
-          if (explainContainer.scrollHeight > maxHeight) {
-            explainContainer.style.height = `${maxHeight}px`;
-            explainContainer.style.overflowY = 'scroll';
-          } else {
-            explainContainer.style.height = 'auto';
-            explainContainer.style.overflowY = 'unset';
-          }
-          
-        }
-        
-      }, [isOver]);
-
-      useEffect(() => {
-        if (baselineRef.current && generatedCode && !editorRef.current) {
-          editorRef.current = monaco.editor.create(baselineRef.current, {
-            value: generatedCode,
-            language: 'python',
-            readOnly: true,
-            automaticLayout: true,
-          });
-          editorRef.current.onDidChangeModelContent(() => {
-            const model = editorRef.current?.getModel();
-            if (model) {
-              const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
-              const lineCount = Math.max(model.getLineCount(), 1);
-              const newHeight = lineHeight * (lineCount+2);
-              const maxHeight = window.innerHeight * 0.4;
-              const height = Math.min(newHeight, maxHeight);
-              baselineRef.current!.style.height = `${height}px`;
-              editorRef.current!.layout();
-            }
-          });
-        }
-    
-      }, [isOver]);
     
     const props = {
         taskId: "",
@@ -563,7 +516,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
                     Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Cancel
+                    Next
                   </button>
                 </div>
               </div>

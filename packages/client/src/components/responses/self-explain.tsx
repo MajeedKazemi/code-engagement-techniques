@@ -31,7 +31,6 @@ interface SelfExplainQuestion {
 
 
 export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => {
-    const userPromptsRef = useRef<(HTMLDivElement | null)[]>([]);
     const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [answered, setAnswered] = useState(new Array(questions.length).fill(false));

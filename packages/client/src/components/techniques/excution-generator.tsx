@@ -36,54 +36,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [isOver, setIsOver] = useState(false);
     const [format, setFormat] = useState<string[]>([]);
-    const baselineRef = useRef<HTMLDivElement | null>(null);
-    const explainRef = useRef<HTMLDivElement | null>(null);
     const [buttonClickOver, setButtonClickOver] = useState(false);
-
-    useEffect(() => {
-        if (explainRef.current) {
-          const div = document.createElement('div');
-          const highlightedExplanation = highlightCode(generatedExplanation, "code-highlight");
-          div.innerHTML = `<b>Explanation:</b> ${highlightedExplanation}`;
-          explainRef.current.appendChild(div);
-          const explainContainer = explainRef.current;
-          const maxHeight = window.innerHeight * 0.4;
-    
-          if (explainContainer.scrollHeight > maxHeight) {
-            explainContainer.style.height = `${maxHeight}px`;
-            explainContainer.style.overflowY = 'scroll';
-          } else {
-            explainContainer.style.height = 'auto';
-            explainContainer.style.overflowY = 'unset';
-          }
-          
-        }
-        
-      }, [isOver]);
-
-      useEffect(() => {
-        if (baselineRef.current && generatedCode && !editorRef.current) {
-          editorRef.current = monaco.editor.create(baselineRef.current, {
-            value: generatedCode,
-            language: 'python',
-            readOnly: true,
-            automaticLayout: true,
-          });
-          editorRef.current.onDidChangeModelContent(() => {
-            const model = editorRef.current?.getModel();
-            if (model) {
-              const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
-              const lineCount = Math.max(model.getLineCount(), 1);
-              const newHeight = lineHeight * (lineCount+2);
-              const maxHeight = window.innerHeight * 0.4;
-              const height = Math.min(newHeight, maxHeight);
-              baselineRef.current!.style.height = `${height}px`;
-              editorRef.current!.layout();
-            }
-          });
-        }
-    
-      }, [isOver]);
     
     const props = {
         taskId: "",
@@ -377,6 +330,16 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
         excutionCancelClicked = !excutionCancelClicked;
     };
 
+    useEffect(() => {
+        if(isOver){
+            setIsOpen(false);
+            const overlayElement = document.querySelector('.overlay') as HTMLElement;
+            const editorElement = document.querySelector('.editor') as HTMLElement;
+            overlayElement!.style.display = 'none';
+            editorElement.style.zIndex = '1';
+        }
+    }, [isOver]);
+
     return (
           <div>
             {isOver && (
@@ -407,7 +370,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                     Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Cancel
+                    Next
                   </button>
                 </div>
               </div>

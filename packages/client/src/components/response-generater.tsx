@@ -45,6 +45,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [unSatisfiedTime, setUnSatisfiedTime] = useState<number>(0);
   const [prompts, setPrompts] = useState<BaselinePromptsProps[]>([]);
   const [generatingFeedback, setGeneratingFeedback] = useState<boolean>(false);
+  const [rows, setRows] = useState(4);
 
   useEffect(() => {
     if (editor) {
@@ -89,11 +90,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   };  
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      const target = event.target as HTMLTextAreaElement;
-      target.value += '\n';
-      target.style.height = `${target.scrollHeight}px`;
+    if (event.key === 'Enter') {
+      setRows(oldRows => oldRows + 1);
     }
   };
 
@@ -202,6 +200,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
                   if(data.response["accuracy-score"] == 5){
                     setSatisfiedPrompt(true);
+                  }else{
+                    setUserInput("");
                   }
               }
               setGeneratingFeedback(false);
@@ -227,6 +227,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
         setGeneratedCode("");
         setExplanation("");
         setUserInput("");
+        var outputDiv = document.querySelector('.output');
+        outputDiv!.innerHTML = '';
       } 
     };
     checkCancelClicked();
@@ -234,13 +236,13 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
   // define the current technique
   // const technique = 'baseline';
-  const technique = 'pseudo';
+  // const technique = 'pseudo';
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
-  // const technique = 'stepByStep';
+  const technique = 'stepByStep';
   // const technique = 'verify'; (there is a bug)
   // const technique = 'leadReveal';
 
@@ -338,7 +340,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                       onChange={handleUserInput}
                       onKeyDown={handleKeyDown}
                       placeholder="Describe the intended behavior..."
-                      rows={4}
+                      rows={rows}
                     />
             </div>
             <div className='baseline-generator-container'>

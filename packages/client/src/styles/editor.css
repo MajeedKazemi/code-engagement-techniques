@@ -184,10 +184,11 @@
 
 .read-only-editor {
     min-height: 100px;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
     height: 30vh;
     margin: 10px;
+    border: solid 1px black;
+    margin-bottom: 1rem;
+    border-radius: 4px;
 }
 
 .task-baseline{

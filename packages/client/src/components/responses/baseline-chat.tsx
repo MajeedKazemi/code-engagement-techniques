@@ -4,7 +4,7 @@ import { log, LogType } from "../../utils/logger";
 
 import { apiGetBaselineCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
-import { highlightCode } from '../../utils/utils';
+import { highlightCode, highlightPsudo } from '../../utils/utils';
 import { ChatLoader } from '../loader';
 import IconsDoc from '../docs/icons-doc';
 
@@ -32,7 +32,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
 
     useEffect(() => {
         if (explanation && explanationRef.current) {
-            explanationRef.current.innerHTML = highlightCode(explanation, "code-highlight");
+            explanationRef.current.innerHTML = highlightPsudo(explanation, "code-highlight");
         }
     }, [explanation]);
 
@@ -294,7 +294,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
         <p ref={explanationRef}></p>
       </div>}
       <div className={`generated-button-container ${generating ? "inactive" : ""}`}>
-        <button className="gpt-button" onClick={cancelClick}>Cancel</button>
+        <button className="gpt-button" onClick={cancelClick}>Next</button>
         <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
       </div>
       </div>
