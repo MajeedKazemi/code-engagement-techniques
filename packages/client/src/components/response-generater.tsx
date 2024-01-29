@@ -236,13 +236,13 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
   // define the current technique
   // const technique = 'baseline';
-  // const technique = 'pseudo';
+  const technique = 'pseudo';
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
-  const technique = 'stepByStep';
+  // const technique = 'stepByStep';
   // const technique = 'verify'; (there is a bug)
   // const technique = 'leadReveal';
 

@@ -21,6 +21,7 @@ interface PseudoCodeSubgoals {
 }
 
 interface PesudoInterface {
+    indent: number;
     code: string;
     pseudo: string;
     explanation: string;
@@ -32,6 +33,7 @@ function responseToPseudo(response: any): PseudoCodeSubgoals[] {
             title: item.title,
             code: item.code.map((codeItem: any) => {
                 return {
+                    indent: Number(codeItem.indent),
                     code: codeItem.line,
                     pseudo: codeItem["pseudo-code"],
                     explanation: codeItem.explanation
@@ -150,7 +152,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [isOpen, setIsOpen] = useState(true);
     const [isOver, setIsOver] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
-    const [output, setOutput] = useState<
+    const [pseudooutput, setPseudoOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
     const [terminalInput, setTerminalInput] = useState<string>("");
@@ -316,7 +318,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                         
                                             if (response.ok) {
                                                 const data = await response.json();
-                                                
                                                 setGeneratedPseudo(responseToPseudo(data.steps));
                         
                                                 setWaiting(false);
@@ -352,8 +353,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         socket?.on("python", (data: any) => {
             if (data.type === "stdout") {
                 if (data.out.split("\n").length > 0) {
-                    setOutput([
-                        ...output,
+                    setPseudoOutput([
+                        ...pseudooutput,
                         ...data.out.split("\n").map((i: string) => {
                             return {
                                 type: "output",
@@ -362,8 +363,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                         }),
                     ]);
                 } else {
-                    setOutput([
-                        ...output,
+                    setPseudoOutput([
+                        ...pseudooutput,
                         {
                             type: "output",
                             line: data.out,
@@ -372,8 +373,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 }
             }
             if (data.type === "stderr") {
-                setOutput([
-                    ...output,
+                setPseudoOutput([
+                    ...pseudooutput,
                     {
                         type: "error",
                         line: data.err,
@@ -385,7 +386,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 setRunId(runId + 1);
             }
         });
-    }, [output, runId]);
+    }, [pseudooutput, runId]);
 
     useEffect(() => {
         if (generatedPseudo.length == 0) {
@@ -449,7 +450,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 userId: context?.user?.id,
             });
 
-            setOutput([]);
+            setPseudoOutput([]);
             setRunning(true);
 
         } else {
@@ -469,6 +470,18 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             setButtonClickOver(true);
         }
     }, [running]);
+
+    useEffect(() => {
+        if(isOver){
+            setIsOpen(false);
+            const overlayElement = document.querySelector('.overlay') as HTMLElement;
+            const editorElement = document.querySelector('.editor') as HTMLElement;
+            overlayElement!.style.display = 'none';
+            editorElement.style.zIndex = '1';
+            var outputDiv = document.querySelector('.output');
+            outputDiv!.innerHTML = '';
+        }
+    }, [isOver]);
 
 
     return (
@@ -511,32 +524,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                     </div>
                                 </Fragment>
                                 Console Input and Output
-                                {/* <button
-                                    className={`editor-button ${
-                                        saved ? "editing-btn-disabled" : "editing-btn"
-                                    }`}
-                                    disabled={saved}
-                                    onClick={handleClickSave}
-                                >
-                                    {saved ? "Code Saved" : "Save Code"}
-                                </button>
-                                <button
-                                    className={`editor-button ${
-                                        canReset
-                                            ? "editing-btn"
-                                            : "editing-btn-disabled"
-                                    } `}
-                                    disabled={!canReset}
-                                    onClick={handleClickReset}
-                                >
-                                    Reset
-                                </button> */}
-                                {/* <button
-                                    className="editor-button editing-btn"
-                                    onClick={handleClickUndo}
-                                >
-                                    Undo
-                                </button> */}
                             </div>
                             <button
                                 className={`editor-button ${
@@ -567,11 +554,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                 )}
                             </button>
                         </div>
-                        {/* {excution && <div>
-                            <ExcutionTimeline totalSteps={10} setCurrentStep={setCurrentStep} currentStep={currentStep} />
-                        </div>} */}
                         <div className="output">
-                            {output.map((i, index) => (
+                            {pseudooutput.map((i, index) => (
                                 <p
                                     className={
                                         i.type === "error" ? `console-output-error` : ""
@@ -584,7 +568,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                             {running && (
                                 <input
                                     autoFocus
-                                    key={"input-" + output.length.toString()}
+                                    key={"input-" + pseudooutput.length.toString()}
                                     className="terminal-input"
                                     ref={inputRef}
                                     onKeyUp={(e) => {
@@ -596,8 +580,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                                 userId: context?.user?.id,
                                             });
 
-                                            setOutput([
-                                                ...output,
+                                            setPseudoOutput([
+                                                ...pseudooutput,
                                                 {
                                                     type: "input",
                                                     line: terminalInput,

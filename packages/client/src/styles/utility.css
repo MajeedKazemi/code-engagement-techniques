@@ -46,4 +46,26 @@
     font-family: "Courier New", Courier, monospace;
 }
 
+.indent1 {
+    margin-left: 2rem;
+}
+  
+.indent2 {
+    margin-left: 4rem;
+}
 
+.indent3 {
+    margin-left: 6rem;
+}
+  
+.indent4 {
+    margin-left: 8rem;
+}
+
+.indent5 {
+    margin-left: 10rem;
+}
+  
+.indent6 {
+    margin-left: 12rem;
+}

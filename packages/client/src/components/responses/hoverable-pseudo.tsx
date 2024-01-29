@@ -14,6 +14,7 @@ interface PseudoCodeSubgoals {
 }
 
 interface PesudoInterface {
+    indent: number;
     code: string;
     pseudo: string;
     explanation: string;
@@ -66,6 +67,7 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
                                 {goal.code.map((line, index) => {
                                     return (
                                         <HoverableExplainCode
+                                            indent={line.indent || 0}
                                             content={line.pseudo || ""}
                                             explanation={line.explanation || ""}
                                             key={JSON.stringify(line) + index.toString()}

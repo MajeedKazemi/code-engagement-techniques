@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { highlightCode, highlightCodeBlock, highlightPsudo } from "../../utils/utils";
 
 interface IProps {
+    indent: number;
     content: string;
     explanation: string | null;
 }
@@ -36,9 +37,9 @@ export const HoverableExplainCode = (props: IProps) => {
                 setHovering(false);
             }}
             
-            className={"hoverable-code"} 
+            className={"hoverable-code indent" + props.indent.toString() + ""} 
             
-            dangerouslySetInnerHTML={{ __html: highlightPsudo(highlightCodeBlock(props.content)) }} />
+            dangerouslySetInnerHTML={{ __html: highlightPsudo(highlightCodeBlock(props.content))}} />
             {hovering && props.explanation && (
                 <div
                     className="hoverable-code-line-explanation"
@@ -51,7 +52,7 @@ export const HoverableExplainCode = (props: IProps) => {
                     dangerouslySetInnerHTML={{ __html: highlightPsudo(props.explanation) }}
                 ></div>
             )}
-            <div className="lightbulb">light</div>
+            {/* <div className="lightbulb">light</div> */}
         </div>
     );
 };
