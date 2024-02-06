@@ -10,6 +10,7 @@ import { highlightCode } from '../../utils/utils';
 import { SelfExplain } from '../responses/self-explain';
 import { GPTLoader } from '../loader';
 import BaselineGenerateCode from '../responses/baseline-chat';
+import IconsDoc from '../docs/icons-doc';
 
 export let selfExplainCancelClicked = false;
   
@@ -355,6 +356,18 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
         selfExplainCancelClicked = !selfExplainCancelClicked;
     };
 
+    useEffect(() => {
+      if(isOver){
+          setIsOpen(false);
+          const overlayElement = document.querySelector('.overlay') as HTMLElement;
+          const editorElement = document.querySelector('.editor') as HTMLElement;
+          overlayElement!.style.display = 'none';
+          editorElement.style.zIndex = '1';
+          var outputDiv = document.querySelector('.output');
+          outputDiv!.innerHTML = '';
+      }
+  }, [isOver]);
+
     return (
           <div>
             {isOver && (
@@ -363,10 +376,8 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
                 <div className="modal-header">
-                  <p>
-                    <img src={robot} className="gpt-image" />
-                    AI Assistance: 
-                  </p>
+                    <div className='spark-icon'><IconsDoc iconName="spark" /></div>
+                    AI Assistance:
                 </div>
                 <div className="modal-body">
                   <p>

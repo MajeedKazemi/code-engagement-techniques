@@ -485,6 +485,18 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
         setGeneratedExplanation("");
         revealCancelClicked = !revealCancelClicked;
     };
+    
+    useEffect(() => {
+        if(isOver){
+            setIsOpen(false);
+            const overlayElement = document.querySelector('.overlay') as HTMLElement;
+            const editorElement = document.querySelector('.editor') as HTMLElement;
+            overlayElement!.style.display = 'none';
+            editorElement.style.zIndex = '1';
+            var outputDiv = document.querySelector('.output');
+            outputDiv!.innerHTML = '';
+        }
+    }, [isOver]);
 
     return (
           <div>

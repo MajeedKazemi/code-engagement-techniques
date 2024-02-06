@@ -366,8 +366,9 @@ export const apiGetGenerateQuestionByCode = (
 export const apiGetFeedbackByResponse = (
     token: string | null | undefined,
     code: string,
-    context: string,
+    line: string,
     question: string,
+    answer: string,
     response: string,
 ) =>
     fetch(env.API_URL + "/api/technique-explain/feedback", {
@@ -379,8 +380,9 @@ export const apiGetFeedbackByResponse = (
         },
         body: JSON.stringify({
             code: code,
-            context: context,
+            line: line,
             question: question,
+            answer: answer,
             response: response,
         }),
     });
@@ -530,7 +532,6 @@ export const apiGetGenerateQuestionForSelfExplain = (
             task: task,
         }),
     });
-
 
 
 

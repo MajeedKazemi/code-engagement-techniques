@@ -8,7 +8,7 @@
     border-radius: 15px;
     padding: 20px;
     margin: 20px 0;
-    width:80%;
+    width:60%;
 }
 
 .reveal-question-content-container, .reveal-correct-answer-container,  .reveal-wrong-answer-container{
@@ -16,12 +16,40 @@
     margin-bottom: 20px;
 }
 
+.reveal-subgoal-container {
+    display: flex;
+    align-items: top;
+}
+
+.reveal-code-container {
+    margin-left: 3rem;
+    margin-top: 40px;
+    display: none;
+}
+
+.reveal-code-container.active {
+    display: block;
+}
+
+.reveal-question-container.answered {
+    background-color: rgba(204,227,255,255);
+    opacity: 0.7;
+}
+
 .reveal-question-content {
     background-color: rgba(204,227,255,255);
-    padding: 10px;
+    padding: 5px;
     display: inline;
     border-radius: 8px;
 }
+
+.reveal-select-container.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: black;
+    background-color: rgba(238, 142, 174, 0.252);
+}
+
 
 .reveal-select-dot{
     border: 1px solid rgba(52,158,255,255);
@@ -76,12 +104,12 @@
 }
 
 .reveal-wrong-answer {
-    background-color: rgba(238, 142, 174, 0.634);
+    background-color: rgba(238, 142, 174);
     border-radius: 15px;
 }
 
 .reveal-wrong-answer-container, .reveal-correct-answer-container {
-    display: none;
+    display: block;
 }
 
 .reveal-wrong-answer-container.active, .reveal-correct-answer-container.active{

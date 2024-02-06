@@ -18,6 +18,58 @@ function getCodeWithLine(code: string) {
     return output;
 };
 
+selfExplainRouter.post("/feedback", verifyUser, async (req, res, next) => {
+    const { code, line, question, answer, response } = req.body;
+    const userId = (req.user as IUser)._id;
+    let messages: Array<ChatCompletionRequestMessage> = [
+        {
+            role: "system",
+            content:
+`
+You want to generate feedback for novice python programmers, based on the following input: takes in 5 values: a question (string), an code line (string), which provided the question context, an answer (string), which is the correct explanation and a response from the user (string). 
+The question is an open-ended explanation of code snippets aimed at novice programmers. Your task is to generate a JSON output with the following structure:
+
+# Use the following JSON template:
+{
+    "score": [a number between 0 and 5], 
+    "feedback": "[10 to 15 words feedback]"
+}
+
+Design a system that can generate this JSON output based on the input values provided. The score should represent the quality or correctness of the response, ranging from 0 (poor) to 5 (excellent). The feedback should be a concise comment, consisting of 10 to 15 words, offering constructive feedback on the answer provided.
+`,
+        }
+    ];
+
+    messages.push({
+        role: "user",
+        content: `[code]: ${code}\n[line] ${line}\n[question] ${question}\n[answer] ${answer}\n[user-response]${response}`,
+    });
+
+    const result = await openai.createChatCompletion({
+        model: "gpt-4",
+        messages,
+        temperature: 0.1,
+        max_tokens: 100,
+        user: userId,
+    });
+
+    if (result.data.choices && result.data.choices?.length > 0) {
+        const response = result.data.choices[0].message?.content;
+
+        if(response){
+            res.json({
+                response: JSON.parse(response),
+                success: true,
+            });
+        }
+    } else {
+        res.json({
+            success: false,
+        });
+    }
+});
+
+
 selfExplainRouter.post("/generateQuestion", verifyUser, async (req, res, next) => {
     const { code, task } = req.body;
     const userId = (req.user as IUser)._id;

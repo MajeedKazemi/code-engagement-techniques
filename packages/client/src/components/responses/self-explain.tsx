@@ -3,6 +3,9 @@ import { Editor } from "../editor";
 import { FaQuestionCircle } from "react-icons/fa";
 import * as monaco from "monaco-editor";
 import { ChatLoader } from "../loader";
+import { apiGetFeedbackByResponse, logError } from "../../api/api";
+import { AuthContext } from "../../context";
+import { HighlightedPart } from "../docs/highlight-code";
 
 interface SelfExplainProps {
     code: string;
@@ -33,6 +36,7 @@ interface SelfExplainQuestion {
 export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => {
     const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const { context, setContext } = useContext(AuthContext);
     const [answered, setAnswered] = useState(new Array(questions.length).fill(false));
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const monacoEl = useRef(null);
@@ -40,42 +44,47 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
     const [selectedChoice, setSelectedChoice] = useState(new Array(questions.length).fill(""));
     const [correctAnswer, setCorrectAnswer] = useState(new Array(questions.length).fill(""));
     const [revealAnswer, setRevealAnswer] = useState(new Array(questions.length).fill(false));
+    const [questionAnsweredTimes, setQuestionAnsweredTimes] = useState(new Array(questions.length).fill({currentTime: 0, currentAnswer: ""}));
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [reachedMax, setReachedMax] = useState(new Array(questions.length).fill(false));
+    const [feedback, setFeedback] = useState(new Array(questions.length).fill(""));
 
     const editorInstances = useRef<(monaco.editor.IStandaloneCodeEditor | null)[]>([]);
     
-    useEffect(() => {
-       console.log(questions);
-      questions.forEach((question, index) => {
+    // useEffect(() => {
+    //    console.log(questions);
+    //   questions.forEach((question, index) => {
         
-        const divId = `code-container${index}`;
-        const container = document.getElementById(divId);
-        // set container height:
-        container!.style.height = 30 * question.questionCodeLines.split('\n').length + 'px';
+    //     const divId = `code-container${index}`;
+    //     const container = document.getElementById(divId);
+    //     // set container height:
+    //     container!.style.height = 30 * question.questionCodeLines.split('\n').length + 'px';
         
-        if (container) {
+    //     if (container) {
 
-          const editor = monaco.editor.create(container, {
-            value: question.questionCodeLines,
-            language: 'python',
-            readOnly: true,
-            automaticLayout: true,
-            lineNumbers: 'off',
-            minimap: {
-              enabled: false
-            },
-            fontSize:16,
-          });
+    //       const editor = monaco.editor.create(container, {
+    //         value: question.questionCodeLines,
+    //         language: 'python',
+    //         readOnly: true,
+    //         automaticLayout: true,
+    //         lineNumbers: 'off',
+    //         minimap: {
+    //           enabled: false
+    //         },
+    //         fontSize:16,
+    //       });
 
-          editorInstances.current.push(editor);
-        }
-      });
+    //       editorInstances.current.push(editor);
+    //     }
+    //   });
 
-      // Clean-up function to dispose old editor instances
-      return () => {
-        editorInstances.current.forEach(editor => editor?.dispose());
-        editorInstances.current = [];
-      }
-    }, [questions]);
+    //   // Clean-up function to dispose old editor instances
+    //   return () => {
+    //     editorInstances.current.forEach(editor => editor?.dispose());
+    //     editorInstances.current = [];
+    //   }
+    // }, [questions]);
 
 
     function getContentBetweenLines(startLine:number, endLine:number) {
@@ -197,6 +206,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
 
 
     const handleSelect = (isCorrect: boolean, index: number, text: string) => {
+        if(isDisabled) return;
         
         const newAnswered = answered.map((an, i) => i === index ? true : an);
         setAnswered(newAnswered);
@@ -210,17 +220,82 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
         if (isCorrect) {
             const newRevealAnswer = revealAnswer.map((reveal, i) => i === index ? true : reveal);
             setRevealAnswer(newRevealAnswer);
+        } else {
+            const newQuestionAnsweredTimes = questionAnsweredTimes.map((question, i) => i === index ? {currentTime: question.currentTime + 1, currentAnswer: text} : question);
+            // console.log("New Question Answered Times: ", newQuestionAnsweredTimes);
+            setQuestionAnsweredTimes(newQuestionAnsweredTimes);
         }
-        setCurrentQuestionIndex(index + 1);
+
+        setIsDisabled(true);
+
     };
 
+    useEffect(() => {
+        let timer: number | undefined;
+        if (isDisabled) {
+            timer = setTimeout(() => {
+                setIsDisabled(false);
+            }, 10000);
+        }
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [isDisabled]);
 
+    useEffect(() => {
+        if (reachedMax[currentQuestionIndex]){
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+    }, [reachedMax]);
 
 
     function handleClick(index: number): void {
+        const newFeedback = [...feedback];
+        newFeedback[index] = "";
+        setFeedback(newFeedback);
+        setButtonDisabled(true);
         const newAnswered = answered.map((an, i) => i === index ? true : an);
         setAnswered(newAnswered);
-        setCurrentQuestionIndex(index + 1);
+        //if LLM check is at least 4/5.
+        // console.log(userResponse[index], questions[index].answer);
+        try {
+            apiGetFeedbackByResponse(
+                context?.token,
+                code,
+                questions[index].questionCodeLines,
+                questions[index].question,
+                questions[index].answer!,
+                userResponse[index],
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        setButtonDisabled(false);
+                        const data = await response.json();
+                        console.log(data.response);
+                        if (data.response.score >= 3) {
+                            const newRevealAnswer = revealAnswer.map((reveal, i) => i === index ? true : reveal);
+                            setRevealAnswer(newRevealAnswer);
+                        } else {
+                            const newFeedback = [...feedback];
+                            newFeedback[index] = data.response.feedback;
+                            setFeedback(newFeedback);
+                            const newQuestionAnsweredTimes = questionAnsweredTimes.map((question, i) => i === index ? {currentTime: question.currentTime + 1, currentAnswer: userResponse[index]} : question);
+                            setQuestionAnsweredTimes(newQuestionAnsweredTimes);
+                            //update the user response
+                            const newUserResponse = [...userResponse];
+                            newUserResponse[index] = "";
+                            setUserResponse(newUserResponse);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    setButtonDisabled(false);
+                    logError(error.toString());
+                });
+        } catch (error: any) {
+            setButtonDisabled(false);
+            logError(error.toString());
+        }
     }
 
     function handleUserInput(event: React.ChangeEvent<HTMLTextAreaElement>): void {
@@ -231,13 +306,18 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
 
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
-          event.preventDefault();
+        if (event.key === 'Enter') {
           const target = event.target as HTMLTextAreaElement;
           target.value += '\n';
           target.style.height = `${target.scrollHeight}px`;
         }
     };
+
+    //set reached max, reachMax = true if the user has answered the question 3 times (setQuestionAnsweredTimes[currentQuestion].currentTime == 3, or revealAnswer[currentQuestion] == true)
+    useEffect(() => {
+        const newReachedMax = reachedMax.map((reached, i) => i === currentQuestionIndex ? (questionAnsweredTimes[i].currentTime == 3 || revealAnswer[i]) : reached);
+        setReachedMax(newReachedMax);
+    }, [questionAnsweredTimes, revealAnswer]);
 
     return (
         <div className="self-explain-container">
@@ -254,48 +334,94 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                 //short answer
                                 <div className="self-explain-question-content">
                                     <b>{question.question}</b>
-                                    <div className="self-explain-short-answer-container">
-                                    <textarea
-                                    className="self-explain-textbox baseline-input"
-                                    id="userInput"
-                                    value={userResponse[index]}
-                                    onChange={handleUserInput}
-                                    onKeyDown={handleKeyDown}
-                                    rows={2}
-                                    />
-                                    <button className="self-explain-submit gpt-button" onClick={() => handleClick(index)} disabled={!userResponse[index].trim()}>
-                                        Submit
-                                    </button>
-                                    </div>
-                                    <div className={`reveal-correct-answer-container ${answered[index]==true ? 'active' : ''}`}><b>Explainaton: </b> 
-                                        <p className='reveal-correct-answer explain-question-content'>{question.questionCodeLinesExplained}</p>
-                                    </div>
-                                    {/* show the current code the question refering to */}
-                                    <div className={`code-self-explain-container`} id={`code-container${index}`}>
-                                    </div>
+                                    {!reachedMax[index] &&
+                                    <>
+                                        <div className="self-explain-short-answer-container">
+                                            <textarea
+                                            className="self-explain-textbox baseline-input"
+                                            id="userInput"
+                                            value={userResponse[index]}
+                                            onChange={handleUserInput}
+                                            onKeyDown={handleKeyDown}
+                                            rows={2}
+                                            />
+                                            <button className="self-explain-submit gpt-button" onClick={() => handleClick(index)} disabled={!userResponse[index].trim() || buttonDisabled}>
+                                                Submit
+                                            </button>
+                                        </div>
+                                        {questionAnsweredTimes[index].currentAnswer &&
+                                        <div className={`reveal-wrong-answer-container`}><b>You answered: </b> 
+                                            <p className='reveal-wrong-answer explain-question-content'>{questionAnsweredTimes[index].currentAnswer}</p>
+                                            <p> Hint: {feedback[index]}</p>
+                                        </div>
+                                        }
+                                        {/* show the current code the question refering to */}
+                                        <div className={`code-self-explain-container`} id={`code-container${index}`}>
+                                            {question.questionCodeLines.split('\n').map((line, i) =>
+                                                <HighlightedPart part={line} />
+                                            )}
+                                        </div>
+                                    </>
+                                    }
+                                    {reachedMax[index] &&
+                                    <>
+                                        <div className={`reveal-correct-answer-container`}><b>Explainaton: </b> 
+                                            <p className='reveal-correct-answer explain-question-content'>{question.questionCodeLinesExplained}</p>
+                                        </div>
+                                        {/* show the current code the question refering to */}
+                                        <div className={`code-self-explain-container`} id={`code-container${index}`}>
+                                            {question.questionCodeLines.split('\n').map((line, i) =>
+                                                <HighlightedPart part={line} />
+                                            )}
+                                        </div>
+                                    </>
+                                    }
                                 </div>
                             
                                 : //multiple choice
                                 <div className="self-explain-question-content">
-                                     <b>{question.question}</b>
-                                    <div className={`self-explain-mc-container ${answered[index]==true ? 'inactive' : ''}`}>
-                                    {question.choices!.map((choice, i) => (
-                                        <div className="reveal-select-container" key={`${index}details${i}`} onClick={() => handleSelect(choice.correct, index, choice.text)}>
-                                            <div className='reveal-select-dot'></div>
-                                            {(choice.correct && answered[index]) ? <div className="reveal-correct-answer"><p>{choice.text}</p></div> :  <p>{choice.text}</p>}
-                                            <p className="reveal-answer" >{choice.correct ? "Correct" : "Incorrect"}</p>
+                                    <b>{question.question}</b>
+                                    {!reachedMax[index] &&
+                                    <>
+                                        <div className={`self-explain-mc-container`}>
+                                        {question.choices!.map((choice, i) => (
+                                            <div className={isDisabled ? "reveal-select-container disabled" : "reveal-select-container"} key={`${index}details${i}`} onClick={() => handleSelect(choice.correct, index, choice.text)}>
+                                                <div className='reveal-select-dot'></div>
+                                                {(!choice.correct && questionAnsweredTimes[index].currentAnswer == choice.text) ? <div className="reveal-wrong-answer"><p>{choice.text}</p></div> :  <p>{choice.text}</p>}
+                                                <p className="reveal-answer" >{choice.correct ? "Correct" : "Incorrect"}</p>
+                                            </div>
+                                        ))}
                                         </div>
-                                    ))}
-                                    </div>
-                                    <div className={`reveal-correct-answer-container ${answered[index]==true ? 'active' : ''}`}><b>Explainaton: </b> 
-                                        <p className='reveal-correct-answer explain-question-content'>{question.questionCodeLinesExplained}</p>
-                                    </div>
-                                    <div className={`reveal-wrong-answer-container ${answered[index]==true && revealAnswer[index]==false ? 'active' : ''}`}><b>You Answered: </b> 
-                                        <p className='reveal-wrong-answer reveal-question-content'>{selectedChoice[index]}</p>
-                                    </div>
-                                    {/* show the current code the question refering to */}
-                                    <div className={`code-self-explain-container`} id={`code-container${index}`}>
-                                    </div>
+                                        {/* show the current code the question refering to */}
+                                        <div className={`code-self-explain-container`} id={`code-container${index}`}>
+                                            {question.questionCodeLines.split('\n').map((line, i) =>
+                                                <HighlightedPart part={line} />
+                                            )}
+                                        </div>
+                                    </>
+                                    }
+                                    {reachedMax[index] &&
+                                    <>
+                                        <div className={`self-explain-mc-container`}>
+                                            {question.choices!.map((choice, i) => (
+                                                <div className="reveal-select-container" key={`${index}details${i}`} onClick={() => handleSelect(choice.correct, index, choice.text)}>
+                                                    <div className='reveal-select-dot'></div>
+                                                    {(choice.correct) ? <div className="reveal-correct-answer"><p>{choice.text}</p></div> :  <p>{choice.text}</p>}
+                                                    <p className="reveal-answer" >{choice.correct ? "Correct" : "Incorrect"}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className={`reveal-correct-answer-container`}><b>Explainaton: </b> 
+                                            <p className='reveal-correct-answer explain-question-content'>{question.questionCodeLinesExplained}</p>
+                                        </div>
+                                        {/* show the current code the question refering to */}
+                                        <div className={`code-self-explain-container`} id={`code-container${index}`}>
+                                            {question.questionCodeLines.split('\n').map((line, i) =>
+                                                <HighlightedPart part={line} />
+                                            )}
+                                        </div>
+                                    </>
+                                    }
                                 </div>
                             }
                         </div>
