@@ -241,9 +241,9 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'token';
   // const technique = 'parsons';
   // const technique = 'writeover';
-  const technique = 'selfexplain';
+  // const technique = 'selfexplain';
   // const technique = 'stepByStep';
-  // const technique = 'verify'; (there is a bug)
+  const technique = 'verify';
   // const technique = 'leadReveal';
 
   const handleClick = () => {

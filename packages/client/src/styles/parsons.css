@@ -135,12 +135,12 @@
 }
 
 .parsons-game-0  {
-    width: 33%;
+    width: 50%;
 }
 
 .parsons-game-1  {
     flex: 1;
-    width: 67%;
+    width: 50%;
     margin-left: 2rem;
 }
 

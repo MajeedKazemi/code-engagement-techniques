@@ -1,11 +1,16 @@
 .verify-review-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin: 20px 0px;
     width: 100%;
+    align-items: center;
+    overflow-y: scroll;
+    height: 62vh;
 }
 
-.print-output {
+
+
+.verify-review-container .print-output {
     background-color: #023231;
     color: #fff;
     font-family: "Courier New", Courier, monospace;
@@ -13,15 +18,28 @@
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     position: relative;
-    width: 30vw;
+    width: 100%;
     padding: 12px 0 12px 0;
 }
 
-.print-output p {
-    margin: 0;
+.verify-review-container .print-output p {
+    margin: 0; 
     font-size: 16px;
     font-weight: 600;
     padding: 2px 12px 2px 12px;
+}
+
+.verify-review-container .editor-buttons-container {
+   width: 100%;
+}
+
+.verify-review-container .monaco-editor-container {
+  width: 100%;
+  height: 35vh;
+  border: solid 1px #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
 }
 
 
@@ -29,7 +47,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100vw;
+    width: 100%;
     height: 25vh;
 }
 
@@ -37,43 +55,110 @@
     background-color: rgb(243, 173, 173); 
 }
 
-.verify-review-container .monaco-editor-container{
-    width: 45vw;
-}
 
 .verify-code-editor-container{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    height: 25vh;
-}
-
-.verify-buttons-container, .verify-code-editor-container {
-    display: flex;
-    flex-direction: row;
+  width: 50%;
+  height: 62vh;
+  overflow-y: scroll;
 }
 
 .status-container {
+  width: 50%;
+}
+
+.verify-buttons-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.hint-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.status-sub-container {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.hint-button {
+  background-color: rgba(146,9,183,255);
+  color: white;
+  border: none;
+  padding: 10px;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  font-weight: 400;
+
+  font-family: "Poppins";
+
+  cursor: pointer;
+  padding: 0 20px;
+}
+
+.hint-button.disabled{
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.verify-button {
+  background-color: rgba(44,174,0,255);
+}
+
+/* .status-sub-container {
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #f7f7f7;
+} */
+.status-container {
     padding: 10px;
     margin: 10px;
-    background-color: #f7f7f7;
-    width: 45vw;
-    height: 60vh;
-    overflow: visible;
-    overflow-y: auto;
-    z-index: 99;
+    height: 100%;
+    overflow-y: scroll;
   }
   .status-header {
     font-weight: bold;
-    font-size: 1em;
+    font-size: 15px;
   }
   .issues-info {
     margin-top: 5px;
-    padding: 5px;
+    padding: 1px 10px;
     border-radius: 3px;
   }
+
+  .hints-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: rgba(186,206,255,255);
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom: 1px solid black;
+  }
+
+  .hints-container {
+    margin-top: 20px;
+    background-color: rgba(220,230,255,255);
+    border-radius: 5px;
+    border: black 1px solid;
+  }
+
+  .hint-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
   .current-issues {
     background-color: #ffcccc;
   }
@@ -82,27 +167,52 @@
   }
 
   .verify-answer-container{
-    margin-top: 20px;
+    padding: 10px;
   }
 
-  .issue-container {
-    background-color: #f7f7f7;
-    border: 1px solid #e1e1e1;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    padding: 10px;
+.issue-content.code-content {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.reveal-level-button {
+  color: white;
+  border: none;
+  padding: 10px;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  font-weight: 400;
+  background-color: rgb(0, 122, 204);
+}
+
+.issue-container {
+  border-bottom: 1px dashed #000;
+  padding: 10px;
+}
+
+.issue-container:last-child {
+  border-bottom: none;
 }
 
 .issue-content {
-    font-family: "Consolas", "Monaco", "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
-    background-color: #272822;
-    color: #f8f8f2;
-    padding: 10px;
-    border-radius: 4px;
+    font-family: "Consolas", monospace;
+    color: black;
     font-size: 1em;
     white-space: pre-wrap;
     overflow-x: auto;
-    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.issue-content strong {
+    font-weight:bolder;
 }
 
 .hint {

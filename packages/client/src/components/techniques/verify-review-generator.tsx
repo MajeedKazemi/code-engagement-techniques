@@ -190,8 +190,8 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
                                         if (response.ok && props.editor) {
                                             const data = await response.json();
                                             
-                                            setIssueCode(data.result.issueCode);
-                                            setQuestions([data.result.question1, data.result.question2]);
+                                            setIssueCode(data.wrongCode);
+                                            setQuestions(data.issues);
                                             setWaiting(false);
                                             
                                         }
@@ -232,34 +232,8 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
         return () => clearInterval(interval);
     }, []);
 
-    const cancelClick = () => {
-        
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        verifyCancelClicked = !verifyCancelClicked;
-    };
+
     
-    const handleInsertCodeClick = () => {
-        if (editor) {
-            const position = editor.getPosition();
-            if (position) {
-              const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
-              editor.executeEdits("insertCodeAfterCursor", [op]);
-            }
-          }
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        verifyCancelClicked = !verifyCancelClicked;
-    };
   
 
     const closePopup = () => {
@@ -272,6 +246,20 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
         setGeneratedExplanation("");
         verifyCancelClicked = !verifyCancelClicked;
     };
+
+
+    useEffect(() => {
+        if(isOver){
+            setIsOpen(false);
+            const overlayElement = document.querySelector('.overlay') as HTMLElement;
+            const editorElement = document.querySelector('.editor') as HTMLElement;
+            overlayElement!.style.display = 'none';
+            editorElement.style.zIndex = '1';
+            var outputDiv = document.querySelector('.output');
+            outputDiv!.innerHTML = '';
+        }
+    }, [isOver]);
+
 
     return (
           <div>

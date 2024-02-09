@@ -213,22 +213,24 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                                 }
                                 setGeneratedCode(text);
                                 setGeneratedExplanation(data.bundle.explain);
-                                apiGetParsonsCodex(
-                                    context?.token,
-                                    text,
-                                    userCode ? userCode : ""
-                                )
-                                    .then(async (response) => {
+                                setGeneratedQuestion(text);
+                                setWaiting(false);
+                                // apiGetParsonsCodex(
+                                //     context?.token,
+                                //     text,
+                                //     userCode ? userCode : ""
+                                // )
+                                //     .then(async (response) => {
                     
-                                        if (response.ok) {
-                                            const data = await response.json();
-                                            setGeneratedQuestion(data.code);
-                                            setWaiting(false);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        logError(error.toString());
-                                    });
+                                //         if (response.ok) {
+                                //             const data = await response.json();
+                                //             setGeneratedQuestion(data.code);
+                                //             setWaiting(false);
+                                //         }
+                                //     })
+                                //     .catch((error) => {
+                                //         logError(error.toString());
+                                //     });
                                 
                             } 
                         }
@@ -305,6 +307,18 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
         setGeneratedExplanation("");
         parsonsCancelClicked = !parsonsCancelClicked;
     };
+
+    useEffect(() => {
+        if(isOver){
+            setIsOpen(false);
+            const overlayElement = document.querySelector('.overlay') as HTMLElement;
+            const editorElement = document.querySelector('.editor') as HTMLElement;
+            overlayElement!.style.display = 'none';
+            editorElement.style.zIndex = '1';
+            var outputDiv = document.querySelector('.output');
+            outputDiv!.innerHTML = '';
+        }
+    }, [isOver]);
 
     return (
           <div>

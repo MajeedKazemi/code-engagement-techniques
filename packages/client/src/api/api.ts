@@ -461,6 +461,62 @@ export const apiGetIssueCodes = (
         }),
     });
 
+export const apiGetIssueHintLevel1 = (
+    token: string | null | undefined,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateHintLevel1", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
+
+export const apiGetIssueHintLevel2 = (
+    token: string | null | undefined,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateHintLevel2", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
+
+export const apiGetIssueHintLevel3 = (
+    token: string | null | undefined,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateHintLevel3", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
 export const apiGetLinesToRewrite = (
         token: string | null | undefined,
         code: string,
