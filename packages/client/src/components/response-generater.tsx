@@ -240,10 +240,10 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';
-  // const technique = 'writeover';
+  const technique = 'writeover';
   // const technique = 'selfexplain';
   // const technique = 'stepByStep';
-  const technique = 'verify';
+  // const technique = 'verify';
   // const technique = 'leadReveal';
 
   const handleClick = () => {

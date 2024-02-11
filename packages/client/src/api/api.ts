@@ -275,10 +275,9 @@ export const apiGetGeneratedFeedbackCodex = (
 
 export const apiGetExplanationPerLineCodex = (
     token: string | null | undefined,
-    description: string,
-    context: string
+    code: string,
 ) =>
-    fetch(env.API_URL + "/api/technique-writeover/generateByLine", {
+    fetch(env.API_URL + "/api/technique-writeover/generate", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -286,10 +285,9 @@ export const apiGetExplanationPerLineCodex = (
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            description: description,
-            context: context,
+            code: code,
         }),
-    });
+});
 
 export const apiGetBaselineCodex = (
     token: string | null | undefined,

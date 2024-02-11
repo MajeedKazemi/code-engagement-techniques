@@ -2,6 +2,7 @@
 .write-over-wrapper{
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
   .writeover-code-reader {
     padding: 1rem;
@@ -12,11 +13,67 @@
 
   .writeover-code-reader:focus {
     outline: none;
+    border: none;
   }
 
+
+  .current-code-line {
+    background-color:rgba(200,239,255,255) ;
+  }
   .writeover-code-reader pre{
     margin: 0;
   }
+
+.user-input {
+  opacity: 1;
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+}
+
+.remaining-text {
+  color: rgb(184, 184, 184);
+}
+
+.current-code-container {
+  width: 65%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-x: scroll;
+}
+
+.write-over-tracker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content:space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.write-over-tracker .hoverable-codeline-explanation {
+  z-index: 99;
+  position:absolute;
+  background-color: rgba(220,230,255,255);
+  color:black;
+  border-radius: 0 0 6px 6px;
+  font-size: 16px;
+  height: fit-content;
+  margin-left: 1rem;
+  align-self: flex-end;
+  width: 35%;
+  border: black 1px solid;
+}
+
+.explanation-write-over {
+  padding: 10px;
+}
+/* .text-span {
+  height: 100%;
+  display: inline-block;
+  margin: 0;
+} */
 
 
 .writeover-cursor {
@@ -72,11 +129,18 @@
 
 .write-over-wrapper .score {
     margin-left: 2rem;
-    font-size:20px;
+    font-size:20 px;
     margin-right: 0;
-    opacity: 0.8;
+    opacity: 0  ;
 }
 
+.write-over-container {
+    width: 100%;
+}
+
+.remaining-text {
+    width: 65%;
+}
 
 .write-over-wrapper .red {
     color: red;
@@ -130,6 +194,9 @@
     padding: 5px;
     border-radius: 15px;
     margin-top: 5px;
+    max-width: 20%;
+    z-index: 99;
+    position: fixed;
 }
 
 .hoverable-writeover-icon{

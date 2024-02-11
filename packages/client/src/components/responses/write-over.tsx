@@ -3,13 +3,15 @@ import { BsArrowReturnLeft, BsFillQuestionSquareFill, BsQuestionCircle } from 'r
 import { MdKeyboardTab } from 'react-icons/md';
 import { apiGetExplanationPerLineCodex, logError } from '../../api/api';
 import { AuthContext } from '../../context';
-import { highlightCode } from '../../utils/utils';
+import { highlightCode, highlightPsudo } from '../../utils/utils';
 import * as monaco from "monaco-editor";
+import IconsDoc from '../docs/icons-doc';
 
 
 
 interface WriteOverProps {
     text: string;
+    tokens: any[];
 }
 
 interface LineWithLeadSpaces {
@@ -18,33 +20,14 @@ interface LineWithLeadSpaces {
     leadSpaces: number;
 }
 
-// interface Keyword{
-//     start: number;
-//     end: number;
-//     type: string;
-// }
-
-interface KeywordLine{
-    // keyword: Keyword[];
-    explanation: string;
-}
 
 export let allLinesCompleted = false;
 
-const processLines = (text: string): LineWithLeadSpaces[] => {
-    return text.split('\n')
-        .filter(line => line.trim() !== '')
-        .map(line => ({
-            original: line,
-            trimmed: line.replace(/^\s+/,''),  // Strip leading whitespaces
-            leadSpaces: line.search(/\S|$/),  // Counts leading whitespaces
-        }));
-};
 
-export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
+export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
     const [colorizedText, setColorizedText] = useState<string[]>([]);
     const { context, setContext } = useContext(AuthContext);
-    const [lines, setLines] = useState(processLines(text));
+    const [lines, setLines] = useState<LineWithLeadSpaces[]>([]);
     const [userInput, setUserInput] = useState("");
     const [currentLineIndex, setCurrentLineIndex] = useState(0);
     const [shakeError, setShakeError] = useState(false);
@@ -53,10 +36,49 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
     const inputRef = useRef<HTMLDivElement | null>(null);
     const [completed, setCompleted] = useState(false);
     const [scores, setScores] = useState<Array<number>>([]);
-    const [keywordsList, setKeywordsList] = useState<Array<KeywordLine>>([]);
+    const [keywordsList, setKeywordsList] = useState<Array<any>>([]);
     const [isReady, setIsReady] = useState(false);
     const [hoveringStates, setHoveringStates] = useState(scores.map(() => false));
-    const [errorIndexes, setErrorIndexes] = useState<Array<Array<number>>>([]);  
+    const [errorIndexes, setErrorIndexes] = useState<Array<Array<number>>>([]);     
+    const [charToToken, setCharToToken] = useState<number[][]>([]);
+
+    
+    const lineCharToToken = (index: number, originalString: string) => {
+        const currTokens = tokens[index].tokens;
+        let charToToken: number[] = [];
+        let tokenIndex = 0;
+        let tokenCharIndex = 0;
+
+        for (let charIndex = 0; charIndex < originalString.length; charIndex++) {
+            charToToken.push(tokenIndex);
+
+
+            if (tokenCharIndex == currTokens[tokenIndex].token.length - 1) {
+                tokenIndex++;
+                tokenCharIndex = 0;
+            } else {
+                tokenCharIndex++;
+            }
+        }
+        // console.log(charToToken);
+        return charToToken;
+    };
+
+    // useEffect(() => {
+    //     if(charToToken.length === 0) return;
+    //     console.log(charToToken[0][userInput.length-1]);
+    //     console.log(keywordsList[0].tokens[charToToken[0][userInput.length-1]]);
+    // }, [charToToken]);
+
+    const processLines = (): LineWithLeadSpaces[] => {
+        return tokens.map((lineInfo) => lineInfo.code)
+          .filter(line => line.trim() !== '')
+          .map(line => ({
+            original: line,
+            trimmed: line.replace(/^\s+/,''),  // Strip leading whitespaces
+            leadSpaces: line.search(/\S|$/),  // Counts leading whitespaces
+          }));
+    };
     
     const removeTags = (str: string): string => {
         return str.replace(/<[^>]*>?/gm, '');
@@ -71,33 +93,12 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
     };
 
 
-    const generateKeywords = (index: number) => {
-        const userCode = lines[index].trimmed;
       
-        return apiGetExplanationPerLineCodex(
-          context?.token,
-          lines[index].trimmed,
-          userCode ? userCode : ""
-        ).then(async (response) => {
-          if (response.ok) {
-            const data = await response.json();
-            console.log(data.code);
-            return data.code;
-          } else {
-            throw new Error("API response not okay.");
-          }
-        });
-      };
-      
-
     useEffect(() => {
-        const fetchKeywordsForAllLines = async () => {
-            const promises = lines.map((line, index) => generateKeywords(index));
-            const results = await Promise.all(promises);
-            setKeywordsList(results);
-          };
-        fetchKeywordsForAllLines();
-        setErrorIndexes(Array.from<number, number[]>({ length: lines.length }, () => []));
+        setLines(processLines());
+        setKeywordsList(tokens);
+        setErrorIndexes(Array.from<number, number[]>({ length: tokens.length }, () => []));
+        setCharToToken(tokens.map((line, index) => lineCharToToken(index, line.code)));
     }, []);
 
     function wrapCharsWithSpan(html: string, indexes: number[], className: string): string {
@@ -140,39 +141,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
         return doc.body.innerHTML;
     }
 
-    // function wrapCharsWithSpan(text: string, indexes: number[], className: string): string {
-    //     let result = '';
-    //     for (let i = 0, charCount = 0; i < text.length; i++) {
-    //         // Exclude characters within HTML tags for counting
-    //         if (text[i] == '<') {
-    //             while (text[i] != '>') {
-    //                 result += text[i];
-    //                 i++;
-    //             }
-    //         }
-    //         result += text[i];
-    //         if (text[i] != ' ' && text[i] != '\t' && text[i] != '\n' && text[i] != '\r') charCount++; // Exclude white spaces from counting
-    //         // If the next character position is in error indexes
-    //         if (indexes.includes(charCount)) {
-    //             console.log('charCount: ' + charCount);
-    //             if (text[i+1] != '<') { // Avoid inserting span within tags
-    //                 result += `<span class="${className}">`;
-    //                 while (text[i+1] != ' ' && text[i+1] != '<') { // Stop at next space or tag
-    //                     result += text[++i];
-    //                 }
-    //                 result += '</span>';
-    //             }
-    //         }        
-    //     }
-    //     return result;
-    // }
-    
-
     useEffect(() => {
         if(keywordsList.length === 0) return;
         setIsReady(true);
-        console.log(isReady);
-        console.log(keywordsList);
         const initialScores = Array(lines.length).fill(100);
         setScores(initialScores);
         containerRef.current?.focus();
@@ -205,6 +176,10 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
 
         const value = e.key;
 
+        if (e.key === 'Shift') {
+            return;
+        }
+
         if (e.key == 'Tab') {
             e.preventDefault();
             const currentChar = lines[currentLineIndex].original[userInput.length];
@@ -233,7 +208,6 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                 inputRef.current?.querySelectorAll(".shake-char").forEach(element => element.classList.remove("shake-char"));
                 inputRef.current = document.getElementById(`line-${currentLineIndex+1}`) as HTMLDivElement;
                 colorizedText[currentLineIndex] = wrapCharsWithSpan(colorizedText[currentLineIndex], errorIndexes[currentLineIndex], "highlight-correct-char");
-                console.log(errorIndexes);
             } 
             e.preventDefault();
             return;
@@ -259,12 +233,14 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
             setErrorTracker(newErrorTracker); // Set the updated error tracker
       
             if(newErrorTracker[index] > 2) {
-              // Error occurred more than once on same character
-              const highlightedChar = inputRef.current?.querySelector(`.char-${userInput.length}`);
-              if(highlightedChar) highlightedChar.classList.add('highlight-correct-char');
-              setUserInput(prevInput => prevInput + lines[currentLineIndex].original[userInput.length]);
-              scores[currentLineIndex] -= Math.round(scores[currentLineIndex]*(1/lines[currentLineIndex].trimmed.length));
-              errorIndexes[currentLineIndex].push(userInput.length);
+                // Error occurred more than once on same character
+                const highlightedChar = inputRef.current?.querySelector(`.char-${userInput.length}`);
+                if(highlightedChar) highlightedChar.classList.add('highlight-correct-char');
+                setUserInput(prevInput => prevInput + lines[currentLineIndex].original[userInput.length]);
+                scores[currentLineIndex] -= Math.round(scores[currentLineIndex]*(1/lines[currentLineIndex].trimmed.length));
+                const errors = [...errorIndexes];
+                errors[currentLineIndex].push(userInput.length);
+                setErrorIndexes(errors);
             }
             return;
         }else{
@@ -283,46 +259,40 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
     
     };
     
-    useEffect(() => {
-        if (completed == true) {
-            allLinesCompleted = true;
-            const elementsWithInsertButtonClass = document.getElementsByClassName("insert-button");
+    // useEffect(() => {
+    //     if (completed == true) {
+    //         allLinesCompleted = true;
+    //         const elementsWithInsertButtonClass = document.getElementsByClassName("insert-button");
 
-            for (const element of elementsWithInsertButtonClass) {
-                if (element instanceof HTMLElement) {
-                    // Check if the element contains the "disabled" class
-                    if (element.classList.contains("disabled")) {
-                        // Remove the "disabled" class from the classList
-                        element.classList.remove("disabled");
-                        break; // Exit the loop after removing the class from the first element
-                    }
-                }
-            }
-        }
-    }, [completed]);
-
-    // function findIndex(target: number, currIndex: number) {
-    //     const currentLine = keywordsList[currIndex].keyword;
-    //     if (currentLine) {
-    //         //the currentLine contains start and end, find the index where between target is between start and end inclusive
-    //         for (let i = 0; i < currentLine.length; i++) {
-    //             if (currentLine[i].start <= target && currentLine[i].end >= target) {
-    //                 return keywordsList[currIndex].keyword[i].type+"-writeover";
+    //         for (const element of elementsWithInsertButtonClass) {
+    //             if (element instanceof HTMLElement) {
+    //                 // Check if the element contains the "disabled" class
+    //                 if (element.classList.contains("disabled")) {
+    //                     // Remove the "disabled" class from the classList
+    //                     element.classList.remove("disabled");
+    //                     break; // Exit the loop after removing the class from the first element
+    //                 }
     //             }
     //         }
     //     }
-    // }
+    // }, [completed]);
 
-    // async function colorize() {
-    //     if(!userInput || !monaco || !monaco.editor || userInput.length == 0) return <span className="writeover-cursor" />;
-        
-    //     const coloredCode = await monaco.editor.colorize(userInput, 'python',{});
-    //     return (
-    //       <div dangerouslySetInnerHTML={{ __html: coloredCode }}>
-    //         <span className="writeover-cursor" />
-    //       </div>
-    //     );
-    // }
+    useEffect(() => {
+        // get the id = {`id-explanation-${index}`}
+        const explainRef = document.getElementById(`id-explanation-${currentLineIndex}`);
+        const cursorRef = document.getElementById('cursorRef');
+        const lineExplainRef = document.getElementById(`line-explain-ref-${currentLineIndex}`);
+        if(explainRef && cursorRef && lineExplainRef) {
+            // the position should be userInput.lengt * 20px
+            // explainRef.style.left = `${userInput.length * 20}px`;
+            if(lineExplainRef.getBoundingClientRect().x > explainRef.getBoundingClientRect().x + explainRef.getBoundingClientRect().width){     
+                // console.log(lineExplainRef.getBoundingClientRect().x);
+                // console.log(explainRef.getBoundingClientRect().x + explainRef.getBoundingClientRect().width);
+                explainRef.style.left = `${cursorRef?.getBoundingClientRect().x!}px`;
+            }
+            
+        }
+      }, [userInput]);  // Run every time userInput changes
 
     return (
         <div className='write-over-wrapper'>
@@ -332,6 +302,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
             tabIndex={0} 
             ref={containerRef}
         >
+            {completed && <span id="game-over" style={{opacity:0}}>Game Over</span>}
             {isReady && lines.map((line, index) => (
                 <div id={`line-${index}`} key={index} className='write-over-tracker'
                 onMouseEnter={() => {
@@ -356,29 +327,31 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
 
                 }}>
                     {hoveringStates[index] && (
-                    <div
-                        className="hoverable-code-line-explanation"
-                        dangerouslySetInnerHTML={{
-                        __html: highlightCode(
-                            keywordsList[index].explanation,
-                            "exp-inline-code"
-                        ),
-                        }}
-                    ></div>
+                    <div className="hoverable-codeline-explanation" style={{zIndex: 99 - index}}>
+                        <div className='hints-header'>
+                            <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                                Explaination
+                            </div>
+                        <div 
+                            className="explanation-write-over"
+                            dangerouslySetInnerHTML={{
+                            __html: highlightPsudo(
+                                keywordsList[index].explanation,
+                            ),
+                            }}
+                        ></div>
+                    </div>
                     )}
                     {index == currentLineIndex ? (
-                        <>
-                        <div style={{position: 'relative'}} className='write-over-code-container'>
-                            <pre 
-                                className="user-input" 
-                                style={{opacity: 1, position: 'absolute', zIndex: 2, backgroundColor: 'transparent'}}
-                            >
+                        <div className='current-code-container'>
+                        <div style={{position: 'relative'}} className='current-code-line write-over-code-container'>
+                            <pre className="user-input">
                                 {userInput}
-                                <span className="writeover-cursor" />
+                                <span className="writeover-cursor" id="cursorRef"/>
                             </pre>
                             <pre 
                                 className="remaining-text" 
-                                style={{opacity: 0.2}}
+                                style={{opacity: 1}}
                             >
                             {/* map each character to a span */}
                             {/* {lines[index].leadSpaces > 0 && <MdKeyboardTab className='enter-sign'/>}
@@ -386,24 +359,26 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                             <span style={{ position: 'absolute', zIndex: 3 }}>
                             {lines[index].leadSpaces > 0 && <MdKeyboardTab className='tab-sign' />}
                             </span>
-                            <span style={{ position: 'relative', zIndex: 1 }}>
+                            <span className="text-span" style={{ position: 'relative', zIndex: 1 }}>
                             {line.original.replace(/\t/g, '    ').split('').map((char, i) => (
                                 <span key={i} className={`char-${i}`}>{char}</span>
                             ))}
                             </span>
                             {index != lines.length-1 && <BsArrowReturnLeft className='enter-sign'/>}
                             </pre>
+                            
                         </div>
                         <div
                             className='write-over-explanation'
+                            id = {`id-explanation-${index}`}
                             dangerouslySetInnerHTML={{
-                                __html: highlightCode(
-                                    keywordsList[index].explanation,
-                                    "exp-inline-code"
+                                __html: highlightPsudo(
+                                    keywordsList[index].tokens[charToToken[index][userInput.length]] ?
+                                    keywordsList[index].tokens[charToToken[index][userInput.length]].explanation : "",
                                 ),
                             }}
                         ></div>
-                        </>
+                        </div>
                     ) : (
                         <>
                         <pre 
@@ -418,51 +393,30 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                         
                         
                     )}
-                    {(index < lines.length - 1) && (
-                        <br />
-                    )}
+                    {index == currentLineIndex
+                    &&  
+                    <div className="hoverable-codeline-explanation" style={{zIndex: 95 - index}} id={`line-explain-ref-${index}`}>
+                        <div className='hints-header'>
+                            <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                                Explaination
+                            </div>
+                        <div 
+                            className="explanation-write-over"
+                            dangerouslySetInnerHTML={{
+                            __html: highlightPsudo(
+                                keywordsList[index].explanation,
+                            ),
+                            }}
+                        ></div>
+                    </div>
+                    }
                 </div>
             ))}
         </div>
         <div className='writeover-hoverable'>
-        {/* {scores.map((score, index) => {
-            if (index > currentLineIndex) {
-            return null;
-            }
-            return (
-            <div
-                className='writeover-hoverable-line'
-                onMouseEnter={() => {
-                const updatedHoveringStates = [...hoveringStates];
-                updatedHoveringStates[index] = true;
-                setHoveringStates(updatedHoveringStates);
-                }}
-                onMouseLeave={() => {
-                const updatedHoveringStates = [...hoveringStates];
-                updatedHoveringStates[index] = false;
-                setHoveringStates(updatedHoveringStates);
-                }}
-            >
-                <BsQuestionCircle
-                className="hoverable-writeover-icon"
-                />
-                {hoveringStates[index] && (
-                <div
-                    className="hoverable-code-line-explanation"
-                    dangerouslySetInnerHTML={{
-                    __html: highlightCode(
-                        keywordsList[index].explanation,
-                        "exp-inline-code"
-                    ),
-                    }}
-                ></div>
-                )}
-            </div>
-            );
-        })} */}
         </div>
-
-        <div className='score'>
+            
+        {/* <div className='score'>
             {scores.map((score, index) => {
                 if (index>currentLineIndex)
                     return <div> </div>
@@ -477,7 +431,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text }) => {
                     scoreClass = 'yellow';
                 return <div className={scoreClass}>{score}%</div>
             })}
-        </div>
+        </div> */}
         </div>
         
     );
