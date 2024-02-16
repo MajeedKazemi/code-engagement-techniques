@@ -7,6 +7,7 @@ import * as monaco from 'monaco-editor';
 import { highlightCode, highlightPsudo } from '../../utils/utils';
 import { ChatLoader } from '../loader';
 import IconsDoc from '../docs/icons-doc';
+import { HighlightedPartWithoutTab } from '../docs/highlight-code';
 
 export let baselineCancelClicked = false;
 
@@ -287,7 +288,14 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
           </div>
         </div>
       </div>
-      {!generating &&<div ref={baselineRef} className="read-only-editor"></div>}
+      {!generating &&
+    //   <div ref={baselineRef} className="read-only-editor"></div>
+        <div className="baseline-read-only-editor">
+            {generatedCode && generatedCode.split("\n").map((line) => (
+                <HighlightedPartWithoutTab part={line} />
+            ))}
+        </div>
+      }
       {!generating && 
       <div className="read-only-explaination"> 
         <b>Code Explanation</b>

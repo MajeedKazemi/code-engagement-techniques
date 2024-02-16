@@ -2,7 +2,7 @@ import React, { useEffect, createContext, useState } from "react";
 import { DragDropContext, DragStart, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable } from "react-beautiful-dnd";
 import { convertTime } from "../../utils/shared";
 import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
-import { HighlightedPart } from "../docs/highlight-code";
+import { HighlightedPart, HighlightedPartWithoutTab } from "../docs/highlight-code";
 
 
 interface ParsonsGameProps {
@@ -124,7 +124,6 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             const difference = e.clientX - taskBeingDragged.currentMouseXPosition!;
             // console.log(e.clientX, taskBeingDragged.currentMouseXPosition, difference);
             if (difference >= 100) {
-                if(taskBeingDragged.indentationLevel === 7) return;
                 taskBeingDragged.indentationLevel++;
                 taskBeingDragged.currentMouseXPosition = e.clientX;
                 setColumns({ ...columns });
@@ -248,7 +247,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     const VerticalLines: React.FC = () => {
       return (
         <>
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: 20 }).map((_, i) => (
             <div
             key={i}  
             className="indent-line" 
@@ -258,7 +257,6 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
               bottom: 0,
               left: `${3 * (i+1)}rem`,
               width: '1px',
-              background: 'black',
               opacity: i < maxIndent ? 0.2 : 0,
             }}
             id={`indent-line-${i+1}`} 
@@ -359,13 +357,16 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     {
     <div className="submit-urgent-message">
         {!timeUp && 
-        <><span>Please finish the game sooner!</span>
+        <><span>You have <strong>{convertTime(timeLimit)}</strong> mins to finish the game!</span>
 
         <span className="time-indicator">
             {convertTime(elapsedTime / 1000)}
         </span>
         </>
         }
+        <button type="button" className="parson-hint-button btn btn-secondary" onClick={checkCode}>
+        Hint
+        </button>
         <button type="button" className="check-button btn btn-secondary" onClick={checkCode}>
         Check
         </button>
@@ -386,8 +387,6 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
       <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} onDragStart={(start) => onDragStart(start)}>
         {Object.entries(columns).map(([columnId, column], index) => (
           <div style={{ display: "flex", flexDirection: "column" }} key={columnId} className={`parsons-game-${index}`}>
-            <h2>{column.name}</h2>
-            <p>{column.description}</p>
             <Droppable droppableId={columnId}>
               {(provided, snapshot) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} style={{ padding: 4, height: sectionHeight ? `${sectionHeight}px` : 'auto' }}>
@@ -401,7 +400,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                           {...provided.dragHandleProps}
                           style={{
                             userSelect: "none",
-                            marginLeft: `${3 * item.indentationLevel}rem`,
+                            marginLeft: `${item.indentationLevel == 0 ? '5px' : `${3 * item.indentationLevel}rem`}`,
                             ...provided.draggableProps.style,
                             display: "flex",
                           }}
@@ -422,7 +421,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                             ) : null}
                             
                             {/* {part} */}
-                            <HighlightedPart part={part} />
+                            <HighlightedPartWithoutTab part={part} />
                             </React.Fragment>
                             
                         ))}

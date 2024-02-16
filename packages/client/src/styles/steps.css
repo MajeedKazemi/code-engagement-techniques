@@ -279,8 +279,12 @@
   height: 2rem;
 }
 
+.step-by-step-timeline-container.inactive{
+  opacity: 0.4;
+}
+
 .step-by-step-questions-container{
-  opacity: 0.9;
+  opacity: 0.4;
   border-radius: 6px;
   border: #353535 solid 1px;
   width: 100%;

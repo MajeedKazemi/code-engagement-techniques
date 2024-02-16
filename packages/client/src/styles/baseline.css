@@ -3,6 +3,7 @@
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     border-bottom: 1px solid black;
+    height: 55px;
 }
 
 .baseline-title h3{
@@ -13,7 +14,7 @@
 .chat-user-prompt{
     margin: 2rem 1rem;
     overflow-y: scroll;
-    height: 80vh;
+    height: calc(100% - 55px);
 }
 
 .baseline-generator-container{
@@ -126,7 +127,7 @@
 
 .generated-code-component {
     overflow-y: scroll;
-    height: 85vh;
+    height: calc(100% - 55px);
 }
 .generated-button-container {
     margin-top: 2rem;

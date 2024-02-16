@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as monaco from 'monaco-editor';
-import { HighlightedPart } from '../docs/highlight-code';
+import { HighlightedPart, HighlightedPartWithoutTab } from '../docs/highlight-code';
 
 interface QuestionObject {
     correct: boolean;
@@ -111,7 +111,7 @@ function RevealQuestionComponent({data}: {data: QuestionInterface[]}) {
 
 
     return (
-        
+        <div className="reveal-parent-container">
         <div className='reveal-container'>
             {currentQuestionIndex >= data.length && <span id="game-over" style={{opacity:0}}>Game Over</span>}
             {data.map((question, index) =>
@@ -146,17 +146,25 @@ function RevealQuestionComponent({data}: {data: QuestionInterface[]}) {
                                 </div>
                             ))}
                         </div>
+                        {data[index].revealLine.split('\n').map((line, i) => 
+                        <HighlightedPart part={line} />
+                        )}
                     </>
                     }
                     </>
                 </div>
-                <div className={`reveal-code-container ${index < currentQuestionIndex ? 'active' : ''} `} >
-                    {data[index].revealLine.split('\n').map((line, i) => 
-                        <HighlightedPart part={line} />
-                    )}
-                </div>
             </div>
             )}
+        </div>
+        <div className='reveal-code-line-by-line-container'>
+            {data.map((question, index) =>
+            <div className={`reveal-code-container ${index < currentQuestionIndex ? 'active' : ''} `} >
+                    {data[index].revealLine.split('\n').map((line, i) => 
+                        <HighlightedPartWithoutTab part={line} />
+                    )}
+            </div>
+            )}
+        </div>
         </div>
     );
 }

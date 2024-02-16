@@ -263,7 +263,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     useEffect(() => {
         const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedQuestion, generatedCode);
         setInitialCodeBlocks(responseCodeObject);
-        sectionHeightRef.current = (responseCodeObject.length + 2) * 60;
+        sectionHeightRef.current = (responseCodeObject.length) * 40;
     }, [generatedQuestion]);
 
 

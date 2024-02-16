@@ -191,6 +191,16 @@
     border-radius: 4px;
 }
 
+.baseline-read-only-editor {
+    min-height: 100px;
+    margin: 10px;
+    border: solid 1px black;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    background-color: white;
+    padding: 5px;
+}
+
 .task-baseline{
     margin-left: 2px;  
     margin-right: 12px;

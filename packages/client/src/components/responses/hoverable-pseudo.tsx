@@ -31,23 +31,6 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
 
     return (
         <div className="hoverable-code-container">
-            {/* <div className="hoverable-code-header">
-                {getIconSVG("cursor-arrow-rays", "response-header-icon")}
-                Hover over each line to see detailed explanation:
-            </div> */}
-
-            {/* <div className="hoverable-code-content">
-                {props.code &&
-                    props.code.map((line, index) => {
-                        return (
-                            <HoverableExplainCode
-                                content={line.content || ""}
-                                explanation={line.explanation || ""}
-                                key={JSON.stringify(line) + index.toString()}
-                            />
-                        );
-                    })}
-            </div> */}
             <div className="">
                 {goals.map((goal, index) => {
                     return (
@@ -70,6 +53,7 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
                                             indent={line.indent || 0}
                                             content={line.pseudo || ""}
                                             explanation={line.explanation || ""}
+                                            code={line.code || ""}
                                             key={JSON.stringify(line) + index.toString()}
                                         />
                                     );
@@ -78,6 +62,8 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
                         </div>
                     );
                 })}
+                <div className="hoverable-code-footer">
+                </div>
                 </div>
         </div>
     );

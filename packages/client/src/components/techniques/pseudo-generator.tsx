@@ -496,9 +496,9 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                   AI Assistance:
               </div>
               <div className="modal-body">
-                <p>
+                {/* <p>
                   <b>Prompts: </b> {prompt}
-                </p>
+                </p> */}
 
                 {/* parsons main div */}
                 {waiting && (

@@ -135,7 +135,7 @@ mark {
   .card-question {
     background-color: rgba(253,255,224,255);
     border-radius: 6px;
-    width: 40vw;
+    width: calc(45vw - 60px);
     right: 10px;
     margin-left: 1vw;
     height: 100%;

@@ -5,7 +5,7 @@ import * as monaco from "monaco-editor";
 import { ChatLoader } from "../loader";
 import { apiGetFeedbackByResponse, logError } from "../../api/api";
 import { AuthContext } from "../../context";
-import { HighlightedPart } from "../docs/highlight-code";
+import { HighlightedPart, HighlightedPartWithoutTab } from "../docs/highlight-code";
 
 interface SelfExplainProps {
     code: string;
@@ -358,7 +358,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>
@@ -371,7 +371,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>
@@ -395,7 +395,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>
@@ -417,7 +417,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>

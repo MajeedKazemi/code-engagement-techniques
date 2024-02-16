@@ -372,11 +372,10 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
                             className='write-over-explanation'
                             id = {`id-explanation-${index}`}
                             dangerouslySetInnerHTML={{
-                                __html: highlightPsudo(
-                                    keywordsList[index].tokens[charToToken[index][userInput.length]] ?
-                                    keywordsList[index].tokens[charToToken[index][userInput.length]].explanation : "",
-                                ),
-                            }}
+                                __html: keywordsList[index].tokens[charToToken[index][userInput.length]] && keywordsList[index].tokens[charToToken[index][userInput.length]].explanation
+                                  ? highlightPsudo(keywordsList[index].tokens[charToToken[index][userInput.length]].explanation)
+                                  : ""
+                              }}
                         ></div>
                         </div>
                     ) : (

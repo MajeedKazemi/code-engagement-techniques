@@ -74,6 +74,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     const [solutions, setSolutions] = useState<string[]>();
     const inputRef = useRef<HTMLInputElement>(null);
     const readerRef = useRef<HTMLDivElement>(null);
+    const [isOnStop, setIsOnStop] = useState<boolean>(true);
     const [output, setOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
@@ -340,14 +341,14 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
         if (excutionSteps.length > 0 && currentStep < excutionSteps.length) {
           setCurrStep(excutionSteps[currentStep]);
         }
-        const targetDivs = document.getElementsByClassName('step-by-step-questions-container');
+        // const targetDivs = document.getElementsByClassName('step-by-step-questions-container');
 
-        for(let i = 0; i < targetDivs.length; i++) {
-            if (questionStop === currentStep) {
-                targetDivs[i].classList.add('active');
-            } else {
-                targetDivs[i].classList.remove('active');
-            }
+        if (questionStop === currentStep) {
+            // targetDivs[i].classList.add('active');
+            setIsOnStop(true);
+        } else {
+            // targetDivs[i].classList.remove('active');
+            setIsOnStop(false);
         }
     }, [currentStep]);
 
@@ -525,7 +526,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                 </div>
             </div>
 
-            <div className='step-by-step-timeline-container'>
+            <div className={`step-by-step-timeline-container ${isOnStop ? 'inactive' : ''}`}>
                 <div className='legend'>
                     {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
                     <div className='legend-item'>
@@ -605,7 +606,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
           </div>
             
             <div className = "excution-container">
-                <div className='step-by-step-questions-container'>
+            <div className={`step-by-step-questions-container ${isOnStop ? 'active' : ''}`}>
                     <div className='step-by-step-questions-header'>
                         <FaQuestionCircle /> &nbsp;&nbsp;Questions
                     </div>
@@ -613,7 +614,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                         {questions.length > 0 && questions.map((item, index) => (
                             questions[index].step-1 <= currentStep && 
                             <div className='steps-question-div'>
-                                <p className="question">What will the value of <span>{questions[index].variable}</span> after <b>Step {questions[index].step-1} </b>?</p>
+                                <p className="question">given the current state of the variables, what will be the value of <span>{questions[index].variable}</span>  after the highlighted line is executed? </p>
                                 {/* {needHint && <p className="hint">Hint: {hintGenerating ? <ChatLoader/> : questionHint}</p>} */}
                                 {currentWrongAnswers && currentWrongAnswers[index] && currentWrongAnswers[index].length > 0 && currentWrongAnswers[index].map((item) => (
                                     item.length > 0 && <div className="step-answered-container">

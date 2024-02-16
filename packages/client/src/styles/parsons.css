@@ -1,10 +1,10 @@
 
 .modal {
     position: fixed;
-    top: 60px;
-    bottom: 10px;
-    left: 2rem;
-    width: 95vw;
+    top: 12px;
+    bottom: 12px;
+    left: 1rem;
+    width: calc(100% - 2rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,7 +13,9 @@
     border-radius: 20px;
   }
 
-
+  .indent-line {
+    border-right: 1px dashed black;
+}
   
   .modal-dialog {
     position: relative;
@@ -32,13 +34,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-bottom: 0.5rem;
     background-color: #056794;
     color:aliceblue;
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 0.5rem 2rem;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    height: 3rem;
   }
 
 .spark-icon{
@@ -52,17 +54,19 @@
   }
   
   .modal-body {
-    padding: 2rem 2rem 2rem 2rem;
+    padding: 2rem 2rem;
+    height: calc(100% - 9.5rem);
   }
   
   .modal-footer {
     position: absolute;
-    bottom: 1rem;
-    width: 95%;
+    bottom: 0.5rem;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     padding-top: 0.5rem;
     border-top: 1px solid #dee2e6;
+    height: 2.5rem;
   }
 
   .modal-footer button{
@@ -131,7 +135,7 @@
 .parsons-problem {
     display: flex;
     overflow: scroll;
-    max-height: 60vh;
+    height: 100%;
 }
 
 .parsons-game-0  {
@@ -141,29 +145,36 @@
 .parsons-game-1  {
     flex: 1;
     width: 50%;
-    margin-left: 2rem;
+    margin-left: 20px;
 }
 
 .parsons-game-0 div{
-    background-color: lightblue;
+    background-color: rgba(217,217,217,255);
     padding: 10px;
+    border-radius: 6px;
+    overflow-y: scroll;
 }
 
 .parsons-game-1 div{
-    background-color: lightgray;
+    background-color: rgba(231,233,145,255);
     padding-top: 10px;
     padding-bottom: 10px;
     position: relative;
+    border-radius: 6px;
+    overflow-y: scroll;
+    overflow-x: scroll;
 }
 
 .parsons-game-draggable {
     background-color: #fff !important;
-    margin: 10px 0.5rem;
+    margin: 10px;
     border-radius: 15px;
-    border: #6c757d 1px solid;
     z-index: 2;
     position: relative;
     padding-left: 10px;
+    width: fit-content;
+    padding-right: 10px;
+    height: 20px !important;
 }
 
 .parsons-game-draggable .parsons-token{
@@ -193,5 +204,16 @@
 .modal .check-button, .modal .continue-button {
   background-color: #0baa0b;
     border-color: #0baa0b;
+}
+
+.modal .parson-hint-button {
+  background-color: #ac00d6;
+  border-color: #ac00d6;
+  color: #fff;
+}
+
+.modal .parson-hint-button.disabled {
+  background-color: rgba(217,166,230,255);
+  border-color: rgba(217,166,230,255);
 }
 

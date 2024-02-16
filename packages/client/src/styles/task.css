@@ -52,7 +52,7 @@
 .coding-task-container {
     padding: 12px;
     display: flex;
-    height: calc(100% - 24px);
+    height: 100%;
 }
 
 .task-sample-output {
@@ -175,10 +175,11 @@
     font-weight: 500;
     margin: 0;
     padding: 12px;
-    color: #fff;
-    background-color: #2391ff;
+    color: black;
+    border: rgba(231,233,145,1) 4px solid;
     border-radius: 6px;
     margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .time-indicator-container {

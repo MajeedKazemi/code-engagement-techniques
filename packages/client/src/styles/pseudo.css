@@ -2,8 +2,11 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: calc(100%);
+}
+
+.pesudo-code-reader {
     overflow-y: scroll;
-    height: 58vh;
 }
 
 .pesudocode-writer-container {
@@ -19,6 +22,9 @@
     width: 60%;
 }
 
+.hoverable-code-footer {
+    height: 100px;
+}
 .monaco-code-writer{
     height: 40vh;
     border: solid 1px #ccc;
@@ -38,9 +44,18 @@
     position: relative;
     width: 40vw;
     padding: 12px 0 12px 0;
-    height: 30vh;
     overflow-y: scroll;
     width: 100%;
+    height: calc(100% - 28px - 40vh - 2.5rem);
+}
+
+.modal-body p {
+    background-color: #0567945e;
+    margin: 0.5rem 0rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    max-height: 5rem;
+    overflow-y: auto;
 }
 
 .pesudocode-container-div .output p {
@@ -131,19 +146,41 @@
     padding-left: 6px;
 }
 
+.hoverable-code-hint-level-1-button {
+    background-color: #c4b733;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-weight: 800;
+}
 
-.hoverable-code-line-explanation {
+.hoverable-code-hint-level-2 {
+    background-color: rgba(170,172,216,255);
+    padding-left: 12px;
+}
+
+.hoverable-code-hint-level-1 {
+    padding: 12px;
+    background-color: rgba(26,65,77,255);
+}
+
+
+.hoverable-code-container-with-hint{
     z-index: 99;
     position: absolute;
     top: 30px;
     right: 0;
     background-color: rgba(38,96,114,255);
     color: #fff;
-    padding: 12px;
     line-height: 30px;
     border-radius: 0 0 6px 6px;
 
     width: 75%;
+}
+
+.hoverable-code-line-explanation {
+    padding: 12px;
 }
 
 .hoverable-code-line-explanation .default-inline{

@@ -1,6 +1,7 @@
 .reveal-container{
     height: 65vh;
     overflow-y: scroll;
+    width: 65%;
 }
 
 .reveal-question-container {
@@ -8,7 +9,7 @@
     border-radius: 15px;
     padding: 20px;
     margin: 20px 0;
-    width:60%;
+    width:90%;
 }
 
 .reveal-question-content-container, .reveal-correct-answer-container,  .reveal-wrong-answer-container{
@@ -16,19 +17,27 @@
     margin-bottom: 20px;
 }
 
-.reveal-subgoal-container {
+.reveal-parent-container {
     display: flex;
-    align-items: top;
+    flex-direction: row;
+    margin: 20px 0;
+}
+
+.reveal-subgoal-container {
+    width: 100%;
 }
 
 .reveal-code-container {
-    margin-left: 3rem;
-    margin-top: 40px;
+    margin-top: 20px;
     display: none;
 }
 
 .reveal-code-container.active {
     display: block;
+}
+
+.reveal-code-line-by-line-container {
+    width: 35%;
 }
 
 .reveal-question-container.answered {
