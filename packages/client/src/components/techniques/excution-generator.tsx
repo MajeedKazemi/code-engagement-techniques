@@ -15,6 +15,7 @@ export let excutionCancelClicked = false;
 interface ExcutionGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    taskID: string;
 }
 
 interface CodeRepresentation {
@@ -23,7 +24,7 @@ interface CodeRepresentation {
 }
   
 
-const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, editor })  => {
+const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -38,10 +39,6 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     const [format, setFormat] = useState<string[]>([]);
     const [buttonClickOver, setButtonClickOver] = useState(false);
     
-    const props = {
-        taskId: "",
-        editor: editor
-    };
 
     // const generateCode = () => {
     //     if (prompt.length === 0) {
@@ -315,8 +312,8 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
         } else {
             setWaiting(true);
   
-            const focusedPosition = props.editor?.getPosition();
-            const userCode = props.editor?.getValue();
+            const focusedPosition = editor?.getPosition();
+            const userCode = editor?.getValue();
             let codeContext = "";
   
             if (focusedPosition && userCode && checked) {
@@ -328,11 +325,11 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
               try {
                 apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt
+                    taskID,
                 )
                     .then(async (response) => {
   
-                        if (response.ok && props.editor) {
+                        if (response.ok && editor) {
                             const data = await response.json();
                             let taskId = data.taskId;
   
@@ -346,7 +343,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                             )
                                 .then(async (response) => {
                 
-                                    if (response.ok && props.editor) {
+                                    if (response.ok && editor) {
                                         const data = await response.json();
     
                                         setGeneratedExplanation(data.explanation);
@@ -354,19 +351,19 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                                     }
                                 })
                                 .catch((error) => {
-                                    props.editor?.updateOptions({ readOnly: false });
+                                    editor?.updateOptions({ readOnly: false });
                                     setWaiting(false);
                                     logError(error.toString());
                                 });                 
                         }
                     })
                     .catch((error) => {
-                        props.editor?.updateOptions({ readOnly: false });
+                        editor?.updateOptions({ readOnly: false });
                         setWaiting(false);
                         logError(error.toString());
                     });
             } catch (error: any) {
-                props.editor?.updateOptions({ readOnly: false });
+                editor?.updateOptions({ readOnly: false });
                 setWaiting(false);
                 logError(error.toString());
             }
@@ -411,7 +408,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>

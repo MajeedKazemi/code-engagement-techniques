@@ -55,10 +55,11 @@ interface IDraggableTask {
 interface ParsonsGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    taskID: string;
 }
   
 
-const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor })  => {
+const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -72,11 +73,6 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     const sectionHeightRef = useRef<number>(0);
     const [isOver, setIsOver] = useState(false);
     const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
-    
-    const props = {
-        taskId: "",
-        editor: editor
-    };
 
     // const generateCode = () => {
     //     if (prompt.length === 0) {
@@ -256,8 +252,8 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
         } else {
             setWaiting(true);
   
-            const focusedPosition = props.editor?.getPosition();
-            const userCode = props.editor?.getValue();
+            const focusedPosition = editor?.getPosition();
+            const userCode = editor?.getValue();
             let codeContext = "";
   
             if (focusedPosition && userCode && checked) {
@@ -269,11 +265,11 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
               try {
                 apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt
+                    taskID,
                 )
                     .then(async (response) => {
   
-                        if (response.ok && props.editor) {
+                        if (response.ok && editor) {
                             const data = await response.json();
                             let taskId = data.taskId;
   
@@ -286,7 +282,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                             )
                                 .then(async (response) => {
                 
-                                    if (response.ok && props.editor) {
+                                    if (response.ok && editor) {
                                         const data = await response.json();
     
                                         setGeneratedExplanation(data.explanation);
@@ -294,19 +290,19 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                                     }
                                 })
                                 .catch((error) => {
-                                    props.editor?.updateOptions({ readOnly: false });
+                                    editor?.updateOptions({ readOnly: false });
                                     setWaiting(false);
                                     logError(error.toString());
                                 });                 
                         }
                     })
                     .catch((error) => {
-                        props.editor?.updateOptions({ readOnly: false });
+                        editor?.updateOptions({ readOnly: false });
                         setWaiting(false);
                         logError(error.toString());
                     });
             } catch (error: any) {
-                props.editor?.updateOptions({ readOnly: false });
+                editor?.updateOptions({ readOnly: false });
                 setWaiting(false);
                 logError(error.toString());
             }
@@ -390,7 +386,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>

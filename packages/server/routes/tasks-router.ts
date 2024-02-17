@@ -34,6 +34,10 @@ tasksRouter.get("/next", verifyUser, (req, res, next) => {
     }
 });
 
+// tasksRouter.get("/updateTaskId/", verifyUser, (req, res, next) => {
+
+// });
+
 // starts the timer for a task -> creates a user-task for the user and sets the startedAt
 tasksRouter.post("/start", verifyUser, (req, res, next) => {
     const userId = (req.user as IUser)._id;
@@ -436,21 +440,20 @@ const checkSimilarity = (str1: string, str2: string) => {
 
 tasksRouter.post("/matchTaskWithCode/", verifyUser, (req, res, next) => {
     const userId = (req.user as IUser)._id;
-    const { desciption } = req.body;
+    const { taskId } = req.body;
 
-    if (userId !== undefined) {
-        
-        for (const task of CodingTasks) {
-            if (task instanceof AuthoringTask) {
-                const currId = task.id;
-                if (checkSimilarity(task.description, desciption)) {
-                    res.send({ 
-                        taskId: currId,
-                        code: task.baselineCode
-                    });
-                    break;
-                }
-            }
+    console.log(taskId);
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                code: task.baselineCode,
+                taskId: task.id
+            });
+            
         }
     } else {
         res.statusCode = 500;

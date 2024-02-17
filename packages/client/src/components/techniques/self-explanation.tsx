@@ -17,6 +17,7 @@ export let selfExplainCancelClicked = false;
 interface SelfExplainGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    taskID: string;
 }
 
 
@@ -132,7 +133,7 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
 // }
   
 
-const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ prompt, editor })  => {
+const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -181,7 +182,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
             try {
                 apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt
+                    taskID,
                 )
                     .then(async (response) => {
 
@@ -453,7 +454,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>

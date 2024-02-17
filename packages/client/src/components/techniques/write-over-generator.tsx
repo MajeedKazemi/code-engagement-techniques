@@ -14,9 +14,10 @@ interface WriteOverGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     code: string | null;
+    taskID: string;
 }
 
-const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, editor, code })  => {
+const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, editor, code, taskID })  => {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -266,7 +267,7 @@ const generateCode = () => {
         try {
             apiGetBaselineCodexSimulation(
                 context?.token,
-                prompt
+                taskID,
             )
                 .then(async (response) => {
 
@@ -378,7 +379,7 @@ const generateCode = () => {
     return (
         <div>
           {isOver && (
-              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
+              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
           )} 
           {isOpen && !isOver && (
             <div className="modal show" style={{ display: 'block' }}>

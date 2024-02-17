@@ -35,6 +35,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] = useState(false);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [userInput, setUserInput] = useState('');
+  const [taskID, setTaskID] = useState<string>('');
   const [generatedCode, setGeneratedCode] = useState('');
   const [explanation, setExplanation] = useState('');
   const [codeAboveCursor, setcodeAboveCursor] = useState('');
@@ -46,6 +47,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [prompts, setPrompts] = useState<BaselinePromptsProps[]>([]);
   const [generatingFeedback, setGeneratingFeedback] = useState<boolean>(false);
   const [rows, setRows] = useState(4);
+  const [matched, setMatched] = useState<boolean>(true);
 
   useEffect(() => {
     if (editor) {
@@ -109,18 +111,18 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     switch (techniques) {
       case "baseline":
-        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""}/>;
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID}/>;
         break;
       case "pseudo":
         addOverlay();
         generatedCodeComponent = 
-          <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+          <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor} taskID={taskID}/>
         break;
       case "parsons":
         addOverlay();
         generatedCodeComponent = 
           <DndProvider backend={HTML5Backend}>
-            <ParsonsGenerateCode prompt={userInput} editor={editor} />
+            <ParsonsGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
           </DndProvider>
         break;
       // case "hierarchical":
@@ -128,38 +130,38 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       //   generatedCodeComponent = 
       //     <HierachicalGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
       //   break;
-      case "token":
-        addOverlay();
-        generatedCodeComponent =
-          <TokenGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
-        break;
+      // case "token":
+      //   addOverlay();
+      //   generatedCodeComponent =
+      //     <TokenGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor} taskID={taskID}/>
+      //   break;
       case "writeover":
         addOverlay();
         generatedCodeComponent = 
-          <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor}/>
+          <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor} taskID={taskID}/>
         break;
       case "selfexplain":
         addOverlay();
         generatedCodeComponent =
-          <SelfExplainGenerateCode prompt={userInput} editor={editor}/>
+          <SelfExplainGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
         break;
       case "stepByStep":
         addOverlay();
         generatedCodeComponent =
-          <ExcutionGenerateCode prompt={userInput} editor={editor}/>
+          <ExcutionGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
         break;
       case "verify":
         addOverlay();
         generatedCodeComponent =
-          <VerifyGenerateCode prompt={userInput} editor={editor}/>
+          <VerifyGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
         break;
       case "leadReveal":
         addOverlay();
         generatedCodeComponent =
-          <RevealGenerateCode prompt={userInput} editor={editor}/>
+          <RevealGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
         break;
       default:
-        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""}/>;
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID}/>;
         break;
     }
     setGeneratedCodeComponent(generatedCodeComponent);
@@ -167,7 +169,21 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
   function generateFeedback(currPrompt: string) {
     setGeneratingFeedback(true);
-    const taskContext = `Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.`;
+    const taskContext = 
+    [
+      {
+        id: "1", 
+        description: "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals."
+      },
+      {
+        id: "2", 
+        description:"Write a Python function to calculate the sum of even numbers in a given list."
+      },
+      {
+        id:  "3", 
+        description:"Write a function that takes a list of strings and returns the longest common prefix."
+      }
+    ];
 
     try {
       apiGetGeneratedFeedbackCodex(
@@ -179,19 +195,36 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
               if (response.ok) {
                   const data = await response.json();
-                  const currPrompts = [...prompts];
-                  const currPromptObj = {
-                    user: currPrompt,
-                    assistant: data.response["missing-specifications"],
-                  }
-                  currPrompts.push(currPromptObj);
-                  console.log(currPrompts);
-                  setPrompts(currPrompts);
 
-                  if(data.response["accuracy-score"] == 5){
-                    setSatisfiedPrompt(true);
-                  }else{
+                  if (data.response.matched != 'yes') {
+                    console.log("did not match");
+                    setMatched(false);
+                    const currPrompts = [...prompts];
+                    const currPromptObj = {
+                      user: currPrompt,
+                      assistant: [],
+                    }
+                    currPrompts.push(currPromptObj);
+                    setPrompts(currPrompts);
                     setUserInput("");
+                  } else {
+                    setMatched(true);
+                    setTaskID(data.response["matched-taskId"]);
+                    const currPrompts = [...prompts];
+                    const currPromptObj = {
+                      user: currPrompt,
+                      assistant: data.response["missing-specifications"],
+                    }
+                    currPrompts.push(currPromptObj);
+                    console.log(currPrompts);
+                    setPrompts(currPrompts);
+
+
+                    if(data.response["accuracy-score"] == 5){
+                      setSatisfiedPrompt(true);
+                    }else{
+                      setUserInput("");
+                    }
                   }
               }
               setGeneratingFeedback(false);
@@ -225,12 +258,12 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   }, [baselineCancelClicked, pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked, excutionCancelClicked, revealCancelClicked]);
 
   // define the current technique
+
+
   // const technique = 'baseline';
-  // const technique = 'pseudo';
-  // const technique = 'hierarchical';
-  // const technique = 'token';
+  const technique = 'pseudo';
   // const technique = 'parsons';
-  const technique = 'writeover';
+  // const technique = 'writeover';
   // const technique = 'selfexplain';
   // const technique = 'stepByStep';
   // const technique = 'verify';
@@ -270,7 +303,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
             )}
           </div>
           <div id='user-prompts' className={`chat-user-prompt ${isUserPromptsVisible? '' : 'hidden'}`}>
-          {!satisfiedPrompt && unSatisfiedTime <= 4 && (
+          {(!matched || (!satisfiedPrompt && unSatisfiedTime <= 4)) && (
             <div className="baseline-feedback-chat">
               {prompts.map((prompt, index) => {
                 return (
@@ -286,7 +319,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                     <div className='assistant-chat-container'>
                       <div className='assistant-icon'><IconsDoc iconName="spark" /></div>
                       <div className="baseline-feedback-assistant chat-bubble">
-                        <div className="baseline-feedback-assistant-text">
+                        {matched && <div className="baseline-feedback-assistant-text">
                           <p>You are missing the following details, please add them to your prompt before I can help you with code generation:</p>
                           <ul>
                             {prompt.assistant.map((specification, index) => (
@@ -294,6 +327,11 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                             ))}
                           </ul>
                         </div>
+                        }
+                        {!matched && <div className="baseline-feedback-assistant-text">
+                          <p>Your request does not align with any of the available task descriptions. Kindly review the task list and try again.</p>
+                        </div>
+                        }
                       </div>
                     </div>
                   </div>

@@ -15,6 +15,7 @@ export let verifyCancelClicked = false;
 interface VerifyGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    taskID: string;
 }
 
 interface QuestionInterface {
@@ -40,7 +41,7 @@ function removeLineNumbers(code: string): string {
 }
   
 
-const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor })  => {
+const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -75,7 +76,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
               try {
                 apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt
+                    taskID,
                 )
                     .then(async (response) => {
   
@@ -364,7 +365,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor 
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>

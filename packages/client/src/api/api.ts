@@ -258,7 +258,7 @@ export const apiGetGeneratedCodeCodex = (
 export const apiGetGeneratedFeedbackCodex = (
     token: string | null | undefined,
     prompt: string,
-    task: string
+    task: any[]
 ) =>
     fetch(env.API_URL + "/api/technique-baseline/generateFeedback", {
         method: "POST",
@@ -641,7 +641,7 @@ export const logError = (message: string) => {
 
 export const apiGetBaselineCodexSimulation = (
     token: string | null | undefined,
-    desciption: string,
+    taskId: string,
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithCode/", {
         method: "POST",
@@ -651,7 +651,7 @@ export const apiGetBaselineCodexSimulation = (
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            desciption: desciption,
+            taskId: taskId,
         }),
     });
 

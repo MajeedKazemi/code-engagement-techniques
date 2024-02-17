@@ -17,14 +17,21 @@ codexRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
                 role: "system",
                 content:
 `
-# Overview:
-compare the specifications provided in the [student-prompt] with the [task-description]. First, score how fully and accurately the [student-prompt] describes the [task-description] using a number from 0 (completely irrelevant or under-specified) to 5 (fully specified and accurate). also if it is under-specified, provide a list of bullet points about what needs to be added to the [student-prompt] so that it fully describes the [task-description]. 
+Given a set of tasks descriptions, compare the specifications provided in the [student-prompt] with the [task-descriptions]. 
+
+First, try to find a matches description with the student prompt to the task description, 
+
+if not found a match, return matched = no in the JSON.
+
+if found the match, score how fully and accurately the [student-prompt] describes the [task-description] using a number from 0 (completely irrelevant or under-specified) to 5 (fully specified and accurate). also if it is under-specified, provide a list of bullet points about what needs to be added to the [student-prompt] so that it fully describes the [task-descriptions]. 
 
 Include all the missing specifications in the response. If an example is missing, include the example in the missing specifications as well.
 
-Use the following template:
+Use the following JSON template:
 {
+    "matched": <yes or no>
     "accuracy-score": <number-0-to-5>,
+    "matched-taskId": <taskID>
     "missing-specifications": [
         "<10-15 word missing specification>",
         "<10-15 word missing specification>",
@@ -36,26 +43,46 @@ Use the following template:
             },
             {
                 role: "user",
-                content: `[task-description]
-                Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.
-                Example Input/Outputs:
-                Input: [(1, 3), (2, 6), (8, 10), (15, 18)]
-                Output: [(1, 6), (8, 10), (15, 18)]
-                
-                [student-prompt]
+                content: `[student-prompt]
                 merges the overlapping intervals.
-                [end-student-prompt]`,
+                [end-student-prompt]
+                [task-descriptions]
+                [
+                {id: "1", description:Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.},
+                {id: "2", description:Write a Python function to calculate the sum of even numbers in a given list.},
+                {id:  "3", description:Write a function that takes a list of strings and returns the longest common prefix.}
+                ]
+                `,
             },
             {
                 role: "assistant",
                 content: `{
-                    "accuracy-score": 2,
-                    "missing-specifications": [
-                        "Function should take a list of intervals as input",
-                        "Intervals are represented as ranges of numbers",
-                        "Provide example input: [(1, 3), (2, 6), (8, 10), (15, 18)]",
-                        "Provide example output: [(1, 6), (8, 10), (15, 18)]"
-                    ]
+                    "matched": "yes",
+                    "accuracy-score": 5,
+                    "matched-taskId": "1",
+                    "missing-specifications": []
+                }`,
+            },
+            {
+                role: "user",
+                content: `[student-prompt]
+                some prompt
+                [end-student-prompt]
+                [task-descriptions]
+                [
+                {id: "1", description:Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.},
+                {id: "2", description:Write a Python function to calculate the sum of even numbers in a given list.},
+                {id:  "3", description:Write a function that takes a list of strings and returns the longest common prefix.}
+                ]
+                `,
+            },
+            {
+                role: "assistant",
+                content: `{
+                    "matched": "no",
+                    "accuracy-score": 0,
+                    "matched-taskId": null,
+                    "missing-specifications": []
                 }`,
             }
         ];
@@ -67,10 +94,10 @@ Use the following template:
         });
 
         const result = await openai.createChatCompletion({
-            model: "gpt-4-1106-preview",
+            model: "gpt-3.5-turbo-16k",
             messages,
             temperature: 0,
-            max_tokens: 1216,
+            max_tokens: 200,
             user: userId,
         });
 

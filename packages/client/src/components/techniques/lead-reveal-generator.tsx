@@ -15,6 +15,7 @@ export let revealCancelClicked = false;
 interface RevealGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    taskID: string;
 }
 
 interface QuestionObject {
@@ -272,7 +273,7 @@ function responseToQuestion(response: any, code:string): QuestionInterface[] {
 
   
 
-const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor })  => {
+const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -306,7 +307,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
               try {
                 apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt
+                    taskID,
                 )
                     .then(async (response) => {
   
@@ -584,7 +585,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>

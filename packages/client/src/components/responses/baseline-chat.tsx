@@ -16,9 +16,10 @@ interface BaselineGenerateCodeProps {
     editor: monaco.editor.IStandaloneCodeEditor | null;
     code: string;
     exp: string;
+    taskID: string;
 }
 
-const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor, code, exp })  => {
+const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor, code, exp, taskID })  => {
     // Call the GPT API or any code generation logic here
     // to generate code based on the userInput
     const [generating, setGenerating] = useState(false);
@@ -62,11 +63,6 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
         setGeneratedCode("");
         setGeneratedExplanation("");
         baselineCancelClicked = !baselineCancelClicked;
-    };
-
-    const props = {
-        taskId: "",
-        editor: editor
     };
 
     // const generateCode = () => {
@@ -230,8 +226,8 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
         } else {
             setGenerating(true);
   
-            const focusedPosition = props.editor?.getPosition();
-            const userCode = props.editor?.getValue();
+            const focusedPosition = editor?.getPosition();
+            const userCode = editor?.getValue();
             let codeContext = "";
   
             if (focusedPosition && userCode && checked) {
@@ -243,11 +239,11 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
               try {
                 apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt
+                    taskID,
                 )
                     .then(async (response) => {
   
-                        if (response.ok && props.editor) {
+                        if (response.ok && editor) {
                             const data = await response.json();
                             let taskId = data.taskId;
   
@@ -259,7 +255,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
                             )
                                 .then(async (response) => {
                 
-                                    if (response.ok && props.editor) {
+                                    if (response.ok && editor) {
                                         const data = await response.json();
     
                                         setGeneratedExplanation(data.explanation);
@@ -267,19 +263,19 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
                                     }
                                 })
                                 .catch((error) => {
-                                    props.editor?.updateOptions({ readOnly: false });
+                                    editor?.updateOptions({ readOnly: false });
                                     setGenerating(false);
                                     logError(error.toString());
                                 });                 
                         }
                     })
                     .catch((error) => {
-                        props.editor?.updateOptions({ readOnly: false });
+                        editor?.updateOptions({ readOnly: false });
                         setGenerating(false);
                         logError(error.toString());
                     });
             } catch (error: any) {
-                props.editor?.updateOptions({ readOnly: false });
+                editor?.updateOptions({ readOnly: false });
                 setGenerating(false);
                 logError(error.toString());
             }
