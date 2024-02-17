@@ -637,4 +637,118 @@ export const logError = (message: string) => {
     console.error(message);
 };
 
+// APIs for getting hard-coded JSON response for LLM simulation
+
+export const apiGetBaselineCodexSimulation = (
+    token: string | null | undefined,
+    desciption: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithCode/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            desciption: desciption,
+        }),
+    });
+
+export const apiGetBaselineExplainationCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithExplaination/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetPseudoCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithPseudo/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetWriteOverCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithWriteOver/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetSelfExplainQuestionsSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithSelfExplain/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetVerifyingReviewSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithVerifyReview/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetLeadReviewSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithLeadReveal/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
 

@@ -358,7 +358,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPartWithoutTab part={line} />
+                                                <HighlightedPart part={line} />
                                             )}
                                         </div>
                                     </>
@@ -371,7 +371,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPartWithoutTab part={line} />
+                                                <HighlightedPart part={line} />
                                             )}
                                         </div>
                                     </>
@@ -395,7 +395,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPartWithoutTab part={line} />
+                                                <HighlightedPart part={line} />
                                             )}
                                         </div>
                                     </>
@@ -417,7 +417,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPartWithoutTab part={line} />
+                                                <HighlightedPart part={line} />
                                             )}
                                         </div>
                                     </>

@@ -245,15 +245,15 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                         
                     }
                 }
-                if (data.type === "stderr") {
-                    setOutput([
-                        ...output,
-                        {
-                            type: "error",
-                            line: data.err,
-                        },
-                    ]);
-                }
+                // if (data.type === "stderr") {
+                //     setOutput([
+                //         ...output,
+                //         {
+                //             type: "error",
+                //             line: data.err,
+                //         },
+                //     ]);
+                // }
                 if (data.type === "close") {
                     setTraceId(traceId + 1);
                     setTracing(false);
@@ -342,8 +342,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
           setCurrStep(excutionSteps[currentStep]);
         }
         // const targetDivs = document.getElementsByClassName('step-by-step-questions-container');
-
-        if (questionStop === currentStep) {
+        if (questionStop === currentStep && currentStep > 2) {
             // targetDivs[i].classList.add('active');
             setIsOnStop(true);
         } else {
@@ -640,6 +639,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                                     temp[index] = true;
                                                     return temp;
                                                 });
+                                                setIsOnStop(false);
                                                 updateQuestion(index+1);
                                                 setInputValue("");
                                             } else if (currentWrongAnswers && index==currentQuestionIndex){
@@ -662,6 +662,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                                                         temp[index] = true;
                                                         return temp;
                                                     });
+                                                    setIsOnStop(false);
                                                     updateQuestion(index+1);
                                                     setInputValue("");
                                                 }

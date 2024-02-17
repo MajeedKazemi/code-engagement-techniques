@@ -18,7 +18,7 @@ codexRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
                 content:
 `
 # Overview:
-ycompare the specifications provided in the [student-prompt] with the [task-description]. First, score how fully and accurately the [student-prompt] describes the [task-description] using a number from 0 (completely irrelevant or under-specified) to 5 (fully specified and accurate). also if it is under-specified, provide a list of bullet points about what needs to be added to the [student-prompt] so that it fully describes the [task-description]. 
+compare the specifications provided in the [student-prompt] with the [task-description]. First, score how fully and accurately the [student-prompt] describes the [task-description] using a number from 0 (completely irrelevant or under-specified) to 5 (fully specified and accurate). also if it is under-specified, provide a list of bullet points about what needs to be added to the [student-prompt] so that it fully describes the [task-description]. 
 
 Include all the missing specifications in the response. If an example is missing, include the example in the missing specifications as well.
 

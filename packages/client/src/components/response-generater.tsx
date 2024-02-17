@@ -15,9 +15,9 @@ import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/
 import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-generator';
 import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/write-over-generator';
 import SelfExplainGenerateCode, { selfExplainCancelClicked } from './techniques/self-explanation';
-import ExcutionGenerateCode from './techniques/excution-generator';
+import ExcutionGenerateCode, { excutionCancelClicked } from './techniques/excution-generator';
 import VerifyGenerateCode, { verifyCancelClicked } from './techniques/verify-review-generator';
-import RevealGenerateCode from './techniques/lead-reveal-generator';
+import RevealGenerateCode, { revealCancelClicked } from './techniques/lead-reveal-generator';
 import { ChatLoader } from './loader';
 import BaselineGenerateCode, { baselineCancelClicked } from './responses/baseline-chat';
 
@@ -167,17 +167,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
   function generateFeedback(currPrompt: string) {
     setGeneratingFeedback(true);
-    const taskContext = `Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.:
-    Examples:
-    Input: [(1, 3), (2, 6), (8, 10), (15, 18)]:
-    Output: [(1, 6), (8, 10), (15, 18)]
-    
-    Sample:
-    merge_intervals([(1, 4), (4, 5)])
-    
-    merge_intervals([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])`;
-
-    //hard coded for now, will be replaced with api call to get task descriptions later.
+    const taskContext = `Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.`;
 
     try {
       apiGetGeneratedFeedbackCodex(
@@ -232,19 +222,19 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       } 
     };
     checkCancelClicked();
-  }, [baselineCancelClicked, pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked]);
+  }, [baselineCancelClicked, pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked, excutionCancelClicked, revealCancelClicked]);
 
   // define the current technique
   // const technique = 'baseline';
-  const technique = 'pseudo';
+  // const technique = 'pseudo';
   // const technique = 'hierarchical';
   // const technique = 'token';
   // const technique = 'parsons';
-  // const technique = 'writeover';
+  const technique = 'writeover';
   // const technique = 'selfexplain';
   // const technique = 'stepByStep';
   // const technique = 'verify';
-  //  const technique = 'leadReveal';
+  // const technique = 'leadReveal';
 
   const handleClick = () => {
 

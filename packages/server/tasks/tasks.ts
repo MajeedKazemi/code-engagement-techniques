@@ -51,28 +51,53 @@ export class WatchVideoTask extends Task {
 }
 
 export class AuthoringTask extends Task {
-    timeLimit: number;
-    output: Array<Array<string>>;
-    solution: string;
-    topic: TaskTopic;
-    stage: TaskStage;
+    // timeLimit: number;
+    // output: Array<Array<string>>;
+    // solution: string;
+    // topic: TaskTopic;
+    // stage: TaskStage;
+    baselineCode: string;
+    explaination: string;
+    pseudoCodeJson: JSON;
+    SelfExplainJson: JSON;
+    writeOverJson: JSON;
+    VerifyReviewJson: JSON;
+    LeadRevealJson: JSON;
 
+    // constructor(
+    //     id: string,
+    //     description: string,
+    //     output: Array<Array<string>>,
+    //     solution: string,
+    //     timeLimit: number,
+    //     topic: TaskTopic,
+    //     stage: TaskStage
+    // ) 
     constructor(
         id: string,
         description: string,
-        output: Array<Array<string>>,
-        solution: string,
-        timeLimit: number,
-        topic: TaskTopic,
-        stage: TaskStage
-    ) {
+        baselineCode: string,
+        explaination: string,
+        pseudoCodeJson: any,
+        writeOverJson: any,
+        SelfExplainJson: any,
+        VerifyReviewJson: any,
+        LeadRevealJson: any
+    ){
         super(id, description, TaskType.Authoring);
 
-        this.solution = solution;
-        this.output = output;
-        this.timeLimit = timeLimit;
-        this.topic = topic;
-        this.stage = stage;
+        // this.solution = solution;
+        // this.output = output;
+        // this.timeLimit = timeLimit;
+        // this.topic = topic;
+        // this.stage = stage;
+        this.baselineCode = baselineCode;
+        this.explaination = explaination;
+        this.pseudoCodeJson = pseudoCodeJson;
+        this.SelfExplainJson = SelfExplainJson;
+        this.writeOverJson = writeOverJson;
+        this.VerifyReviewJson = VerifyReviewJson;
+        this.LeadRevealJson = LeadRevealJson;
     }
 
     checkCode(code: string): CodeCheckResult {
@@ -189,18 +214,725 @@ export const CodingTasks = [
     //     TaskTopic.basics,
     //     TaskStage.train
     // ),
+    // new AuthoringTask(
+    //     "1a",
+    //     "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.:<br>\
+    //     Examples:<br>\
+    //     <b>Input</b>: [(1, 3), (2, 6), (8, 10), (15, 18)]:<br>\
+    //     <b>Output</b>: [(1, 6), (8, 10), (15, 18)]",
+    //     [["merge_intervals([(1, 4), (4, 5)])"], ["merge_intervals([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])"]],
+    //     [`[(1, 5)]`, `[(0, 1), (3, 8), (9, 12)]`].join("\n"),
+    //     60 * 3,
+    //     TaskTopic.basics,
+    //     TaskStage.train
+    // ),
+
     new AuthoringTask(
-        "1a",
-        "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.:<br>\
-        Examples:<br>\
-        <b>Input</b>: [(1, 3), (2, 6), (8, 10), (15, 18)]:<br>\
-        <b>Output</b>: [(1, 6), (8, 10), (15, 18)]",
-        [["merge_intervals([(1, 4), (4, 5)])"], ["merge_intervals([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])"]],
-        [`[(1, 5)]`, `[(0, 1), (3, 8), (9, 12)]`].join("\n"),
-        60 * 3,
-        TaskTopic.basics,
-        TaskStage.train
-    ),
+        "1",
+        "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.",
+`def merge_intervals(intervals):
+    sorted_intervals = sorted(intervals, key=lambda x: x[0])
+    merged = [sorted_intervals[0]]
+    for current in sorted_intervals:
+        previous = merged[-1]
+        if current[0] <= previous[1]:
+            merged[-1] = (previous[0], max(previous[1], current[1]))
+        else:
+            merged.append(current)
+    return merged`,
+`This code defines a function called \`merge_intervals\` that takes a list of intervals as input and returns a list of merged intervals. 
+
+First, it sorts the intervals in ascending order based on the first element of each interval using the \`sorted\` function. The \`lambda\` keyword is used to create a small anonymous function to specify the sorting key.
+
+Then, it initializes the \`merged\` list with the first interval. 
+
+Next, it iterates over the sorted intervals. For each interval, it compares the start of the current interval with the end of the last merged interval. If they overlap (i.e., the start of the current interval is less than or equal to the end of the last merged interval), it merges them by updating the end of the last merged interval to be the maximum of the ends of the current and last merged intervals. If they don't overlap, it adds the current interval to the \`merged\` list.
+
+Finally, it returns the \`merged\` list.`,
+{
+    "subgoals": [
+        {
+            "title": "Define Function and Sort Intervals",
+            "code": [
+                {
+                    "indent": 0,
+                    "line": "def merge_intervals(intervals):",
+                    "pseudo-code": "Define a function called 'merge_intervals' that takes a list 'intervals' as an argument",
+                    "explanation": "This line is defining the function and specifying its input. The function will take a list of intervals as its argument."
+                },
+                {
+                    "indent": 1,
+                    "line": "sorted_intervals = sorted(intervals, key=lambda x: x[0])",
+                    "pseudo-code": "Sort the 'intervals' list in ascending order based on the first element of each interval",
+                    "explanation": "This line sorts the intervals in ascending order. This is necessary to ensure that overlapping intervals are processed consecutively."
+                }
+            ]
+        },
+        {
+            "title": "Initialize Merged List",
+            "code": [
+                {
+                    "indent": 1,
+                    "line": "merged = [sorted_intervals[0]]",
+                    "pseudo-code": "Initialize a list 'merged' with the first interval from 'sorted_intervals'",
+                    "explanation": "This line initializes the 'merged' list with the first interval. This is the starting point for the merging process."
+                }
+            ]
+        },
+        {
+            "title": "Iterate Over Sorted Intervals",
+            "code": [
+                {
+                    "indent": 1,
+                    "line": "for current in sorted_intervals:",
+                    "pseudo-code": "Start a loop that iterates over each interval in 'sorted_intervals'",
+                    "explanation": "This line starts a loop that will process each interval in the sorted list. The current interval in each iteration is referred to as 'current'."
+                },
+                {
+                    "indent": 2,
+                    "line": "previous = merged[-1]",
+                    "pseudo-code": "Assign the last interval in 'merged' to a variable 'previous'",
+                    "explanation": "This line retrieves the last interval that was added to the 'merged' list. This interval will be compared with the current interval to check for overlap."
+                },
+                {
+                    "indent": 2,
+                    "line": "if current[0] <= previous[1]:",
+                    "pseudo-code": "Check if the start of 'current' is less than or equal to the end of 'previous'",
+                    "explanation": "This line checks if the current interval overlaps with the previous interval. If it does, the two intervals need to be merged."
+                },
+                {
+                    "indent": 3,
+                    "line": "merged[-1] = (previous[0], max(previous[1], current[1]))",
+                    "pseudo-code": "Replace the last interval in 'merged' with a new interval that merges 'previous' and 'current'",
+                    "explanation": "This line merges the previous and current intervals by creating a new interval that spans from the start of the previous interval to the maximum end point of the two intervals."
+                },
+                {
+                    "indent": 2,
+                    "line": "else:",
+                    "pseudo-code": "If 'current' does not overlap with 'previous'",
+                    "explanation": "This line starts an else clause that is executed when the current interval does not overlap with the previous interval."
+                },
+                {
+                    "indent": 3,
+                    "line": "merged.append(current)",
+                    "pseudo-code": "Add 'current' to the end of 'merged'",
+                    "explanation": "This line adds the current interval to the 'merged' list. This is done when the current interval does not overlap with the previous interval."
+                }
+            ]
+        },
+        {
+            "title": "Return Merged Intervals",
+            "code": [
+                {
+                    "indent": 1,
+                    "line": "return merged",
+                    "pseudo-code": "Return the 'merged' list",
+                    "explanation": "This line returns the 'merged' list, which contains the merged intervals. This is the final result of the function."
+                }
+            ]
+        }
+    ]
+},
+{
+    "lines": [
+      {
+        "code": "def merge_intervals(intervals):",
+        "explanation": "This line defines a function named 'merge_intervals' that takes a list of intervals as input.",
+        "criticalThinkingQuestion": "Why do you think we need a function to merge intervals?",
+        "answer": "We need a function to merge overlapping intervals into a single interval, which simplifies the data for further processing.",
+        "tokens": [
+          {
+            "token": "def ",
+            "explanation": "Keyword to define a function"
+          },
+          {
+            "token": "merge_intervals",
+            "explanation": "Name of the function"
+          },
+          {
+            "token": "("
+          },
+          {
+            "token": "intervals",
+            "explanation": "Parameter of the function"
+          },
+          {
+            "token": ")"
+          },
+          {
+            "token": ":"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "    sorted_intervals = sorted(intervals, key=lambda x: x[0])",
+        "explanation": "This line sorts the intervals based on the start of each interval.",
+        "criticalThinkingQuestion": "Why is sorting the intervals necessary before merging them?",
+        "answer": "Sorting is necessary to ensure that we process the intervals in order, which makes it easier to merge overlapping intervals.",
+        "tokens": [
+          {
+            "token": "    "
+          },
+          {
+            "token": "sorted_intervals ",
+            "explanation": "Variable to store the sorted intervals"
+          },
+          {
+            "token": "= "
+          },
+          {
+            "token": "sorted",
+            "explanation": "Built-in function to sort a list"
+          },
+          {
+            "token": "("
+          },
+          {
+            "token": "intervals",
+            "explanation": "List to be sorted"
+          },
+          {
+            "token": ", "
+          },
+          {
+            "token": "key",
+            "explanation": "Keyword to specify the sorting criteria"
+          },
+          {
+            "token": "="
+          },
+          {
+            "token": "lambda ",
+            "explanation": "Keyword to define an anonymous function"
+          },
+          {
+            "token": "x",
+            "explanation": "Parameter of the anonymous function"
+          },
+          {
+            "token": ":"
+          },
+          {
+            "token": "x",
+            "explanation": "Parameter of the anonymous function"
+          },
+          {
+            "token": "[0]",
+            "explanation": "Accessing the first element of the interval"
+          },
+          {
+            "token": ")"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "    merged = [sorted_intervals[0]]",
+        "explanation": "This line initializes the merged list with the first interval.",
+        "criticalThinkingQuestion": "Why do we start the merged list with the first interval?",
+        "answer": "We start with the first interval because it's the earliest interval after sorting, and it provides a base for comparison with other intervals.",
+        "tokens": [
+          {
+            "token": "    "
+          },
+          {
+            "token": "merged ",
+            "explanation": "Variable to store the merged intervals"
+          },
+          {
+            "token": "= "
+          },
+          {
+            "token": "[",
+            "explanation": "Start of a list"
+          },
+          {
+            "token": "sorted_intervals",
+            "explanation": "List of sorted intervals"
+          },
+          {
+            "token": "[0]",
+            "explanation": "Accessing the first interval"
+          },
+          {
+            "token": "]",
+            "explanation": "End of a list"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "    for current in sorted_intervals:",
+        "explanation": "This line starts a loop over the sorted intervals.",
+        "criticalThinkingQuestion": "Why do we need to loop over the sorted intervals?",
+        "answer": "We loop over the sorted intervals to merge overlapping intervals.",
+        "tokens": [
+          {
+            "token": "    "
+          },
+          {
+            "token": "for ",
+            "explanation": "Keyword to start a loop"
+          },
+          {
+            "token": "current ",
+            "explanation": "Variable to store the current interval"
+          },
+          {
+            "token": "in ",
+            "explanation": "Keyword to specify the list to loop over"
+          },
+          {
+            "token": "sorted_intervals",
+            "explanation": "List to loop over"
+          },
+          {
+            "token": ":"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "        previous = merged[-1]",
+        "explanation": "This line gets the last interval in the merged list.",
+        "criticalThinkingQuestion": "Why do we need to keep track of the last interval in the merged list?",
+        "answer": "We need to keep track of the last interval in the merged list to check if the current interval overlaps with it.",
+        "tokens": [
+          {
+            "token": "        "
+          },
+          {
+            "token": "previous ",
+            "explanation": "Variable to store the last interval in the merged list"
+          },
+          {
+            "token": "= "
+          },
+          {
+            "token": "merged",
+            "explanation": "List of merged intervals"
+          },
+          {
+            "token": "[-1]",
+            "explanation": "Accessing the last interval"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "        if current[0] <= previous[1]:",
+        "explanation": "This line checks if the current interval overlaps with the last interval in the merged list.",
+        "criticalThinkingQuestion": "How does this condition determine if two intervals overlap?",
+        "answer": "Two intervals overlap if the start of the second interval is less than or equal to the end of the first interval.",
+        "tokens": [
+          {
+            "token": "        "
+          },
+          {
+            "token": "if ",
+            "explanation": "Keyword to start a conditional statement"
+          },
+          {
+            "token": "current",
+            "explanation": "Current interval"
+          },
+          {
+            "token": "[0]",
+            "explanation": "Accessing the start of the current interval"
+          },
+          {
+            "token": " <= ",
+            "explanation": "Less than or equal to operator"
+          },
+          {
+            "token": "previous",
+            "explanation": "Last interval in the merged list"
+          },
+          {
+            "token": "[1]",
+            "explanation": "Accessing the end of the last interval"
+          },
+          {
+            "token": ":"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "            merged[-1] = (previous[0], max(previous[1], current[1]))",
+        "explanation": "This line merges the current interval with the last interval in the merged list.",
+        "criticalThinkingQuestion": "How does this line merge two overlapping intervals?",
+        "answer": "This line merges two overlapping intervals by taking the start of the first interval and the maximum of the ends of the two intervals.",
+        "tokens": [
+          {
+            "token": "            "
+          },
+          {
+            "token": "merged",
+            "explanation": "List of merged intervals"
+          },
+          {
+            "token": "[-1]",
+            "explanation": "Accessing the last interval"
+          },
+          {
+            "token": " = "
+          },
+          {
+            "token": "("
+          },
+          {
+            "token": "previous",
+            "explanation": "Last interval in the merged list"
+          },
+          {
+            "token": "[0]",
+            "explanation": "Accessing the start of the last interval"
+          },
+          {
+            "token": ", "
+          },
+          {
+            "token": "max",
+            "explanation": "Built-in function to get the maximum of two values"
+          },
+          {
+            "token": "("
+          },
+          {
+            "token": "previous",
+            "explanation": "Last interval in the merged list"
+          },
+          {
+            "token": "[1]",
+            "explanation": "Accessing the end of the last interval"
+          },
+          {
+            "token": ", "
+          },
+          {
+            "token": "current",
+            "explanation": "Current interval"
+          },
+          {
+            "token": "[1]",
+            "explanation": "Accessing the end of the current interval"
+          },
+          {
+            "token": ")"
+          },
+          {
+            "token": ")"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "        else:",
+        "explanation": "This line starts the else block of the if statement.",
+        "criticalThinkingQuestion": "What happens if the current interval does not overlap with the last interval in the merged list?",
+        "answer": "If the current interval does not overlap with the last interval in the merged list, it is added as a new interval to the merged list.",
+        "tokens": [
+          {
+            "token": "        "
+          },
+          {
+            "token": "else",
+            "explanation": "Keyword to start the else block of an if statement"
+          },
+          {
+            "token": ":"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "            merged.append(current)",
+        "explanation": "This line adds the current interval to the merged list.",
+        "criticalThinkingQuestion": "Why do we add the current interval to the merged list in the else block?",
+        "answer": "We add the current interval to the merged list in the else block because it does not overlap with the last interval in the merged list.",
+        "tokens": [
+          {
+            "token": "            "
+          },
+          {
+            "token": "merged",
+            "explanation": "List of merged intervals"
+          },
+          {
+            "token": "."
+          },
+          {
+            "token": "append",
+            "explanation": "Method to add an element to the end of a list"
+          },
+          {
+            "token": "("
+          },
+          {
+            "token": "current",
+            "explanation": "Current interval"
+          },
+          {
+            "token": ")"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      },
+      {
+        "code": "    return merged",
+        "explanation": "This line returns the merged list of intervals.",
+        "criticalThinkingQuestion": "Why do we return the merged list of intervals?",
+        "answer": "We return the merged list of intervals because it is the result of the function.",
+        "tokens": [
+          {
+            "token": "    "
+          },
+          {
+            "token": "return ",
+            "explanation": "Keyword to specify the result of the function"
+          },
+          {
+            "token": "merged",
+            "explanation": "List of merged intervals"
+          },
+          {
+            "token": "\n"
+          }
+        ]
+      }
+    ]
+},
+{
+    "format": ["Short Answer", "Multiple Choice", "Short Answer"],
+    "questions": [
+      {
+        "type": "Short Answer",
+        "question": "What does the 'sorted' function do in this code?",
+        "answer": "It sorts the intervals in ascending order based on the first element of each interval.",
+        "question-code-lines": [
+          2
+        ],
+        "question-code-lines-explained": "sorted_intervals = sorted(intervals, key=lambda x: x[0]) # This line sorts the intervals in ascending order based on the first element of each interval."
+      },
+      {
+        "type": "Multiple Choice",
+        "question": "What is the purpose of the 'if' condition in this code?",
+        "answer": {
+          "correct-choice": "It checks if the current interval overlaps with the previous interval.",
+          "incorrect-choice-1": "It checks if the current interval is equal to the previous interval.",
+          "incorrect-choice-2": "It checks if the current interval is less than the previous interval.",
+          "incorrect-choice-3": "It checks if the current interval is greater than the previous interval."
+        },
+        "question-code-lines": [
+          6
+        ],
+        "question-code-lines-explained": "if current[0] <= previous[1]: # This line checks if the current interval overlaps with the previous interval."
+      },
+      {
+        "type": "Short Answer",
+        "question": "What does the 'append' function do in this code?",
+        "answer": "It adds the current interval to the list of merged intervals.",
+        "question-code-lines": [
+          9
+        ],
+        "question-code-lines-explained": "merged.append(current) # This line adds the current interval to the list of merged intervals."
+      }
+    ]
+},
+{
+    "wrong-code": 
+    `1. def merge_intervals(intervals):
+2.     sorted_intervals = sorted(intervals, key=lambda x: x[1])
+3.     merged = [sorted_intervals[0]]
+4.     for current in sorted_intervals:
+5.         previous = merged[0]
+6.         if current[0] <= previous[1]:
+7.             merged[0] = (previous[0], max(previous[1], current[1]))
+8.         else:
+9.             merged.append(current)
+10.    return merged`,
+    "issues": {
+        "logical-issue-1": {
+            "type": "Incorrect Sorting Key",
+            "line": 2
+        },
+        "logical-issue-2": {
+            "type": "Incorrect Indexing",
+            "line": 5
+        },
+        "logical-issue-3": {
+            "type": "Incorrect Indexing",
+            "line": 7
+        }
+    }
+},
+{
+    "subgoals": [
+      {
+        "title": "Function Definition",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the input to our function?",
+                "correct-choice": "A list of intervals",
+                "incorrect-choice-1": "Two separate intervals",
+                "incorrect-choice-2": "A single interval",
+                "incorrect-choice-3": "A list of numbers"
+              }
+            ],
+            "code-lines-to-be-revealed": [1]
+          }
+        ]
+      },
+      {
+        "title": "Sort Intervals",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Why do we need to sort the intervals?",
+                "correct-choice": "To ensure we process the intervals in increasing order",
+                "incorrect-choice-1": "To make the intervals easier to read",
+                "incorrect-choice-2": "To reduce the complexity of the algorithm",
+                "incorrect-choice-3": "Sorting is not necessary for this task"
+              },
+              {
+                "mcq-question": "On what basis should we sort the intervals?",
+                "correct-choice": "The starting point of each interval",
+                "incorrect-choice-1": "The ending point of each interval",
+                "incorrect-choice-2": "The length of each interval",
+                "incorrect-choice-3": "The middle point of each interval"
+              }
+            ],
+            "code-lines-to-be-revealed": [2]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Merged List",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Why do we initialize the merged list with the first interval?",
+                "correct-choice": "To have a starting point for merging intervals",
+                "incorrect-choice-1": "To ensure the merged list is not empty",
+                "incorrect-choice-2": "To make the code more efficient",
+                "incorrect-choice-3": "There is no specific reason"
+              }
+            ],
+            "code-lines-to-be-revealed": [3]
+          }
+        ]
+      },
+      {
+        "title": "Iterate Over Intervals",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Why do we need to iterate over the sorted intervals?",
+                "correct-choice": "To check and merge overlapping intervals",
+                "incorrect-choice-1": "To find the longest interval",
+                "incorrect-choice-2": "To count the number of intervals",
+                "incorrect-choice-3": "To find the shortest interval"
+              }
+            ],
+            "code-lines-to-be-revealed": [4]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Why do we need to keep track of the previous interval?",
+                "correct-choice": "To compare it with the current interval for possible merging",
+                "incorrect-choice-1": "To calculate the length of the interval",
+                "incorrect-choice-2": "To check if it is the same as the current interval",
+                "incorrect-choice-3": "There is no need to keep track of the previous interval"
+              }
+            ],
+            "code-lines-to-be-revealed": [5]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "When should two intervals be merged?",
+                "correct-choice": "If the start of the current interval is less than or equal to the end of the previous interval",
+                "incorrect-choice-1": "If the start of the current interval is greater than the end of the previous interval",
+                "incorrect-choice-2": "If the end of the current interval is less than the start of the previous interval",
+                "incorrect-choice-3": "If the end of the current interval is greater than the start of the previous interval"
+              }
+            ],
+            "code-lines-to-be-revealed": [6]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How should two overlapping intervals be merged?",
+                "correct-choice": "The start of the merged interval should be the start of the previous interval, and the end should be the maximum of the ends of the two intervals",
+                "incorrect-choice-1": "The start of the merged interval should be the start of the current interval, and the end should be the end of the previous interval",
+                "incorrect-choice-2": "The start of the merged interval should be the start of the previous interval, and the end should be the end of the current interval",
+                "incorrect-choice-3": "The start of the merged interval should be the start of the current interval, and the end should be the maximum of the ends of the two intervals"
+              }
+            ],
+            "code-lines-to-be-revealed": [7]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be done if two intervals do not overlap?",
+                "correct-choice": "The current interval should be appended to the merged list",
+                "incorrect-choice-1": "The current interval should be ignored",
+                "incorrect-choice-2": "The previous interval should be removed from the merged list",
+                "incorrect-choice-3": "The current interval should replace the previous interval in the merged list"
+              }
+            ],
+            "code-lines-to-be-revealed": [8, 9]
+          }
+        ]
+      },
+      {
+        "title": "Return Merged Intervals",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the output of our function?",
+                "correct-choice": "The list of merged intervals",
+                "incorrect-choice-1": "The list of sorted intervals",
+                "incorrect-choice-2": "The number of merged intervals",
+                "incorrect-choice-3": "The longest merged interval"
+              }
+            ],
+            "code-lines-to-be-revealed": [10]
+          }
+        ]
+      }
+    ]
+  }
+
+)
+
     // new AuthoringTask(
     //     "1a",
     //     "Write a program that creates a variable called <i>sum_even</i> will compute the sum of even numbers from 1 to 100 (inclusive), and print the sum.\n Then, generate the two random values from 1 to the <i>sum_even</i>, and check if both values are <b>odd</b> numbers.",
@@ -211,16 +943,16 @@ export const CodingTasks = [
     //     TaskStage.train
     // ),
     // print another string
-    new ModifyingTask(
-        "1b",
-        "Modify the given program so it displays another message after the first one: <b>Beep Boop</b>",
-        `print("I'm Wall-E!")`,
-        [["output: <b>I'm Wall-E!</b>"], ["output: <b>Beep Boop</b>"]],
-        [`print("I'm Wall-E!")`, `print("Beep Boop")`].join("\n"),
-        60 * 2,
-        TaskTopic.basics,
-        TaskStage.train
-    ),
+    // new ModifyingTask(
+    //     "1b",
+    //     "Modify the given program so it displays another message after the first one: <b>Beep Boop</b>",
+    //     `print("I'm Wall-E!")`,
+    //     [["output: <b>I'm Wall-E!</b>"], ["output: <b>Beep Boop</b>"]],
+    //     [`print("I'm Wall-E!")`, `print("Beep Boop")`].join("\n"),
+    //     60 * 2,
+    //     TaskTopic.basics,
+    //     TaskStage.train
+    // ),
 
     // print the value of a variable
     // new AuthoringTask(

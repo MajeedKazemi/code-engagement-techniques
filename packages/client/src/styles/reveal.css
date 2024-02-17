@@ -1,7 +1,7 @@
 .reveal-container{
-    height: 65vh;
+    height: 100%;
     overflow-y: scroll;
-    width: 65%;
+    width: 55%;
 }
 
 .reveal-question-container {
@@ -20,7 +20,7 @@
 .reveal-parent-container {
     display: flex;
     flex-direction: row;
-    margin: 20px 0;
+    height: 100%;
 }
 
 .reveal-subgoal-container {
@@ -37,7 +37,7 @@
 }
 
 .reveal-code-line-by-line-container {
-    width: 35%;
+    width: 45%;
 }
 
 .reveal-question-container.answered {

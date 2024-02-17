@@ -20,7 +20,7 @@
   .excution-generator{
     padding-bottom: 2rem;
     overflow-y: scroll;
-    height: 55vh;
+    height: calc(100% - 2rem);
     display: flex;
     flex-direction: row;
     justify-content: space-between;

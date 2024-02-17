@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGenerateRevealQuestion, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGenerateRevealQuestion, logError, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetLeadReviewSimulation } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import RevealQuestionComponent from '../responses/reveal-question-container';
@@ -284,11 +284,6 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
     const [isOver, setIsOver] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
 
-    
-    const props = {
-        taskId: "",
-        editor: editor
-    };
 
     const generateCode = () => {
         if (prompt.length === 0) {
@@ -298,8 +293,8 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
         } else {
             setWaiting(true);
   
-            const focusedPosition = props.editor?.getPosition();
-            const userCode = props.editor?.getValue();
+            const focusedPosition = editor?.getPosition();
+            const userCode = editor?.getValue();
             let codeContext = "";
   
             if (focusedPosition && userCode && checked) {
@@ -309,152 +304,65 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
                     .join("\n");
             }
               try {
-                apiGetBaselineCodex(
+                apiGetBaselineCodexSimulation(
                     context?.token,
-                    prompt,
-                    userCode ? userCode : ""
+                    prompt
                 )
                     .then(async (response) => {
   
-                        if (response.ok && props.editor) {
+                        if (response.ok && editor) {
                             const data = await response.json();
-  
-                            let text = data.bundle.code;
-  
-                            if (text.length > 0) {
-                                setFeedback("");
-                                log(
-                                    props.taskId,
-                                    context?.user?.id,
-                                    LogType.PromptEvent,
-                                    {
-                                        code: text,
-                                        userInput: prompt,
+                            let taskId = data.taskId;
+                            let text = data.code;
+                            setGeneratedCode(text);
+                            console.log(taskId);
+                            apiGetBaselineExplainationCodexSimulation(
+                                context?.token,
+                                taskId
+                            )
+                                .then(async (response) => {
+                
+                                    if (response.ok && editor) {
+                                        const data = await response.json();
+    
+                                        setGeneratedExplanation(data.explanation);
+                                        // setWaiting(false);                           
                                     }
-                                );
-  
-                                let insertLine = 0;
-                                let insertColumn = 1;
-  
-                                let curLineNumber = 0;
-                                let curColumn = 0;
-  
-                                let highlightStartLine = 0;
-                                let highlightStartColumn = 0;
-                                let highlightEndLine = 0;
-                                let highlightEndColumn = 0;
-  
-                                const curPos = props.editor.getPosition();
-                                const curCodeLines = props.editor
-                                    .getValue()
-                                    .split("\n");
-  
-                                if (curPos) {
-                                    curLineNumber = curPos.lineNumber;
-                                    curColumn = curPos.column;
-                                }
-  
-                                let curLineText =
-                                    curCodeLines[curLineNumber - 1];
-                                let nextLineText =
-                                    curLineNumber < curCodeLines.length
-                                        ? curCodeLines[curLineNumber]
-                                        : null;
-  
-                                if (curColumn === 1) {
-                                    // at the beginning of a line
-                                    if (curLineText !== "") {
-                                        text += "\n";
-                                        insertLine = curLineNumber;
-                                        insertColumn = 1;
-  
-                                        highlightStartLine = curLineNumber;
-                                        highlightStartColumn = curColumn;
-  
-                                        const textLines = text.split("\n");
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            textLines.length -
-                                            1;
-                                        highlightEndColumn = 1;
-                                    } else {
-                                        insertLine = curLineNumber;
-                                        insertColumn = 1;
-  
-                                        highlightStartLine = curLineNumber;
-                                        highlightStartColumn = curColumn;
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            text.split("\n").length;
-                                        highlightEndColumn = 1;
-                                    }
-                                } else if (curColumn !== 1) {
-                                    // in the middle of a line
-                                    if (nextLineText !== "") {
-                                        text = "\n" + text;
-                                        insertLine = curLineNumber;
-                                        insertColumn = curLineText.length + 1;
-  
-                                        const textLines = text.split("\n");
-  
-                                        highlightStartLine = curLineNumber + 1;
-                                        highlightStartColumn = 1;
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            text.split("\n").length -
-                                            1;
-                                        highlightEndColumn =
-                                            textLines[textLines.length - 1]
-                                                .length + 1;
-                                    } else {
-                                        insertLine = curLineNumber + 1;
-                                        insertColumn = 1;
-  
-                                        highlightStartLine = curLineNumber;
-                                        highlightStartColumn = curColumn;
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            text.split("\n").length;
-                                        highlightEndColumn = 1;
-                                    }
-                                }
-                                setGeneratedCode(text);
-                                setGeneratedExplanation(data.bundle.explain);
-                                apiGenerateRevealQuestion(
+                                })
+                                .catch((error) => {
+                                    editor?.updateOptions({ readOnly: false });
+                                    // setWaiting(false);
+                                    logError(error.toString());
+                                });  
+                                
+                                apiGetLeadReviewSimulation(
                                     context?.token,
-                                    text,
-                                    prompt,
+                                    taskId,
                                 )
                                     .then(async (response) => {
                 
-                                        if (response.ok && props.editor) {
+                                        if (response.ok && editor) {
                                             const data = await response.json();
-                                            console.log(data.response);
-                                            setQuestions(responseToQuestion(data.response, text));
+                                            console.log(data.leadReveal);
+                                            setQuestions(responseToQuestion(data.leadReveal, text));
                                             setWaiting(false);
                                             
                                         }
                                     })
                                     .catch((error) => {
-                                        props.editor?.updateOptions({ readOnly: false });
+                                        editor?.updateOptions({ readOnly: false });
                                         setWaiting(false);
                                         logError(error.toString());
                                     });
-                                
-                            } 
                         }
                     })
                     .catch((error) => {
-                        props.editor?.updateOptions({ readOnly: false });
+                        editor?.updateOptions({ readOnly: false });
                         setWaiting(false);
                         logError(error.toString());
                     });
             } catch (error: any) {
-                props.editor?.updateOptions({ readOnly: false });
+                editor?.updateOptions({ readOnly: false });
                 setWaiting(false);
                 logError(error.toString());
             }
@@ -462,6 +370,181 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
             
         }
     };
+
+
+
+    // const generateCode = () => {
+    //     if (prompt.length === 0) {
+    //         setFeedback(
+    //             "You should write an instruction of the code that you want to be generated."
+    //         );
+    //     } else {
+    //         setWaiting(true);
+  
+    //         const focusedPosition = props.editor?.getPosition();
+    //         const userCode = props.editor?.getValue();
+    //         let codeContext = "";
+  
+    //         if (focusedPosition && userCode && checked) {
+    //             codeContext = userCode
+    //                 .split("\n")
+    //                 .slice(0, focusedPosition.lineNumber + 1)
+    //                 .join("\n");
+    //         }
+    //           try {
+    //             apiGetBaselineCodex(
+    //                 context?.token,
+    //                 prompt,
+    //                 userCode ? userCode : ""
+    //             )
+    //                 .then(async (response) => {
+  
+    //                     if (response.ok && props.editor) {
+    //                         const data = await response.json();
+  
+    //                         let text = data.bundle.code;
+  
+    //                         if (text.length > 0) {
+    //                             setFeedback("");
+    //                             log(
+    //                                 props.taskId,
+    //                                 context?.user?.id,
+    //                                 LogType.PromptEvent,
+    //                                 {
+    //                                     code: text,
+    //                                     userInput: prompt,
+    //                                 }
+    //                             );
+  
+    //                             let insertLine = 0;
+    //                             let insertColumn = 1;
+  
+    //                             let curLineNumber = 0;
+    //                             let curColumn = 0;
+  
+    //                             let highlightStartLine = 0;
+    //                             let highlightStartColumn = 0;
+    //                             let highlightEndLine = 0;
+    //                             let highlightEndColumn = 0;
+  
+    //                             const curPos = props.editor.getPosition();
+    //                             const curCodeLines = props.editor
+    //                                 .getValue()
+    //                                 .split("\n");
+  
+    //                             if (curPos) {
+    //                                 curLineNumber = curPos.lineNumber;
+    //                                 curColumn = curPos.column;
+    //                             }
+  
+    //                             let curLineText =
+    //                                 curCodeLines[curLineNumber - 1];
+    //                             let nextLineText =
+    //                                 curLineNumber < curCodeLines.length
+    //                                     ? curCodeLines[curLineNumber]
+    //                                     : null;
+  
+    //                             if (curColumn === 1) {
+    //                                 // at the beginning of a line
+    //                                 if (curLineText !== "") {
+    //                                     text += "\n";
+    //                                     insertLine = curLineNumber;
+    //                                     insertColumn = 1;
+  
+    //                                     highlightStartLine = curLineNumber;
+    //                                     highlightStartColumn = curColumn;
+  
+    //                                     const textLines = text.split("\n");
+  
+    //                                     highlightEndLine =
+    //                                         curLineNumber +
+    //                                         textLines.length -
+    //                                         1;
+    //                                     highlightEndColumn = 1;
+    //                                 } else {
+    //                                     insertLine = curLineNumber;
+    //                                     insertColumn = 1;
+  
+    //                                     highlightStartLine = curLineNumber;
+    //                                     highlightStartColumn = curColumn;
+  
+    //                                     highlightEndLine =
+    //                                         curLineNumber +
+    //                                         text.split("\n").length;
+    //                                     highlightEndColumn = 1;
+    //                                 }
+    //                             } else if (curColumn !== 1) {
+    //                                 // in the middle of a line
+    //                                 if (nextLineText !== "") {
+    //                                     text = "\n" + text;
+    //                                     insertLine = curLineNumber;
+    //                                     insertColumn = curLineText.length + 1;
+  
+    //                                     const textLines = text.split("\n");
+  
+    //                                     highlightStartLine = curLineNumber + 1;
+    //                                     highlightStartColumn = 1;
+  
+    //                                     highlightEndLine =
+    //                                         curLineNumber +
+    //                                         text.split("\n").length -
+    //                                         1;
+    //                                     highlightEndColumn =
+    //                                         textLines[textLines.length - 1]
+    //                                             .length + 1;
+    //                                 } else {
+    //                                     insertLine = curLineNumber + 1;
+    //                                     insertColumn = 1;
+  
+    //                                     highlightStartLine = curLineNumber;
+    //                                     highlightStartColumn = curColumn;
+  
+    //                                     highlightEndLine =
+    //                                         curLineNumber +
+    //                                         text.split("\n").length;
+    //                                     highlightEndColumn = 1;
+    //                                 }
+    //                             }
+    //                             setGeneratedCode(text);
+    //                             setGeneratedExplanation(data.bundle.explain);
+    //                             apiGenerateRevealQuestion(
+    //                                 context?.token,
+    //                                 text,
+    //                                 prompt,
+    //                             )
+    //                                 .then(async (response) => {
+                
+    //                                     if (response.ok && props.editor) {
+    //                                         const data = await response.json();
+    //                                         console.log(data.response);
+    //                                         setQuestions(responseToQuestion(data.response, text));
+    //                                         setWaiting(false);
+                                            
+    //                                     }
+    //                                 })
+    //                                 .catch((error) => {
+    //                                     props.editor?.updateOptions({ readOnly: false });
+    //                                     setWaiting(false);
+    //                                     logError(error.toString());
+    //                                 });
+                                
+    //                         } 
+    //                     }
+    //                 })
+    //                 .catch((error) => {
+    //                     props.editor?.updateOptions({ readOnly: false });
+    //                     setWaiting(false);
+    //                     logError(error.toString());
+    //                 });
+    //         } catch (error: any) {
+    //             props.editor?.updateOptions({ readOnly: false });
+    //             setWaiting(false);
+    //             logError(error.toString());
+    //         }
+  
+            
+    //     }
+    // };
 
     useEffect(() => {
         generateCode();
@@ -510,9 +593,9 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
                     AI Assistance:
                 </div>
                 <div className="modal-body">
-                  <p>
+                  {/* <p>
                     <b>Prompts: </b> {prompt}
-                  </p>
+                  </p> */}
 
                   {/* parsons main div */}
                   {waiting && (
@@ -539,3 +622,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor 
 };
 
 export default RevealGenerateCode;
+function setGeneratedQuestion(code: any) {
+    throw new Error('Function not implemented.');
+}
+

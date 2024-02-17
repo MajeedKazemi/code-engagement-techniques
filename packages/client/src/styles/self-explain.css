@@ -1,13 +1,14 @@
 .self-explain-container {
     display: flex;
     flex-direction: row;
-    margin: 20px 0px;
+    margin: 20px 0px 0px 0px;
     width: 100%;
+    height: calc(100% - 20px);
 }
 
 .self-explain-container .monaco-editor-container {
     width: 45%;
-    height: 50vh;
+    height: 100%;
 }
 
 
@@ -22,7 +23,7 @@
     width: 55%;
     padding-left: 1rem;
     overflow-y: scroll;
-    height: 60vh;
+    height: calc(100% - 20px);
 }
 
 .self-explain-question-container {

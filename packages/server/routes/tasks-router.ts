@@ -355,17 +355,17 @@ tasksRouter.post("/save-code", verifyUser, (req, res, next) => {
     }
 });
 
-tasksRouter.get("/all-task-ids", verifyUser, (req, res, next) => {
-    const allTaskIds = [];
+// tasksRouter.get("/all-task-ids", verifyUser, (req, res, next) => {
+//     const allTaskIds = [];
 
-    for (const task of CodingTasks) {
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
-            allTaskIds.push(task.id);
-        }
-    }
+//     for (const task of CodingTasks) {
+//         if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+//             allTaskIds.push(task.id);
+//         }
+//     }
 
-    res.send({ allTaskIds });
-});
+//     res.send({ allTaskIds });
+// });
 
 tasksRouter.get("/get-saved-code/:taskId", verifyUser, (req, res, next) => {
     const userId = (req.user as IUser)._id;
@@ -426,3 +426,154 @@ const getLastSubmissionFeedback = (
 
     return "";
 };
+
+
+const checkSimilarity = (str1: string, str2: string) => {
+    return true;
+};
+
+
+
+tasksRouter.post("/matchTaskWithCode/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { desciption } = req.body;
+
+    if (userId !== undefined) {
+        
+        for (const task of CodingTasks) {
+            if (task instanceof AuthoringTask) {
+                const currId = task.id;
+                if (checkSimilarity(task.description, desciption)) {
+                    res.send({ 
+                        taskId: currId,
+                        code: task.baselineCode
+                    });
+                    break;
+                }
+            }
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithExplaination/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                explanation: task.explaination
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithPseudo/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                pseudo: task.pseudoCodeJson
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithWriteOver/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                writeOverTokens: task.writeOverJson
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithSelfExplain/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                selfExplainQuestions: task.SelfExplainJson
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithVerifyReview/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                verifyReview: task.VerifyReviewJson
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithLeadReveal/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                leadReveal: task.LeadRevealJson
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});

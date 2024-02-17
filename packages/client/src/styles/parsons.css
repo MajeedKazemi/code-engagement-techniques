@@ -43,6 +43,10 @@
     height: 3rem;
   }
 
+.div-droppable {
+  height: calc(100% - 20px);
+}
+
 .spark-icon{
     width: 3rem;
     height: 3rem;
@@ -135,7 +139,7 @@
 .parsons-problem {
     display: flex;
     overflow: scroll;
-    height: 100%;
+    height: calc(100% - 64px - 2rem);
 }
 
 .parsons-game-0  {

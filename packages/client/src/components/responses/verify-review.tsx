@@ -211,10 +211,20 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                         const data = await response.json();
                         if (data.hint1.length === 0) {
                             setIsCorrect(true);
+                            setCurrentIssues(Array(5).fill([]));
                             setGeneratingHint(false);
                         } else {
+                            // const currIssues = [...currentIssues];
+                            // currIssues[1] = data.hint1;
+                            // setCurrentIssues(currIssues);
+                            setRevealStatus(1);
+                            setStatus(1);
                             const currIssues = [...currentIssues];
+                            currIssues[0] = questions;
                             currIssues[1] = data.hint1;
+                            currIssues[2] = [];
+                            currIssues[3] = [];
+                            currIssues[4] = [];
                             setCurrentIssues(currIssues);
                             setGeneratingHint(false);
                         }
@@ -455,7 +465,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                 </div>
                 <div className="status-container">
                     <div className='hint-button-container'>
-                        <button className={`hint-button ${generatingHint ? 'disabled' : ''}`} onClick={handleGetHint}>Get Hint</button>
+                        <button className={`hint-button ${(generatingHint || revealStatus == 4) ? 'disabled' : ''}`} onClick={handleGetHint}>Get Hint</button>
                         {/* <div>You have attempted <strong>{status}</strong> times</div> */}
                         <button className={`hint-button verify-button ${generatingHint ? 'disabled' : ''}`} onClick={handleVerifyCode}>Submit and Check</button>
                     </div>

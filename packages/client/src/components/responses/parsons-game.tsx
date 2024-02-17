@@ -389,7 +389,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
           <div style={{ display: "flex", flexDirection: "column" }} key={columnId} className={`parsons-game-${index}`}>
             <Droppable droppableId={columnId}>
               {(provided, snapshot) => (
-                <div {...provided.droppableProps} ref={provided.innerRef} style={{ padding: 4, height: sectionHeight ? `${sectionHeight}px` : 'auto' }}>
+                <div {...provided.droppableProps} ref={provided.innerRef} className="div-droppable">
                   {columnId === 'done' && <VerticalLines/>}
                   {column.items.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>
@@ -421,7 +421,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                             ) : null}
                             
                             {/* {part} */}
-                            <HighlightedPartWithoutTab part={part} />
+                            <HighlightedPart part={part} />
                             </React.Fragment>
                             
                         ))}

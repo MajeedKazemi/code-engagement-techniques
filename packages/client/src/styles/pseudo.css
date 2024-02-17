@@ -50,11 +50,9 @@
 }
 
 .modal-body p {
-    background-color: #0567945e;
     margin: 0.5rem 0rem;
     padding: 0.5rem;
     border-radius: 6px;
-    max-height: 5rem;
     overflow-y: auto;
 }
 
