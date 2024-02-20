@@ -200,33 +200,6 @@ export enum TaskStage {
 }
 
 export const CodingTasks = [
-    // new WatchVideoTask(
-    //     "wv0",
-    //     "Watch the following tutorial to learn how to properly use Coding Steps to learn about Python and write code."
-    // ),
-    // print string
-    // new AuthoringTask(
-    //     "1a",
-    //     "Write a program that will display the following message: <b>I'm Wall-E!</b>",
-    //     [["output: <b>I'm Wall-E!</b>"]],
-    //     [`print("I'm Wall-E!")`].join("\n"),
-    //     60 * 3,
-    //     TaskTopic.basics,
-    //     TaskStage.train
-    // ),
-    // new AuthoringTask(
-    //     "1a",
-    //     "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.:<br>\
-    //     Examples:<br>\
-    //     <b>Input</b>: [(1, 3), (2, 6), (8, 10), (15, 18)]:<br>\
-    //     <b>Output</b>: [(1, 6), (8, 10), (15, 18)]",
-    //     [["merge_intervals([(1, 4), (4, 5)])"], ["merge_intervals([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])"]],
-    //     [`[(1, 5)]`, `[(0, 1), (3, 8), (9, 12)]`].join("\n"),
-    //     60 * 3,
-    //     TaskTopic.basics,
-    //     TaskStage.train
-    // ),
-
     new AuthoringTask(
         "1",
         "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.",
@@ -249,634 +222,1280 @@ Then, it initializes the \`merged\` list with the first interval.
 
 Next, it iterates over the sorted intervals. For each interval, it compares the start of the current interval with the end of the last merged interval. If they overlap (i.e., the start of the current interval is less than or equal to the end of the last merged interval), it merges them by updating the end of the last merged interval to be the maximum of the ends of the current and last merged intervals. If they don't overlap, it adds the current interval to the \`merged\` list.
 
-Finally, it returns the \`merged\` list.`,
+Finally, it returns the \`merged\` list.
+
+The \`print\` function is used to display the result of the \`merge_intervals\` function when it is called with the list \`[(1, 3), (2, 6), (8, 10), (15, 18)]\` as an argument.`,
 {
-    "subgoals": [
-        {
-            "title": "Sort Intervals",
-            "code": [
-                {
-                    "indent": 0,
-                    "line": "sorted_intervals = sorted(intervals, key=lambda x: x[0])",
-                    "pseudo-code": "Sort the 'intervals' list in ascending order based on the first element of each interval",
-                    "explanation": "This line sorts the intervals in ascending order. This is necessary to ensure that overlapping intervals are processed consecutively."
-                }
-            ]
-        },
-        {
-            "title": "Initialize Merged List",
-            "code": [
-                {
-                    "indent": 0,
-                    "line": "merged = [sorted_intervals[0]]",
-                    "pseudo-code": "Initialize a list 'merged' with the first interval from 'sorted_intervals'",
-                    "explanation": "This line initializes the 'merged' list with the first interval. This is the starting point for the merging process."
-                }
-            ]
-        },
-        {
-            "title": "Iterate Over Sorted Intervals",
-            "code": [
-                {
-                    "indent": 0,
-                    "line": "for current in sorted_intervals:",
-                    "pseudo-code": "Start a loop that iterates over each interval in 'sorted_intervals'",
-                    "explanation": "This line starts a loop that will process each interval in the sorted list. The current interval in each iteration is referred to as 'current'."
-                },
-                {
-                    "indent": 1,
-                    "line": "previous = merged[-1]",
-                    "pseudo-code": "Assign the last interval in 'merged' to a variable 'previous'",
-                    "explanation": "This line retrieves the last interval that was added to the 'merged' list. This interval will be compared with the current interval to check for overlap."
-                },
-                {
-                    "indent": 1,
-                    "line": "if current[0] <= previous[1]:",
-                    "pseudo-code": "Check if the start of 'current' is less than or equal to the end of 'previous'",
-                    "explanation": "This line checks if the current interval overlaps with the previous interval. If it does, the two intervals need to be merged."
-                },
-                {
-                    "indent": 2,
-                    "line": "merged[-1] = (previous[0], max(previous[1], current[1]))",
-                    "pseudo-code": "Replace the last interval in 'merged' with a new interval that merges 'previous' and 'current'",
-                    "explanation": "This line merges the previous and current intervals by creating a new interval that spans from the start of the previous interval to the maximum end point of the two intervals."
-                },
-                {
-                    "indent": 1,
-                    "line": "else:",
-                    "pseudo-code": "If 'current' does not overlap with 'previous'",
-                    "explanation": "This line starts an else clause that is executed when the current interval does not overlap with the previous interval."
-                },
-                {
-                    "indent": 2,
-                    "line": "merged.append(current)",
-                    "pseudo-code": "Add 'current' to the end of 'merged'",
-                    "explanation": "This line adds the current interval to the 'merged' list. This is done when the current interval does not overlap with the previous interval."
-                }
-            ]
-        },
-        {
-            "title": "Return Merged Intervals",
-            "code": [
-                {
-                    "indent": 0,
-                    "line": "return merged",
-                    "pseudo-code": "Return the 'merged' list",
-                    "explanation": "This line returns the 'merged' list, which contains the merged intervals. This is the final result of the function."
-                }
-            ]
-        }
-    ]
-},
-{
-    "lines": [
+  "subgoals": [
       {
-        "code": "sorted_intervals = sorted(intervals, key=lambda x: x[0])",
-        "explanation": "This line sorts the intervals based on the start of each interval.",
-        "criticalThinkingQuestion": "Why is sorting the intervals necessary before merging them?",
-        "answer": "Sorting is necessary to ensure that we process the intervals in order, which makes it easier to merge overlapping intervals.",
-        "tokens": [
-          {
-            "token": "    "
-          },
-          {
-            "token": "sorted_intervals ",
-            "explanation": "Variable to store the sorted intervals"
-          },
-          {
-            "token": "= "
-          },
-          {
-            "token": "sorted",
-            "explanation": "Built-in function to sort a list"
-          },
-          {
-            "token": "("
-          },
-          {
-            "token": "intervals",
-            "explanation": "List to be sorted"
-          },
-          {
-            "token": ", "
-          },
-          {
-            "token": "key",
-            "explanation": "Keyword to specify the sorting criteria"
-          },
-          {
-            "token": "="
-          },
-          {
-            "token": "lambda ",
-            "explanation": "Keyword to define an anonymous function"
-          },
-          {
-            "token": "x",
-            "explanation": "Parameter of the anonymous function"
-          },
-          {
-            "token": ":"
-          },
-          {
-            "token": "x",
-            "explanation": "Parameter of the anonymous function"
-          },
-          {
-            "token": "[0]",
-            "explanation": "Accessing the first element of the interval"
-          },
-          {
-            "token": ")"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "merged = [sorted_intervals[0]]",
-        "explanation": "This line initializes the merged list with the first interval.",
-        "criticalThinkingQuestion": "Why do we start the merged list with the first interval?",
-        "answer": "We start with the first interval because it's the earliest interval after sorting, and it provides a base for comparison with other intervals.",
-        "tokens": [
-          {
-            "token": "    "
-          },
-          {
-            "token": "merged ",
-            "explanation": "Variable to store the merged intervals"
-          },
-          {
-            "token": "= "
-          },
-          {
-            "token": "[",
-            "explanation": "Start of a list"
-          },
-          {
-            "token": "sorted_intervals",
-            "explanation": "List of sorted intervals"
-          },
-          {
-            "token": "[0]",
-            "explanation": "Accessing the first interval"
-          },
-          {
-            "token": "]",
-            "explanation": "End of a list"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "for current in sorted_intervals:",
-        "explanation": "This line starts a loop over the sorted intervals.",
-        "criticalThinkingQuestion": "Why do we need to loop over the sorted intervals?",
-        "answer": "We loop over the sorted intervals to merge overlapping intervals.",
-        "tokens": [
-          {
-            "token": "    "
-          },
-          {
-            "token": "for ",
-            "explanation": "Keyword to start a loop"
-          },
-          {
-            "token": "current ",
-            "explanation": "Variable to store the current interval"
-          },
-          {
-            "token": "in ",
-            "explanation": "Keyword to specify the list to loop over"
-          },
-          {
-            "token": "sorted_intervals",
-            "explanation": "List to loop over"
-          },
-          {
-            "token": ":"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "    previous = merged[-1]",
-        "explanation": "This line gets the last interval in the merged list.",
-        "criticalThinkingQuestion": "Why do we need to keep track of the last interval in the merged list?",
-        "answer": "We need to keep track of the last interval in the merged list to check if the current interval overlaps with it.",
-        "tokens": [
-          {
-            "token": "        "
-          },
-          {
-            "token": "previous ",
-            "explanation": "Variable to store the last interval in the merged list"
-          },
-          {
-            "token": "= "
-          },
-          {
-            "token": "merged",
-            "explanation": "List of merged intervals"
-          },
-          {
-            "token": "[-1]",
-            "explanation": "Accessing the last interval"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "    if current[0] <= previous[1]:",
-        "explanation": "This line checks if the current interval overlaps with the last interval in the merged list.",
-        "criticalThinkingQuestion": "How does this condition determine if two intervals overlap?",
-        "answer": "Two intervals overlap if the start of the second interval is less than or equal to the end of the first interval.",
-        "tokens": [
-          {
-            "token": "        "
-          },
-          {
-            "token": "if ",
-            "explanation": "Keyword to start a conditional statement"
-          },
-          {
-            "token": "current",
-            "explanation": "Current interval"
-          },
-          {
-            "token": "[0]",
-            "explanation": "Accessing the start of the current interval"
-          },
-          {
-            "token": " <= ",
-            "explanation": "Less than or equal to operator"
-          },
-          {
-            "token": "previous",
-            "explanation": "Last interval in the merged list"
-          },
-          {
-            "token": "[1]",
-            "explanation": "Accessing the end of the last interval"
-          },
-          {
-            "token": ":"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "        merged[-1] = (previous[0], max(previous[1], current[1]))",
-        "explanation": "This line merges the current interval with the last interval in the merged list.",
-        "criticalThinkingQuestion": "How does this line merge two overlapping intervals?",
-        "answer": "This line merges two overlapping intervals by taking the start of the first interval and the maximum of the ends of the two intervals.",
-        "tokens": [
-          {
-            "token": "            "
-          },
-          {
-            "token": "merged",
-            "explanation": "List of merged intervals"
-          },
-          {
-            "token": "[-1]",
-            "explanation": "Accessing the last interval"
-          },
-          {
-            "token": " = "
-          },
-          {
-            "token": "("
-          },
-          {
-            "token": "previous",
-            "explanation": "Last interval in the merged list"
-          },
-          {
-            "token": "[0]",
-            "explanation": "Accessing the start of the last interval"
-          },
-          {
-            "token": ", "
-          },
-          {
-            "token": "max",
-            "explanation": "Built-in function to get the maximum of two values"
-          },
-          {
-            "token": "("
-          },
-          {
-            "token": "previous",
-            "explanation": "Last interval in the merged list"
-          },
-          {
-            "token": "[1]",
-            "explanation": "Accessing the end of the last interval"
-          },
-          {
-            "token": ", "
-          },
-          {
-            "token": "current",
-            "explanation": "Current interval"
-          },
-          {
-            "token": "[1]",
-            "explanation": "Accessing the end of the current interval"
-          },
-          {
-            "token": ")"
-          },
-          {
-            "token": ")"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "    else:",
-        "explanation": "This line starts the else block of the if statement.",
-        "criticalThinkingQuestion": "What happens if the current interval does not overlap with the last interval in the merged list?",
-        "answer": "If the current interval does not overlap with the last interval in the merged list, it is added as a new interval to the merged list.",
-        "tokens": [
-          {
-            "token": "        "
-          },
-          {
-            "token": "else",
-            "explanation": "Keyword to start the else block of an if statement"
-          },
-          {
-            "token": ":"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "        merged.append(current)",
-        "explanation": "This line adds the current interval to the merged list.",
-        "criticalThinkingQuestion": "Why do we add the current interval to the merged list in the else block?",
-        "answer": "We add the current interval to the merged list in the else block because it does not overlap with the last interval in the merged list.",
-        "tokens": [
-          {
-            "token": "            "
-          },
-          {
-            "token": "merged",
-            "explanation": "List of merged intervals"
-          },
-          {
-            "token": "."
-          },
-          {
-            "token": "append",
-            "explanation": "Method to add an element to the end of a list"
-          },
-          {
-            "token": "("
-          },
-          {
-            "token": "current",
-            "explanation": "Current interval"
-          },
-          {
-            "token": ")"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "return merged",
-        "explanation": "This line returns the merged list of intervals.",
-        "criticalThinkingQuestion": "Why do we return the merged list of intervals?",
-        "answer": "We return the merged list of intervals because it is the result of the function.",
-        "tokens": [
-          {
-            "token": "    "
-          },
-          {
-            "token": "return ",
-            "explanation": "Keyword to specify the result of the function"
-          },
-          {
-            "token": "merged",
-            "explanation": "List of merged intervals"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      }
-    ]
-},
-{
-    "format": ["Short Answer", "Multiple Choice", "Short Answer"],
-    "questions": [
-      {
-        "type": "Short Answer",
-        "question": "What does the 'sorted' function do in this code?",
-        "answer": "It sorts the intervals in ascending order based on the first element of each interval.",
-        "question-code-lines": [
-          1
-        ],
-        "question-code-lines-explained": "sorted_intervals = sorted(intervals, key=lambda x: x[0]) # This line sorts the intervals in ascending order based on the first element of each interval."
-      },
-      {
-        "type": "Multiple Choice",
-        "question": "What is the purpose of the 'if' condition in this code?",
-        "answer": {
-          "correct-choice": "It checks if the current interval overlaps with the previous interval.",
-          "incorrect-choice-1": "It checks if the current interval is equal to the previous interval.",
-          "incorrect-choice-2": "It checks if the current interval is less than the previous interval.",
-          "incorrect-choice-3": "It checks if the current interval is greater than the previous interval."
-        },
-        "question-code-lines": [
-          5
-        ],
-        "question-code-lines-explained": "if current[0] <= previous[1]: # This line checks if the current interval overlaps with the previous interval."
-      },
-      {
-        "type": "Short Answer",
-        "question": "What does the 'append' function do in this code?",
-        "answer": "It adds the current interval to the list of merged intervals.",
-        "question-code-lines": [
-          8
-        ],
-        "question-code-lines-explained": "merged.append(current) # This line adds the current interval to the list of merged intervals."
-      }
-    ]
-},
-{
-    "wrong-code": 
-    `1. sorted_intervals = sorted(intervals, key=lambda x: x[1])
-2. merged = [sorted_intervals[0]]
-3. for current in sorted_intervals:
-4.     previous = merged[0]
-5.     if current[0] <= previous[1]:
-6.         merged[0] = (previous[0], max(previous[1], current[1]))
-7.     else:
-8.         merged.append(current)
-9.return merged`,
-    "issues": {
-        "logical-issue-1": {
-            "type": "Incorrect Sorting Key",
-            "line": 1
-        },
-        "logical-issue-2": {
-            "type": "Incorrect Indexing",
-            "line": 4
-        },
-        "logical-issue-3": {
-            "type": "Incorrect Indexing",
-            "line": 6
-        }
-    }
-},
-{
-    "subgoals": [
-      {
-        "title": "Sort Intervals",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
+          "title": "Define function and sort intervals",
+          "code": [
               {
-                "mcq-question": "Why do we need to sort the intervals?",
-                "correct-choice": "To ensure we process the intervals in increasing order",
-                "incorrect-choice-1": "To make the intervals easier to read",
-                "incorrect-choice-2": "To reduce the complexity of the algorithm",
-                "incorrect-choice-3": "Sorting is not necessary for this task"
+                  "indent": 0,
+                  "line": "def merge_intervals(intervals):",
+                  "pseudo-code": "Define a function named 'merge_intervals' that takes a list 'intervals' as an argument",
+                  "explanation": "This line is defining a function that will be used to merge overlapping intervals."
               },
               {
-                "mcq-question": "On what basis should we sort the intervals?",
-                "correct-choice": "The starting point of each interval",
-                "incorrect-choice-1": "The ending point of each interval",
-                "incorrect-choice-2": "The length of each interval",
-                "incorrect-choice-3": "The middle point of each interval"
+                  "indent": 1,
+                  "line": "intervals.sort(key=lambda x: x[0])",
+                  "pseudo-code": "Sort the list 'intervals' based on the first element of each tuple",
+                  "explanation": "Sorting the intervals makes it easier to merge overlapping ones, as they will be adjacent in the list."
               }
-            ],
-            "code-lines-to-be-revealed": [2]
-          }
-        ]
+          ]
       },
       {
-        "title": "Initialize Merged List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
+          "title": "Initialize merged list and iterate over intervals",
+          "code": [
               {
-                "mcq-question": "Why do we initialize the merged list with the first interval?",
-                "correct-choice": "To have a starting point for merging intervals",
-                "incorrect-choice-1": "To ensure the merged list is not empty",
-                "incorrect-choice-2": "To make the code more efficient",
-                "incorrect-choice-3": "There is no specific reason"
+                  "indent": 1,
+                  "line": "merged = [intervals[0]]",
+                  "pseudo-code": "Initialize a list 'merged' with the first interval",
+                  "explanation": "We start the merged list with the first interval, as it's guaranteed to be the earliest one due to the sorting."
+              },
+              {
+                  "indent": 1,
+                  "line": "for current in intervals[1:]:",
+                  "pseudo-code": "Iterate over the rest of the intervals",
+                  "explanation": "We start from the second interval, as the first one is already in the merged list."
               }
-            ],
-            "code-lines-to-be-revealed": [3]
-          }
-        ]
+          ]
       },
       {
-        "title": "Iterate Over Intervals",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
+          "title": "Merge overlapping intervals and append non-overlapping ones",
+          "code": [
               {
-                "mcq-question": "Why do we need to iterate over the sorted intervals?",
-                "correct-choice": "To check and merge overlapping intervals",
-                "incorrect-choice-1": "To find the longest interval",
-                "incorrect-choice-2": "To count the number of intervals",
-                "incorrect-choice-3": "To find the shortest interval"
-              }
-            ],
-            "code-lines-to-be-revealed": [4]
-          },
-          {
-            "leading-questions": [
+                  "indent": 2,
+                  "line": "if current[0] <= merged[-1][1]:",
+                  "pseudo-code": "Check if the start of the current interval is less than or equal to the end of the last merged interval",
+                  "explanation": "This condition checks if the current interval overlaps with the last merged one."
+              },
               {
-                "mcq-question": "Why do we need to keep track of the previous interval?",
-                "correct-choice": "To compare it with the current interval for possible merging",
-                "incorrect-choice-1": "To calculate the length of the interval",
-                "incorrect-choice-2": "To check if it is the same as the current interval",
-                "incorrect-choice-3": "There is no need to keep track of the previous interval"
-              }
-            ],
-            "code-lines-to-be-revealed": [5]
-          },
-          {
-            "leading-questions": [
+                  "indent": 3,
+                  "line": "merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))",
+                  "pseudo-code": "If they overlap, merge them by setting the end of the last merged interval to the maximum of its current end and the end of the current interval",
+                  "explanation": "This line merges overlapping intervals by extending the end of the last merged interval."
+              },
               {
-                "mcq-question": "When should two intervals be merged?",
-                "correct-choice": "If the start of the current interval is less than or equal to the end of the previous interval",
-                "incorrect-choice-1": "If the start of the current interval is greater than the end of the previous interval",
-                "incorrect-choice-2": "If the end of the current interval is less than the start of the previous interval",
-                "incorrect-choice-3": "If the end of the current interval is greater than the start of the previous interval"
-              }
-            ],
-            "code-lines-to-be-revealed": [6]
-          },
-          {
-            "leading-questions": [
+                  "indent": 2,
+                  "line": "else:",
+                  "pseudo-code": "If the current interval does not overlap with the last merged one",
+                  "explanation": "This condition handles the case where the current interval does not overlap with the last merged one."
+              },
               {
-                "mcq-question": "How should two overlapping intervals be merged?",
-                "correct-choice": "The start of the merged interval should be the start of the previous interval, and the end should be the maximum of the ends of the two intervals",
-                "incorrect-choice-1": "The start of the merged interval should be the start of the current interval, and the end should be the end of the previous interval",
-                "incorrect-choice-2": "The start of the merged interval should be the start of the previous interval, and the end should be the end of the current interval",
-                "incorrect-choice-3": "The start of the merged interval should be the start of the current interval, and the end should be the maximum of the ends of the two intervals"
+                  "indent": 3,
+                  "line": "merged.append(current)",
+                  "pseudo-code": "Append the current interval to the 'merged' list",
+                  "explanation": "This line adds non-overlapping intervals to the merged list."
               }
-            ],
-            "code-lines-to-be-revealed": [7]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be done if two intervals do not overlap?",
-                "correct-choice": "The current interval should be appended to the merged list",
-                "incorrect-choice-1": "The current interval should be ignored",
-                "incorrect-choice-2": "The previous interval should be removed from the merged list",
-                "incorrect-choice-3": "The current interval should replace the previous interval in the merged list"
-              }
-            ],
-            "code-lines-to-be-revealed": [8, 9]
-          }
-        ]
+          ]
       },
       {
-        "title": "Return Merged Intervals",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
+          "title": "Return merged intervals",
+          "code": [
               {
-                "mcq-question": "What should be the output of our function?",
-                "correct-choice": "The list of merged intervals",
-                "incorrect-choice-1": "The list of sorted intervals",
-                "incorrect-choice-2": "The number of merged intervals",
-                "incorrect-choice-3": "The longest merged interval"
+                  "indent": 1,
+                  "line": "return merged",
+                  "pseudo-code": "Return the 'merged' list",
+                  "explanation": "This line returns the final list of merged intervals."
               }
-            ],
-            "code-lines-to-be-revealed": [10]
-          }
-        ]
+          ]
+      },
+      {
+          "title": "Test the function",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))",
+                  "pseudo-code": "Print the result of calling 'merge_intervals' with a test list of intervals",
+                  "explanation": "This line tests the function with a specific list of intervals and prints the result."
+              }
+          ]
       }
-    ]
-  }
+  ]
+},
+{
+  "lines": [
+    {
+      "code": "def merge_intervals(intervals):",
+      "explanation": "This line defines a function named 'merge_intervals' that takes a list of intervals as input.",
+      "criticalThinkingQuestion": "Why do we need to define a function for this task?",
+      "answer": "Defining a function allows us to reuse this code whenever we need to merge intervals, without having to rewrite the code.",
+      "tokens": [
+        {
+          "token": "def ",
+          "explanation": "Keyword to define a function in Python"
+        },
+        {
+          "token": "merge_intervals",
+          "explanation": "Name of the function"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "intervals",
+          "explanation": "Parameter of the function"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the function body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    intervals.sort(key=lambda x: x[0])",
+      "explanation": "This line sorts the intervals in ascending order based on their start times.",
+      "criticalThinkingQuestion": "Why is it important to sort the intervals before merging them?",
+      "answer": "Sorting the intervals ensures that we merge all overlapping intervals correctly.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "intervals",
+          "explanation": "The list of intervals"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "sort",
+          "explanation": "Method to sort the list"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "key",
+          "explanation": "Keyword to specify sorting criteria"
+        },
+        {
+          "token": "="
+        },
+        {
+          "token": "lambda ",
+          "explanation": "Keyword to define an anonymous function"
+        },
+        {
+          "token": "x",
+          "explanation": "Parameter of the anonymous function"
+        },
+        {
+          "token": ":"
+        },
+        {
+          "token": "x",
+          "explanation": "Parameter of the anonymous function"
+        },
+        {
+          "token": "[0]",
+          "explanation": "Accesses the first element of the interval"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    merged = [intervals[0]]",
+      "explanation": "This line initializes the 'merged' list with the first interval.",
+      "criticalThinkingQuestion": "Why do we start the 'merged' list with the first interval?",
+      "answer": "We start with the first interval because it's the earliest one after sorting.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": " = "
+        },
+        {
+          "token": "[",
+          "explanation": "Starts a list"
+        },
+        {
+          "token": "intervals",
+          "explanation": "The list of intervals"
+        },
+        {
+          "token": "[0]",
+          "explanation": "Accesses the first interval"
+        },
+        {
+          "token": "]",
+          "explanation": "Ends the list"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    for current in intervals[1:]:",
+      "explanation": "This line starts a loop over the intervals, starting from the second one.",
+      "criticalThinkingQuestion": "Why do we start the loop from the second interval?",
+      "answer": "We start from the second interval because the first one is already in the 'merged' list.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "for ",
+          "explanation": "Keyword to start a loop"
+        },
+        {
+          "token": "current",
+          "explanation": "Variable to hold the current interval"
+        },
+        {
+          "token": " in "
+        },
+        {
+          "token": "intervals",
+          "explanation": "The list of intervals"
+        },
+        {
+          "token": "[1:]",
+          "explanation": "Slices the list from the second element"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the loop body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        if current[0] <= merged[-1][1]:",
+      "explanation": "This line checks if the current interval overlaps with the last merged interval.",
+      "criticalThinkingQuestion": "How does this condition determine if two intervals overlap?",
+      "answer": "Two intervals overlap if the start of the second one is less than or equal to the end of the first one.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "if ",
+          "explanation": "Keyword to start a conditional statement"
+        },
+        {
+          "token": "current",
+          "explanation": "The current interval"
+        },
+        {
+          "token": "[0]",
+          "explanation": "Accesses the start of the current interval"
+        },
+        {
+          "token": " <= "
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": "[-1]",
+          "explanation": "Accesses the last merged interval"
+        },
+        {
+          "token": "[1]",
+          "explanation": "Accesses the end of the last merged interval"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the if statement body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))",
+      "explanation": "This line merges the current interval with the last merged interval if they overlap.",
+      "criticalThinkingQuestion": "How does this line merge two overlapping intervals?",
+      "answer": "It merges two intervals by taking the start of the first one and the maximum end between the two.",
+      "tokens": [
+        {
+          "token": "            "
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": "[-1]",
+          "explanation": "Accesses the last merged interval"
+        },
+        {
+          "token": " = "
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": "[-1]",
+          "explanation": "Accesses the last merged interval"
+        },
+        {
+          "token": "[0]",
+          "explanation": "Accesses the start of the last merged interval"
+        },
+        {
+          "token": ", "
+        },
+        {
+          "token": "max",
+          "explanation": "Function to get the maximum value"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": "[-1]",
+          "explanation": "Accesses the last merged interval"
+        },
+        {
+          "token": "[1]",
+          "explanation": "Accesses the end of the last merged interval"
+        },
+        {
+          "token": ", "
+        },
+        {
+          "token": "current",
+          "explanation": "The current interval"
+        },
+        {
+          "token": "[1]",
+          "explanation": "Accesses the end of the current interval"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        else:",
+      "explanation": "This line starts the else block of the if statement.",
+      "criticalThinkingQuestion": "What happens if the current interval does not overlap with the last merged interval?",
+      "answer": "If the current interval does not overlap with the last merged interval, it is added as a new interval to the 'merged' list.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "else",
+          "explanation": "Keyword to start the else block"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the else block body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            merged.append(current)",
+      "explanation": "This line adds the current interval to the 'merged' list as a new interval.",
+      "criticalThinkingQuestion": "Why do we add the current interval as a new interval to the 'merged' list?",
+      "answer": "We add the current interval as a new interval because it does not overlap with the last merged interval.",
+      "tokens": [
+        {
+          "token": "            "
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "append",
+          "explanation": "Method to add an element to the end of the list"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "current",
+          "explanation": "The current interval"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    return merged",
+      "explanation": "This line returns the 'merged' list as the result of the function.",
+      "criticalThinkingQuestion": "Why do we return the 'merged' list?",
+      "answer": "We return the 'merged' list because it contains the merged intervals, which is the result of the function.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "return ",
+          "explanation": "Keyword to return a value from a function"
+        },
+        {
+          "token": "merged",
+          "explanation": "The list of merged intervals"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))",
+      "explanation": "This line calls the 'merge_intervals' function with a list of intervals and prints the result.",
+      "criticalThinkingQuestion": "What is the expected output of this line?",
+      "answer": "The expected output is a list of merged intervals: [(1, 6), (8, 10), (15, 18)].",
+      "tokens": [
+        {
+          "token": "print",
+          "explanation": "Function to output data to the console"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "merge_intervals",
+          "explanation": "The function to merge intervals"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "[(1, 3), (2, 6), (8, 10), (15, 18)]",
+          "explanation": "The list of intervals to merge"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    }
+  ]
+},
+{
+  "format": ["Short Answer", "Multiple Choice", "Short Answer"],
+  "questions": [
+    {
+      "type": "Short Answer",
+      "question": "What does the 'sort' function do in this code?",
+      "answer": "It sorts the intervals based on the first element of each tuple.",
+      "question-code-lines": [
+        "2"
+      ],
+      "question-code-lines-explained": "intervals.sort(key=lambda x: x[0]) # This line sorts the intervals based on the first element of each tuple."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What does the 'if' condition check in the for loop?",
+      "answer": {
+        "correct-choice": "It checks if the start of the current interval is less than or equal to the end of the last merged interval.",
+        "incorrect-choice-1": "It checks if the start of the current interval is greater than the end of the last merged interval.",
+        "incorrect-choice-2": "It checks if the end of the current interval is less than the start of the last merged interval.",
+        "incorrect-choice-3": "It checks if the end of the current interval is greater than the start of the last merged interval."
+      },
+      "question-code-lines": [
+        "4"
+      ],
+      "question-code-lines-explained": "if current[0] <= merged[-1][1]: # This line checks if the start of the current interval is less than or equal to the end of the last merged interval."
+    },
+    {
+      "type": "Short Answer",
+      "question": "What does the 'else' condition do in the for loop?",
+      "answer": "It appends the current interval to the merged list if it doesn't overlap with the last merged interval.",
+      "question-code-lines": [
+        "7"
+      ],
+      "question-code-lines-explained": "else: merged.append(current) # This line appends the current interval to the merged list if it doesn't overlap with the last merged interval."
+    }
+  ]
+},
+{
+  "wrong-code": 
+  `def merge_intervals(intervals):
+      intervals.sort(key=lambda x: x[1])
+      merged = [intervals[0]]
+      for current in intervals[1:]:
+          if current[0] >= merged[-1][1]:
+              merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
+          else:
+              merged.append(current)
+      return merged
+  
+  print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
+  
+  "issues":{
+              "logical-issue-1": {
+                      "type": "Incorrect sorting key",
+                      "line": 2
+              },
+              "logical-issue-2": {
+                      "type": "Incorrect comparison operator",
+                      "line": 5
+              }
+          }
+},
+{
+  "subgoals": [
+    {
+      "title": "Function Definition",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the input to our function?",
+              "correct-choice": "A list of tuples representing intervals",
+              "incorrect-choice-1": "A list of integers",
+              "incorrect-choice-2": "A single tuple representing an interval",
+              "incorrect-choice-3": "Two integers"
+            }
+          ],
+          "code-lines-to-be-revealed": [1]
+        }
+      ]
+    },
+    {
+      "title": "Sort Intervals",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "Why do we need to sort the intervals?",
+              "correct-choice": "To ensure we process intervals in increasing order",
+              "incorrect-choice-1": "To make the list look neat",
+              "incorrect-choice-2": "To find the smallest interval",
+              "incorrect-choice-3": "To find the largest interval"
+            },
+            {
+              "mcq-question": "On what basis should we sort the intervals?",
+              "correct-choice": "Starting point of the intervals",
+              "incorrect-choice-1": "Ending point of the intervals",
+              "incorrect-choice-2": "Length of the intervals",
+              "incorrect-choice-3": "Middle point of the intervals"
+            }
+          ],
+          "code-lines-to-be-revealed": [2]
+        }
+      ]
+    },
+    {
+      "title": "Initialize Merged List",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "Why do we need to initialize the merged list with the first interval?",
+              "correct-choice": "To have a starting point for merging",
+              "incorrect-choice-1": "To make the list non-empty",
+              "incorrect-choice-2": "To ensure the list has at least one element",
+              "incorrect-choice-3": "To avoid an index error"
+            }
+          ],
+          "code-lines-to-be-revealed": [3]
+        }
+      ]
+    },
+    {
+      "title": "Merge Overlapping Intervals",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What condition should be checked to determine if two intervals overlap?",
+              "correct-choice": "The start of the current interval is less than or equal to the end of the last merged interval",
+              "incorrect-choice-1": "The start of the current interval is greater than the end of the last merged interval",
+              "incorrect-choice-2": "The end of the current interval is less than the start of the last merged interval",
+              "incorrect-choice-3": "The end of the current interval is greater than the start of the last merged interval"
+            }
+          ],
+          "code-lines-to-be-revealed": [4]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How should we merge two overlapping intervals?",
+              "correct-choice": "Take the start of the first interval and the maximum end of the two intervals",
+              "incorrect-choice-1": "Take the start of the first interval and the end of the second interval",
+              "incorrect-choice-2": "Take the start of the second interval and the end of the first interval",
+              "incorrect-choice-3": "Take the start of the second interval and the maximum end of the two intervals"
+            }
+          ],
+          "code-lines-to-be-revealed": [5]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if two intervals do not overlap?",
+              "correct-choice": "Add the current interval to the merged list",
+              "incorrect-choice-1": "Ignore the current interval",
+              "incorrect-choice-2": "Add the last merged interval to the merged list",
+              "incorrect-choice-3": "Merge the current interval with the last merged interval"
+            }
+          ],
+          "code-lines-to-be-revealed": [6]
+        }
+      ]
+    },
+    {
+      "title": "Return Merged Intervals",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should the function return?",
+              "correct-choice": "The list of merged intervals",
+              "incorrect-choice-1": "The original list of intervals",
+              "incorrect-choice-2": "The number of merged intervals",
+              "incorrect-choice-3": "The length of the merged intervals"
+            }
+          ],
+          "code-lines-to-be-revealed": [7]
+        }
+      ]
+    }
+  ]
+}
 
-)
+),
+
+new AuthoringTask(
+  "2",
+  "Write a Python function to calculate the sum of even numbers in a given list.",
+`def calculate_even_sum(numbers):
+even_sum = 0
+for num in numbers:
+    if num % 2 == 0:
+        even_sum += num
+return even_sum
+
+result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print("Sum of even numbers:", result)`,
+`This code defines a function called \`calculate_even_sum\` that takes a list of numbers as input and returns the sum of the even numbers in the list.
+
+First, it initializes a variable \`even_sum\` to 0. This variable will be used to keep track of the sum of the even numbers.
+
+Next, it uses a \`for\` loop to iterate over each number in the input list. For each number, it checks if the number is even by using the modulus operator \`%\`. The modulus operator gives the remainder of the division of the number by 2. If the remainder is 0, the number is even.
+
+If the number is even, it adds the number to \`even_sum\` using the \`+=\` operator, which is a shorthand for \`even_sum = even_sum + num\`.
+
+After all numbers in the list have been processed, the function returns the sum of the even numbers.
+
+The function is then called with the list \`[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\` as an argument, and the result is stored in the variable \`result\`.
+
+Finally, the \`print\` function is used to display the result.`,
+{
+  "subgoals": [
+      {
+          "title": "Define function",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "def calculate_even_sum(numbers):",
+                  "pseudo-code": "Define a function named `calculate_even_sum` that takes a parameter `numbers`.",
+                  "explanation": "This line defines a function that will be used to calculate the sum of even numbers in a list."
+              }
+          ]
+      },
+      {
+          "title": "Initialize sum variable",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "even_sum = 0",
+                  "pseudo-code": "Initialize a variable `even_sum` and set it to 0.",
+                  "explanation": "This line sets up a variable to hold the sum of the even numbers as they are found."
+              }
+          ]
+      },
+      {
+          "title": "Iterate over numbers",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "for num in numbers:",
+                  "pseudo-code": "Start a for loop that iterates over each number in `numbers`.",
+                  "explanation": "This line starts a loop that will go through each number in the list one by one."
+              }
+          ]
+      },
+      {
+          "title": "Check if number is even",
+          "code": [
+              {
+                  "indent": 2,
+                  "line": "if num % 2 == 0:",
+                  "pseudo-code": "Check if the current number `num` is even by checking if the remainder when divided by 2 is 0.",
+                  "explanation": "This line checks if the current number is even. If it is, the remainder when divided by 2 will be 0."
+              }
+          ]
+      },
+      {
+          "title": "Add even number to sum",
+          "code": [
+              {
+                  "indent": 3,
+                  "line": "even_sum += num",
+                  "pseudo-code": "If the number is even, add it to `even_sum`.",
+                  "explanation": "This line adds the current number to the sum if it is even."
+              }
+          ]
+      },
+      {
+          "title": "Return sum of even numbers",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "return even_sum",
+                  "pseudo-code": "Return the value of `even_sum`.",
+                  "explanation": "This line ends the function and returns the sum of the even numbers."
+              }
+          ]
+      },
+      {
+          "title": "Call function and store result",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])",
+                  "pseudo-code": "Call the `calculate_even_sum` function with a list of numbers as an argument and store the result in `result`.",
+                  "explanation": "This line calls the function with a specific list of numbers and saves the returned value."
+              }
+          ]
+      },
+      {
+          "title": "Print result",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "print(\"Sum of even numbers:\", result)",
+                  "pseudo-code": "Print the string 'Sum of even numbers:' followed by the value of `result`.",
+                  "explanation": "This line prints the result of the function call to the console."
+              }
+          ]
+      }
+  ]
+},
+{
+  "lines": [
+    {
+      "code": "def calculate_even_sum(numbers):",
+      "explanation": "This line defines a function to calculate the sum of even numbers in a list.",
+      "criticalThinkingQuestion": "Why do we need to pass 'numbers' as a parameter to the function?",
+      "answer": "We pass 'numbers' to make the function reusable for any list of numbers.",
+      "tokens": [
+        {
+          "token": "def ",
+          "explanation": "Keyword to define a function"
+        },
+        {
+          "token": "calculate_even_sum",
+          "explanation": "Name of the function"
+        },
+        {
+          "token": "(",
+        },
+        {
+          "token": "numbers",
+          "explanation": "Parameter of the function"
+        },
+        {
+          "token": ")",
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the function's body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    even_sum = 0",
+      "explanation": "This line initializes a variable to keep track of the sum of even numbers.",
+      "criticalThinkingQuestion": "Why do we initialize 'even_sum' to 0?",
+      "answer": "We initialize 'even_sum' to 0 because we start with no sum and add to it.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
+        },
+        {
+          "token": "even_sum",
+          "explanation": "Variable to store the sum"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "=",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "0",
+          "explanation": "Initial value of the sum"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    for num in numbers:",
+      "explanation": "This line starts a loop to iterate over each number in the list.",
+      "criticalThinkingQuestion": "Why do we use a 'for' loop here?",
+      "answer": "We use a 'for' loop to iterate over each number in the list.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
+        },
+        {
+          "token": "for ",
+          "explanation": "Keyword to start a loop"
+        },
+        {
+          "token": "num",
+          "explanation": "Variable to hold the current number"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "in ",
+          "explanation": "Keyword to iterate over a list"
+        },
+        {
+          "token": "numbers",
+          "explanation": "The list to iterate over"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the loop's body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        if num % 2 == 0:",
+      "explanation": "This line checks if the current number is even.",
+      "criticalThinkingQuestion": "How does 'num % 2 == 0' check if a number is even?",
+      "answer": "If a number modulo 2 equals 0, it means the number is even.",
+      "tokens": [
+        {
+          "token": "        ",
+          "explanation": "Indentation for code inside the loop"
+        },
+        {
+          "token": "if ",
+          "explanation": "Keyword to start a conditional"
+        },
+        {
+          "token": "num",
+          "explanation": "The current number"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "%",
+          "explanation": "Modulo operator"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "2",
+          "explanation": "Divisor for the modulo operation"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "==",
+          "explanation": "Equality operator"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "0",
+          "explanation": "Zero, the result for even numbers"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the conditional's body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            even_sum += num",
+      "explanation": "This line adds the current number to the sum if it is even.",
+      "criticalThinkingQuestion": "What does 'even_sum += num' do?",
+      "answer": "It adds the current number to the sum if the number is even.",
+      "tokens": [
+        {
+          "token": "            ",
+          "explanation": "Indentation for code inside the conditional"
+        },
+        {
+          "token": "even_sum",
+          "explanation": "The sum of even numbers"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "+=",
+          "explanation": "Addition assignment operator"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "num",
+          "explanation": "The current number"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    return even_sum",
+      "explanation": "This line returns the sum of even numbers.",
+      "criticalThinkingQuestion": "Why do we need to return 'even_sum'?",
+      "answer": "We return 'even_sum' to provide the result of the function to the caller.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
+        },
+        {
+          "token": "return ",
+          "explanation": "Keyword to return a value from a function"
+        },
+        {
+          "token": "even_sum",
+          "explanation": "The sum of even numbers"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])",
+      "explanation": "This line calls the function with a list of numbers and stores the result.",
+      "criticalThinkingQuestion": "What is the purpose of 'result' in this line?",
+      "answer": "'result' is used to store the return value of the function call.",
+      "tokens": [
+        {
+          "token": "result",
+          "explanation": "Variable to store the result"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "=",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": " ",
+        },
+        {
+          "token": "calculate_even_sum",
+          "explanation": "Function to calculate the sum of even numbers"
+        },
+        {
+          "token": "(",
+        },
+        {
+          "token": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+          "explanation": "List of numbers to pass to the function"
+        },
+        {
+          "token": ")",
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "print(\"Sum of even numbers:\", result)",
+      "explanation": "This line prints the sum of even numbers.",
+      "criticalThinkingQuestion": "Why do we use 'print' in this line?",
+      "answer": "We use 'print' to display the result to the user.",
+      "tokens": [
+        {
+          "token": "print",
+          "explanation": "Function to display output"
+        },
+        {
+          "token": "(",
+        },
+        {
+          "token": "\"Sum of even numbers:\"",
+          "explanation": "String to display before the result"
+        },
+        {
+          "token": ", ",
+        },
+        {
+          "token": "result",
+          "explanation": "The result to display"
+        },
+        {
+          "token": ")",
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    }
+  ]
+},
+{
+  "format": ["Short Answer", "Multiple Choice"],
+  "questions": [
+    {
+      "type": "Short Answer",
+      "question": "What does the calculate_even_sum function do?",
+      "answer": "It calculates the sum of even numbers in a list.",
+      "question-code-lines": [
+        "1-5"
+      ],
+      "question-code-lines-explained": "def calculate_even_sum(numbers):\n    even_sum = 0\n    for num in numbers:\n        if num % 2 == 0:\n            even_sum += num # This function iterates over a list of numbers, checks if each number is even, and if it is, adds it to the sum."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What does the '%' operator do in Python?",
+      "answer": {
+        "correct-choice": "It calculates the remainder of a division operation.",
+        "incorrect-choice-1": "It performs exponentiation.",
+        "incorrect-choice-2": "It performs integer division.",
+        "incorrect-choice-3": "It calculates the quotient of a division operation."
+      },
+      "question-code-lines": [
+        "4"
+      ],
+      "question-code-lines-explained": "if num % 2 == 0: # The '%' operator is used to calculate the remainder of the division of 'num' by 2. If the remainder is 0, that means 'num' is an even number."
+    }
+  ]
+},
+{
+  "wrong-code": 
+  "def calculate_even_sum(numbers):\n    even_sum = 0\n    for num in numbers:\n        if num % 2 != 0:\n            even_sum += num\n    return even_sum\n\nresult = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nprint('Sum of even numbers:', result)",
+  "issues":{
+              "logical-issue-1": {
+                      "type": "Incorrect Boolean Logic",
+                      "line": 4
+              },
+              "logical-issue-2": {
+                      "type": "Wrong Function Call",
+                      "line": 7
+              }
+          }
+},
+{
+  "subgoals": [
+    {
+      "title": "Function Definition",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the input to our function?",
+              "correct-choice": "A list of numbers",
+              "incorrect-choice-1": "A single number",
+              "incorrect-choice-2": "A string",
+              "incorrect-choice-3": "A list of strings"
+            }
+          ],
+          "code-lines-to-be-revealed": [1]
+        }
+      ]
+    },
+    {
+      "title": "Initialize Sum",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the initial value of the sum of even numbers?",
+              "correct-choice": "0",
+              "incorrect-choice-1": "1",
+              "incorrect-choice-2": "The first number in the list",
+              "incorrect-choice-3": "The last number in the list"
+            }
+          ],
+          "code-lines-to-be-revealed": [2]
+        }
+      ]
+    },
+    {
+      "title": "Iterate Over Numbers",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do for each number in the list?",
+              "correct-choice": "Check if it is even and add it to the sum if it is",
+              "incorrect-choice-1": "Add it to the sum regardless of whether it is even or not",
+              "incorrect-choice-2": "Check if it is odd and add it to the sum if it is",
+              "incorrect-choice-3": "Subtract it from the sum"
+            }
+          ],
+          "code-lines-to-be-revealed": [3]
+        }
+      ]
+    },
+    {
+      "title": "Check Evenness",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How can we check if a number is even?",
+              "correct-choice": "If the remainder when the number is divided by 2 is 0",
+              "incorrect-choice-1": "If the number is greater than 0",
+              "incorrect-choice-2": "If the number is less than 0",
+              "incorrect-choice-3": "If the number is divisible by 3"
+            }
+          ],
+          "code-lines-to-be-revealed": [4]
+        }
+      ]
+    },
+    {
+      "title": "Add to Sum",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if a number is even?",
+              "correct-choice": "Add it to the sum",
+              "incorrect-choice-1": "Subtract it from the sum",
+              "incorrect-choice-2": "Multiply the sum by it",
+              "incorrect-choice-3": "Divide the sum by it"
+            }
+          ],
+          "code-lines-to-be-revealed": [5]
+        }
+      ]
+    },
+    {
+      "title": "Return Result",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should the function return?",
+              "correct-choice": "The sum of the even numbers",
+              "incorrect-choice-1": "The sum of the odd numbers",
+              "incorrect-choice-2": "The total number of even numbers",
+              "incorrect-choice-3": "The total number of odd numbers"
+            }
+          ],
+          "code-lines-to-be-revealed": [6]
+        }
+      ]
+    },
+    {
+      "title": "Function Call",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do to get the sum of the even numbers in a list?",
+              "correct-choice": "Call the function with the list as argument",
+              "incorrect-choice-1": "Call the function without any arguments",
+              "incorrect-choice-2": "Call the function with the sum of the list as argument",
+              "incorrect-choice-3": "Call the function with the length of the list as argument"
+            }
+          ],
+          "code-lines-to-be-revealed": [8]
+        }
+      ]
+    },
+    {
+      "title": "Print Result",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How can we display the result?",
+              "correct-choice": "Print the result",
+              "incorrect-choice-1": "Return the result",
+              "incorrect-choice-2": "Store the result in a variable",
+              "incorrect-choice-3": "Pass the result to another function"
+            }
+          ],
+          "code-lines-to-be-revealed": [9]
+        }
+      ]
+    }
+  ]
+}
+
+),
 
     // new AuthoringTask(
     //     "1a",
