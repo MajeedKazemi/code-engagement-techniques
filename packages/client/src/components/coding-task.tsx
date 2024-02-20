@@ -132,11 +132,12 @@ export const CodingTask = (props: CodingTaskProps) => {
             <div className="container">
                 <div className="card p-md">
                     <p>
-                        You have{" "}
+                        {/* You have{" "}
                         <span className="remaining-time">
                             {convertTime(props.timeLimit)} minutes
                         </span>{" "}
-                        to finish this task.
+                        to finish this task. */}
+                        Start the task when you are ready.
                     </p>
                     <button className="btn btn-primary" onClick={handleStart}>
                         Start task

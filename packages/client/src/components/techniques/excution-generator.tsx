@@ -32,12 +32,11 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     const [checked, setChecked] = useState(true);
     const [generatedCode, setGeneratedCode] = useState('');
     const [backendCodes, setBackendCodes] = useState<string[]>([]);
-    const [generatedContext, setGeneratedContext] = useState<CodeRepresentation[]>([]);
     const [generatedExplanation, setGeneratedExplanation] = useState('');
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [isOver, setIsOver] = useState(false);
-    const [format, setFormat] = useState<string[]>([]);
     const [buttonClickOver, setButtonClickOver] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
 
     // const generateCode = () => {
@@ -230,7 +229,6 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     //                                                       if (response.ok) {
     //                                                           const data = await response.json();
     //                                                           tempContext.push(data.response);
-    //                                                           setGeneratedContext(tempContext);
     //                                                           setWaiting(false);
     //                                                       }
     //                                                   })
@@ -258,7 +256,6 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     //                                                                 if (response.ok) {
     //                                                                     const data = await response.json();
     //                                                                     tempContext.push(data.response);
-    //                                                                     setGeneratedContext(tempContext);
     //                                                                     setWaiting(false);
     //                                                                 }
     //                                                             })
@@ -277,12 +274,11 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     //                                       }
     //                                   })
     //                                   .catch((error) => {
-    //                                       props.editor?.updateOptions({ readOnly: false });
+    //                                       editor?.updateOptions({ readOnly: false });
     //                                       setWaiting(false);
     //                                       logError(error.toString());
     //                                   });
     //                           } else{
-    //                             setGeneratedContext([]);
     //                             setWaiting(false);
     //                           }
                                 
@@ -290,12 +286,12 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     //                     }
     //                 })
     //                 .catch((error) => {
-    //                     props.editor?.updateOptions({ readOnly: false });
+    //                     editor?.updateOptions({ readOnly: false });
     //                     setWaiting(false);
     //                     logError(error.toString());
     //                 });
     //         } catch (error: any) {
-    //             props.editor?.updateOptions({ readOnly: false });
+    //             editor?.updateOptions({ readOnly: false });
     //             setWaiting(false);
     //             logError(error.toString());
     //         }
@@ -335,8 +331,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
   
                             setGeneratedCode(data.code);
                             console.log(taskId);
-                            setBackendCodes(data.code);
-                            setFormat(["new"]);
+                            setBackendCodes(data.code.split('\n'));
                             apiGetBaselineExplainationCodexSimulation(
                                 context?.token,
                                 taskId
@@ -384,7 +379,15 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
         return () => clearInterval(interval);
     }, []);  
 
-    const closePopup = () => {
+
+    const closePopup = async () => {
+      setIsModalOpen(true);
+    };
+  
+    const handleModalClick = (confirmed: boolean) => {
+      setIsModalOpen(false);
+      
+      if (confirmed) {
         setIsOpen(false);
         const overlayElement = document.querySelector('.overlay') as HTMLElement;
         const editorElement = document.querySelector('.editor') as HTMLElement;
@@ -393,6 +396,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
         setGeneratedCode("");
         setGeneratedExplanation("");
         excutionCancelClicked = !excutionCancelClicked;
+      }
     };
 
     useEffect(() => {
@@ -425,9 +429,9 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                   {waiting && (
                     <p>Generating</p>
                   )}
-                  {(!waiting && format.length > 0) && (
+                  {(!waiting) && (
                   
-                    <ExcutionSteps code={generatedCode} contextCode={generatedContext} format={format} backendCodes={backendCodes}/>
+                    <ExcutionSteps code={generatedCode} backendCodes={backendCodes}/>
                   )}
                 </div>
                 <div className="modal-footer">
@@ -437,6 +441,17 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Next
                   </button>
+                  {isModalOpen && (
+                      <div className="modal-next-confirm">
+                        <div className="modal-next-confirm-content">
+                        <h3>Are you sure you want to go to the next task?</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
+                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        </div>
+                        </div>
+                      </div>
+                  )}
                 </div>
               </div>
             )}

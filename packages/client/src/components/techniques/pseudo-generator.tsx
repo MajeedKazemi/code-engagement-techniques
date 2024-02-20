@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetPseudoCodex, apiGetPseudoCodexSimulation, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetPseudoCodex, apiGetPseudoCodexSimulation, apiGetPseudoVerifyCode, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext, SocketContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
@@ -12,7 +12,7 @@ export let pseudoCancelClicked = false;
 interface PseudoGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
-    code: string | null;
+    code: string;
     taskID: string;
 }
 
@@ -164,6 +164,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [generatedCode, setGeneratedCode] = useState('');
     const [generatedExplanation, setGeneratedExplanation] = useState('');
     const [generatedPseudo, setGeneratedPseudo] = useState<PseudoCodeSubgoals[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [checking, setChecking] = useState(false);
 
     // function responseToPseudo(response: any, code:string): PseudoCodeSubgoals[] {
     // }
@@ -475,15 +477,25 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     }, []);
 
-    const closePopup = () => {
-        setIsOpen(false);
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedPseudo([]);
-        pseudoCancelClicked = !pseudoCancelClicked;
-    };
+
+    const closePopup = async () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleModalClick = (confirmed: boolean) => {
+        setIsModalOpen(false);
+        
+        if (confirmed) {
+          setIsOpen(false);
+          const overlayElement = document.querySelector('.overlay') as HTMLElement;
+          const editorElement = document.querySelector('.editor') as HTMLElement;
+          overlayElement!.style.display = 'none';
+          editorElement.style.zIndex = '1';
+          setGeneratedCode("");
+          setGeneratedExplanation("");
+          pseudoCancelClicked = !pseudoCancelClicked;
+        }
+      };
 
     useEffect(() => {
         if(generatedPseudo.length > 0) {
@@ -546,11 +558,11 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     };
 
-    useEffect(() => {
-        if (running) {
-            setButtonClickOver(true);
-        }
-    }, [running]);
+    // useEffect(() => {
+    //     if (running) {
+    //         setButtonClickOver(true);
+    //     }
+    // }, [running]);
 
     useEffect(() => {
         if(isOver){
@@ -563,6 +575,37 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             outputDiv!.innerHTML = '';
         }
     }, [isOver]);
+
+    const veirfyPseudoCode = () => {
+        setChecking(true);
+        // pass to the LLM to check if the user written code compare to the generated code
+        try {
+            apiGetPseudoVerifyCode(
+                context?.token,
+                prompt,
+                code,
+                userInputCode
+            )
+                .then(async (response) => {
+
+                    if (response.ok && editor) {
+                        const data = await response.json();
+                        if (data.correct == "1") {
+                            setButtonClickOver(true);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    editor?.updateOptions({ readOnly: false });
+                    setChecking(false);
+                    logError(error.toString());
+                });
+        } catch (error: any) {
+            editor?.updateOptions({ readOnly: false });
+            setChecking(false);
+            logError(error.toString());
+        }
+    };
 
 
     return (
@@ -591,6 +634,9 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                         <PseudoCodeHoverable goals={generatedPseudo} />
                     </div>
                     <div className='pesudocode-writer-container'>
+                        <div className='pseudocode-verify-button-container'>
+                            <button className='btn btn-primary gpt-button' onClick={() => veirfyPseudoCode()}>Verify Code</button>
+                        </div>
                         <div ref={editorRef} className="monaco-code-writer">
                         </div>
                         <div className="editor-buttons-container">
@@ -688,6 +734,17 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                   Next
                 </button>
+                {isModalOpen && (
+                      <div className="modal-next-confirm">
+                        <div className="modal-next-confirm-content">
+                        <h3>Are you sure you want to go to the next task?</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
+                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        </div>
+                        </div>
+                      </div>
+                  )}
               </div>
             </div>
           )}

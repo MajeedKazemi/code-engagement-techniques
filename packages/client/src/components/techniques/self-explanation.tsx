@@ -147,6 +147,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     const baselineRef = useRef<HTMLDivElement | null>(null);
     const explainRef = useRef<HTMLDivElement | null>(null);
     const [passed, setPassed] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     useEffect(() => {
@@ -428,7 +429,14 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     // };
   
 
-    const closePopup = () => {
+    const closePopup = async () => {
+      setIsModalOpen(true);
+    };
+  
+    const handleModalClick = (confirmed: boolean) => {
+      setIsModalOpen(false);
+      
+      if (confirmed) {
         setIsOpen(false);
         const overlayElement = document.querySelector('.overlay') as HTMLElement;
         const editorElement = document.querySelector('.editor') as HTMLElement;
@@ -437,6 +445,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
         setGeneratedCode("");
         setGeneratedExplanation("");
         selfExplainCancelClicked = !selfExplainCancelClicked;
+      }
     };
 
     useEffect(() => {
@@ -484,6 +493,17 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Next
                   </button>
+                  {isModalOpen && (
+                      <div className="modal-next-confirm">
+                        <div className="modal-next-confirm-content">
+                        <h3>Are you sure you want to go to the next task?</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
+                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        </div>
+                        </div>
+                      </div>
+                  )}
                 </div>
               </div>
             )}

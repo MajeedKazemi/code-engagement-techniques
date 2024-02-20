@@ -231,15 +231,16 @@ export const CodingTasks = [
         "1",
         "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.",
 `def merge_intervals(intervals):
-    sorted_intervals = sorted(intervals, key=lambda x: x[0])
-    merged = [sorted_intervals[0]]
-    for current in sorted_intervals:
-        previous = merged[-1]
-        if current[0] <= previous[1]:
-            merged[-1] = (previous[0], max(previous[1], current[1]))
+    intervals.sort(key=lambda x: x[0])
+    merged = [intervals[0]]
+    for current in intervals[1:]:
+        if current[0] <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
         else:
             merged.append(current)
-    return merged`,
+    return merged
+
+print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
 `This code defines a function called \`merge_intervals\` that takes a list of intervals as input and returns a list of merged intervals. 
 
 First, it sorts the intervals in ascending order based on the first element of each interval using the \`sorted\` function. The \`lambda\` keyword is used to create a small anonymous function to specify the sorting key.
@@ -252,16 +253,10 @@ Finally, it returns the \`merged\` list.`,
 {
     "subgoals": [
         {
-            "title": "Define Function and Sort Intervals",
+            "title": "Sort Intervals",
             "code": [
                 {
                     "indent": 0,
-                    "line": "def merge_intervals(intervals):",
-                    "pseudo-code": "Define a function called 'merge_intervals' that takes a list 'intervals' as an argument",
-                    "explanation": "This line is defining the function and specifying its input. The function will take a list of intervals as its argument."
-                },
-                {
-                    "indent": 1,
                     "line": "sorted_intervals = sorted(intervals, key=lambda x: x[0])",
                     "pseudo-code": "Sort the 'intervals' list in ascending order based on the first element of each interval",
                     "explanation": "This line sorts the intervals in ascending order. This is necessary to ensure that overlapping intervals are processed consecutively."
@@ -272,7 +267,7 @@ Finally, it returns the \`merged\` list.`,
             "title": "Initialize Merged List",
             "code": [
                 {
-                    "indent": 1,
+                    "indent": 0,
                     "line": "merged = [sorted_intervals[0]]",
                     "pseudo-code": "Initialize a list 'merged' with the first interval from 'sorted_intervals'",
                     "explanation": "This line initializes the 'merged' list with the first interval. This is the starting point for the merging process."
@@ -283,37 +278,37 @@ Finally, it returns the \`merged\` list.`,
             "title": "Iterate Over Sorted Intervals",
             "code": [
                 {
-                    "indent": 1,
+                    "indent": 0,
                     "line": "for current in sorted_intervals:",
                     "pseudo-code": "Start a loop that iterates over each interval in 'sorted_intervals'",
                     "explanation": "This line starts a loop that will process each interval in the sorted list. The current interval in each iteration is referred to as 'current'."
                 },
                 {
-                    "indent": 2,
+                    "indent": 1,
                     "line": "previous = merged[-1]",
                     "pseudo-code": "Assign the last interval in 'merged' to a variable 'previous'",
                     "explanation": "This line retrieves the last interval that was added to the 'merged' list. This interval will be compared with the current interval to check for overlap."
                 },
                 {
-                    "indent": 2,
+                    "indent": 1,
                     "line": "if current[0] <= previous[1]:",
                     "pseudo-code": "Check if the start of 'current' is less than or equal to the end of 'previous'",
                     "explanation": "This line checks if the current interval overlaps with the previous interval. If it does, the two intervals need to be merged."
                 },
                 {
-                    "indent": 3,
+                    "indent": 2,
                     "line": "merged[-1] = (previous[0], max(previous[1], current[1]))",
                     "pseudo-code": "Replace the last interval in 'merged' with a new interval that merges 'previous' and 'current'",
                     "explanation": "This line merges the previous and current intervals by creating a new interval that spans from the start of the previous interval to the maximum end point of the two intervals."
                 },
                 {
-                    "indent": 2,
+                    "indent": 1,
                     "line": "else:",
                     "pseudo-code": "If 'current' does not overlap with 'previous'",
                     "explanation": "This line starts an else clause that is executed when the current interval does not overlap with the previous interval."
                 },
                 {
-                    "indent": 3,
+                    "indent": 2,
                     "line": "merged.append(current)",
                     "pseudo-code": "Add 'current' to the end of 'merged'",
                     "explanation": "This line adds the current interval to the 'merged' list. This is done when the current interval does not overlap with the previous interval."
@@ -324,7 +319,7 @@ Finally, it returns the \`merged\` list.`,
             "title": "Return Merged Intervals",
             "code": [
                 {
-                    "indent": 1,
+                    "indent": 0,
                     "line": "return merged",
                     "pseudo-code": "Return the 'merged' list",
                     "explanation": "This line returns the 'merged' list, which contains the merged intervals. This is the final result of the function."
@@ -336,39 +331,7 @@ Finally, it returns the \`merged\` list.`,
 {
     "lines": [
       {
-        "code": "def merge_intervals(intervals):",
-        "explanation": "This line defines a function named 'merge_intervals' that takes a list of intervals as input.",
-        "criticalThinkingQuestion": "Why do you think we need a function to merge intervals?",
-        "answer": "We need a function to merge overlapping intervals into a single interval, which simplifies the data for further processing.",
-        "tokens": [
-          {
-            "token": "def ",
-            "explanation": "Keyword to define a function"
-          },
-          {
-            "token": "merge_intervals",
-            "explanation": "Name of the function"
-          },
-          {
-            "token": "("
-          },
-          {
-            "token": "intervals",
-            "explanation": "Parameter of the function"
-          },
-          {
-            "token": ")"
-          },
-          {
-            "token": ":"
-          },
-          {
-            "token": "\n"
-          }
-        ]
-      },
-      {
-        "code": "    sorted_intervals = sorted(intervals, key=lambda x: x[0])",
+        "code": "sorted_intervals = sorted(intervals, key=lambda x: x[0])",
         "explanation": "This line sorts the intervals based on the start of each interval.",
         "criticalThinkingQuestion": "Why is sorting the intervals necessary before merging them?",
         "answer": "Sorting is necessary to ensure that we process the intervals in order, which makes it easier to merge overlapping intervals.",
@@ -432,7 +395,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "    merged = [sorted_intervals[0]]",
+        "code": "merged = [sorted_intervals[0]]",
         "explanation": "This line initializes the merged list with the first interval.",
         "criticalThinkingQuestion": "Why do we start the merged list with the first interval?",
         "answer": "We start with the first interval because it's the earliest interval after sorting, and it provides a base for comparison with other intervals.",
@@ -469,7 +432,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "    for current in sorted_intervals:",
+        "code": "for current in sorted_intervals:",
         "explanation": "This line starts a loop over the sorted intervals.",
         "criticalThinkingQuestion": "Why do we need to loop over the sorted intervals?",
         "answer": "We loop over the sorted intervals to merge overlapping intervals.",
@@ -502,7 +465,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "        previous = merged[-1]",
+        "code": "    previous = merged[-1]",
         "explanation": "This line gets the last interval in the merged list.",
         "criticalThinkingQuestion": "Why do we need to keep track of the last interval in the merged list?",
         "answer": "We need to keep track of the last interval in the merged list to check if the current interval overlaps with it.",
@@ -531,7 +494,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "        if current[0] <= previous[1]:",
+        "code": "    if current[0] <= previous[1]:",
         "explanation": "This line checks if the current interval overlaps with the last interval in the merged list.",
         "criticalThinkingQuestion": "How does this condition determine if two intervals overlap?",
         "answer": "Two intervals overlap if the start of the second interval is less than or equal to the end of the first interval.",
@@ -572,7 +535,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "            merged[-1] = (previous[0], max(previous[1], current[1]))",
+        "code": "        merged[-1] = (previous[0], max(previous[1], current[1]))",
         "explanation": "This line merges the current interval with the last interval in the merged list.",
         "criticalThinkingQuestion": "How does this line merge two overlapping intervals?",
         "answer": "This line merges two overlapping intervals by taking the start of the first interval and the maximum of the ends of the two intervals.",
@@ -643,7 +606,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "        else:",
+        "code": "    else:",
         "explanation": "This line starts the else block of the if statement.",
         "criticalThinkingQuestion": "What happens if the current interval does not overlap with the last interval in the merged list?",
         "answer": "If the current interval does not overlap with the last interval in the merged list, it is added as a new interval to the merged list.",
@@ -664,7 +627,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "            merged.append(current)",
+        "code": "        merged.append(current)",
         "explanation": "This line adds the current interval to the merged list.",
         "criticalThinkingQuestion": "Why do we add the current interval to the merged list in the else block?",
         "answer": "We add the current interval to the merged list in the else block because it does not overlap with the last interval in the merged list.",
@@ -699,7 +662,7 @@ Finally, it returns the \`merged\` list.`,
         ]
       },
       {
-        "code": "    return merged",
+        "code": "return merged",
         "explanation": "This line returns the merged list of intervals.",
         "criticalThinkingQuestion": "Why do we return the merged list of intervals?",
         "answer": "We return the merged list of intervals because it is the result of the function.",
@@ -730,7 +693,7 @@ Finally, it returns the \`merged\` list.`,
         "question": "What does the 'sorted' function do in this code?",
         "answer": "It sorts the intervals in ascending order based on the first element of each interval.",
         "question-code-lines": [
-          2
+          1
         ],
         "question-code-lines-explained": "sorted_intervals = sorted(intervals, key=lambda x: x[0]) # This line sorts the intervals in ascending order based on the first element of each interval."
       },
@@ -744,7 +707,7 @@ Finally, it returns the \`merged\` list.`,
           "incorrect-choice-3": "It checks if the current interval is greater than the previous interval."
         },
         "question-code-lines": [
-          6
+          5
         ],
         "question-code-lines-explained": "if current[0] <= previous[1]: # This line checks if the current interval overlaps with the previous interval."
       },
@@ -753,7 +716,7 @@ Finally, it returns the \`merged\` list.`,
         "question": "What does the 'append' function do in this code?",
         "answer": "It adds the current interval to the list of merged intervals.",
         "question-code-lines": [
-          9
+          8
         ],
         "question-code-lines-explained": "merged.append(current) # This line adds the current interval to the list of merged intervals."
       }
@@ -761,50 +724,32 @@ Finally, it returns the \`merged\` list.`,
 },
 {
     "wrong-code": 
-    `1. def merge_intervals(intervals):
-2.     sorted_intervals = sorted(intervals, key=lambda x: x[1])
-3.     merged = [sorted_intervals[0]]
-4.     for current in sorted_intervals:
-5.         previous = merged[0]
-6.         if current[0] <= previous[1]:
-7.             merged[0] = (previous[0], max(previous[1], current[1]))
-8.         else:
-9.             merged.append(current)
-10.    return merged`,
+    `1. sorted_intervals = sorted(intervals, key=lambda x: x[1])
+2. merged = [sorted_intervals[0]]
+3. for current in sorted_intervals:
+4.     previous = merged[0]
+5.     if current[0] <= previous[1]:
+6.         merged[0] = (previous[0], max(previous[1], current[1]))
+7.     else:
+8.         merged.append(current)
+9.return merged`,
     "issues": {
         "logical-issue-1": {
             "type": "Incorrect Sorting Key",
-            "line": 2
+            "line": 1
         },
         "logical-issue-2": {
             "type": "Incorrect Indexing",
-            "line": 5
+            "line": 4
         },
         "logical-issue-3": {
             "type": "Incorrect Indexing",
-            "line": 7
+            "line": 6
         }
     }
 },
 {
     "subgoals": [
-      {
-        "title": "Function Definition",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the input to our function?",
-                "correct-choice": "A list of intervals",
-                "incorrect-choice-1": "Two separate intervals",
-                "incorrect-choice-2": "A single interval",
-                "incorrect-choice-3": "A list of numbers"
-              }
-            ],
-            "code-lines-to-be-revealed": [1]
-          }
-        ]
-      },
       {
         "title": "Sort Intervals",
         "sub-subgoal-items": [

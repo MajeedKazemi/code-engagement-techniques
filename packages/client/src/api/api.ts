@@ -325,6 +325,26 @@ export const apiGetPseudoCodex = (
         }),
     });
 
+export const apiGetPseudoVerifyCode = (
+    token: string | null | undefined,
+    description: string,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-pseudo/verifyCode", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
 export const apiGetHierarchicalCodex = (
     token: string | null | undefined,
     description: string,

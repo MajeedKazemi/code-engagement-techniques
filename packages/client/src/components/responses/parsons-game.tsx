@@ -191,12 +191,17 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
 
       useEffect(() => {
         // Check if all inputCorrect properties are true for each task
-        const allTrue = tasks.every((task) => task.inputCorrect === true);
-        setInputCorrect(allTrue);
-        const isSequential = areIdsSequential();
-        console.log(allTrue, isSequential, areWantedIndentationsEqual());
-        // setCompleted(allTrue);
-        setCompleted(isSequential && areWantedIndentationsEqual());
+        // const allTrue = tasks.every((task) => task.inputCorrect === true);
+        // setInputCorrect(allTrue);
+
+        // check if all tasks are in the done column
+        if(columns.done.items.length === tasks.length){
+          const isSequential = areIdsSequential();
+          console.log(isSequential, areWantedIndentationsEqual());
+          // setCompleted(allTrue);
+          setCompleted(isSequential && areWantedIndentationsEqual());
+        }
+
       }, [tasks, columns]);
 
 
@@ -356,21 +361,34 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     <>
     {
     <div className="submit-urgent-message">
-        {!timeUp && 
+        {/* {!timeUp && 
         <><span>You have <strong>{convertTime(timeLimit)}</strong> mins to finish the game!</span>
 
         <span className="time-indicator">
             {convertTime(elapsedTime / 1000)}
         </span>
         </>
+        } */}
+        {!gameOver && 
+            <button 
+                disabled={columns.done.items.length != tasks.length} 
+                type="button" 
+                className={`parson-hint-button btn btn-secondary ${columns.done.items.length !== tasks.length ? 'disabled' : ''}`} 
+                onClick={checkCode}>
+                Hint
+            </button>
         }
-        <button type="button" className="parson-hint-button btn btn-secondary" onClick={checkCode}>
-        Hint
-        </button>
-        <button type="button" className="check-button btn btn-secondary" onClick={checkCode}>
-        Check
-        </button>
-        {timeUp &&
+
+        {!gameOver && 
+            <button 
+                disabled={columns.done.items.length != tasks.length} 
+                type="button" 
+                className={`check-button btn btn-secondary ${columns.done.items.length !== tasks.length ? 'disabled' : ''}`} 
+                onClick={checkCode}>
+                Check
+            </button>
+        }
+        {/* {timeUp &&
         <button
           type="button"
           className="continue-button btn btn-secondary"
@@ -378,7 +396,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         >
           Continue
         </button>
-        }
+        } */}
         {gameOver && <span id="game-over" style={{opacity:0}}>Game Over</span>}
     </div>
     }

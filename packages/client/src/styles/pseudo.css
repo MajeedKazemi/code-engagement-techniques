@@ -46,7 +46,11 @@
     padding: 12px 0 12px 0;
     overflow-y: scroll;
     width: 100%;
-    height: calc(100% - 28px - 40vh - 2.5rem);
+    height: calc(100% - 28px - 40vh - 2.5rem - 50px);
+}
+
+.pseudocode-verify-button-container {
+    height: 50px !important;
 }
 
 .modal-body p {
@@ -177,6 +181,14 @@
     width: 75%;
 }
 
+.pseudocode-verify-button-container button {
+    background-color: #0baa0b;
+    outline: none;
+    border: none;
+    float: right;
+    margin-right: 1rem;
+}
+
 .hoverable-code-line-explanation {
     padding: 12px;
 }
@@ -197,3 +209,4 @@
 .expandable-button.minus{
     color: rgba(135,77,193,255);
 }
+

@@ -284,6 +284,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor,
     const [questions, setQuestions] = useState<QuestionInterface[]>([]);
     const [isOver, setIsOver] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     const generateCode = () => {
@@ -559,16 +560,25 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor,
         return () => clearInterval(interval);
     }, []);
 
-    const closePopup = () => {
-        setIsOpen(false);
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        revealCancelClicked = !revealCancelClicked;
-    };
+
+    const closePopup = async () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleModalClick = (confirmed: boolean) => {
+        setIsModalOpen(false);
+        
+        if (confirmed) {
+          setIsOpen(false);
+          const overlayElement = document.querySelector('.overlay') as HTMLElement;
+          const editorElement = document.querySelector('.editor') as HTMLElement;
+          overlayElement!.style.display = 'none';
+          editorElement.style.zIndex = '1';
+          setGeneratedCode("");
+          setGeneratedExplanation("");
+          revealCancelClicked = !revealCancelClicked;
+        }
+      };
     
     useEffect(() => {
         if(isOver){
@@ -614,6 +624,17 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({ prompt, editor,
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Next
                   </button>
+                  {isModalOpen && (
+                      <div className="modal-next-confirm">
+                        <div className="modal-next-confirm-content">
+                        <h3>Are you sure you want to go to the next task?</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
+                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        </div>
+                        </div>
+                      </div>
+                  )}
                 </div>
               </div>
             )}

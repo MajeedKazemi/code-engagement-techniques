@@ -12,8 +12,6 @@ import IconsDoc from '../docs/icons-doc';
 
 interface ExcutionStepsProps {
     code: string;
-    contextCode: any;
-    format: string[];
     backendCodes: string[];
 }
 
@@ -46,7 +44,7 @@ function deepCopy(arr: any[]): any[] {
     return arr.map(item => Array.isArray(item) ? deepCopy(item) : item);
 }
 
-export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode, format, backendCodes }) => {
+export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes }) => {
     const { context } = useContext(AuthContext);
     const { socket } = useContext(SocketContext);
     const [editor, setEditor] =
@@ -342,7 +340,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
           setCurrStep(excutionSteps[currentStep]);
         }
         // const targetDivs = document.getElementsByClassName('step-by-step-questions-container');
-        if (questionStop === currentStep && currentStep > 2) {
+        if (questionStop === currentStep && currentStep > 1) {
             // targetDivs[i].classList.add('active');
             setIsOnStop(true);
         } else {
@@ -352,38 +350,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
     }, [currentStep]);
 
     useEffect(() => {
-        // change the pesudo Context code object to a list of lines
-        for(var i = 0; i < contextCode.length; i++){
-            var temp: string[] = [];
-            temp = contextCode[i].map((obj: { pseudo: string; }) => obj.pseudo);
-            setPesudoCode([...pesudoCode, temp]);
-        }
-            
-        //set backend code
-        let input:ExcutionStepsProps = {
-            code: code, 
-            contextCode: contextCode,
-            format: format,
-            backendCodes: backendCodes
-        };
-        let tempCodes = combineCodes(input).join("\n");
-        // let cleanedCode = tempCodes.split('\n').filter(line => line.trim() !== '').join('\n');
 
-        setBackendCode(tempCodes);
+        setBackendCode(code);
     }, []);
-
-    function combineCodes({ code, contextCode, format, backendCodes }: ExcutionStepsProps): string[] {
-        return format.map((fmt, i) => {
-            if (fmt === 'new') {
-                return code;
-            } else {
-                return backendCodes[i < format.indexOf('new') ? i : i - 1];
-            }
-        });
-    }
 
     useEffect(() => {
         if(backendCode.length > 0){
+            console.log("backendCode", backendCode);
             // console.log("backendCode", backendCode);
             generateTrace();
         }
@@ -613,7 +586,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, contextCode,
                         {questions.length > 0 && questions.map((item, index) => (
                             questions[index].step-1 <= currentStep && 
                             <div className='steps-question-div'>
-                                <p className="question">given the current state of the variables, what will be the value of <span>{questions[index].variable}</span>  after the highlighted line is executed? </p>
+                                <p className="question">Given the current state of the variables, what will be the value of <span>{questions[index].variable}</span>  after the highlighted line is executed? </p>
                                 {/* {needHint && <p className="hint">Hint: {hintGenerating ? <ChatLoader/> : questionHint}</p>} */}
                                 {currentWrongAnswers && currentWrongAnswers[index] && currentWrongAnswers[index].length > 0 && currentWrongAnswers[index].map((item) => (
                                     item.length > 0 && <div className="step-answered-container">

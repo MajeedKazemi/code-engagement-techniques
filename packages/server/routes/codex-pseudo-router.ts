@@ -18,6 +18,55 @@ function getCodeWithLine(code: string) {
 
 export const pseudoRouter = express.Router();
 
+pseudoRouter.post("/verifyCode", verifyUser, async (req, res, next) => {
+    const { description, code, studentCode } = req.body;
+    const userId = (req.user as IUser)._id;
+
+    if (description !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+`
+You want to verify a student's code given [task-description] and [solution-code]. You also have access to the student's code [student-code]. You need to verify if the student's code is correct or not by checking if there is any syntax error in python or if the main logic is correct. Minor logic or test case mismatches are fine, but the main logic should be correct, and there should not be any syntax error. 
+
+the output format should be 1 or 0 only. 
+
+return "1" if the student's code is correct, otherwise return "0".
+`,
+            }
+        ];
+
+        messages.push({
+            role: "user",
+            content: `[task-description]: ${description}\n[solution-code]:${code}[end-solution-code]\n[student-code]:${studentCode}[end-student-code]`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-4",
+            messages,
+            temperature: 0.1,
+            max_tokens: 10,
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+            if(response){
+
+                res.json({
+                    correct: response,
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
 pseudoRouter.post("/generate", verifyUser, async (req, res, next) => {
     const { description, code } = req.body;
     const userId = (req.user as IUser)._id;
