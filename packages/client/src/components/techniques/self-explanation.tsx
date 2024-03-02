@@ -142,12 +142,11 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     const [generatedCode, setGeneratedCode] = useState('');
     const [generatedExplanation, setGeneratedExplanation] = useState('');
     const [generatedQuestions, setGeneratedQuestions] = useState<SelfExplainQuestion[]>([]);
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [isOver, setIsOver] = useState(false);
-    const baselineRef = useRef<HTMLDivElement | null>(null);
-    const explainRef = useRef<HTMLDivElement | null>(null);
     const [passed, setPassed] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
 
 
     useEffect(() => {
@@ -169,6 +168,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
             );
         } else {
             setWaiting(true);
+            setIsTimerStarted(true);
 
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -460,6 +460,38 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
       }
   }, [isOver]);
 
+  useEffect(() => {
+    let intervalId: number | null = null;
+
+    if (isTimerStarted) {
+      // Setup a timer that increments the counter every second
+      intervalId = window.setInterval(() => {
+        setCounter((prevCounter) => {
+          if (prevCounter === 4) { // Check if the counter is about to become 5
+            console.log("Timer has reached 5 seconds.");
+            
+            // Implement any additional logic here
+            if (intervalId !== null) {
+              window.clearInterval(intervalId); // Clears the interval
+            }
+            setIsTimerStarted(false); // Optionally stops the timer
+
+            return 5; // Update the state to reflect it reached 5
+          }
+          return prevCounter + 1; // Increment the counter
+        });
+      }, 1000); // Run this every 1000 milliseconds (1 second)
+    }
+
+    // Cleanup function
+    return () => {
+      if (intervalId !== null) {
+        window.clearInterval(intervalId); 
+      }
+    };
+  }, [isTimerStarted]);
+
+
     return (
           <div>
             {isOver && (
@@ -476,12 +508,12 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                     <b>Prompts: </b> {prompt}
                   </p> */}
 
-                  {waiting && (
+                  {(waiting || counter < 5) && (
                     <div className="gptLoader">
                       <GPTLoader />
                     </div>
                   )}
-                  {!waiting && (
+                  {(!waiting && counter >= 5) && (
                   
                     <SelfExplain code={generatedCode} questions={generatedQuestions}/>
                   )}

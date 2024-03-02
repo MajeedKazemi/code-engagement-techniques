@@ -6,13 +6,13 @@ import { LogType, log } from '../../utils/logger';
 import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 import BaselineGenerateCode from '../responses/baseline-chat';
 import IconsDoc from '../docs/icons-doc';
+import { GPTLoader } from '../loader';
 
 export let pseudoCancelClicked = false;
 
 interface PseudoGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
-    code: string;
     taskID: string;
 }
 
@@ -142,7 +142,7 @@ function responseToPseudo(response: any): PseudoCodeSubgoals[] {
 //     }
 // ]
 
-const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, code, taskID })  => {
+const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const pseudoRef = useRef<HTMLDivElement | null>(null);
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
@@ -166,6 +166,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [generatedPseudo, setGeneratedPseudo] = useState<PseudoCodeSubgoals[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [checking, setChecking] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
 
     // function responseToPseudo(response: any, code:string): PseudoCodeSubgoals[] {
     // }
@@ -347,6 +349,37 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //     }
     // };
 
+    useEffect(() => {
+        let intervalId: number | null = null;
+    
+        if (isTimerStarted) {
+          // Setup a timer that increments the counter every second
+          intervalId = window.setInterval(() => {
+            setCounter((prevCounter) => {
+              if (prevCounter === 4) { // Check if the counter is about to become 5
+                console.log("Timer has reached 5 seconds.");
+                
+                // Implement any additional logic here
+                if (intervalId !== null) {
+                  window.clearInterval(intervalId); // Clears the interval
+                }
+                setIsTimerStarted(false); // Optionally stops the timer
+    
+                return 5; // Update the state to reflect it reached 5
+              }
+              return prevCounter + 1; // Increment the counter
+            });
+          }, 1000); // Run this every 1000 milliseconds (1 second)
+        }
+    
+        // Cleanup function
+        return () => {
+          if (intervalId !== null) {
+            window.clearInterval(intervalId); 
+          }
+        };
+      }, [isTimerStarted]);
+    
     const generatePseudoCode = () => {
         if (prompt.length === 0) {
             setFeedback(
@@ -354,6 +387,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             );
         } else {
             setWaiting(true);
+            setIsTimerStarted(true);
   
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -583,7 +617,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             apiGetPseudoVerifyCode(
                 context?.token,
                 prompt,
-                code,
+                generatedCode,
                 userInputCode
             )
                 .then(async (response) => {
@@ -625,8 +659,10 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 </p> */}
 
                 {/* parsons main div */}
-                {waiting && (
-                  <p>Generating</p>
+                {(waiting) && (
+                    <div className="gptLoader">
+                      <GPTLoader />
+                    </div>
                 )}
                 {(!waiting) && (
                   <div className='pesudocode-container-div'>

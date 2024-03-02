@@ -116,7 +116,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "pseudo":
         addOverlay();
         generatedCodeComponent = 
-          <PseudoGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor} taskID={taskID}/>
+          <PseudoGenerateCode prompt={userInput} editor={editor} taskID={taskID}/>
         break;
       case "parsons":
         addOverlay();
@@ -261,13 +261,13 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
 
   // const technique = 'baseline';
-  const technique = 'pseudo';
+  // const technique = 'pseudo';
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
   // const technique = 'stepByStep';
   // const technique = 'verify';
-  // const technique = 'leadReveal';
+  const technique = 'leadReveal';
 
   const handleClick = () => {
 

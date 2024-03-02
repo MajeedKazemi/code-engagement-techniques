@@ -759,17 +759,17 @@ The \`print\` function is used to display the result of the \`merge_intervals\` 
 },
 {
   "wrong-code": 
-  `def merge_intervals(intervals):
-      intervals.sort(key=lambda x: x[1])
-      merged = [intervals[0]]
-      for current in intervals[1:]:
-          if current[0] >= merged[-1][1]:
-              merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
-          else:
-              merged.append(current)
-      return merged
+`def merge_intervals(intervals):
+  intervals.sort(key=lambda x: x[1])
+  merged = [intervals[0]]
+  for current in intervals[1:]:
+      if current[0] >= merged[-1][1]:
+          merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
+      else:
+          merged.append(current)
+  return merged
   
-  print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
+print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
   
   "issues":{
               "logical-issue-1": {
@@ -909,11 +909,11 @@ new AuthoringTask(
   "2",
   "Write a Python function to calculate the sum of even numbers in a given list.",
 `def calculate_even_sum(numbers):
-even_sum = 0
-for num in numbers:
-    if num % 2 == 0:
-        even_sum += num
-return even_sum
+    even_sum = 0
+    for num in numbers:
+        if num % 2 == 0:
+            even_sum += num
+    return even_sum
 
 result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 print("Sum of even numbers:", result)`,
@@ -1342,7 +1342,15 @@ Finally, the \`print\` function is used to display the result.`,
 },
 {
   "wrong-code": 
-  "def calculate_even_sum(numbers):\n    even_sum = 0\n    for num in numbers:\n        if num % 2 != 0:\n            even_sum += num\n    return even_sum\n\nresult = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nprint('Sum of even numbers:', result)",
+`def calculate_even_sum(numbers):
+  even_sum = 0
+  for num in numbers:        
+    if num % 2 != 0:            
+      even_sum += num
+  return even_sum
+  
+result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print('Sum of even numbers:', result)`,
   "issues":{
               "logical-issue-1": {
                       "type": "Incorrect Boolean Logic",

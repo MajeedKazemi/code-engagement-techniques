@@ -8,6 +8,7 @@ import { highlightCode } from '../../utils/utils';
 import { ExcutionSteps } from '../responses/excution-steps';
 import BaselineGenerateCode from '../responses/baseline-chat';
 import IconsDoc from '../docs/icons-doc';
+import { GPTLoader } from '../loader';
 
 export let excutionCancelClicked = false;
   
@@ -37,8 +38,40 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     const [isOver, setIsOver] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
     
 
+    useEffect(() => {
+      let intervalId: number | null = null;
+  
+      if (isTimerStarted) {
+        // Setup a timer that increments the counter every second
+        intervalId = window.setInterval(() => {
+          setCounter((prevCounter) => {
+            if (prevCounter === 4) { // Check if the counter is about to become 5
+              console.log("Timer has reached 5 seconds.");
+              
+              // Implement any additional logic here
+              if (intervalId !== null) {
+                window.clearInterval(intervalId); // Clears the interval
+              }
+              setIsTimerStarted(false); // Optionally stops the timer
+  
+              return 5; // Update the state to reflect it reached 5
+            }
+            return prevCounter + 1; // Increment the counter
+          });
+        }, 1000); // Run this every 1000 milliseconds (1 second)
+      }
+  
+      // Cleanup function
+      return () => {
+        if (intervalId !== null) {
+          window.clearInterval(intervalId); 
+        }
+      };
+    }, [isTimerStarted]);
     // const generateCode = () => {
     //     if (prompt.length === 0) {
     //         setFeedback(
@@ -307,6 +340,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
             );
         } else {
             setWaiting(true);
+            setIsTimerStarted(true);
   
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -406,6 +440,8 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
             const editorElement = document.querySelector('.editor') as HTMLElement;
             overlayElement!.style.display = 'none';
             editorElement.style.zIndex = '1';
+            var outputDiv = document.querySelector('.output');
+            outputDiv!.innerHTML = '';
         }
     }, [isOver]);
 
@@ -426,10 +462,12 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                   </p> */}
 
                   {/* parsons main div */}
-                  {waiting && (
-                    <p>Generating</p>
+                  {(waiting || counter < 5) && (
+                    <div className="gptLoader">
+                      <GPTLoader />
+                    </div>
                   )}
-                  {(!waiting) && (
+                  {(!waiting && counter >= 5) && (
                   
                     <ExcutionSteps code={generatedCode} backendCodes={backendCodes}/>
                   )}

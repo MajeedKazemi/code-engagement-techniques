@@ -31,9 +31,11 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
     const { context, setContext } = useContext(AuthContext);
     const baselineRef = useRef<HTMLDivElement | null>(null);
     const explanationRef = useRef<HTMLParagraphElement | null>(null);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
 
     useEffect(() => {
-        if (explanation && explanationRef.current) {
+        if (explanation.length > 0 && explanationRef.current) {
             explanationRef.current.innerHTML = highlightPsudo(explanation, "code-highlight");
         }
     }, [explanation]);
@@ -48,6 +50,37 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
         setGeneratedExplanation("");
         baselineCancelClicked = !baselineCancelClicked;
     };
+
+    useEffect(() => {
+      let intervalId: number | null = null;
+  
+      if (isTimerStarted) {
+        // Setup a timer that increments the counter every second
+        intervalId = window.setInterval(() => {
+          setCounter((prevCounter) => {
+            if (prevCounter === 4) { // Check if the counter is about to become 5
+              console.log("Timer has reached 5 seconds.");
+              
+              // Implement any additional logic here
+              if (intervalId !== null) {
+                window.clearInterval(intervalId); // Clears the interval
+              }
+              setIsTimerStarted(false); // Optionally stops the timer
+  
+              return 5; // Update the state to reflect it reached 5
+            }
+            return prevCounter + 1; // Increment the counter
+          });
+        }, 1000); // Run this every 1000 milliseconds (1 second)
+      }
+  
+      // Cleanup function
+      return () => {
+        if (intervalId !== null) {
+          window.clearInterval(intervalId); 
+        }
+      };
+    }, [isTimerStarted]);
     
     const handleInsertCodeClick = () => {
         if (editor) {
@@ -225,6 +258,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
             );
         } else {
             setGenerating(true);
+            setIsTimerStarted(true);
   
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -259,6 +293,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
                                         const data = await response.json();
     
                                         setGeneratedExplanation(data.explanation);
+                                        // console.log(data.explanation);
                                         setGenerating(false);                           
                                     }
                                 })
@@ -344,26 +379,27 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
           <div className='assistant-icon'><IconsDoc iconName="spark" /></div>
           <div className="baseline-feedback-assistant chat-bubble">
             <div className="baseline-feedback-assistant-text">
-              {generating && <div className='chat-loader'>Generating <ChatLoader/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>} 
-              {!generating && <div className='chat-loader-finish'>Generated Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </div>} 
+              {(generating)&& <div className='chat-loader'>Generating <ChatLoader/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>} 
+              {(!generating) && <div className='chat-loader-finish'>Generated Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </div>} 
             </div>
           </div>
         </div>
       </div>
-      {!generating &&
-    //   <div ref={baselineRef} className="read-only-editor"></div>
+      {(!generating) &&
+      <>
+    {/* //   <div ref={baselineRef} className="read-only-editor"></div> */}
         <div className="baseline-read-only-editor">
             {generatedCode && generatedCode.split("\n").map((line) => (
                 <HighlightedPartWithoutTab part={line} />
             ))}
         </div>
+        <div className="read-only-explaination"> 
+          <b>Code Explanation</b>
+          <p ref={explanationRef}></p>
+        </div>
+      </>
       }
-      {!generating && 
-      <div className="read-only-explaination"> 
-        <b>Code Explanation</b>
-        <p ref={explanationRef}></p>
-      </div>}
-      <div className={`generated-button-container ${generating ? "inactive" : ""}`}>
+      <div className={`generated-button-container ${(generating) ? "inactive" : ""}`}>
         <button className="gpt-button" onClick={cancelClick}>Next</button>
         <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
       </div>

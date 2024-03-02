@@ -31,6 +31,39 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
     const [passed, setPassed] = useState(false);
     const [generatedExplanationPerLine, setGeneratedExplanationPerLine] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
+
+    useEffect(() => {
+        let intervalId: number | null = null;
+    
+        if (isTimerStarted) {
+          // Setup a timer that increments the counter every second
+          intervalId = window.setInterval(() => {
+            setCounter((prevCounter) => {
+              if (prevCounter === 4) { // Check if the counter is about to become 5
+                console.log("Timer has reached 5 seconds.");
+                
+                // Implement any additional logic here
+                if (intervalId !== null) {
+                  window.clearInterval(intervalId); // Clears the interval
+                }
+                setIsTimerStarted(false); // Optionally stops the timer
+    
+                return 5; // Update the state to reflect it reached 5
+              }
+              return prevCounter + 1; // Increment the counter
+            });
+          }, 1000); // Run this every 1000 milliseconds (1 second)
+        }
+    
+        // Cleanup function
+        return () => {
+          if (intervalId !== null) {
+            window.clearInterval(intervalId); 
+          }
+        };
+      }, [isTimerStarted]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -262,6 +295,7 @@ const generateCode = () => {
         );
     } else {
         setWaiting(true);
+        setIsTimerStarted(true);
 
         const focusedPosition = editor?.getPosition();
         const userCode = editor?.getValue();
@@ -401,12 +435,12 @@ const generateCode = () => {
                   <b>Prompts: </b> {prompt}
                 </p> */}
 
-                {waiting && (
-                  <div className="gptLoader">
-                    <GPTLoader />
-                  </div>
+                {(waiting || counter < 5) && (
+                    <div className="gptLoader">
+                      <GPTLoader />
+                    </div>
                 )}
-                {!waiting && (
+                {(!waiting && counter >= 5) && (
                     <div 
                         className="writeover-code-reader" 
                         tabIndex={-1} 
