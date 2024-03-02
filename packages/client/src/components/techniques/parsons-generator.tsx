@@ -8,6 +8,7 @@ import { highlightCode } from '../../utils/utils';
 import { ParsonsGame } from '../responses/parsons-game';
 import IconsDoc from '../docs/icons-doc';
 import BaselineGenerateCode from '../responses/baseline-chat';
+import { GPTLoader } from '../loader';
 
 export let parsonsCancelClicked = false;
 
@@ -75,6 +76,8 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
 
     // const generateCode = () => {
     //     if (prompt.length === 0) {
@@ -246,6 +249,37 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     //     }
     // };
 
+    useEffect(() => {
+      let intervalId: number | null = null;
+  
+      if (isTimerStarted) {
+        // Setup a timer that increments the counter every second
+        intervalId = window.setInterval(() => {
+          setCounter((prevCounter) => {
+            if (prevCounter === 4) { // Check if the counter is about to become 5
+              console.log("Timer has reached 5 seconds.");
+              
+              // Implement any additional logic here
+              if (intervalId !== null) {
+                window.clearInterval(intervalId); // Clears the interval
+              }
+              setIsTimerStarted(false); // Optionally stops the timer
+  
+              return 5; // Update the state to reflect it reached 5
+            }
+            return prevCounter + 1; // Increment the counter
+          });
+        }, 1000); // Run this every 1000 milliseconds (1 second)
+      }
+  
+      // Cleanup function
+      return () => {
+        if (intervalId !== null) {
+          window.clearInterval(intervalId); 
+        }
+      };
+    }, [isTimerStarted]);
+    
     const generateCode = () => {
         if (prompt.length === 0) {
             setFeedback(
@@ -253,6 +287,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
             );
         } else {
             setWaiting(true);
+            setIsTimerStarted(true);
   
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -422,10 +457,12 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   </p> */}
 
                   {/* parsons main div */}
-                  {waiting && (
-                    <p>Generating</p>
+                  {(waiting || counter < 5) && (
+                    <div className="gptLoader">
+                      <GPTLoader />
+                    </div>
                   )}
-                  {!waiting && (
+                  {(!waiting && counter >= 5) && (
                   
                     <ParsonsGame tasksOri={shuffleArray(toTask(generatedQuestion, generatedCode))} sectionHeight={sectionHeightRef.current}/>
                   )}

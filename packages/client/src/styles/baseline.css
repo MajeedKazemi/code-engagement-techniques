@@ -14,7 +14,7 @@
 .chat-user-prompt{
     margin: 2rem 1rem;
     overflow-y: scroll;
-    height: calc(100% - 55px);
+    height: calc(100% - 55px - 2rem);
 }
 
 .baseline-generator-container{

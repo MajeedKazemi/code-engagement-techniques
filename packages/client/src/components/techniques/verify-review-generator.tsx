@@ -8,6 +8,7 @@ import { highlightCode } from '../../utils/utils';
 import { VerifyReview } from '../responses/verify-review';
 import BaselineGenerateCode from '../responses/baseline-chat';
 import IconsDoc from '../docs/icons-doc';
+import { GPTLoader } from '../loader';
 
 export let verifyCancelClicked = false;
   
@@ -55,6 +56,8 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
     const [isOver, setIsOver] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
+    const [counter, setCounter] = useState<number>(0);
     
     const generateCode = () => {
         if (prompt.length === 0) {
@@ -63,6 +66,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
             );
         } else {
             setWaiting(true);
+            setIsTimerStarted(true);
   
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -116,7 +120,8 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                                             const data = await response.json();
                                             // console.log(data.verifyReview);
                                             let re = data.verifyReview;
-                                            const wrongCode = removeLineNumbers(re["wrong-code"]);
+                                            const wrongCode = re["wrong-code"];
+                                            console.log(wrongCode);
                                             const issues = generateQuestionsJSON(re.issues);
                                             setIssueCode(wrongCode);
                                             setQuestions(issues);
@@ -145,6 +150,37 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
             
         }
     };
+
+    useEffect(() => {
+      let intervalId: number | null = null;
+  
+      if (isTimerStarted) {
+        // Setup a timer that increments the counter every second
+        intervalId = window.setInterval(() => {
+          setCounter((prevCounter) => {
+            if (prevCounter === 4) { // Check if the counter is about to become 5
+              console.log("Timer has reached 5 seconds.");
+              
+              // Implement any additional logic here
+              if (intervalId !== null) {
+                window.clearInterval(intervalId); // Clears the interval
+              }
+              setIsTimerStarted(false); // Optionally stops the timer
+  
+              return 5; // Update the state to reflect it reached 5
+            }
+            return prevCounter + 1; // Increment the counter
+          });
+        }, 1000); // Run this every 1000 milliseconds (1 second)
+      }
+  
+      // Cleanup function
+      return () => {
+        if (intervalId !== null) {
+          window.clearInterval(intervalId); 
+        }
+      };
+    }, [isTimerStarted]);
 
     // const generateCode = () => {
     //     if (prompt.length === 0) {
@@ -386,10 +422,12 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                   </p> */}
 
                   {/* parsons main div */}
-                  {waiting && (
-                    <p>Generating</p>
-                  )}
-                  {(!waiting) && (
+                  {(waiting || counter < 5) && (
+                    <div className="gptLoader">
+                      <GPTLoader />
+                    </div>
+                )}
+                {(!waiting && counter >= 5) && (
                     <VerifyReview code={generatedCode} issueCode={issueCode} questions={questons}/>
                     
                   )}

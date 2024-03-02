@@ -53,7 +53,7 @@ return "1" if the student's code is correct, otherwise return "0".
         if (result.data.choices && result.data.choices?.length > 0) {
             const response = result.data.choices[0].message?.content;
             if(response){
-
+                console.log(code, studentCode, response);
                 res.json({
                     correct: response,
                     success: true,
