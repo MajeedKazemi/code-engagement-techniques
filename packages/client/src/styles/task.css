@@ -52,7 +52,7 @@
 .coding-task-container {
     padding: 12px;
     display: flex;
-    height: calc(100% - 24px);
+    height: 100%;
 }
 
 .task-sample-output {
@@ -175,10 +175,12 @@
     font-weight: 500;
     margin: 0;
     padding: 12px;
-    color: #fff;
-    background-color: #2391ff;
+    color: black;
+    border: rgba(231,233,145,1) 4px solid;
     border-radius: 6px;
     margin-top: 12px;
+    margin-bottom: 12px;
+    height: 40px;
 }
 
 .time-indicator-container {
@@ -220,4 +222,45 @@
     width: 16px;
     height: 16px;
     margin-right: 8px;
+}
+
+
+.modal-next-confirm {
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-next-confirm-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+.modal-next-confirm h3 {
+    text-align: center;
+  }
+
+.modal-next-confirm button {
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    margin: 5px;
+    font-size: 15px;
+    text-align: center;
+    background-color: rgb(0, 122, 204);
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
 }

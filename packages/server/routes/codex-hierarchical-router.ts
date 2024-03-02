@@ -324,7 +324,6 @@ interface CodeRepresentation {
         };
       
     });
-    console.log(codeRepresentation);
     return codeRepresentation;
   }
 
@@ -351,7 +350,6 @@ interface CodeRepresentation {
       
       objectList.push({ title, code, description });
     }
-    console.log(objectList);
     return objectList;
   }
   

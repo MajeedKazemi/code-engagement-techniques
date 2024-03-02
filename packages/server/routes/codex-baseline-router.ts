@@ -8,6 +8,122 @@ import { verifyUser } from "../utils/strategy";
 export const codexRouter = express.Router();
 
 
+codexRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
+    const { prompt, task } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (prompt !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+`
+Given a set of tasks descriptions, compare the specifications provided in the [student-prompt] with the [task-descriptions]. 
+
+First, try to find a matches description with the student prompt to the task description, 
+
+if not found a match, return matched = no in the JSON.
+
+if found the match, score how fully and accurately the [student-prompt] describes the [task-description] using a number from 0 (completely irrelevant or under-specified) to 5 (fully specified and accurate). also if it is under-specified, provide a list of bullet points about what needs to be added to the [student-prompt] so that it fully describes the [task-descriptions]. 
+
+Include all the missing specifications in the response. If an example is missing, include the example in the missing specifications as well.
+
+Use the following JSON template:
+{
+    "matched": <yes or no>
+    "accuracy-score": <number-0-to-5>,
+    "matched-taskId": <taskID>
+    "missing-specifications": [
+        "<10-15 word missing specification>",
+        "<10-15 word missing specification>",
+        "<10-15 word missing specification>",
+        ...
+    ]
+}
+`,
+            },
+            {
+                role: "user",
+                content: `[student-prompt]
+                merges the overlapping intervals.
+                [end-student-prompt]
+                [task-descriptions]
+                [
+                {id: "1", description:Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.},
+                {id: "2", description:Write a Python function to calculate the sum of even numbers in a given list.},
+                {id:  "3", description:Write a function that takes a list of strings and returns the longest common prefix.}
+                ]
+                `,
+            },
+            {
+                role: "assistant",
+                content: `{
+                    "matched": "yes",
+                    "accuracy-score": 5,
+                    "matched-taskId": "1",
+                    "missing-specifications": []
+                }`,
+            },
+            {
+                role: "user",
+                content: `[student-prompt]
+                some prompt
+                [end-student-prompt]
+                [task-descriptions]
+                [
+                {id: "1", description:Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.},
+                {id: "2", description:Write a Python function to calculate the sum of even numbers in a given list.},
+                {id:  "3", description:Write a function that takes a list of strings and returns the longest common prefix.}
+                ]
+                `,
+            },
+            {
+                role: "assistant",
+                content: `{
+                    "matched": "no",
+                    "accuracy-score": 0,
+                    "matched-taskId": null,
+                    "missing-specifications": []
+                }`,
+            }
+        ];
+
+
+        messages.push({
+            role: "user",
+            content: `[task-description]: ${task}\n[student-prompt]: ${prompt}[end-student-prompt]`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo-16k",
+            messages,
+            temperature: 0,
+            max_tokens: 200,
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+
+            if(response){
+                res.json({
+                    response: parseResponse(response),
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
+function parseResponse(response: string): any {
+    return JSON.parse(response);
+}
+
+
+
 codexRouter.post("/generate", verifyUser, async (req, res, next) => {
     const { description, context } = req.body;
     const userId = (req.user as IUser)._id;

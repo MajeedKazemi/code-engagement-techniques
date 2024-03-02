@@ -76,6 +76,15 @@
     font-family: "Courier New", Courier, monospace;
 }
 
+.code-highlight {
+    color:#00538c;
+    font-weight: 600;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 2px 8px;
+    font-family: "Courier New", Courier, monospace;
+}
+
 .build-in-function {
     color:#1e8c00;
     font-weight: 600;
@@ -113,87 +122,7 @@
     font-family: "Courier New", Courier, monospace;
 }
 
-.hoverable-code-line-explanation {
-    z-index: 99;
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background-color: #91d8dc;
-    color: #000;
-    padding: 12px;
-    line-height: 30px;
-    border-radius: 0 0 6px 6px;
 
-    width: 75%;
-}
-
-.monaco-code-writer{
-    height: calc(55% - 2px);
-    border: solid 1px #ccc;
-    border-radius: 15px;
-    overflow: hidden;
-    position: relative;
-    max-height: 30%;
-}
-
-.hoverable-code-container {
-    margin-bottom: 12px;
-}
-
-.hoverable-code-line-container {
-    position: relative;
-    background-color: #fff;
-}
-
-.hoverable-code-header {
-    padding: 12px 16px;
-    border-radius: 12px 12px 0 0;
-    /* background-color: #005fb8; */
-    border: solid 1px #0a16c0;
-    display: flex;
-    flex-direction: row;
-    font-weight: bold;
-}
-
-.hoverable-code-line-container .hoverable-code {
-    line-height: 30px;
-    cursor: pointer;
-    display: block;
-    padding: 0 0 0 16px;
-}
-
-.hoverable-code-line-container:hover {
-    /* background-color: #003575; 
-    color: #fff; */
-    border-radius: 12px;
-    border: solid 1px #0a16c0;
-}
-
-.hoverable-code-line-container .exp-inline-code {
-    font-family: "Courier New", Courier, monospace;
-    padding: 2px 8px;
-    background-color: #00538c;
-    font-weight: 600;
-    color: #fff;
-    border-radius: 4px;
-}
-
-.hoverable-code-content {
-    padding: 12px;
-    background-color: #fff;
-    border-radius: 0 0 12px 12px;
-    border: 1px solid #1e4976;
-
-    /* background-color: #001a41; */
-}
-
-.pesudo-code-reader{
-    font-family: "Courier New", Courier, monospace;
-    font-size: 15px;
-    line-height: 30px;
-    background-color: #edf8f9; 
-    border-radius: 15px;
-}
 
 mark {
     background: var(--color-accent);
@@ -204,30 +133,12 @@ mark {
 
   
   .card-question {
-    background: var(--color-background);
-    padding: 1vw;
-    border-radius: var(--size-radius);
-    border: 3px solid var(--color-shadow, currentColor);
-    box-shadow: .5rem .5rem 0 var(--color-shadow, currentColor);
-    max-height: 86vh;
-    overflow: auto;
-    max-width: 35vw;
-    
-    &--inverted {
-      --color-background: var(--color-dark);
-      color: var(--color-light);
-      --color-shadow: var(--color-accent);
-    }
-    
-    &--accent {
-      --color-background: var(--color-signal);
-      --color-accent: var(--color-light);
-      color: var(--color-dark);
-    }
-    
-    *:first-child {
-      margin-top: 0;
-    }
+    background-color: rgba(253,255,224,255);
+    border-radius: 6px;
+    width: calc(45vw - 60px);
+    right: 10px;
+    margin-left: 1vw;
+    height: 100%;
   }
   
   

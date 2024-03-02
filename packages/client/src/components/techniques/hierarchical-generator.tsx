@@ -373,7 +373,7 @@ const HierachicalGenerateCode: React.FC<HierarchicalGenerateCodeProps> = ({ prom
                 </div>
             </div>
             <div className="button-container" style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
-                <button disabled={waiting} className="gpt-button" onClick={cancelClick}>Cancel</button>
+                <button disabled={waiting} className="gpt-button" onClick={cancelClick}>Next</button>
                 <button disabled={waiting} className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
             </div>
         </>

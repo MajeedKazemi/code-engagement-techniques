@@ -132,11 +132,12 @@ export const CodingTask = (props: CodingTaskProps) => {
             <div className="container">
                 <div className="card p-md">
                     <p>
-                        You have{" "}
+                        {/* You have{" "}
                         <span className="remaining-time">
                             {convertTime(props.timeLimit)} minutes
                         </span>{" "}
-                        to finish this task.
+                        to finish this task. */}
+                        Start the task when you are ready.
                     </p>
                     <button className="btn btn-primary" onClick={handleStart}>
                         Start task
@@ -148,7 +149,7 @@ export const CodingTask = (props: CodingTaskProps) => {
 
     return (
         <div className="coding-task-container">
-            <section className="task-info">
+            {/* <section className="task-info">
                 <div className="task-description-container">
                     <span className="task-title">Task Description:</span>
                     <span className="task-subtitle">
@@ -190,38 +191,8 @@ export const CodingTask = (props: CodingTaskProps) => {
                     ) : null}
                 </div>
 
-                {/* <div className="task-submission-buttons-container">
-                    <div className="submit-container">
-                        <div className="submit-attention">
-                            <b>ATTENTION</b>
-                            <br />
-                            <br />
-                            You can only submit <b>ONCE</b>. You will <b>NOT</b>{" "}
-                            receive feedback. So please double-check your
-                            solution before submitting.
-                        </div>
-                        <br />
-                        <Button
-                            class={blink ? "btn-attention" : ""}
-                            onClick={handleSubmitTask}
-                            type="block"
-                            disabled={!canSubmit}
-                        >
-                            Submit and Start Next Task
-                        </Button>
-
-                        {reachedTimeLimit ? (
-                            <div className="submit-urgent-message">
-                                <span>Please submit the code sooner!</span>
-
-                                <span className="time-indicator">
-                                    {convertTime(elapsedTime / 1000)}
-                                </span>
-                            </div>
-                        ) : null}
-                    </div>
-                </div> */}
-            </section>
+                
+            </section> */}
 
             <Editor
                 ref={editorRef}

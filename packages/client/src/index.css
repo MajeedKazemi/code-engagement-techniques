@@ -12,10 +12,16 @@
 @import "styles/task.css";
 @import "styles/codex.css";
 @import "styles/documentation.css";
+@import "styles/baseline.css";
+@import "styles/pseudo.css";
 @import "styles/accordion.css";
 @import "styles/parsons.css";
 @import "styles/tokens.css";
 @import "styles/writeover.css";
+@import "styles/self-explain.css";
+@import "styles/verify.css";
+@import "styles/steps.css";
+@import "styles/reveal.css";
 
 body {
     font-family: "Poppins", sans-serif;

@@ -254,6 +254,41 @@ export const apiGetGeneratedCodeCodex = (
         }),
     });
 
+
+export const apiGetGeneratedFeedbackCodex = (
+    token: string | null | undefined,
+    prompt: string,
+    task: any[]
+) =>
+    fetch(env.API_URL + "/api/technique-baseline/generateFeedback", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+            task: task,
+        }),
+    });
+
+export const apiGetExplanationPerLineCodex = (
+    token: string | null | undefined,
+    code: string,
+) =>
+    fetch(env.API_URL + "/api/technique-writeover/generate", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+        }),
+});
+
 export const apiGetBaselineCodex = (
     token: string | null | undefined,
     description: string,
@@ -275,7 +310,7 @@ export const apiGetBaselineCodex = (
 export const apiGetPseudoCodex = (
     token: string | null | undefined,
     description: string,
-    context: string
+    code: string
 ) =>
     fetch(env.API_URL + "/api/technique-pseudo/generate", {
         method: "POST",
@@ -286,7 +321,27 @@ export const apiGetPseudoCodex = (
         },
         body: JSON.stringify({
             description: description,
-            context: context,
+            code: code,
+        }),
+    });
+
+export const apiGetPseudoVerifyCode = (
+    token: string | null | undefined,
+    description: string,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-pseudo/verifyCode", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            code: code,
+            studentCode: studentCode,
         }),
     });
 
@@ -307,6 +362,67 @@ export const apiGetHierarchicalCodex = (
             context: context,
         }),
     });
+
+export const apiGetGenerateQuestionByCode = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-explain/question", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
+export const apiGetFeedbackByResponse = (
+    token: string | null | undefined,
+    code: string,
+    line: string,
+    question: string,
+    answer: string,
+    response: string,
+) =>
+    fetch(env.API_URL + "/api/technique-explain/feedback", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            line: line,
+            question: question,
+            answer: answer,
+            response: response,
+        }),
+    });
+
+export const apiGetParsonsCodex = (
+    token: string | null | undefined,
+    description: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-parsons/generate", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            description: description,
+            context: context,
+        }),
+    });
+
 
 export const apiGetCodeToTokenCodex = (
     token: string | null | undefined,
@@ -345,6 +461,180 @@ export const apiGetCodeToPseudoCodex = (
         }),
     });
 
+export const apiGetIssueCodes = (
+    token: string | null | undefined,
+    code: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateIssue", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            context: context,
+        }),
+    });
+
+export const apiGetIssueHintLevel1 = (
+    token: string | null | undefined,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateHintLevel1", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
+
+export const apiGetIssueHintLevel2 = (
+    token: string | null | undefined,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateHintLevel2", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
+
+export const apiGetIssueHintLevel3 = (
+    token: string | null | undefined,
+    code: string,
+    studentCode: string
+) =>
+    fetch(env.API_URL + "/api/technique-verify/generateHintLevel3", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            studentCode: studentCode,
+        }),
+    });
+
+export const apiGetLinesToRewrite = (
+        token: string | null | undefined,
+        code: string,
+        context: string
+    ) =>
+        fetch(env.API_URL + "/api/technique-tracing/linesToRewrite", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                code: code,
+                context: context,
+            }),
+        });
+
+export const apiGenerateTracingQuestion = (
+    token: string | null | undefined,
+    code: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/generateQuestion", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            context: context,
+        }),
+    });
+
+export const apiGenerateRevealQuestion = (
+    token: string | null | undefined,
+    code: string,
+    task: string
+) =>
+    fetch(env.API_URL + "/api/technique-reveal/generateQuestion", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            task: task,
+        }),
+    });
+
+export const apiGetGenerateQuestionForSelfExplain = (
+    token: string | null | undefined,
+    code: string,
+    task: string
+) =>
+    fetch(env.API_URL + "/api/technique-explain/generateQuestion", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            task: task,
+        }),
+    });
+
+
+
+export const apiGenerateQuestionHint = (
+    token: string | null | undefined,
+    prevCode: string,
+    currCode: string,
+    currentFrames: string,
+    correct: string,
+    target: string,
+    answer: string,
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/generateHint", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            prevCode: prevCode,
+            currCode: currCode,
+            currentFrames: currentFrames,
+            correct: correct,
+            target: target,
+            answer: answer,
+        }),
+    });
+
 export const apiLogEvents = (
     token: string | null | undefined,
     taskId: string,
@@ -367,18 +657,118 @@ export const logError = (message: string) => {
     console.error(message);
 };
 
-// export const parsonsGetAst = (
-//     token: string | null | undefined,
-//     context: string
-// ) => fetch(env.API_URL + "/api/technique-parsons/ast", {
-//     method: "POST",
-//     credentials: "include",
-//     headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//         type: "block",
-//         context: context,
-//     }),
-// });
+// APIs for getting hard-coded JSON response for LLM simulation
+
+export const apiGetBaselineCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithCode/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetBaselineExplainationCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithExplaination/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetPseudoCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithPseudo/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetWriteOverCodexSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithWriteOver/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetSelfExplainQuestionsSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithSelfExplain/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetVerifyingReviewSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithVerifyReview/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+export const apiGetLeadReviewSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithLeadReveal/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
+

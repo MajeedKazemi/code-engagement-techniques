@@ -34,8 +34,8 @@ export const Layout = (props: LayoutProps) => {
 
     return (
         <div>
-            <NavigationBar loading={loading} />
-            <div className="dummy"></div>
+            {/* <NavigationBar loading={loading} /> */}
+            {/* <div className="dummy"></div> */}
             {loading ? (
                 <Loader />
             ) : (

@@ -11,11 +11,16 @@ import passport from "passport";
 
 import { codexRouter } from "./routes/codex-baseline-router";
 import { loginRouter } from "./routes/login-router";
-import { parsonsRouter } from "./routes/parsons-ast-router";
 import { tasksRouter } from "./routes/tasks-router";
 import { pseudoRouter } from "./routes/codex-pseudo-router";
+import { parsonsRouter } from "./routes/codex-parsons-router";
 import { tokenRouter } from "./routes/codex-token-router";
 import { hierarchicalRouter } from "./routes/codex-hierarchical-router";
+import { selfExplainRouter } from "./routes/codex-selfexplain-router";
+import { writeOverRouter } from "./routes/codex-writeover-router";
+import { tracingRouter } from "./routes/codex-tracing-router";
+import { verifyRouter } from "./routes/codex-verify-router";
+import { revealRouter } from "./routes/codex-reveal-router";
 import { initLanguageService } from "./sockets/intellisense";
 import { initPythonShell } from "./sockets/python-shell";
 import env from "./utils/env";
@@ -71,6 +76,11 @@ mongoose
         app.use("/api/technique-pseudo/", pseudoRouter);
         app.use("/api/technique-hierarchical/", hierarchicalRouter);
         app.use("/api/technique-token/", tokenRouter);
+        app.use("/api/technique-writeover/", writeOverRouter);
+        app.use("/api/technique-explain/", selfExplainRouter);
+        app.use("/api/technique-tracing/", tracingRouter);
+        app.use("/api/technique-verify/", verifyRouter);
+        app.use("/api/technique-reveal/", revealRouter);
 
         const server = app.listen(
             env.PORT_PREFIX + env.NODE_APP_INSTANCE,

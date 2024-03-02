@@ -1,0 +1,230 @@
+.verify-review-container {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0px;
+    width: 100%;
+    align-items: center;
+    overflow-y: scroll;
+    height: calc(100% - 20px);
+}
+
+
+
+.verify-review-container .print-output {
+    background-color: #023231;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
+    overflow-y: auto;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    position: relative;
+    width: 100%;
+    padding: 12px 0 12px 0;
+}
+
+.verify-review-container .print-output p {
+    margin: 0; 
+    font-size: 16px;
+    font-weight: 600;
+    padding: 2px 12px 2px 12px;
+}
+
+.verify-review-container .editor-buttons-container {
+   width: 100%;
+}
+
+.verify-review-container .monaco-editor-container {
+  width: 100%;
+  height: 50vh;
+  border: solid 1px #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.console-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 25vh;
+}
+
+.myLineHighlight {
+    background-color: rgb(243, 173, 173); 
+}
+
+
+.verify-code-editor-container{
+  width: 50%;
+  height: calc(100% - 20px);
+  overflow-y: scroll;
+}
+
+.status-container {
+  width: 50%;
+}
+
+.verify-buttons-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.hint-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.status-sub-container {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.hint-button {
+  background-color: rgba(146,9,183,255);
+  color: white;
+  border: none;
+  padding: 10px;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  font-weight: 400;
+
+  font-family: "Poppins";
+
+  cursor: pointer;
+  padding: 0 20px;
+}
+
+.hint-button.disabled{
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.verify-button {
+  background-color: rgba(44,174,0,255);
+}
+
+/* .status-sub-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+} */
+.status-container {
+    padding: 10px;
+    margin: 10px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .status-header {
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .issues-info {
+    margin-top: 5px;
+    padding: 1px 10px;
+    border-radius: 3px;
+  }
+
+  .hints-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: rgba(186,206,255,255);
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom: 1px solid black;
+  }
+
+  .hints-container {
+    margin-top: 20px;
+    background-color: rgba(220,230,255,255);
+    border-radius: 5px;
+    border: black 1px solid;
+  }
+
+  .hint-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .current-issues {
+    background-color: #ffcccc;
+  }
+  .fixed-issues {
+    background-color: #ccffcc;
+  }
+
+  .verify-answer-container{
+    padding: 10px;
+  }
+
+.issue-content.code-content {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.reveal-level-button {
+  color: white;
+  border: none;
+  padding: 10px;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  font-weight: 400;
+  background-color: rgb(0, 122, 204);
+}
+
+.issue-container {
+  border-bottom: 1px dashed #000;
+  padding: 10px;
+}
+
+.issue-container:last-child {
+  border-bottom: none;
+}
+
+.issue-content {
+    font-family: "Consolas", monospace;
+    color: black;
+    font-size: 1em;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.issue-content strong {
+    font-weight:bolder;
+}
+
+.hint {
+    margin-top: 5px;
+    font-style: italic;
+    color: #666666;
+}
+
+/* Optional: Just to make sure the code stands out, if you like line numbers */
+.issue-content::before {
+    content: attr(data-line-number);
+    display: inline-block;
+    text-align: right;
+    color: #75715e;
+}

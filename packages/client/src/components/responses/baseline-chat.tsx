@@ -2,79 +2,68 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetGeneratedCodeCodex, apiGetParsonsCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
-import { highlightCode } from '../../utils/utils';
-import { ParsonsGame } from '../responses/parsons-game';
+import { highlightCode, highlightPsudo } from '../../utils/utils';
+import { ChatLoader } from '../loader';
 import IconsDoc from '../docs/icons-doc';
-import BaselineGenerateCode from '../responses/baseline-chat';
+import { HighlightedPartWithoutTab } from '../docs/highlight-code';
 
-export let parsonsCancelClicked = false;
+export let baselineCancelClicked = false;
 
-function convertToCodeBlocks(text: string, answer: string): CodeBlock[] {
-    const lines = text.split("\n");
-    const answerLines = answer.split("\n");
-    const codeBlocks: CodeBlock[] = [];
-    
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      const trimmedAnswerLine = answerLines[index].trim();
-      if (trimmedLine !== '' && trimmedAnswerLine !== '') {
-        codeBlocks.push({
-          id: index + 1,
-          code: trimmedLine,
-          answer: trimmedAnswerLine,
-        });
-      }
-    });
-    
-    return codeBlocks;
-}
-  
-
-
-interface CodeBlock {
-  id: number;
-  code: string;
-  answer: string;
-}
-
-
-interface IDraggableTask {
-    id: string;
-    content: string;
-    answer: string;
-    indentationLevel: number;
-    wantedIndentation: number;
-    currentMouseXPosition?: number;
-    onDest: boolean;
-    inputCorrect: boolean;
-  }
-  
-
-interface ParsonsGenerateCodeProps {
+interface BaselineGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
+    code: string;
+    exp: string;
     taskID: string;
 }
-  
 
-const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor, taskID })  => {
-    const [isOpen, setIsOpen] = useState(true);
-    const { context, setContext } = useContext(AuthContext);
-    const [waiting, setWaiting] = useState(false);
-    const [feedback, setFeedback] = useState<string>("");
+const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor, code, exp, taskID })  => {
+    // Call the GPT API or any code generation logic here
+    // to generate code based on the userInput
+    const [generating, setGenerating] = useState(false);
+    const [generatedCode, setGeneratedCode] = useState("");
+    const [explanation, setGeneratedExplanation] = useState("");
+    const [feedback, setFeedback] = useState("");
     const [checked, setChecked] = useState(true);
-    const [generatedCode, setGeneratedCode] = useState('');
-    const [generatedExplanation, setGeneratedExplanation] = useState('');
-    const [initialCodeBlocks, setInitialCodeBlocks] = useState<CodeBlock[]>([]);
-    const [orderedCodeBlocks, setOrderedCodeBlocks] = useState<CodeBlock[]>([]);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-    const sectionHeightRef = useRef<number>(0);
-    const [isOver, setIsOver] = useState(false);
-    const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [buttonClickOver, setButtonClickOver] = useState(false);
+    const { context, setContext } = useContext(AuthContext);
+    const baselineRef = useRef<HTMLDivElement | null>(null);
+    const explanationRef = useRef<HTMLParagraphElement | null>(null);
+
+    useEffect(() => {
+        if (explanation && explanationRef.current) {
+            explanationRef.current.innerHTML = highlightPsudo(explanation, "code-highlight");
+        }
+    }, [explanation]);
+
+    const cancelClick = () => {
+        
+        const overlayElement = document.querySelector('.overlay') as HTMLElement;
+        const editorElement = document.querySelector('.editor') as HTMLElement;
+        overlayElement!.style.display = 'none';
+        editorElement.style.zIndex = '1';
+        setGeneratedCode("");
+        setGeneratedExplanation("");
+        baselineCancelClicked = !baselineCancelClicked;
+    };
+    
+    const handleInsertCodeClick = () => {
+        if (editor) {
+            const position = editor.getPosition();
+            if (position) {
+              const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
+              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
+              editor.executeEdits("insertCodeAfterCursor", [op]);
+            }
+          }
+        const editorElement = document.querySelector('.editor') as HTMLElement;
+        editorElement.style.zIndex = '1';
+        setGeneratedCode("");
+        setGeneratedExplanation("");
+        baselineCancelClicked = !baselineCancelClicked;
+    };
 
     // const generateCode = () => {
     //     if (prompt.length === 0) {
@@ -82,7 +71,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     //             "You should write an instruction of the code that you want to be generated."
     //         );
     //     } else {
-    //         setWaiting(true);
+    //         setGenerating(true);
   
     //         const focusedPosition = props.editor?.getPosition();
     //         const userCode = props.editor?.getValue();
@@ -94,8 +83,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     //                 .slice(0, focusedPosition.lineNumber + 1)
     //                 .join("\n");
     //         }
-  
-    //         try {
+    //           try {
     //             apiGetBaselineCodex(
     //                 context?.token,
     //                 prompt,
@@ -210,39 +198,23 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     //                                 }
     //                             }
     //                             setGeneratedCode(text);
-    //                             setGeneratedExplanation(data.bundle.explain);
-    //                             setGeneratedQuestion(text);
-    //                             setWaiting(false);
-    //                             // apiGetParsonsCodex(
-    //                             //     context?.token,
-    //                             //     text,
-    //                             //     userCode ? userCode : ""
-    //                             // )
-    //                             //     .then(async (response) => {
-                    
-    //                             //         if (response.ok) {
-    //                             //             const data = await response.json();
-    //                             //             setGeneratedQuestion(data.code);
-    //                             //             setWaiting(false);
-    //                             //         }
-    //                             //     })
-    //                             //     .catch((error) => {
-    //                             //         logError(error.toString());
-    //                             //     });
-                                
+    //                             setGeneratedExplanation(data.bundle.explain);   
+    //                             setGenerating(false);                           
     //                         } 
     //                     }
     //                 })
     //                 .catch((error) => {
     //                     props.editor?.updateOptions({ readOnly: false });
-    //                     setWaiting(false);
+    //                     setGenerating(false);
     //                     logError(error.toString());
     //                 });
     //         } catch (error: any) {
     //             props.editor?.updateOptions({ readOnly: false });
-    //             setWaiting(false);
+    //             setGenerating(false);
     //             logError(error.toString());
     //         }
+  
+            
     //     }
     // };
 
@@ -252,7 +224,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                 "You should write an instruction of the code that you want to be generated."
             );
         } else {
-            setWaiting(true);
+            setGenerating(true);
   
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
@@ -277,7 +249,6 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
   
                             setGeneratedCode(data.code);
                             console.log(taskId);
-                            setGeneratedQuestion(data.code);
                             apiGetBaselineExplainationCodexSimulation(
                                 context?.token,
                                 taskId
@@ -288,172 +259,119 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                                         const data = await response.json();
     
                                         setGeneratedExplanation(data.explanation);
-                                        setWaiting(false);                           
+                                        setGenerating(false);                           
                                     }
                                 })
                                 .catch((error) => {
                                     editor?.updateOptions({ readOnly: false });
-                                    setWaiting(false);
+                                    setGenerating(false);
                                     logError(error.toString());
                                 });                 
                         }
                     })
                     .catch((error) => {
                         editor?.updateOptions({ readOnly: false });
-                        setWaiting(false);
+                        setGenerating(false);
                         logError(error.toString());
                     });
             } catch (error: any) {
                 editor?.updateOptions({ readOnly: false });
-                setWaiting(false);
+                setGenerating(false);
                 logError(error.toString());
             }
   
             
         }
     };
-
+    
     useEffect(() => {
-        generateCode();
-
-        const interval = setInterval(() => {
-          if (document.getElementById('game-over')) {
-            setIsOver(true);
-            clearInterval(interval); 
-          }
-        }, 1000); 
-        return () => clearInterval(interval);
+        if(code.length > 0 && exp.length > 0){
+            setGeneratedCode(code);
+            setGeneratedExplanation(exp);
+        }else{
+            generateCode();
+        }
     }, []);
 
     useEffect(() => {
-        const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedQuestion, generatedCode);
-        setInitialCodeBlocks(responseCodeObject);
-        sectionHeightRef.current = (responseCodeObject.length) * 40;
-    }, [generatedQuestion]);
-
-
-    function shuffleArray(array: IDraggableTask[]): IDraggableTask[] {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
+        if (baselineRef.current && generatedCode && !editorRef.current) {
+          editorRef.current = monaco.editor.create(baselineRef.current, {
+            value: generatedCode,
+            language: 'python',
+            readOnly: true,
+            automaticLayout: true,
+            minimap: {
+              enabled: false
+            },
+            fontSize:16,
+          });
+          editorRef.current.onDidChangeModelContent(() => {
+            const model = editorRef.current?.getModel();
+            if (model) {
+                const lineHeight = editorRef.current?.getOption(monaco.editor.EditorOption.lineHeight) || 18;
+                const lineCount = Math.max(model.getLineCount(), 1);
+                const newHeight = lineHeight * (lineCount+6);
+                const maxHeight = window.innerHeight * 0.4;
+                const height = Math.min(newHeight, maxHeight);
+                baselineRef.current!.style.height = `${height}px`;
+                editorRef.current!.layout();
+            }
+          });
         }
-        return array;
-      }
-
-
-    function toTask(generatedQuestion: string, generatedCode: string): IDraggableTask[] {
-        let lines = generatedQuestion.split('\n');
-        let answers = generatedCode.split('\n');
-        return lines
-            .filter((line) => line.trim() !== '')
-            .map((line, index) => {
-            const indentationLevel = line.search(/\S|$/);
-
-            return {
-                id: (index + 1).toString(),
-                content: line,
-                answer: answers[index],
-                indentationLevel: 0,
-                onDest: false,
-                inputCorrect: !line.includes("{input}"),
-                wantedIndentation: Math.round(indentationLevel / 4),
-            };
-            });
-      }
-
-    useEffect(() => {
-        generateCode();
-        const interval = setInterval(() => {
-          if (document.getElementById('game-over')) {
-            // setIsOver(true);
-            setButtonClickOver(true);
-            clearInterval(interval); 
+    
+        return () => {
+          if (editorRef.current) {
+            editorRef.current.dispose();
+            editorRef.current = null;
           }
-        }, 1000); 
-        return () => clearInterval(interval);
-    }, []);  
+        };
+    }, [generatedCode]);
+    
 
-    const closePopup = async () => {
-      setIsModalOpen(true);
-    };
-  
-    const handleModalClick = (confirmed: boolean) => {
-      setIsModalOpen(false);
-      
-      if (confirmed) {
-        setIsOpen(false);
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        parsonsCancelClicked = !parsonsCancelClicked;
-      }
-    };
-  
-
-    useEffect(() => {
-        if(isOver){
-            setIsOpen(false);
-            const overlayElement = document.querySelector('.overlay') as HTMLElement;
-            const editorElement = document.querySelector('.editor') as HTMLElement;
-            overlayElement!.style.display = 'none';
-            editorElement.style.zIndex = '1';
-            var outputDiv = document.querySelector('.output');
-            outputDiv!.innerHTML = '';
-        }
-    }, [isOver]);
-
-    return (
-          <div>
-            {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
-            )} 
-            {isOpen && !isOver && (
-              <div className="modal show" style={{ display: 'block' }}>
-                <div className="modal-header">
-                    <div className='spark-icon'><IconsDoc iconName="spark" /></div>
-                    AI Assistance:
-                </div>
-                <div className="modal-body">
-                  {/* <p>
-                    <b>Prompts: </b> {prompt}
-                  </p> */}
-
-                  {/* parsons main div */}
-                  {waiting && (
-                    <p>Generating</p>
-                  )}
-                  {!waiting && (
-                  
-                    <ParsonsGame tasksOri={shuffleArray(toTask(generatedQuestion, generatedCode))} sectionHeight={sectionHeightRef.current}/>
-                  )}
-                </div>
-                <div className="modal-footer">
-                  <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                    Done
-                    </button>
-                  <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Next
-                  </button>
-                </div>
-                {isModalOpen && (
-                      <div className="modal-next-confirm">
-                        <div className="modal-next-confirm-content">
-                        <h3>Are you sure you want to go to the next task?</h3>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
-                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
-                        </div>
-                        </div>
-                      </div>
-                  )}
-              </div>
-            )}
+    const generatedCodeComponent =
+    <>
+     <div className={`chat-user-prompt`}>
+      <div className="baseline-feedback">
+        <div className='user-chat-container'>
+          <div className='user-icon'><IconsDoc iconName="person" /></div>
+          <div className="baseline-feedback-user chat-bubble">
+            <div className="baseline-feedback-user-text">
+              <p>{prompt}</p>
+            </div>
           </div>
-      )
-      
+        </div>
+        <div className='assistant-chat-container'>
+          <div className='assistant-icon'><IconsDoc iconName="spark" /></div>
+          <div className="baseline-feedback-assistant chat-bubble">
+            <div className="baseline-feedback-assistant-text">
+              {generating && <div className='chat-loader'>Generating <ChatLoader/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>} 
+              {!generating && <div className='chat-loader-finish'>Generated Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </div>} 
+            </div>
+          </div>
+        </div>
+      </div>
+      {!generating &&
+    //   <div ref={baselineRef} className="read-only-editor"></div>
+        <div className="baseline-read-only-editor">
+            {generatedCode && generatedCode.split("\n").map((line) => (
+                <HighlightedPartWithoutTab part={line} />
+            ))}
+        </div>
+      }
+      {!generating && 
+      <div className="read-only-explaination"> 
+        <b>Code Explanation</b>
+        <p ref={explanationRef}></p>
+      </div>}
+      <div className={`generated-button-container ${generating ? "inactive" : ""}`}>
+        <button className="gpt-button" onClick={cancelClick}>Next</button>
+        <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
+      </div>
+      </div>
+    </>
+
+    return generatedCodeComponent;
 };
 
-export default ParsonsGenerateCode;
+export default BaselineGenerateCode;
+

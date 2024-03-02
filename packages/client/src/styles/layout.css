@@ -4,5 +4,9 @@
 }
 
 .layout-content {
-    height: calc(100vh - 50px);
+    height: calc(100vh - 24px);
+}
+
+.response-container {
+    width: 45vw;
 }

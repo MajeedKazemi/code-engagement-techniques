@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../../assets/robot.png";
-import { apiGetBaselineCodex, apiGetCodeToTokenCodex, apiGetPseudoCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetCodeToTokenCodex, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
@@ -46,40 +45,6 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
       
-
-    const cancelClick = () => {
-        
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedToken([]);
-        setGeneratedCode('');
-        setTokenTree([]);
-        setUserInputCode('');
-        tokenCancelClicked = !tokenCancelClicked;
-    };
-    
-    const handleInsertCodeClick = () => {
-        if (editor) {
-            const position = editor.getPosition();
-            if (position) {
-              const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
-              editor.executeEdits("insertCodeAfterCursor", [op]);
-            }
-          }
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedToken([]);
-        setGeneratedCode('');
-        setTokenTree([]);
-        setUserInputCode('');
-        tokenCancelClicked = !tokenCancelClicked;
-    };
-
     const generateToken = () => {
         const props = {
             taskId: "",
@@ -267,46 +232,7 @@ const TokenGenerateCode: React.FC<TokenGenerateCodeProps> = ({ prompt, editor, c
 
 
     return (
-        <>
-            <div className='generated-pseudo-container'>
-                <div style={{ whiteSpace: 'pre-wrap' }}>
-                    <b>prompts: </b> {prompt}
-                </div>
-                {waiting?  
-                    <div className="preloader-2 ${waiting ? '' : 'hidden'}`}">
-                        <span className="line line-1"></span>
-                        <span className="line line-2"></span>
-                        <span className="line line-3"></span>
-                        <span className="line line-4"></span>
-                        <span className="line line-5"></span>
-                        <span className="line line-6"></span>
-                        <span className="line line-7"></span>
-                        <span className="line line-8"></span>
-                        <span className="line line-9"></span>
-                        <span className="line line-10"></span>
-                        <span className="line line-11"></span>
-                        <span className="line line-12"></span>
-                        <span className="line line-13"></span>
-                        <span className="line line-14"></span>
-                        <span className="line line-15"></span>
-                        <span className="line line-16"></span>
-                        <span className="line line-17"></span>
-                        <span className="line line-18"></span>
-                        <div>Generating</div>
-                    </div>
-                    :
-                    <>
-                    <b>Representation: </b>
-                    
-                    <AnimatedTokens tokens={generatedToken} tree={tokenTree}/>
-                    </>
-                }
-            </div>
-            <div className="button-container" style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
-                <button disabled={waiting} className="gpt-button" onClick={cancelClick}>Cancel</button>
-                <button disabled={waiting} className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
-            </div>
-        </>
+        <AnimatedTokens tokens={generatedToken} tree={tokenTree}/> 
     );
 };
 

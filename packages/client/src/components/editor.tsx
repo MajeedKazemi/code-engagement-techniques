@@ -40,6 +40,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     >([]);
     const [terminalInput, setTerminalInput] = useState<string>("");
     const [running, setRunning] = useState(false);
+    const [excution, setExcution] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const [lastEditedAt, setLastEditedAt] = useState<Date | null>(null);
     const [saved, setSaved] = useState(true);
@@ -218,10 +219,17 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     }, [output, runId]);
 
     useEffect(() => {
+        const interval = setInterval(() => {
+            if (document.getElementById('game-over')) {
+              setOutput([]);
+              clearInterval(interval); 
+            }
+          }, 1000); 
         return () => {
             stopLanguageClient();
-            // stopPythonShell();
+            clearInterval(interval)
         };
+        
     }, []);
 
     const handleClickRun = () => {
@@ -285,9 +293,47 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     return (
         <Fragment>
             <section className="task-workspace">
-                <div className="editor" ref={monacoEl}></div>
                 <div className="overlay"></div>
+                <div className="editor" ref={monacoEl}></div>
                 <div className="editor-buttons-container">
+                    <div className="quick-editing-buttons-container">
+                        <Fragment>
+                            {" "}
+                            <div className="code-container-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+
+                            </div>
+                        </Fragment>
+                        Console Input and Output
+                        {/* <button
+                            className={`editor-button ${
+                                saved ? "editing-btn-disabled" : "editing-btn"
+                            }`}
+                            disabled={saved}
+                            onClick={handleClickSave}
+                        >
+                            {saved ? "Code Saved" : "Save Code"}
+                        </button>
+                        <button
+                            className={`editor-button ${
+                                canReset
+                                    ? "editing-btn"
+                                    : "editing-btn-disabled"
+                            } `}
+                            disabled={!canReset}
+                            onClick={handleClickReset}
+                        >
+                            Reset
+                        </button> */}
+                        {/* <button
+                            className="editor-button editing-btn"
+                            onClick={handleClickUndo}
+                        >
+                            Undo
+                        </button> */}
+                    </div>
                     <button
                         className={`editor-button ${
                             running ? "stop-button" : "run-button"
@@ -316,36 +362,10 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                             <Fragment>Stop</Fragment>
                         )}
                     </button>
-
-                    <div className="quick-editing-buttons-container">
-                        <button
-                            className={`editor-button ${
-                                saved ? "editing-btn-disabled" : "editing-btn"
-                            }`}
-                            disabled={saved}
-                            onClick={handleClickSave}
-                        >
-                            {saved ? "Code Saved" : "Save Code"}
-                        </button>
-                        <button
-                            className={`editor-button ${
-                                canReset
-                                    ? "editing-btn"
-                                    : "editing-btn-disabled"
-                            }`}
-                            disabled={!canReset}
-                            onClick={handleClickReset}
-                        >
-                            Reset
-                        </button>
-                        <button
-                            className="editor-button editing-btn"
-                            onClick={handleClickUndo}
-                        >
-                            Undo
-                        </button>
-                    </div>
                 </div>
+                {/* {excution && <div>
+                    <ExcutionTimeline totalSteps={10} setCurrentStep={setCurrentStep} currentStep={currentStep} />
+                </div>} */}
                 <div className="output">
                     {output.map((i, index) => (
                         <p
@@ -399,7 +419,8 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            <Baseline editor={editor}/>
+            {!excution && <Baseline editor={editor}/>}
+            {/* {excution && <ExcutionSteps editor={editor} currentStep={currentStep}/>} */}
         </Fragment>
     );
 });

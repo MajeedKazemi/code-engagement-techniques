@@ -1,40 +1,70 @@
+import { useState } from "react";
 import { getIconSVG } from "../../utils/icons";
+import IconsDoc from "../docs/icons-doc";
 import { HoverableExplainCode } from "./hoverable-explain-code";
 
-interface IProps {
-    title?: string;
-    code?: {
-        content?: string;
-        explanation?: string;
-    }[];
+interface PseudoCodeProps {
+    goals: PseudoCodeSubgoals[]
 }
 
-export const PseudoCodeHoverable = (props: IProps) => {
+
+interface PseudoCodeSubgoals {
+    title: string;
+    code: PesudoInterface[];
+}
+
+interface PesudoInterface {
+    indent: number;
+    code: string;
+    pseudo: string;
+    explanation: string;
+}
+
+export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
+    const [isOpen, setIsOpen] = useState(Array(goals.length).fill(false));
+
+    const handleClick = (index: number) => {
+        let temp = [...isOpen];
+        temp[index] = !temp[index];
+        setIsOpen(temp);
+    }
+
     return (
         <div className="hoverable-code-container">
-            <div className="hoverable-code-header">
-                {getIconSVG("cursor-arrow-rays", "response-header-icon")}
-                Hover over each line to see detailed explanation:
-            </div>
-
-            {props.title && props.title.length > 0 && (
-                <div className="hoverable-code-subtitle">
-                    <b>{"> " + props.title + ":"}</b>
+            <div className="">
+                {goals.map((goal, index) => {
+                    return (
+                        <div key={index.toString()}>
+                            <div className="hoverable-code-header">
+                                <div className={`expandable-button ${isOpen[index] ? 'minus' : ''}`} onClick={() => handleClick(index)}>
+                                    {
+                                        isOpen[index] ? 
+                                        <IconsDoc iconName="minus"/> 
+                                        : 
+                                        <IconsDoc iconName="plus"/>
+                                    }
+                                </div>
+                                {goal.title}
+                            </div>
+                            <div className={`hoverable-code-content-container ${isOpen[index] ? 'expand' : ''}`}>
+                                {goal.code.map((line, index) => {
+                                    return (
+                                        <HoverableExplainCode
+                                            indent={line.indent || 0}
+                                            content={line.pseudo || ""}
+                                            explanation={line.explanation || ""}
+                                            code={line.code || ""}
+                                            key={JSON.stringify(line) + index.toString()}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    );
+                })}
+                <div className="hoverable-code-footer">
                 </div>
-            )}
-
-            <div className="hoverable-code-content">
-                {props.code &&
-                    props.code.map((line, index) => {
-                        return (
-                            <HoverableExplainCode
-                                content={line.content || ""}
-                                explanation={line.explanation || ""}
-                                key={JSON.stringify(line) + index.toString()}
-                            />
-                        );
-                    })}
-            </div>
+                </div>
         </div>
     );
 };

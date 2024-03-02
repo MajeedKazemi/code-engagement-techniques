@@ -1,0 +1,402 @@
+/* Timeline container */
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: -5px;
+    margin-top: 40px;
+    width: 60%;
+    align-self: flex-end;
+  }
+
+  .legend {
+    align-self: flex-start;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: rgba(255,240,217,255);
+  }
+
+  .excution-generator{
+    padding-bottom: 2rem;
+    overflow-y: scroll;
+    height: calc(100% - 2rem);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+
+  .timeline-slider {
+    width: 100%;
+    padding: 0 20px; 
+  }
+  
+  .slider {
+    width: 30vw; 
+    background-color: #ccc; 
+    position: relative;
+    border-radius: 20px;
+  }
+  
+  /* Slider handle (rectangle) */
+  .slider::-webkit-slider-thumb {
+    width: 16px; /* Width of the rectangle handle */
+    height: 20px; /* Height of the rectangle handle */
+    background-color: #007bff; /* Handle color */
+    border: none;
+    border-radius: 0; /* Remove border-radius to make it rectangular */
+  }
+  
+  /* Slider handle (rectangle) on hover */
+  .slider::-webkit-slider-thumb:hover {
+    background-color: #0056b3; /* Handle hover color */
+  }
+
+  
+  /* Timeline controls (buttons) */
+  .controls {
+    display: flex;
+    margin-top: 10px;
+    justify-content:space-evenly;
+    width: 80%;
+  }
+  
+  /* Button styles (customize as needed) */
+  .timeline-container button {
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e4e5e6;
+    color: #0056b3;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Button hover effect */
+  }
+  
+  .timeline-container button:hover {
+    background-color: #b6b8b9; /* Button hover color */
+  }
+
+  .step-by-step-timeline-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .print-container .quick-editing-buttons-container{
+    border-top-right-radius: 6px;
+  }
+  
+  .print-container .print-output {
+    background-color: #023231;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
+    overflow-y: auto;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    position: relative;
+    height: 25vh;
+    padding: 12px 0 12px 0;
+    width: 100%;
+    margin-right: 20px;
+}
+
+.print-container .print-output p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 2px 12px 2px 12px;
+}
+
+.content-wrapper {
+    height: 50%;
+    border: #353535 solid 1px;
+    margin-top: 1rem;
+    border-radius: 6px;
+    background-color: rgba(228,255,254,255);
+  }
+
+  .frame {
+    overflow-y: scroll;
+    margin-right: 0;
+    flex: 1;
+    height: 80%;
+  }
+  
+  .objects {
+    flex: 1; /* Each div takes equal width */
+    margin-right: 10px; /* Add margin for spacing */
+  }
+
+  .step-by-step-read-container {
+    margin-bottom: 10px;
+    width: 60%;
+    margin-top: 20px;
+    margin-right: 1rem;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; 
+  }
+
+  .legend-item svg {
+    margin-right: 5px; 
+  }
+
+.flexButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+
+  .code-container {
+    padding-right: 20px;
+    padding-top: 10px;
+    display:flex;
+    flex-direction: row;
+  }
+
+  .step-by-step-code-container {
+    height: 35vh;
+    overflow-y: scroll;
+    border-radius: 6px;
+    border: #353535 solid 1px;
+  }
+
+  .current-arrows-container{
+    width: 5px;
+    margin: 0;
+    padding: 0;
+    z-index: 999;
+  }
+
+  
+  .green-arrow {
+    color: green;
+    font-size: 25px;
+    opacity: 0.5;
+  }
+  
+  .red-arrow {
+    color: red;
+    font-size: 25px;
+  }
+
+  .arrow {
+    padding-left: 4px;
+  }
+
+  .line {
+    height: 25px;
+  }
+
+  .myCurrentLineDecoration {
+    background: green;
+    opacity: 0.3;
+  }
+  
+  .myNextLineDecoration {
+    background: red;
+    opacity: 0.3;
+  }
+
+  .excution-container{
+    width: 40%;
+    margin-left: 10px;
+    margin-right: 12px;
+    height: 68vh;
+  }
+
+  .code-editor {
+    width: 100%;
+    background: #fafafa;
+    color: #353535;
+    margin-right: 20px;
+    font-family: Menlo, Monaco, 'Courier New';
+    border-radius: 5px;
+    overflow-y: hidden;
+  }
+
+
+.frame-container {
+  color: #333; /* default color for font */
+  padding: 5px; /* Adding some padding */
+  font-family: 'Courier New', Courier, monospace; /* Changing font */
+  border-bottom: #353535 dashed 1px ; /* Adding a border to the bottom */  
+  padding-left: 20px;
+}
+
+.frame-container p:first-child {
+  font-weight: bold; /* Making the item.name bold */
+  margin-right: 10px; /* Adding some margin to the right for spacing */
+}
+
+.frame-container p:last-child {
+  flex-grow: 1;
+}
+/* 
+.frame-container.int {
+  color: rgb(63, 81, 181)
+}
+
+.frame-container.str {
+  color: rgb(0, 188, 212);
+}
+
+.frame-container.bool {
+  color: rgb(46, 125, 50); 
+}
+
+.frame-container.dict {
+  color: rgb(255, 87, 34); 
+}
+
+.frame-container.list {
+  color: rgb(233, 30, 99);
+}
+
+.frame-container.tuple {
+  color: rgb(156, 39, 176);
+} */
+
+.timeline-container .controls button:disabled{
+  background-color: #bbbdbf;
+  cursor: not-allowed;
+}
+
+.frame .hint{
+  color: red;
+}
+
+.timeline-icon {
+  color: #0056b3;
+  width: 2rem;
+  height: 2rem;
+}
+
+.step-by-step-timeline-container.inactive{
+  opacity: 0.4;
+}
+
+.step-by-step-questions-container{
+  opacity: 0.4;
+  border-radius: 6px;
+  border: #353535 solid 1px;
+  width: 100%;
+  margin-top: 20px;
+  height: 70%;
+  background-color: rgba(220,230,255,255);
+}
+
+.step-by-step-questions-container.active{
+  opacity: 1;
+}
+
+.step-by-step-questions-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+  background-color: rgba(186,206,255,255);
+  border-bottom: #353535 solid 1px;
+  color: black;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.step-by-step-frame-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+  background-color: rgba(201,255,254,255);
+  border-bottom: #353535 solid 1px;
+  color: black;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.step-question-content {
+  background-color: rgba(220,230,255,255);
+  overflow-y: scroll;
+  height: 85%;
+  margin-bottom: 10px;
+}
+
+.barIcon{
+  width: 2rem;
+  height: 2rem;
+}
+
+.steps-question-div {
+  border-bottom: #353535 solid 1px;
+}
+
+.step-question-container {
+  padding: 10px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.step-question-content .question{
+  padding-left: 20px;
+  margin-bottom: 0px;
+}
+
+.step-question-content .question span{
+  background-color: rgba(168, 107, 225, 0.615);
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.question-input {
+  height: 1.5rem;
+  width: 70%;
+}
+
+.question-submission-button {
+  padding: 7px 0px;
+  width: 20%;
+  background-color: rgb(0, 152, 255);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.question-submission-button:hover {
+  background-color: rgb(0, 122, 204);
+}
+
+.step-answered-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.step-answered-container .wrong{
+  background-color: rgba(245,205,207,255);
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.step-answered-container .correct{
+  background-color: rgba(192,228,188,255);
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.question-submission-button:disabled{
+  background-color: #bbbdbf;
+  cursor: not-allowed;
+}

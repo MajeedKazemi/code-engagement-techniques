@@ -1,5 +1,5 @@
 .editor {
-    width: 42vw;
+    width: 55vw;
     height: calc(55% - 2px);
     border: solid 1px #ccc;
     border-radius: 6px;
@@ -31,6 +31,7 @@
     display: none;
 }
 
+
 .hidden {
     display: none;
 }
@@ -40,11 +41,13 @@
     color: #fff;
     font-family: "Courier New", Courier, monospace;
     overflow-y: auto;
-    height: calc(45% - 88px);
     border-radius: 6px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     position: relative;
-    width: 42vw;
+    width: 55vw;
     padding: 12px 0 12px 0;
+    height: calc(45% - 65px);
 }
 
 .output p {
@@ -85,20 +88,34 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    height: 64px;
+    justify-content:end;
+    height: 40px;
+    width: 55vw;
 }
 
 .quick-editing-buttons-container {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex: 1;
+    background-color: rgba(3,39,38,255);
+    color: rgba(252,253,253,255);
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-top-left-radius: 6px;
+}
+
+.code-container-icon {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 10px;
 }
 
 .editor-button {
     border: none;
     height: 40px;
-    border-radius: 12px;
+    border-top-right-radius: 6px;
     color: #fff;
 
     display: flex;
@@ -113,6 +130,7 @@
     cursor: pointer;
     padding: 0 20px;
 }
+
 
 .editing-btn {
     height: 35px;
@@ -161,21 +179,30 @@
 
 .task-workspace {
     margin-left: 12px;
-    width: 42vw;
+    width: 55vw;
 }
 
 .read-only-editor {
     min-height: 100px;
-    width: 100%;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    height: 30vh;
+    margin: 10px;
+    border: solid 1px black;
+    margin-bottom: 1rem;
+    border-radius: 4px;
 }
 
-.task-baseline {
-    margin-left: 2px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    background-color: #edf8f9; 
-    padding: 0.5rem;   
+.baseline-read-only-editor {
+    min-height: 100px;
+    margin: 10px;
+    border: solid 1px black;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    background-color: white;
+    padding: 5px;
+}
+
+.task-baseline{
+    margin-left: 2px;  
     margin-right: 12px;
 }
 
@@ -200,7 +227,7 @@
 
 .gpt-image {
     display: inline-block;
-    width: 2em;
+    width: 2rem;
     margin-right: .5em;
 }
 

@@ -2,79 +2,42 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetGeneratedCodeCodex, apiGetParsonsCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetCodeToPseudoCodex, apiGetLinesToRewrite, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
-import { ParsonsGame } from '../responses/parsons-game';
-import IconsDoc from '../docs/icons-doc';
+import { ExcutionSteps } from '../responses/excution-steps';
 import BaselineGenerateCode from '../responses/baseline-chat';
+import IconsDoc from '../docs/icons-doc';
 
-export let parsonsCancelClicked = false;
-
-function convertToCodeBlocks(text: string, answer: string): CodeBlock[] {
-    const lines = text.split("\n");
-    const answerLines = answer.split("\n");
-    const codeBlocks: CodeBlock[] = [];
-    
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      const trimmedAnswerLine = answerLines[index].trim();
-      if (trimmedLine !== '' && trimmedAnswerLine !== '') {
-        codeBlocks.push({
-          id: index + 1,
-          code: trimmedLine,
-          answer: trimmedAnswerLine,
-        });
-      }
-    });
-    
-    return codeBlocks;
-}
+export let excutionCancelClicked = false;
   
 
-
-interface CodeBlock {
-  id: number;
-  code: string;
-  answer: string;
-}
-
-
-interface IDraggableTask {
-    id: string;
-    content: string;
-    answer: string;
-    indentationLevel: number;
-    wantedIndentation: number;
-    currentMouseXPosition?: number;
-    onDest: boolean;
-    inputCorrect: boolean;
-  }
-  
-
-interface ParsonsGenerateCodeProps {
+interface ExcutionGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     taskID: string;
 }
+
+interface CodeRepresentation {
+  pseudo: string;
+  code: string;
+}
   
 
-const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor, taskID })  => {
+const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, editor, taskID })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
     const [checked, setChecked] = useState(true);
     const [generatedCode, setGeneratedCode] = useState('');
+    const [backendCodes, setBackendCodes] = useState<string[]>([]);
     const [generatedExplanation, setGeneratedExplanation] = useState('');
-    const [initialCodeBlocks, setInitialCodeBlocks] = useState<CodeBlock[]>([]);
-    const [orderedCodeBlocks, setOrderedCodeBlocks] = useState<CodeBlock[]>([]);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-    const sectionHeightRef = useRef<number>(0);
     const [isOver, setIsOver] = useState(false);
-    const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [buttonClickOver, setButtonClickOver] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    
 
     // const generateCode = () => {
     //     if (prompt.length === 0) {
@@ -94,8 +57,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     //                 .slice(0, focusedPosition.lineNumber + 1)
     //                 .join("\n");
     //         }
-  
-    //         try {
+    //           try {
     //             apiGetBaselineCodex(
     //                 context?.token,
     //                 prompt,
@@ -211,38 +173,130 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     //                             }
     //                             setGeneratedCode(text);
     //                             setGeneratedExplanation(data.bundle.explain);
-    //                             setGeneratedQuestion(text);
-    //                             setWaiting(false);
-    //                             // apiGetParsonsCodex(
-    //                             //     context?.token,
-    //                             //     text,
-    //                             //     userCode ? userCode : ""
-    //                             // )
-    //                             //     .then(async (response) => {
+    //                             if(userCode){
+              
+    //                               apiGetLinesToRewrite(
+    //                                   context?.token,
+    //                                   prompt,
+    //                                   userCode
+    //                               )
+    //                                   .then(async (response) => {
                     
-    //                             //         if (response.ok) {
-    //                             //             const data = await response.json();
-    //                             //             setGeneratedQuestion(data.code);
-    //                             //             setWaiting(false);
-    //                             //         }
-    //                             //     })
-    //                             //     .catch((error) => {
-    //                             //         logError(error.toString());
-    //                             //     });
+    //                                       if (response.ok && props.editor) {
+    //                                           const data = await response.json();
+                    
+    //                                           let format = data.response.format;
+    //                                           let codes = data.response.codes;
+                    
+    //                                           if (format.length > 0) {
+    //                                               setFeedback("");
+    //                                               log(
+    //                                                   props.taskId,
+    //                                                   context?.user?.id,
+    //                                                   LogType.PromptEvent,
+    //                                                   {
+    //                                                       code: codes,
+    //                                                       userInput: prompt,
+    //                                                   }
+    //                                               );
+
+    //                                               let newIndex = format.indexOf('new');
+    //                                               let code = '';
+    //                                               let oldCodes: any[] = [];
+
+    //                                               for (let i = 0; i < format.length; i++) {
+    //                                                 if(format[i] === 'old'){
+    //                                                   oldCodes.push(codes[i]);
+    //                                                 }
+    //                                               }
+
+    //                                               if (newIndex !== -1) {
+    //                                                   code = codes[newIndex]
+    //                                               }
+    //                                               setFormat(format);
+    //                                               setBackendCodes(oldCodes);
+    //                                               setGeneratedCode(code);
+    //                                               // THIS PART IS COMMENTED BECAUSE WE ASSUME THE PREV GENERATED CODE ARE CORRECT
+    //                                               let tempContext: CodeRepresentation[] = [];
+    //                                               if(oldCodes.length == 1){
+    //                                                 apiGetCodeToPseudoCodex(
+    //                                                   context?.token,
+    //                                                   oldCodes[0],
+    //                                                   userCode ? userCode : ""
+    //                                               )
+    //                                                   .then(async (response) => {
+                                      
+    //                                                       if (response.ok) {
+    //                                                           const data = await response.json();
+    //                                                           tempContext.push(data.response);
+    //                                                           setWaiting(false);
+    //                                                       }
+    //                                                   })
+    //                                                   .catch((error) => {
+    //                                                       logError(error.toString());
+    //                                                   });
+    //                                               }else if(oldCodes.length == 2){
+    //                                                 apiGetCodeToPseudoCodex(
+    //                                                   context?.token,
+    //                                                   oldCodes[0],
+    //                                                   userCode ? userCode : ""
+    //                                               )
+    //                                                   .then(async (response) => {
+                                      
+    //                                                       if (response.ok) {
+    //                                                           const data = await response.json();
+    //                                                           tempContext.push(data.response);
+    //                                                           apiGetCodeToPseudoCodex(
+    //                                                             context?.token,
+    //                                                             oldCodes[1],
+    //                                                             userCode ? userCode : ""
+    //                                                         )
+    //                                                             .then(async (response) => {
+                                                
+    //                                                                 if (response.ok) {
+    //                                                                     const data = await response.json();
+    //                                                                     tempContext.push(data.response);
+    //                                                                     setWaiting(false);
+    //                                                                 }
+    //                                                             })
+    //                                                             .catch((error) => {
+    //                                                                 logError(error.toString());
+    //                                                             });
+    //                                                       }
+    //                                                   })
+    //                                                   .catch((error) => {
+    //                                                       logError(error.toString());
+    //                                                   });
+    //                                               }else{
+    //                                                 setWaiting(false);
+    //                                               }                                   
+    //                                           } 
+    //                                       }
+    //                                   })
+    //                                   .catch((error) => {
+    //                                       editor?.updateOptions({ readOnly: false });
+    //                                       setWaiting(false);
+    //                                       logError(error.toString());
+    //                                   });
+    //                           } else{
+    //                             setWaiting(false);
+    //                           }
                                 
     //                         } 
     //                     }
     //                 })
     //                 .catch((error) => {
-    //                     props.editor?.updateOptions({ readOnly: false });
+    //                     editor?.updateOptions({ readOnly: false });
     //                     setWaiting(false);
     //                     logError(error.toString());
     //                 });
     //         } catch (error: any) {
-    //             props.editor?.updateOptions({ readOnly: false });
+    //             editor?.updateOptions({ readOnly: false });
     //             setWaiting(false);
     //             logError(error.toString());
     //         }
+  
+            
     //     }
     // };
 
@@ -277,7 +331,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
   
                             setGeneratedCode(data.code);
                             console.log(taskId);
-                            setGeneratedQuestion(data.code);
+                            setBackendCodes(data.code.split('\n'));
                             apiGetBaselineExplainationCodexSimulation(
                                 context?.token,
                                 taskId
@@ -312,55 +366,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
             
         }
     };
-
-    useEffect(() => {
-        generateCode();
-
-        const interval = setInterval(() => {
-          if (document.getElementById('game-over')) {
-            setIsOver(true);
-            clearInterval(interval); 
-          }
-        }, 1000); 
-        return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-        const responseCodeObject: CodeBlock[] = convertToCodeBlocks(generatedQuestion, generatedCode);
-        setInitialCodeBlocks(responseCodeObject);
-        sectionHeightRef.current = (responseCodeObject.length) * 40;
-    }, [generatedQuestion]);
-
-
-    function shuffleArray(array: IDraggableTask[]): IDraggableTask[] {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-      }
-
-
-    function toTask(generatedQuestion: string, generatedCode: string): IDraggableTask[] {
-        let lines = generatedQuestion.split('\n');
-        let answers = generatedCode.split('\n');
-        return lines
-            .filter((line) => line.trim() !== '')
-            .map((line, index) => {
-            const indentationLevel = line.search(/\S|$/);
-
-            return {
-                id: (index + 1).toString(),
-                content: line,
-                answer: answers[index],
-                indentationLevel: 0,
-                onDest: false,
-                inputCorrect: !line.includes("{input}"),
-                wantedIndentation: Math.round(indentationLevel / 4),
-            };
-            });
-      }
-
+    
     useEffect(() => {
         generateCode();
         const interval = setInterval(() => {
@@ -372,6 +378,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
         }, 1000); 
         return () => clearInterval(interval);
     }, []);  
+
 
     const closePopup = async () => {
       setIsModalOpen(true);
@@ -388,10 +395,9 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
-        parsonsCancelClicked = !parsonsCancelClicked;
+        excutionCancelClicked = !excutionCancelClicked;
       }
     };
-  
 
     useEffect(() => {
         if(isOver){
@@ -400,8 +406,6 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
             const editorElement = document.querySelector('.editor') as HTMLElement;
             overlayElement!.style.display = 'none';
             editorElement.style.zIndex = '1';
-            var outputDiv = document.querySelector('.output');
-            outputDiv!.innerHTML = '';
         }
     }, [isOver]);
 
@@ -425,9 +429,9 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   {waiting && (
                     <p>Generating</p>
                   )}
-                  {!waiting && (
+                  {(!waiting) && (
                   
-                    <ParsonsGame tasksOri={shuffleArray(toTask(generatedQuestion, generatedCode))} sectionHeight={sectionHeightRef.current}/>
+                    <ExcutionSteps code={generatedCode} backendCodes={backendCodes}/>
                   )}
                 </div>
                 <div className="modal-footer">
@@ -437,8 +441,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Next
                   </button>
-                </div>
-                {isModalOpen && (
+                  {isModalOpen && (
                       <div className="modal-next-confirm">
                         <div className="modal-next-confirm-content">
                         <h3>Are you sure you want to go to the next task?</h3>
@@ -449,6 +452,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                         </div>
                       </div>
                   )}
+                </div>
               </div>
             )}
           </div>
@@ -456,4 +460,4 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
       
 };
 
-export default ParsonsGenerateCode;
+export default ExcutionGenerateCode;

@@ -1,10 +1,12 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../../assets/robot.png";
-import { apiGetGeneratedCodeCodex, apiGetPseudoCodex, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetExplanationPerLineCodex, apiGetGeneratedCodeCodex, apiGetWriteOverCodexSimulation, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
 import {  WriteOver } from '../responses/write-over';
+import BaselineGenerateCode from '../responses/baseline-chat';
+import { GPTLoader } from '../loader';
+import IconsDoc from '../docs/icons-doc';
 
 export let writeOverCancelClicked = false;
 
@@ -12,9 +14,10 @@ interface WriteOverGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     code: string | null;
+    taskID: string;
 }
 
-const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, editor, code })  => {
+const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, editor, code, taskID })  => {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -22,201 +25,321 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
     const [generatedCode, setGeneratedCode] = useState("");
     const [userInputCode, setUserInputCode] = useState('');
     const [checked, setChecked] = useState(true);
+    const [isOpen, setIsOpen] = useState(true);
+    const [generatedExplanation, setGeneratedExplanation] = useState('');
+    const [isOver, setIsOver] = useState(false);
+    const [passed, setPassed] = useState(false);
+    const [generatedExplanationPerLine, setGeneratedExplanationPerLine] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-    const cancelClick = () => {
-        
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setUserInputCode('');
-        writeOverCancelClicked = !writeOverCancelClicked;
-    };
-    
-    const handleInsertCodeClick = () => {
-        if (editor) {
-            const position = editor.getPosition();
-            if (position) {
-              const range = new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column);
-              const op = { identifier: { major: 1, minor: 1 }, range: range, text: generatedCode, forceMoveMarkers: true };
-              editor.executeEdits("insertCodeAfterCursor", [op]);
-            }
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (document.getElementById('game-over')) {
+            // setIsOver(true);
+            setPassed(true);
+            clearInterval(interval); 
           }
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setUserInputCode('');
-        writeOverCancelClicked = !writeOverCancelClicked;
-    };
+        }, 1000); 
+        return () => clearInterval(interval);
+    }, []);
 
-    const generatePseudoCode = () => {
-        const props = {
-            taskId: "",
-            editor: editor
+
+    const closePopup = async () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleModalClick = (confirmed: boolean) => {
+        setIsModalOpen(false);
+        
+        if (confirmed) {
+          setIsOpen(false);
+          const overlayElement = document.querySelector('.overlay') as HTMLElement;
+          const editorElement = document.querySelector('.editor') as HTMLElement;
+          overlayElement!.style.display = 'none';
+          editorElement.style.zIndex = '1';
+          setGeneratedCode("");
+          setGeneratedExplanation("");
+          writeOverCancelClicked = !writeOverCancelClicked;
         }
-    
-        const generateCode = () => {
-        if (prompt.length === 0) {
-            setFeedback(
-                "You should write an instruction of the code that you want to be generated."
-            );
-        } else {
-            setWaiting(true);
-    
-            const focusedPosition = props.editor?.getPosition();
-            const userCode = code;
-            console.log("code to be use", userCode);
-            let codeContext = "";
-    
-            if (focusedPosition && userCode && checked) {
-                codeContext = userCode
-                    .split("\n")
-                    .slice(0, focusedPosition.lineNumber + 1)
-                    .join("\n");
-            }
-    
-            try {
-                apiGetGeneratedCodeCodex(
-                    context?.token,
-                    prompt,
-                    userCode ? userCode : ""
-                )
-                    .then(async (response) => {
-  
-                        if (response.ok && props.editor) {
-                            const data = await response.json();
-  
-                            let text = data.code;
-  
-                            if (text.length > 0) {
-                                setFeedback("");
-                                log(
-                                    props.taskId,
-                                    context?.user?.id,
-                                    LogType.PromptEvent,
-                                    {
-                                        code: text,
-                                        userInput: prompt,
-                                    }
-                                );
-  
-                                let insertLine = 0;
-                                let insertColumn = 1;
-  
-                                let curLineNumber = 0;
-                                let curColumn = 0;
-  
-                                let highlightStartLine = 0;
-                                let highlightStartColumn = 0;
-                                let highlightEndLine = 0;
-                                let highlightEndColumn = 0;
-  
-                                const curPos = props.editor.getPosition();
-                                const curCodeLines = props.editor
-                                    .getValue()
-                                    .split("\n");
-  
-                                if (curPos) {
-                                    curLineNumber = curPos.lineNumber;
-                                    curColumn = curPos.column;
-                                }
-  
-                                let curLineText =
-                                    curCodeLines[curLineNumber - 1];
-                                let nextLineText =
-                                    curLineNumber < curCodeLines.length
-                                        ? curCodeLines[curLineNumber]
-                                        : null;
-  
-                                if (curColumn === 1) {
-                                    // at the beginning of a line
-                                    if (curLineText !== "") {
-                                        text += "\n";
-                                        insertLine = curLineNumber;
-                                        insertColumn = 1;
-  
-                                        highlightStartLine = curLineNumber;
-                                        highlightStartColumn = curColumn;
-  
-                                        const textLines = text.split("\n");
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            textLines.length -
-                                            1;
-                                        highlightEndColumn = 1;
-                                    } else {
-                                        insertLine = curLineNumber;
-                                        insertColumn = 1;
-  
-                                        highlightStartLine = curLineNumber;
-                                        highlightStartColumn = curColumn;
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            text.split("\n").length;
-                                        highlightEndColumn = 1;
-                                    }
-                                } else if (curColumn !== 1) {
-                                    // in the middle of a line
-                                    if (nextLineText !== "") {
-                                        text = "\n" + text;
-                                        insertLine = curLineNumber;
-                                        insertColumn = curLineText.length + 1;
-  
-                                        const textLines = text.split("\n");
-  
-                                        highlightStartLine = curLineNumber + 1;
-                                        highlightStartColumn = 1;
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            text.split("\n").length -
-                                            1;
-                                        highlightEndColumn =
-                                            textLines[textLines.length - 1]
-                                                .length + 1;
-                                    } else {
-                                        insertLine = curLineNumber + 1;
-                                        insertColumn = 1;
-  
-                                        highlightStartLine = curLineNumber;
-                                        highlightStartColumn = curColumn;
-  
-                                        highlightEndLine =
-                                            curLineNumber +
-                                            text.split("\n").length;
-                                        highlightEndColumn = 1;
-                                    }
-                                }
+      };
 
-                                console.log("text", text);
+    useEffect(() => {
+      if(isOver){
+          setIsOpen(false);
+          const overlayElement = document.querySelector('.overlay') as HTMLElement;
+          const editorElement = document.querySelector('.editor') as HTMLElement;
+          overlayElement!.style.display = 'none';
+          editorElement.style.zIndex = '1';
+          var outputDiv = document.querySelector('.output');
+          outputDiv!.innerHTML = '';
+      }
+  }, [isOver]);
 
-                                setGeneratedCode(text);
-                            } 
-                        }
-                        setWaiting(false);
-                    })
-                    .catch((error) => {
-                        props.editor?.updateOptions({ readOnly: false });
-                        setWaiting(false);
-                        logError(error.toString());
-                    });
-            } catch (error: any) {
-                props.editor?.updateOptions({ readOnly: false });
-                setWaiting(false);
-                logError(error.toString());
-            }
+  const props = {
+    taskId: "",
+    editor: editor
+};
+
+// const generateCode = () => {
+//     if (prompt.length === 0) {
+//         setFeedback(
+//             "You should write an instruction of the code that you want to be generated."
+//         );
+//     } else {
+//         setWaiting(true);
+
+//         const focusedPosition = props.editor?.getPosition();
+//         const userCode = props.editor?.getValue();
+//         let codeContext = "";
+
+//         if (focusedPosition && userCode && checked) {
+//             codeContext = userCode
+//                 .split("\n")
+//                 .slice(0, focusedPosition.lineNumber + 1)
+//                 .join("\n");
+//         }
+
+//         try {
+//             apiGetBaselineCodex(
+//                 context?.token,
+//                 prompt,
+//                 userCode ? userCode : ""
+//             )
+//                 .then(async (response) => {
+
+//                     if (response.ok && props.editor) {
+//                         const data = await response.json();
+
+//                         let text = data.bundle.code;
+
+//                         if (text.length > 0) {
+//                             setFeedback("");
+//                             log(
+//                                 props.taskId,
+//                                 context?.user?.id,
+//                                 LogType.PromptEvent,
+//                                 {
+//                                     code: text,
+//                                     userInput: prompt,
+//                                 }
+//                             );
+
+//                             let insertLine = 0;
+//                             let insertColumn = 1;
+
+//                             let curLineNumber = 0;
+//                             let curColumn = 0;
+
+//                             let highlightStartLine = 0;
+//                             let highlightStartColumn = 0;
+//                             let highlightEndLine = 0;
+//                             let highlightEndColumn = 0;
+
+//                             const curPos = props.editor.getPosition();
+//                             const curCodeLines = props.editor
+//                                 .getValue()
+//                                 .split("\n");
+
+//                             if (curPos) {
+//                                 curLineNumber = curPos.lineNumber;
+//                                 curColumn = curPos.column;
+//                             }
+
+//                             let curLineText =
+//                                 curCodeLines[curLineNumber - 1];
+//                             let nextLineText =
+//                                 curLineNumber < curCodeLines.length
+//                                     ? curCodeLines[curLineNumber]
+//                                     : null;
+
+//                             if (curColumn === 1) {
+//                                 // at the beginning of a line
+//                                 if (curLineText !== "") {
+//                                     text += "\n";
+//                                     insertLine = curLineNumber;
+//                                     insertColumn = 1;
+
+//                                     highlightStartLine = curLineNumber;
+//                                     highlightStartColumn = curColumn;
+
+//                                     const textLines = text.split("\n");
+
+//                                     highlightEndLine =
+//                                         curLineNumber +
+//                                         textLines.length -
+//                                         1;
+//                                     highlightEndColumn = 1;
+//                                 } else {
+//                                     insertLine = curLineNumber;
+//                                     insertColumn = 1;
+
+//                                     highlightStartLine = curLineNumber;
+//                                     highlightStartColumn = curColumn;
+
+//                                     highlightEndLine =
+//                                         curLineNumber +
+//                                         text.split("\n").length;
+//                                     highlightEndColumn = 1;
+//                                 }
+//                             } else if (curColumn !== 1) {
+//                                 // in the middle of a line
+//                                 if (nextLineText !== "") {
+//                                     text = "\n" + text;
+//                                     insertLine = curLineNumber;
+//                                     insertColumn = curLineText.length + 1;
+
+//                                     const textLines = text.split("\n");
+
+//                                     highlightStartLine = curLineNumber + 1;
+//                                     highlightStartColumn = 1;
+
+//                                     highlightEndLine =
+//                                         curLineNumber +
+//                                         text.split("\n").length -
+//                                         1;
+//                                     highlightEndColumn =
+//                                         textLines[textLines.length - 1]
+//                                             .length + 1;
+//                                 } else {
+//                                     insertLine = curLineNumber + 1;
+//                                     insertColumn = 1;
+
+//                                     highlightStartLine = curLineNumber;
+//                                     highlightStartColumn = curColumn;
+
+//                                     highlightEndLine =
+//                                         curLineNumber +
+//                                         text.split("\n").length;
+//                                     highlightEndColumn = 1;
+//                                 }
+//                             }
+//                             setGeneratedCode(text);
+//                             setGeneratedExplanation(data.bundle.explain);
+//                             if (text.length >= 0){
+//                                 try {
+//                                     apiGetExplanationPerLineCodex(
+//                                       context?.token,
+//                                       text,
+//                                   )
+//                                       .then(async (response) => {
+                      
+//                                           if (response.ok) {
+//                                             const data = await response.json();
+//                                             console.log(data.lines);
+//                                             setGeneratedExplanationPerLine(data.lines);
+//                                             setWaiting(false);
+//                                         } 
+//                                       })
+//                                       .catch((error) => {
+//                                           setWaiting(false);
+//                                           logError(error.toString());
+//                                       });
+//                                   } catch (error: any) {
+//                                       setWaiting(false);
+//                                       logError(error.toString());
+//                                   }
+//                               }
+//                         } 
+//                     }
+//                 })
+//                 .catch((error) => {
+//                     props.editor?.updateOptions({ readOnly: false });
+//                     setWaiting(false);
+//                     logError(error.toString());
+//                 });
+//         } catch (error: any) {
+//             props.editor?.updateOptions({ readOnly: false });
+//             setWaiting(false);
+//             logError(error.toString());
+//         }
+//     }
+// };
+
+const generateCode = () => {
+    if (prompt.length === 0) {
+        setFeedback(
+            "You should write an instruction of the code that you want to be generated."
+        );
+    } else {
+        setWaiting(true);
+
+        const focusedPosition = editor?.getPosition();
+        const userCode = editor?.getValue();
+        let codeContext = "";
+
+        if (focusedPosition && userCode && checked) {
+            codeContext = userCode
+                .split("\n")
+                .slice(0, focusedPosition.lineNumber + 1)
+                .join("\n");
         }
-        };
+        try {
+            apiGetBaselineCodexSimulation(
+                context?.token,
+                taskID,
+            )
+                .then(async (response) => {
 
-        generateCode();
+                    if (response.ok && editor) {
+                        const data = await response.json();
+                        let taskId = data.taskId;
+                        let text = data.code;
+                        setGeneratedCode(text);
+                        console.log(taskId);
+                        apiGetBaselineExplainationCodexSimulation(
+                            context?.token,
+                            taskId
+                        )
+                            .then(async (response) => {
+            
+                                if (response.ok && editor) {
+                                    const data = await response.json();
+
+                                    setGeneratedExplanation(data.explanation);
+                                    // setWaiting(false);                           
+                                }
+                            })
+                            .catch((error) => {
+                                editor?.updateOptions({ readOnly: false });
+                                // setWaiting(false);
+                                logError(error.toString());
+                            });  
+                            
+                            apiGetWriteOverCodexSimulation(
+                                context?.token,
+                                taskId,
+                            )
+                                .then(async (response) => {
+            
+                                    if (response.ok && editor) {
+                                        const data = await response.json();
+                                        // console.log(data.verifyReview);
+                                        setGeneratedExplanationPerLine(data.writeOverTokens.lines);
+                                        setWaiting(false);
+                                        
+                                    }
+                                })
+                                .catch((error) => {
+                                    editor?.updateOptions({ readOnly: false });
+                                    setWaiting(false);
+                                    logError(error.toString());
+                                });
+                    }
+                })
+                .catch((error) => {
+                    editor?.updateOptions({ readOnly: false });
+                    setWaiting(false);
+                    logError(error.toString());
+                });
+        } catch (error: any) {
+            editor?.updateOptions({ readOnly: false });
+            setWaiting(false);
+            logError(error.toString());
+        }
+
+        
     }
-    
+};
 
     const writeRef = React.useRef<HTMLDivElement>();
         useEffect(() => {
@@ -226,7 +349,7 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
         }, []);
 
     useEffect(() => {
-        generatePseudoCode();
+        generateCode();
         const editorContainer = editorRef.current;
         const windowHeight = window.innerHeight;
         const editorHeight = Math.floor(windowHeight * 0.35);
@@ -262,53 +385,59 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
         }
     }, []);
 
-
     return (
-        <>
-            <div className='generated-pseudo-container'>
-                <div style={{ whiteSpace: 'pre-wrap' }}>
-                    <b>prompts: </b> {prompt}
-                </div>
-                {waiting?  
-                    <div className="preloader-2 ${waiting ? '' : 'hidden'}`}">
-                        <span className="line line-1"></span>
-                        <span className="line line-2"></span>
-                        <span className="line line-3"></span>
-                        <span className="line line-4"></span>
-                        <span className="line line-5"></span>
-                        <span className="line line-6"></span>
-                        <span className="line line-7"></span>
-                        <span className="line line-8"></span>
-                        <span className="line line-9"></span>
-                        <span className="line line-10"></span>
-                        <span className="line line-11"></span>
-                        <span className="line line-12"></span>
-                        <span className="line line-13"></span>
-                        <span className="line line-14"></span>
-                        <span className="line line-15"></span>
-                        <span className="line line-16"></span>
-                        <span className="line line-17"></span>
-                        <span className="line line-18"></span>
-                        <div>Generating</div>
-                    </div>
-                    :
-                    <>
-                    <b>Code: </b>
+        <div>
+          {isOver && (
+              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+          )} 
+          {isOpen && !isOver && (
+            <div className="modal show" style={{ display: 'block' }}>
+              <div className="modal-header">
+                  <div className='spark-icon'><IconsDoc iconName="spark" /></div>
+                  AI Assistance:
+              </div>
+              <div className="modal-body">
+                {/* <p>
+                  <b>Prompts: </b> {prompt}
+                </p> */}
+
+                {waiting && (
+                  <div className="gptLoader">
+                    <GPTLoader />
+                  </div>
+                )}
+                {!waiting && (
                     <div 
                         className="writeover-code-reader" 
                         tabIndex={-1} 
                         onKeyDown={(e) => e.key === 'Tab' && e.preventDefault()} >
-                        {generatedCode && !waiting && <WriteOver text={generatedCode}/>}
+                        {generatedCode && !waiting && <WriteOver text={generatedCode} tokens={generatedExplanationPerLine}/>}
                     </div>
-                    </>
-                }
+                )}
+              </div>
+              <div className="modal-footer">
+              <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                  Done
+                  </button>
+                <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
+                  Next
+                </button>
+                {isModalOpen && (
+                      <div className="modal-next-confirm">
+                        <div className="modal-next-confirm-content">
+                        <h3>Are you sure you want to go to the next task?</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
+                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        </div>
+                        </div>
+                      </div>
+                  )}
+              </div>
             </div>
-            <div className="button-container" style={{ marginTop:'3rem', display: 'flex', justifyContent: 'space-between'  }}>
-                <button disabled={waiting} className="gpt-button" onClick={cancelClick}>Cancel</button>
-                <button disabled={waiting} className="gpt-button insert-button disabled" onClick={handleInsertCodeClick}>Insert Code</button>
-            </div>
-        </>
-    );
+          )}
+        </div>
+    )
 };
 
 export default WriteOverGenerateCode;
