@@ -63,6 +63,7 @@ export class AuthoringTask extends Task {
     writeOverJson: JSON;
     VerifyReviewJson: JSON;
     LeadRevealJson: JSON;
+    TracePredictQuestionJson: JSON[];
 
     // constructor(
     //     id: string,
@@ -82,7 +83,8 @@ export class AuthoringTask extends Task {
         writeOverJson: any,
         SelfExplainJson: any,
         VerifyReviewJson: any,
-        LeadRevealJson: any
+        LeadRevealJson: any,
+        TracePredictQuestionJson: any
     ){
         super(id, description, TaskType.Authoring);
 
@@ -98,6 +100,7 @@ export class AuthoringTask extends Task {
         this.writeOverJson = writeOverJson;
         this.VerifyReviewJson = VerifyReviewJson;
         this.LeadRevealJson = LeadRevealJson;
+        this.TracePredictQuestionJson = TracePredictQuestionJson;
     }
 
     checkCode(code: string): CodeCheckResult {
@@ -901,7 +904,13 @@ print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
       ]
     }
   ]
-}
+},
+//trace predict
+[
+  { step: 5, variable: 'num' },
+  { step: 14, variable: 'even_sum' },
+  { step: 27, variable: 'num' }
+],
 
 ),
 
@@ -1501,7 +1510,13 @@ print('Sum of even numbers:', result)`,
       ]
     }
   ]
-}
+},
+//trace predict
+[
+  { step: 5, variable: 'num' },
+  { step: 14, variable: 'even_sum' },
+  { step: 27, variable: 'num' }
+],
 
 ),
 

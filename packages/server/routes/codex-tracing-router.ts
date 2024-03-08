@@ -410,6 +410,7 @@ step: 18, variable: merged[end]`,
             const response = result.data.choices[0].message?.content;
 
             if(response){
+                // console.log(convertStringToQuestionObject(response));
                 res.json({
                     response: convertStringToQuestionObject(response),
                     success: true,

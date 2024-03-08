@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as monaco from 'monaco-editor';
 import IconsDoc from './docs/icons-doc';
-import { apiGetBaselineCodex, apiGetGeneratedFeedbackCodex, logError } from "../api/api";
+import { apiGetBaselineCodex, apiGetGeneratedFeedbackCodex, apiGetTaskById, apiLogEvents, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
@@ -23,6 +23,9 @@ import BaselineGenerateCode, { baselineCancelClicked } from './responses/baselin
 
 interface BaselineGeneratorProps {
   editor: monaco.editor.IStandaloneCodeEditor | null;
+  taskID: string;
+  task: string;
+  moveOn: () => void;
 }
 
 interface BaselinePromptsProps {
@@ -30,12 +33,12 @@ interface BaselinePromptsProps {
   assistant: string[];
 }
 
-const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
+const Baseline: React.FC<BaselineGeneratorProps> = ({ editor, taskID, task, moveOn}) => {
   const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
   const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] = useState(false);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [userInput, setUserInput] = useState('');
-  const [taskID, setTaskID] = useState<string>('');
+  // const [taskID, setTaskID] = useState<string>('');
   const [generatedCode, setGeneratedCode] = useState('');
   const [explanation, setExplanation] = useState('');
   const [codeAboveCursor, setcodeAboveCursor] = useState('');
@@ -48,6 +51,13 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   const [generatingFeedback, setGeneratingFeedback] = useState<boolean>(false);
   const [rows, setRows] = useState(4);
   const [matched, setMatched] = useState<boolean>(true);
+
+  //loggers
+  const [generateButtonLog, setGenerateButtonLog] = useState<any>([]);
+
+  useEffect(() => {
+    console.log("taskID: ", taskID);
+  },[]);
 
   useEffect(() => {
     if (editor) {
@@ -66,6 +76,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
             setCursorPosition(adjustedPosition);
           }
 
+          
+
           if (currentPosition) {
             const currCode = model.getValueInRange({
               startLineNumber: 1,
@@ -80,6 +92,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       };
 
       const disposable = editor.onDidChangeCursorPosition(handleCursorPositionChange);
+
+
 
       return () => {
         disposable.dispose();
@@ -111,18 +125,18 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
     setGeneratedCodeComponentVisible(generatedCodeComponentVisible);
     switch (techniques) {
       case "baseline":
-        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID}/>;
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID} moveOn={moveOn}/>;
         break;
       case "pseudo":
         addOverlay();
         generatedCodeComponent = 
-          <PseudoGenerateCode prompt={userInput} editor={editor} taskID={taskID}/>
+          <PseudoGenerateCode prompt={userInput} editor={editor} taskID={taskID} moveOn={moveOn}/>
         break;
       case "parsons":
         addOverlay();
         generatedCodeComponent = 
           <DndProvider backend={HTML5Backend}>
-            <ParsonsGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
+            <ParsonsGenerateCode prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
           </DndProvider>
         break;
       // case "hierarchical":
@@ -138,30 +152,30 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
       case "writeover":
         addOverlay();
         generatedCodeComponent = 
-          <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor} taskID={taskID}/>
+          <WriteOverGenerateCode prompt={userInput} editor={editor} code={codeAboveCursor} taskID={taskID} moveOn={moveOn}/>
         break;
       case "selfexplain":
         addOverlay();
         generatedCodeComponent =
-          <SelfExplainGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
+          <SelfExplainGenerateCode prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
         break;
       case "stepByStep":
         addOverlay();
         generatedCodeComponent =
-          <ExcutionGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
+          <ExcutionGenerateCode prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
         break;
       case "verify":
         addOverlay();
         generatedCodeComponent =
-          <VerifyGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
+          <VerifyGenerateCode prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
         break;
       case "leadReveal":
         addOverlay();
         generatedCodeComponent =
-          <RevealGenerateCode prompt={userInput} editor={editor}  taskID={taskID}/>
+          <RevealGenerateCode prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
         break;
       default:
-        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID}/>;
+        generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID} moveOn={moveOn}/>;
         break;
     }
     setGeneratedCodeComponent(generatedCodeComponent);
@@ -169,33 +183,44 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
 
   function generateFeedback(currPrompt: string) {
     setGeneratingFeedback(true);
-    const taskContext = 
-    [
-      {
-        id: "1", 
-        description: "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals."
-      },
-      {
-        id: "2", 
-        description:"Write a Python function to calculate the sum of even numbers in a given list."
-      },
-      {
-        id:  "3", 
-        description:"Write a function that takes a list of strings and returns the longest common prefix."
-      }
-    ];
+
 
     try {
       apiGetGeneratedFeedbackCodex(
           context?.token,
           userInput,
-          taskContext,
+          task,
       )
           .then(async (response) => {
 
               if (response.ok) {
                   const data = await response.json();
 
+                  const tempLog = [...generateButtonLog, {
+                    type: "Prompt Click Generate Code Event",
+                    "student-written-prompt": currPrompt,
+                    "llm-response-similarity": data.response["accuracy-score"],
+                    "was-accepted": data.response.matched == 'yes' ? "yes" : "no",
+                    "llm-response": data.response["missing-specifications"],
+                    "attempt-number": unSatisfiedTime + 1,
+                    id: taskID,
+                  }];
+                
+                  setGenerateButtonLog(tempLog);
+
+                  
+                  apiLogEvents(
+                    context?.token,
+                    taskID,
+                    "Prompt Click Generate Code Event",
+                    tempLog,
+                  )
+                    .then(() => {})
+                    .catch((error) => {
+                        logError("sendLog: " + error.toString());
+                  });
+  
+              
                   if (data.response.matched != 'yes') {
                     console.log("did not match");
                     setMatched(false);
@@ -209,7 +234,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                     setUserInput("");
                   } else {
                     setMatched(true);
-                    setTaskID(data.response["matched-taskId"]);
+                    // setTaskID(data.response["matched-taskId"]);
                     const currPrompts = [...prompts];
                     const currPromptObj = {
                       user: currPrompt,
@@ -265,15 +290,17 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
-  // const technique = 'stepByStep';
+  const technique = 'stepByStep';
   // const technique = 'verify';
-  const technique = 'leadReveal';
+  // const technique = 'leadReveal';
 
   const handleClick = () => {
 
     //pass the prompt to gpt to check if the prompt is satisfied
     const currPrompt = userInput;
+    
     generateFeedback(currPrompt);
+  
     setSatisfiedPrompt(false);
   };
 
@@ -329,7 +356,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor }) => {
                         </div>
                         }
                         {!matched && <div className="baseline-feedback-assistant-text">
-                          <p>Your request does not align with any of the available task descriptions. Kindly review the task list and try again.</p>
+                          <p>Your request does not align with any of the current task descriptions. Kindly review the task list and try again.</p>
                         </div>
                         }
                       </div>

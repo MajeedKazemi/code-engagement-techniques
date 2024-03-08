@@ -18,6 +18,51 @@ function getCodeWithLine(code: string) {
 
 export const pseudoRouter = express.Router();
 
+pseudoRouter.post("/hintLevel1", verifyUser, async (req, res, next) => {
+    const { code, oneLineCode, explaination } = req.body;
+    const userId = (req.user as IUser)._id;
+
+    if (explaination !== "") {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+`You want to provide more detailed and syntax wise hints for a one line of code [oneLineCode] given solution code [code]. The ultimate goal for this one line syntax-wised hint is to help students learn python syntaxes given an [explaination] of the [oneLineCode]. 
+
+The generated hint are expected to be concise with high weight on syntax representation of Python code, but it should not directly give students solution code. The hint should be more focused on syntax and logic representation of the code. The generated hint should be 1-2 lines long.`,
+            }
+        ];
+
+        messages.push({
+            role: "user",
+            content: `[code]:${code}[end-code]\n[current-line]:${oneLineCode}[end-current-line]\n[explaination]:${explaination}[end-explaination]`,
+        });
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-4-turbo-preview",
+            messages,
+            temperature: 0.1,
+            max_tokens: 40,
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+            console.log(response);
+            if(response){
+                res.json({
+                    level1Hint: response,
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
 pseudoRouter.post("/verifyCode", verifyUser, async (req, res, next) => {
     const { description, code, studentCode } = req.body;
     const userId = (req.user as IUser)._id;
@@ -53,7 +98,7 @@ return "1" if the student's code is correct, otherwise return "0".
         if (result.data.choices && result.data.choices?.length > 0) {
             const response = result.data.choices[0].message?.content;
             if(response){
-                console.log(code, studentCode, response);
+                // console.log(code, studentCode, response);
                 res.json({
                     correct: response,
                     success: true,

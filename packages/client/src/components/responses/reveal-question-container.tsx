@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import * as monaco from 'monaco-editor';
 import { HighlightedPart, HighlightedPartWithoutTab } from '../docs/highlight-code';
+import { apiLogEvents, logError } from '../../api/api';
+import { AuthContext } from '../../context';
+
 
 interface QuestionObject {
     correct: boolean;
@@ -14,8 +17,9 @@ interface QuestionInterface {
     revealLine: string;
 }
 
-function RevealQuestionComponent({data}: {data: QuestionInterface[]}) {
+function RevealQuestionComponent({data, taskID}: {data: QuestionInterface[], taskID: string}) {
 
+    const { context, setContext } = useContext(AuthContext);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [revealAnswer, setRevealAnswer] = useState(new Array(data.length).fill(false));
     const [firstAnswered, setFirstAnswered] = useState(new Array(data.length).fill(false));
@@ -26,7 +30,6 @@ function RevealQuestionComponent({data}: {data: QuestionInterface[]}) {
     const [lastAnswered, setLastAnswered] = useState(new Array(data.length).fill(false));
     const [reachedMax, setReachedMax] = useState(new Array(data.length).fill(false));
     const [questionAnsweredTimes, setQuestionAnsweredTimes] = useState(new Array(data.length).fill({currentTime: 0, currentAnswer: ""}));
-
 
     useEffect(() => {
         let timer: number | undefined;
@@ -81,9 +84,44 @@ function RevealQuestionComponent({data}: {data: QuestionInterface[]}) {
     const handleSelect = (isCorrect: boolean, index: number, text: string) => {
 
         if(isWaitingForNextAttempt) return;
+
+        // Lead and Reveal:
+        // - high priority:
+        // - answer question event:
+        //     - question_order: {number} // which question is this? the 1st, 2nd, 3rd, ...?
+        //     - code_corresponding_to_question: {string}
+        //     - question text: {string}
+        //     - all choices: {array string}
+        //     - selected choice: {string}
+        //     - is_correct: {boolean}
+        //     - attempt_number: {number} // how many times the user attempted to answer this question?
         
+
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "lead reveal answer question event",
+            {   
+                type:"lead reveal answer question event",
+                question_order: index,
+                code_corresponding_to_question: data[index].revealLine,
+                question_text: data[index].question,
+                all_choices: data[index].choices!.map((choice) => choice.text),
+                selected_choice: text,
+                is_correct: isCorrect,
+                attempt_number: questionAnsweredTimes[index].currentTime + 1
+            }
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
+
+
         setSelectedChoice(selectedChoice.map((an, i) => i === index ? text : an));
         const correctChoice = data[index].choices!.find((choice) => choice.correct);
+
+
         if (correctChoice) {
             setCorrectAnswer(correctAnswer.map((an, i) => i === index ? correctChoice.text : an));
         }
@@ -91,10 +129,12 @@ function RevealQuestionComponent({data}: {data: QuestionInterface[]}) {
       
         if (isCorrect) {
             const newRevealAnswer = revealAnswer.map((reveal, i) => i === index ? true : reveal);
+
             setRevealAnswer(newRevealAnswer);
         } else {
             const newQuestionAnsweredTimes = questionAnsweredTimes.map((question, i) => i === index ? {currentTime: question.currentTime + 1, currentAnswer: text} : question);
             console.log("New Question Answered Times: ", newQuestionAnsweredTimes);
+
             setQuestionAnsweredTimes(newQuestionAnsweredTimes);
         }
 

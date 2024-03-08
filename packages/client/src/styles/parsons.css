@@ -180,7 +180,7 @@
     padding-left: 10px;
     width: fit-content;
     padding-right: 10px;
-    height: 20px !important;
+    height: 20px;
 }
 
 .parsons-game-draggable .parsons-token{
@@ -201,7 +201,7 @@
   margin-left: 5px;
 }
 
-.arrow-left, .arrow-right {
+.arrow-left, .arrow-right, .arrow-up, .arrow-down {
   display: none;
   color: red;
   margin-right: 5px;

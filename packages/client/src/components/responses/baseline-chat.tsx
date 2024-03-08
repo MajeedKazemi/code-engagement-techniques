@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiLogEvents, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode, highlightPsudo } from '../../utils/utils';
 import { ChatLoader } from '../loader';
@@ -17,9 +17,10 @@ interface BaselineGenerateCodeProps {
     code: string;
     exp: string;
     taskID: string;
+    moveOn: () => void;
 }
 
-const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor, code, exp, taskID })  => {
+const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, editor, code, exp, taskID, moveOn })  => {
     // Call the GPT API or any code generation logic here
     // to generate code based on the userInput
     const [generating, setGenerating] = useState(false);
@@ -33,6 +34,20 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
     const explanationRef = useRef<HTMLParagraphElement | null>(null);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
+    const [timeUsed, setTimeUsed] = useState<number>(0);
+
+    useEffect(() => {
+      // Create an interval that runs every second
+      const interval = setInterval(() => {
+          // Increment timeUsed by 1 every second
+          setTimeUsed(prevTimeUsed => prevTimeUsed + 1);
+      }, 1000);
+  
+      // This is important! Clear interval when the component is unmounted to prevent memory leaks
+      return () => {
+          clearInterval(interval);
+      };
+    }, []); // Empty array dependency makes this run once after initial render
 
     useEffect(() => {
         if (explanation.length > 0 && explanationRef.current) {
@@ -49,6 +64,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
         setGeneratedCode("");
         setGeneratedExplanation("");
         baselineCancelClicked = !baselineCancelClicked;
+        moveOn();
     };
 
     useEffect(() => {
@@ -91,11 +107,26 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
               editor.executeEdits("insertCodeAfterCursor", [op]);
             }
           }
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        baselineCancelClicked = !baselineCancelClicked;
+          
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "submit code from baseline",
+            {
+              type: "submit code from baseline",
+              "time-since-displayed": timeUsed,
+              "code-generated": generatedCode,
+            },
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
+        // const editorElement = document.querySelector('.editor') as HTMLElement;
+        // editorElement.style.zIndex = '1';
+        // setGeneratedCode("");
+        // setGeneratedExplanation("");
+        // baselineCancelClicked = !baselineCancelClicked;
     };
 
     // const generateCode = () => {
@@ -400,7 +431,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({ prompt, edi
       </>
       }
       <div className={`generated-button-container ${(generating) ? "inactive" : ""}`}>
-        <button className="gpt-button" onClick={cancelClick}>Next</button>
+        <button className="gpt-button" onClick={cancelClick}>Next Task</button>
         <button className="gpt-button" onClick={handleInsertCodeClick}>Insert Code</button>
       </div>
       </div>

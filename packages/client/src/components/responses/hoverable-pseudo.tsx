@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getIconSVG } from "../../utils/icons";
 import IconsDoc from "../docs/icons-doc";
 import { HoverableExplainCode } from "./hoverable-explain-code";
+import { AuthContext } from "../../context";
+import { apiLogEvents, logError } from "../../api/api";
 
 interface PseudoCodeProps {
-    goals: PseudoCodeSubgoals[]
+    goals: PseudoCodeSubgoals[];
+    wholeCode: string;
+    taskID: string;
 }
 
 
@@ -20,12 +24,34 @@ interface PesudoInterface {
     explanation: string;
 }
 
-export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
+export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCode, taskID }) => {
     const [isOpen, setIsOpen] = useState(Array(goals.length).fill(false));
+    const { context, setContext } = useContext(AuthContext);
+
+    // clicks to open/close subgoal event
+    // - subgoal name: {string}
+    // - action: {`“open” | “close”`}
 
     const handleClick = (index: number) => {
         let temp = [...isOpen];
         temp[index] = !temp[index];
+
+
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "pseudocode clicks to open close subgoal event",
+            {
+              type: "pseudocode clicks to open close subgoal event",
+                "subgoal-name": goals[index].title,
+                "action": temp[index] ? "open" : "close"
+            },
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
+
         setIsOpen(temp);
     }
 
@@ -55,6 +81,8 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals }) => {
                                             explanation={line.explanation || ""}
                                             code={line.code || ""}
                                             key={JSON.stringify(line) + index.toString()}
+                                            taskID={taskID}
+                                            wholeCode={wholeCode}
                                         />
                                     );
                                 })}

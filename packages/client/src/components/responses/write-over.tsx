@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, useContext } from 'react';
 import { BsArrowReturnLeft, BsFillQuestionSquareFill, BsQuestionCircle } from 'react-icons/bs';
 import { MdKeyboardTab } from 'react-icons/md';
-import { apiGetExplanationPerLineCodex, logError } from '../../api/api';
+import { apiGetExplanationPerLineCodex, apiLogEvents, logError } from '../../api/api';
 import { AuthContext } from '../../context';
 import { highlightCode, highlightPsudo } from '../../utils/utils';
 import * as monaco from "monaco-editor";
@@ -12,6 +12,7 @@ import IconsDoc from '../docs/icons-doc';
 interface WriteOverProps {
     text: string;
     tokens: any[];
+    taskID: string;
 }
 
 interface LineWithLeadSpaces {
@@ -24,7 +25,7 @@ interface LineWithLeadSpaces {
 export let allLinesCompleted = false;
 
 
-export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
+export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) => {
     const [colorizedText, setColorizedText] = useState<string[]>([]);
     const { context, setContext } = useContext(AuthContext);
     const [lines, setLines] = useState<LineWithLeadSpaces[]>([]);
@@ -41,6 +42,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
     const [hoveringStates, setHoveringStates] = useState(scores.map(() => false));
     const [errorIndexes, setErrorIndexes] = useState<Array<Array<number>>>([]);     
     const [charToToken, setCharToToken] = useState<number[][]>([]);
+
+    const [enterLogs, setEnterLogs] = useState<Array<any>>([]);
+    const [currLineTime, setCurrLineTime] = useState(0);
 
     
     const lineCharToToken = (index: number, originalString: string) => {
@@ -99,6 +103,13 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
         setKeywordsList(tokens);
         setErrorIndexes(Array.from<number, number[]>({ length: tokens.length }, () => []));
         setCharToToken(tokens.map((line, index) => lineCharToToken(index, line.code)));
+        
+        const timer = setInterval(() => {
+            setCurrLineTime(prevTime => prevTime + 1);
+        }, 1000);
+
+        return () => clearInterval(timer)
+
     }, []);
 
     function wrapCharsWithSpan(html: string, indexes: number[], className: string): string {
@@ -202,12 +213,29 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
     
         if (e.key === 'Enter' && scores[currentLineIndex] > 50) {
             if (lines[currentLineIndex].original === userInput) {
+
+                // log the event for 
+                //
+                // finished typing a line event:
+                // - incorrect_keystrokes: {array of strings}
+                // - actual_line_code: {string} // this is simply what the code this line had
+                // - speed_seconds {number} // time start minus time finish
+                setEnterLogs([...enterLogs, {
+                    type: "writeover finished typing a line event",
+                    incorrect_keystrokes: errorIndexes[currentLineIndex],
+                    actual_line_code: lines[currentLineIndex].original,
+                    score: scores[currentLineIndex],
+                    speed_seconds: currLineTime
+                }]);
+
+                setCurrLineTime(0);
                 setUserInput('');
                 setCurrentLineIndex(currentIndex => currentIndex + 1);
                 // Remove error effect from every character in line
                 inputRef.current?.querySelectorAll(".shake-char").forEach(element => element.classList.remove("shake-char"));
                 inputRef.current = document.getElementById(`line-${currentLineIndex+1}`) as HTMLDivElement;
                 colorizedText[currentLineIndex] = wrapCharsWithSpan(colorizedText[currentLineIndex], errorIndexes[currentLineIndex], "highlight-correct-char");
+
             } 
             e.preventDefault();
             return;
@@ -251,6 +279,17 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens }) => {
     
         const nextInput = userInput + value;
         if (currentLineIndex === lines.length - 1 && lines[currentLineIndex].original === nextInput) {
+            //log to the db
+            apiLogEvents(
+                context?.token,
+                taskID,
+                "writeover finished typing a line event",
+                enterLogs,
+              )
+                .then(() => {})
+                .catch((error) => {
+                    logError("sendLog: " + error.toString());
+            });
             setCompleted(true);
         }
         

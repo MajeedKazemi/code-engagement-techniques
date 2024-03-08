@@ -1,13 +1,16 @@
-import React, { useEffect, createContext, useState } from "react";
+import React, { useEffect, createContext, useState, useContext } from "react";
 import { DragDropContext, DragStart, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable } from "react-beautiful-dnd";
 import { convertTime } from "../../utils/shared";
-import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
+import { BsArrowBarLeft, BsArrowBarRight, BsArrowBarDown, BsArrowBarUp } from 'react-icons/bs';
 import { HighlightedPart, HighlightedPartWithoutTab } from "../docs/highlight-code";
+import { apiLogEvents, logError } from "../../api/api";
+import { AuthContext } from "../../context";
 
 
 interface ParsonsGameProps {
     tasksOri: IDraggableTask[];
     sectionHeight?: number;
+    taskID: string;
 }
 
 interface IColumn {
@@ -36,7 +39,7 @@ function jaccardSimilarityIndex(str1: string, str2: string): boolean {
     return trimmedStr1 === trimmedStr2;
   }
 
-export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeight }) => {
+export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeight, taskID }) => {
     const [inputValues, setInputValues] = useState<Record<string, string[]>>({});
     const [inputCorrect, setInputCorrect] = useState<boolean>(false);
     const [completed, setCompleted] = useState<boolean>(false);
@@ -48,7 +51,14 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     const [startTime, setStartTime] = useState(Date.now());
     const [gameOver, setGameOver] = useState(false);
     const [wrongIds, setWrongIds] = useState<Number[]>([]);
+    const [wrongIdObjects, setWrongIdObjects] = useState<any[]>([]);
     const [maxIndent, setMaxIndent] = useState(0);
+    const { context, setContext } = useContext(AuthContext);
+    const [numberOfHorizontalMovements, setNumberOfHorizontalMovements] = useState(0);
+    const [numberOfVerticalMovements, setNumberOfVerticalMovements] = useState(0);
+    const [submitBeyoundTimeOut, setSubmitBeyoundTimeOut] = useState(false);
+    const [numberOfRetry, setNumberOfRetry] = useState(0);
+    const [currentMovement, setCurrentMovement] = useState("");
 
     const timeLimit = 60 * tasks.length;
 
@@ -63,7 +73,17 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         if (!result.destination) return;
         const { source, destination } = result;
 
-  
+    if(currentMovement === "horizontal"){
+      console.log("horizontal");
+      setNumberOfHorizontalMovements(numberOfHorizontalMovements + 1);
+
+    }else if(currentMovement === "vertical"){
+      console.log("vertical");
+      setNumberOfVerticalMovements(numberOfVerticalMovements + 1);
+    }
+
+    setCurrentMovement("");
+
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
@@ -99,10 +119,11 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     if (movedTask) {
     // Filter out the moved task from the updatedTasks array
     updatedTasks.splice(source.index, 1);
-
+    
     // Insert the moved task at the new destination index
     updatedTasks.splice(destination.index, 0, movedTask);
-
+    console.log("vertical");
+    setNumberOfVerticalMovements(numberOfVerticalMovements + 1);
     // Update the state with the new updatedTasks array
     setTasks(updatedTasks);
     }
@@ -122,12 +143,15 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     const handleMouseMove = (e: MouseEvent) => {
         if (taskBeingDragged && taskBeingDragged.onDest) {
             const difference = e.clientX - taskBeingDragged.currentMouseXPosition!;
+            const differenceY = e.clientY - taskBeingDragged.currentMouseXPosition!;
             // console.log(e.clientX, taskBeingDragged.currentMouseXPosition, difference);
             if (difference >= 100) {
+                setCurrentMovement("horizontal");
                 taskBeingDragged.indentationLevel++;
                 taskBeingDragged.currentMouseXPosition = e.clientX;
                 setColumns({ ...columns });
             } else if (difference <= -10) {
+                setCurrentMovement("horizontal");
                 taskBeingDragged.indentationLevel = Math.max(
                 0,
                 taskBeingDragged.indentationLevel - 1
@@ -212,6 +236,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             // is there enough time to continue?
             if (elapsedTime / 1000 > timeLimit) {
               setTimeUp(true);
+              setSubmitBeyoundTimeOut(true);
             }
         }, 1000);
 
@@ -233,15 +258,22 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     
       const doneIds = columns.done.items.map(item => parseInt(item.id));
       let wrong = [];
+      let wrongObjects = [];
     
       for (let i = 0; i < doneIds.length; i++) {
         if (doneIds[i] !== i+1) {
+          wrongObjects.push({
+            id: doneIds[i],
+            shouldMoveDown: doneIds[i] > i+1,
+            shouldMoveUp: doneIds[i] < i+1,
+          });
           wrong.push(doneIds[i]);
         }
       }
     
       if (wrong.length > 0) {
         setWrongIds(wrong);
+        setWrongIdObjects(wrongObjects);
         return false;
       }else{
         return true;
@@ -272,7 +304,8 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
     };
          
   
-    function checkCode(){
+    function checkCode() {
+        setNumberOfRetry(numberOfRetry + 1);
         if (completed) {
           setGameOver(true);
 
@@ -287,6 +320,12 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                   if (arrowElement) {
                     arrowElement.style.display = "none";
               }
+
+              const upElement = document.getElementById("idElement" + i);
+                  if (upElement) {
+                    upElement.style.display = "none";
+              }
+
             }
             tasks.forEach(task => {
               task.content.split("{input}").forEach((part, index) => {
@@ -324,6 +363,32 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                 });
               });
             }
+
+            const indentationWrongBlocks = columns.done.items.filter(item => item.wantedIndentation !== item.indentationLevel);
+
+            //log identationWrongBlocks, and wrongIds
+            // - submission event:
+            // - number of incorrectly placed items: {number}
+            // - number of correctly placed items: {number}
+            apiLogEvents(
+              context?.token,
+              taskID,
+              "submission event parsons",
+              {
+                type: "submission event parsons",
+                "number_of_incorrectly_placed_items": wrongIds.length,
+                "incorrectly_placed_items": wrongIds,
+                "number_of_correctly_placed_items": columns.done.items.length - wrongIds.length,
+                "number_of_incorrrectly_indented_items": indentationWrongBlocks.length,
+                "incorrectly_indented_items": indentationWrongBlocks.map(item => item.id),
+              },
+            )
+              .then(() => {})
+              .catch((error) => {
+                  logError("sendLog: " + error.toString());
+            });
+
+
             //if indentations are wrong
             if(!areWantedIndentationsEqual()){
               columns.done.items.forEach(item => {
@@ -338,9 +403,13 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             }
             //if the order is wrong
             if(!areIdsSequential()){
-              //console.log(wrongIds);
+              console.log(wrongIds);
               for (const wrongId of wrongIds) {
                 const divElement = document.getElementById("drag" + wrongId);
+                const idElements = document.getElementById("idElement" + wrongId);
+                if (idElements) {
+                  idElements.style.display = "block";
+                }
                 if (divElement) {
                   divElement.style.border = "2px solid red";
                 }
@@ -356,6 +425,39 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
             }
         }
     }
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (document.getElementById('send-log')) {
+          
+          // mid priority:
+          // - movement event:
+          //   - is initial drag from left blocks? {boolean} (used to filter out)
+          //   - horizontal movement: {number}
+          //   - vertical movement: {number}
+          //   - relative_correctness: { obj } // if it can be determined for each movement
+          apiLogEvents(
+              context?.token,
+              taskID,
+              "movement event parsons",
+              {
+                  type: "movement event parsons",
+                  "horizontal_movement": numberOfHorizontalMovements,
+                  "vertical_movement": numberOfVerticalMovements,
+                  "submit_beyound_time_out": submitBeyoundTimeOut,
+                  "total_number_of_retry": numberOfRetry,
+              },
+            )
+              .then(() => {})
+              .catch((error) => {
+                  logError("sendLog: " + error.toString());
+          });
+
+          clearInterval(interval); 
+        }
+      }, 1000); 
+      return () => clearInterval(interval);
+  }, []);  
 
   return (
     <>
@@ -398,6 +500,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         </button>
         } */}
         {gameOver && <span id="game-over" style={{opacity:0}}>Game Over</span>}
+        {gameOver && <span id="send-log" style={{opacity:0}}>Game Over</span>}
     </div>
     }
     <div className="parsons-problem">
@@ -426,6 +529,11 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                           className="parsons-game-draggable"
                         >
                           {item.wantedIndentation < item.indentationLevel ? <BsArrowBarLeft id={"indent"+item.id} className="arrow-left"/> : item.wantedIndentation > item.indentationLevel && <BsArrowBarRight id={"indent"+item.id} className="arrow-right"/> }
+
+                          {(wrongIdObjects.length>0 && wrongIds.findIndex(i => i == parseInt(item.id)) >= 0) && wrongIdObjects[wrongIds.findIndex(i => i == parseInt(item.id))].shouldMoveUp ? 
+                          <BsArrowBarUp id={"idElement"+item.id} className="arrow-up"/> : 
+                          <BsArrowBarDown id={"idElement"+item.id} className="arrow-down"/> 
+                          }
                           {item.content.split("{input}").map((part, index) => (
                             <React.Fragment key={index}>
                             {index > 0 ? (

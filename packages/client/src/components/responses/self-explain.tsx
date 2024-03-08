@@ -3,13 +3,14 @@ import { Editor } from "../editor";
 import { FaQuestionCircle } from "react-icons/fa";
 import * as monaco from "monaco-editor";
 import { ChatLoader } from "../loader";
-import { apiGetFeedbackByResponse, logError } from "../../api/api";
+import { apiGetFeedbackByResponse, apiLogEvents, logError } from "../../api/api";
 import { AuthContext } from "../../context";
 import { HighlightedPart, HighlightedPartWithoutTab } from "../docs/highlight-code";
 
 interface SelfExplainProps {
     code: string;
     questions: SelfExplainQuestion[];
+    taskID: string;
 }
 
 interface FeedbackProps {
@@ -33,7 +34,7 @@ interface SelfExplainQuestion {
 }
 
 
-export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => {
+export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskID }) => {
     const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
     const { context, setContext } = useContext(AuthContext);
@@ -216,6 +217,31 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
             setCorrectAnswer(correctAnswer.map((an, i) => i === index ? correctChoice.text : an));
         }
 
+        // - answer multiple-choice question event:
+		// - question text: {string}
+		// - all choices: {array string}
+		// - selected choice: {string}
+		// - is_correct: {boolean}
+		// - attempt_number: {number}
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "self explain answer multiple-choice question event",
+            {   
+                type:"self explain answer multiple-choice question event",
+                question_order: index,
+                all_choices: questions[index].choices!,
+                question_text: questions[index].question,
+                selected_choice: text,
+                is_correct: isCorrect,
+                attempt_number: questionAnsweredTimes[index].currentTime + 1
+            }
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
+
       
         if (isCorrect) {
             const newRevealAnswer = revealAnswer.map((reveal, i) => i === index ? true : reveal);
@@ -272,6 +298,31 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions }) => 
                         setButtonDisabled(false);
                         const data = await response.json();
                         console.log(data.response);
+
+                        // - answer short-answer question event:
+                        // - question_text {string}
+                        // - prev_student_answer: {string} // if this is a retry and they have tried before
+                        // - prev_provided_feedback: {string} // if this is a retry and they have tried before
+                        // - new_student_answer: {string}
+                        // - attempt_number: {number}
+
+                        apiLogEvents(
+                            context?.token,
+                            taskID,
+                            "self explain answer short-answer question event",
+                            {   
+                                type:"self explain answer short-answer question event",
+                                question_order: index,
+                                question_text: questions[index].question,
+                                prev_student_answer: userResponse && userResponse[index-1] ? userResponse[index-1] : "",
+                                prev_provided_feedback: feedback && feedback[index-1] ? feedback[index-1] : "",
+                                new_student_answer: userResponse[index],
+                                feedback: data.response.score >= 3 ? "" : data.response.feedback,
+                                score: data.response.score,
+                                attempt_number: questionAnsweredTimes[index].currentTime + 1
+                            }
+                        )
+
                         if (data.response.score >= 3) {
                             const newRevealAnswer = revealAnswer.map((reveal, i) => i === index ? true : reveal);
                             setRevealAnswer(newRevealAnswer);

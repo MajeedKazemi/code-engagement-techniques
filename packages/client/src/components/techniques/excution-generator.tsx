@@ -17,6 +17,7 @@ interface ExcutionGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     taskID: string;
+    moveOn: () => void;
 }
 
 interface CodeRepresentation {
@@ -25,7 +26,7 @@ interface CodeRepresentation {
 }
   
 
-const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, editor, taskID })  => {
+const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -429,6 +430,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
+        moveOn();
         excutionCancelClicked = !excutionCancelClicked;
       }
     };
@@ -448,7 +450,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
@@ -469,7 +471,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                   )}
                   {(!waiting && counter >= 5) && (
                   
-                    <ExcutionSteps code={generatedCode} backendCodes={backendCodes}/>
+                    <ExcutionSteps code={generatedCode} backendCodes={backendCodes} taskID={taskID}/>
                   )}
                 </div>
                 <div className="modal-footer">

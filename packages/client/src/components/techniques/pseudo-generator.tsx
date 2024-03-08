@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetPseudoCodex, apiGetPseudoCodexSimulation, apiGetPseudoVerifyCode, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetPseudoCodex, apiGetPseudoCodexSimulation, apiGetPseudoVerifyCode, apiLogEvents, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext, SocketContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
@@ -14,6 +14,7 @@ interface PseudoGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     taskID: string;
+    moveOn: () => void;
 }
 
 interface PseudoCodeSubgoals {
@@ -142,7 +143,7 @@ function responseToPseudo(response: any): PseudoCodeSubgoals[] {
 //     }
 // ]
 
-const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, taskID })  => {
+const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
     const pseudoRef = useRef<HTMLDivElement | null>(null);
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
@@ -168,6 +169,10 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [checking, setChecking] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
+    const [attemptTime, setAttemptTime] = useState<number>(0);
+
+    const [runCodeLog, setRunCodeLog] = useState<any>([]);
+    const [loggedIO, setLoggedIO] = useState<any>([]);
 
     // function responseToPseudo(response: any, code:string): PseudoCodeSubgoals[] {
     // }
@@ -479,9 +484,26 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                             };
                         }),
                     ]);
+
+                    setLoggedIO([
+                        ...loggedIO,
+                        ...data.out.split("\n").map((i: string) => {
+                            return {
+                                type: "output",
+                                line: i,
+                            };
+                        }),
+                    ]);
                 } else {
                     setPseudoOutput([
                         ...pseudooutput,
+                        {
+                            type: "output",
+                            line: data.out,
+                        },
+                    ]);
+                    setLoggedIO([
+                        ...loggedIO,
                         {
                             type: "output",
                             line: data.out,
@@ -492,6 +514,13 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             if (data.type === "stderr") {
                 setPseudoOutput([
                     ...pseudooutput,
+                    {
+                        type: "error",
+                        line: data.err,
+                    },
+                ]);
+                setLoggedIO([
+                    ...loggedIO,
                     {
                         type: "error",
                         line: data.err,
@@ -527,6 +556,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
           editorElement.style.zIndex = '1';
           setGeneratedCode("");
           setGeneratedExplanation("");
+          moveOn();
           pseudoCancelClicked = !pseudoCancelClicked;
         }
       };
@@ -590,6 +620,26 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             setRunning(false);
             editor?.focus();
         }
+
+        setRunCodeLog([...runCodeLog, 
+            {
+                type: "run code from pseudoCode",
+                "code-that-was-executed": editor?.getValue(),
+                "used-test-cases": "", 
+                "test-inputs-outputs": loggedIO,
+            }
+        ]);
+
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "run code from pseudoCode",
+            runCodeLog,
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
     };
 
     // useEffect(() => {
@@ -610,8 +660,26 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     }, [isOver]);
 
-    const veirfyPseudoCode = () => {
+    const veirfyPseudoCode = () => {   
+        // - submit code event (finish pseudo-code)
+		// - code that was submitted {string} 
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "submit code event to check pseudo-code",
+            {
+              type: "submit code event to check pseudo-code",
+              "attempt-time":attemptTime+1,
+              "code-that-was-submitted": userInputCode,
+              "solution-code": generatedCode,
+            },
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
         setChecking(true);
+        setAttemptTime(attemptTime + 1);
         // pass to the LLM to check if the user written code compare to the generated code
         try {
             apiGetPseudoVerifyCode(
@@ -645,7 +713,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     return (
         <div>
           {isOver && (
-              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
           )} 
           {isOpen && !isOver && (
             <div className="modal show" style={{ display: 'block' }}>
@@ -667,7 +735,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 {(!waiting) && (
                   <div className='pesudocode-container-div'>
                     <div ref={pseudoRef} className="pesudo-code-reader">
-                        <PseudoCodeHoverable goals={generatedPseudo} />
+                        <PseudoCodeHoverable goals={generatedPseudo} wholeCode={generatedCode} taskID={taskID}/>
                     </div>
                     <div className='pesudocode-writer-container'>
                         <div className='pseudocode-verify-button-container'>
@@ -745,6 +813,13 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
 
                                             setPseudoOutput([
                                                 ...pseudooutput,
+                                                {
+                                                    type: "input",
+                                                    line: terminalInput,
+                                                },
+                                            ]);
+                                            setLoggedIO([
+                                                ...loggedIO,
                                                 {
                                                     type: "input",
                                                     line: terminalInput,

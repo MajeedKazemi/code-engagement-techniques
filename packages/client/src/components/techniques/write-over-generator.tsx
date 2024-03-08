@@ -15,9 +15,10 @@ interface WriteOverGenerateCodeProps {
     editor: monaco.editor.IStandaloneCodeEditor | null;
     code: string | null;
     taskID: string;
+    moveOn: () => void;
 }
 
-const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, editor, code, taskID })  => {
+const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, editor, code, taskID, moveOn})  => {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -92,6 +93,7 @@ const WriteOverGenerateCode: React.FC<WriteOverGenerateCodeProps> = ({ prompt, e
           editorElement.style.zIndex = '1';
           setGeneratedCode("");
           setGeneratedExplanation("");
+          moveOn();
           writeOverCancelClicked = !writeOverCancelClicked;
         }
       };
@@ -422,7 +424,7 @@ const generateCode = () => {
     return (
         <div>
           {isOver && (
-              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
           )} 
           {isOpen && !isOver && (
             <div className="modal show" style={{ display: 'block' }}>
@@ -445,7 +447,7 @@ const generateCode = () => {
                         className="writeover-code-reader" 
                         tabIndex={-1} 
                         onKeyDown={(e) => e.key === 'Tab' && e.preventDefault()} >
-                        {generatedCode && !waiting && <WriteOver text={generatedCode} tokens={generatedExplanationPerLine}/>}
+                        {generatedCode && !waiting && <WriteOver text={generatedCode} tokens={generatedExplanationPerLine} taskID={taskID} />}
                     </div>
                 )}
               </div>

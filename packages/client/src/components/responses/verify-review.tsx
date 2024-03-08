@@ -4,15 +4,16 @@ import { AuthContext, SocketContext } from '../../context';
 import { initLanguageClient, retryOpeningLanguageClient, stopLanguageClient } from '../../api/intellisense';
 import IconsDoc from '../docs/icons-doc';
 import { HighlightedPart } from '../docs/highlight-code';
-import { apiGetIssueCodes, apiGetIssueHintLevel1, apiGetIssueHintLevel2, apiGetIssueHintLevel3 } from '../../api/api';
+import { apiGetIssueCodes, apiGetIssueHintLevel1, apiGetIssueHintLevel2, apiGetIssueHintLevel3, apiLogEvents, logError } from '../../api/api';
 
 interface VerifyProps {
     code: string;
     issueCode: string;
     questions: any[];
+    taskID: string;
 }
 
-export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions }) => {
+export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions, taskID }) => {
 
     const { context } = useContext(AuthContext);
     const { socket } = useContext(SocketContext);
@@ -38,6 +39,8 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     const [generatingHint, setGeneratingHint] = useState<boolean>(false);
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
+    const [runCodeLog, setRunCodeLog] = useState<any>([]);
+    const [loggedIO, setLoggedIO] = useState<any>([]);
 
     useEffect(() => {
         if(currentIssues[status].length > 0){
@@ -143,6 +146,15 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             };
                         }),
                     ]);
+                    setLoggedIO([... loggedIO, {
+                        type: "output",
+                        ...data.out.split("\n").map((i: string) => {
+                            return {
+                                type: "output",
+                                line: i,
+                            };
+                        }),
+                    }])
                 } else {
                     setOutput([
                         ...output,
@@ -151,6 +163,10 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             line: data.out,
                         },
                     ]);
+                    setLoggedIO([... loggedIO, {
+                        type: "output",
+                        line: data.out,
+                    }])
                 }
             }
             if (data.type === "stderr") {
@@ -161,6 +177,10 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                         line: data.err,
                     },
                 ]);
+                setLoggedIO([... loggedIO, {
+                    type: "error",
+                    line: data.err,
+                }])
             }
             if (data.type === "close") {
                 setRunning(false);
@@ -199,6 +219,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     };
 
     const handleVerifyCode = () => {
+
         setGeneratingHint(true);
             try {
                 apiGetIssueHintLevel1(
@@ -226,6 +247,24 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             currIssues[3] = [];
                             currIssues[4] = [];
                             setCurrentIssues(currIssues);
+
+                            // - submit and check event
+                            // - current state of code in editor {string}
+                            // - lines that are incorrect: {array of strings/objects}
+                            apiLogEvents(
+                                context?.token,
+                                taskID,
+                                "submit and check event",
+                                {
+                                  type: "submit code from baseline",
+                                  "current-state-of-code-in-editor": currentCode,
+                                  "lines-that-are-incorrect": currIssues,
+                                },
+                              )
+                                .then(() => {})
+                                .catch((error) => {
+                                    logError("sendLog: " + error.toString());
+                            });
                             setGeneratingHint(false);
                         }
                     }
@@ -243,6 +282,23 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     const handleGetHint = () => {
         
         console.log(currentCode);
+        // - get hint event
+		// - current state of code in editor {string}
+		// - displayed hints {array of strings/objects}
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "get hint event",
+            {
+              type: "get hint event",
+              "current-state-of-code-in-editor": currentCode,
+              "current-hints": currentIssues,
+            },
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
         if (currentCode.length <= 0) return;
         if (status === 0) {
             // pass to the LLM, ask a question to hint the student where to check for the issue
@@ -370,6 +426,41 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
         }
     };
 
+    // - high priority:
+    // 	- get hint event
+    //     - current state of code in editor {string}
+    //     - displayed hints {array of strings/objects}
+    // - submit and check event
+    //     - current state of code in editor {string}
+    //     - lines that are incorrect: {array of strings/objects}
+    // - submit code event (finish code)
+    //     - code that was submitted {string}
+
+    setRunCodeLog([...runCodeLog, 
+        {
+            type: "run code from verifyReview",
+            "code-that-was-executed": editor?.getValue(),
+            "used-test-cases": "", 
+            "test-inputs-outputs": loggedIO,
+        }
+    ]);
+
+    apiLogEvents(
+        context?.token,
+        taskID,
+        "run code from verifyReview",
+        runCodeLog,
+      )
+        .then(() => {})
+        .catch((error) => {
+            logError("sendLog: " + error.toString());
+    });
+    // - mid priority:
+    // - run code:
+    //     - code that was executed {string}
+    //     - used test-case: {string}
+    //     - test input/output: {array of string}
+
     return (
         <Fragment>
             {isCorrect && <span id="game-over" style={{opacity:0}}>Game Over</span>}
@@ -452,6 +543,10 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                                                     line: terminalInput,
                                                 },
                                             ]);
+                                            setLoggedIO([... loggedIO, {
+                                                type: "input",
+                                                line: terminalInput,
+                                            }])
                                             setTerminalInput("");
                                         }
                                     }}

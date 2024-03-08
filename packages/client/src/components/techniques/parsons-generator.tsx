@@ -57,10 +57,11 @@ interface ParsonsGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     taskID: string;
+    moveOn: () => void;
 }
   
 
-const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor, taskID })  => {
+const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -423,6 +424,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
+        moveOn();
         parsonsCancelClicked = !parsonsCancelClicked;
       }
     };
@@ -443,7 +445,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
@@ -464,7 +466,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   )}
                   {(!waiting && counter >= 5) && (
                   
-                    <ParsonsGame tasksOri={shuffleArray(toTask(generatedQuestion, generatedCode))} sectionHeight={sectionHeightRef.current}/>
+                    <ParsonsGame tasksOri={shuffleArray(toTask(generatedQuestion, generatedCode))} sectionHeight={sectionHeightRef.current} taskID={taskID}/>
                   )}
                 </div>
                 <div className="modal-footer">

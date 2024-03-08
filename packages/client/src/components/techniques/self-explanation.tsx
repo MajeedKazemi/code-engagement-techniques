@@ -18,6 +18,7 @@ interface SelfExplainGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     taskID: string;
+    moveOn: () => void;
 }
 
 
@@ -133,7 +134,7 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
 // }
   
 
-const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ prompt, editor, taskID })  => {
+const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -444,6 +445,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
         editorElement.style.zIndex = '1';
         setGeneratedCode("");
         setGeneratedExplanation("");
+        moveOn();
         selfExplainCancelClicked = !selfExplainCancelClicked;
       }
     };
@@ -495,7 +497,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
@@ -515,7 +517,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                   )}
                   {(!waiting && counter >= 5) && (
                   
-                    <SelfExplain code={generatedCode} questions={generatedQuestions}/>
+                    <SelfExplain code={generatedCode} questions={generatedQuestions} taskID={taskID}/>
                   )}
                 </div>
                 <div className="modal-footer">

@@ -9,7 +9,7 @@ import {
     useState,
 } from "react";
 
-import { apiGetSavedUserCode, apiSaveUserCode, logError } from "../api/api";
+import { apiGetSavedUserCode, apiLogEvents, apiSaveUserCode, apiUserNextTask, logError } from "../api/api";
 import {
     initLanguageClient,
     retryOpeningLanguageClient,
@@ -24,6 +24,8 @@ interface EditorProps {
     starterCode: string;
     showCodex: boolean;
     updateCode?: (code: string) => void;
+    onCompletion: () => void;
+    description: string;
 }
 
 export const Editor = forwardRef((props: EditorProps, ref) => {
@@ -46,6 +48,11 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const [saved, setSaved] = useState(true);
     const [canReset, setCanReset] = useState(false);
     const [cursorPosition, setCursorPosition] = useState({ lineNumber: 0, column: 0 });
+    
+
+    const [runCodeLog, setRunCodeLog] = useState<any>([]);
+    const [keyStrokes, setKeyStrokes] = useState<number>(0);
+    const [loggedIO, setLoggedIO] = useState<any>([]);
 
     useImperativeHandle(ref, () => ({
         setCode(code: string) {
@@ -54,6 +61,13 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             }
         },
     }));
+
+
+    const setNextTask = () => {
+        setKeyStrokes(0);
+        setEditor(null);
+        props.onCompletion();
+    };
 
     useEffect(() => {
         if (monacoEl && !editor) {
@@ -129,6 +143,8 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                     e
                                 );
 
+                                setKeyStrokes(prevKeyStrokes => prevKeyStrokes + 1);
+
                                 retryOpeningLanguageClient();
 
                                 setLastEditedAt(new Date());
@@ -178,9 +194,25 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                             };
                         }),
                     ]);
+                    setLoggedIO([
+                        ...loggedIO,
+                        ...data.out.split("\n").map((i: string) => {
+                            return {
+                                type: "output",
+                                line: i,
+                            };
+                        }),
+                    ]);
                 } else {
                     setOutput([
                         ...output,
+                        {
+                            type: "output",
+                            line: data.out,
+                        },
+                    ]);
+                    setLoggedIO([
+                        ...loggedIO,
                         {
                             type: "output",
                             line: data.out,
@@ -196,6 +228,13 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             if (data.type === "stderr") {
                 setOutput([
                     ...output,
+                    {
+                        type: "error",
+                        line: data.err,
+                    },
+                ]);
+                setLoggedIO([
+                    ...loggedIO,
                     {
                         type: "error",
                         line: data.err,
@@ -259,6 +298,28 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             setRunning(false);
             editor?.focus();
         }
+
+
+        setRunCodeLog([...runCodeLog, 
+            {
+                type: "run code from baseline",
+                "code-that-was-executed": editor?.getValue(),
+                "used-test-cases": "", 
+                "test-inputs-outputs": loggedIO,
+                "strockes_counter": keyStrokes,
+            }
+        ]);
+
+        apiLogEvents(
+            context?.token,
+            props.taskId,
+            "run code from baseline",
+            runCodeLog,
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
     };
 
     const handleClickReset = () => {
@@ -268,6 +329,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const handleClickUndo = () => {
         editor?.trigger("myapp", "undo", {});
     };
+
 
     const handleClickSave = () => {
         const code = editor?.getValue();
@@ -307,7 +369,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                             </div>
                         </Fragment>
                         Console Input and Output
-                        {/* <button
+                        <button
                             className={`editor-button ${
                                 saved ? "editing-btn-disabled" : "editing-btn"
                             }`}
@@ -316,22 +378,14 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         >
                             {saved ? "Code Saved" : "Save Code"}
                         </button>
-                        <button
-                            className={`editor-button ${
-                                canReset
-                                    ? "editing-btn"
-                                    : "editing-btn-disabled"
-                            } `}
-                            disabled={!canReset}
-                            onClick={handleClickReset}
-                        >
-                            Reset
-                        </button> */}
                         {/* <button
-                            className="editor-button editing-btn"
-                            onClick={handleClickUndo}
+                            className={`editor-button ${
+                                !completed ? "editing-btn-disabled" : "editing-btn"
+                            }`}
+                            onClick={setNextTask}
+                            disabled={!completed}
                         >
-                            Undo
+                            Next Task
                         </button> */}
                     </div>
                     <button
@@ -363,9 +417,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         )}
                     </button>
                 </div>
-                {/* {excution && <div>
-                    <ExcutionTimeline totalSteps={10} setCurrentStep={setCurrentStep} currentStep={currentStep} />
-                </div>} */}
                 <div className="output">
                     {output.map((i, index) => (
                         <p
@@ -399,6 +450,13 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                             line: terminalInput,
                                         },
                                     ]);
+                                    setLoggedIO([
+                                        ...loggedIO,
+                                        {
+                                            type: "input",
+                                            line: terminalInput,
+                                        },
+                                    ]);
                                     setTerminalInput("");
                                     log(
                                         props.taskId,
@@ -419,8 +477,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            {!excution && <Baseline editor={editor}/>}
-            {/* {excution && <ExcutionSteps editor={editor} currentStep={currentStep}/>} */}
+            {!excution && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask}/>}
         </Fragment>
     );
 });

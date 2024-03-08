@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext, Fragment } from 'react'
 import { FaLongArrowAltRight, FaQuestionCircle } from 'react-icons/fa';
 import { AuthContext, SocketContext } from '../../context';
 import ExcutionTimeline from '../excution-timeline';
-import { apiGenerateQuestionHint, apiGenerateTracingQuestion, logError } from '../../api/api';
+import { apiGenerateQuestionHint, apiGenerateTracingQuestion, apiGetTracingSimulation, apiLogEvents, logError } from '../../api/api';
 import { ChatLoader } from '../loader';
 import { highlightCode } from '../../utils/utils';
 import * as monaco from "monaco-editor";
@@ -13,6 +13,7 @@ import IconsDoc from '../docs/icons-doc';
 interface ExcutionStepsProps {
     code: string;
     backendCodes: string[];
+    taskID: string;
 }
 
 interface ExcutionSteps {
@@ -44,7 +45,7 @@ function deepCopy(arr: any[]): any[] {
     return arr.map(item => Array.isArray(item) ? deepCopy(item) : item);
 }
 
-export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes }) => {
+export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes, taskID }) => {
     const { context } = useContext(AuthContext);
     const { socket } = useContext(SocketContext);
     const [editor, setEditor] =
@@ -76,6 +77,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
     const [output, setOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
+
+    // - step_event:
+	// 	- type: `“first” | “previous” | “next” | “last”`
+    const [firstClickCounter, setFirstClickCounter] = useState<number>(0);
+    const [prevClickCounter, setPrevClickCounter] = useState<number>(0);
+    const [nextClickCounter, setNextClickCounter] = useState<number>(0);
+    const [lastClickCounter, setLastClickCounter] = useState<number>(0);
 
     useEffect(() => {
         const editor = monaco.editor.create(
@@ -161,16 +169,30 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
 
 
     const generateQuestion = () => {
+        // try {
+        //     apiGenerateTracingQuestion(
+        //         context?.token,
+        //         backendCode,
+        //         excutionSteps ? JSON.stringify(excutionSteps) : ""
+        //     ).then(async (response) => {
+                                      
+        //         if (response.ok) {
+        //             const data = await response.json();
+        //             setQuestions(data.response);
+        //         }
+        //     })
+        // } catch (error: any) {
+        //     logError(error.toString());
+        // }
         try {
-            apiGenerateTracingQuestion(
+            apiGetTracingSimulation(
                 context?.token,
-                backendCode,
-                excutionSteps ? JSON.stringify(excutionSteps) : ""
+                taskID,
             ).then(async (response) => {
                                       
                 if (response.ok) {
                     const data = await response.json();
-                    setQuestions(data.response);
+                    setQuestions(data.tracePredict);
                 }
             })
         } catch (error: any) {
@@ -460,6 +482,35 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
         }
 
     };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (document.getElementById('send-log')) {
+            
+            // - step_event:
+		    // - type: `“first” | “previous” | “next” | “last”`
+            apiLogEvents(
+                context?.token,
+                taskID,
+                "submit code from baseline",
+                {
+                    type: "trace predict step_event",
+                    "first": firstClickCounter,
+                    "previous": prevClickCounter,
+                    "next": nextClickCounter,
+                    "last": lastClickCounter,
+                },
+              )
+                .then(() => {})
+                .catch((error) => {
+                    logError("sendLog: " + error.toString());
+            });
+
+            clearInterval(interval); 
+          }
+        }, 1000); 
+        return () => clearInterval(interval);
+    }, []);  
     
 
     const getCurrQuestionSolution = (index: number) => {
@@ -476,6 +527,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
             }
         }
     }
+
+    // useEffect(() => {
+    //     console.log(firstClickCounter, prevClickCounter, nextClickCounter, lastClickCounter);
+    // }, [firstClickCounter, prevClickCounter, nextClickCounter, lastClickCounter]);
 
     
     return (
@@ -501,6 +556,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
             <div className={`step-by-step-timeline-container ${isOnStop ? 'inactive' : ''}`}>
                 <div className='legend'>
                     {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
+                    {questionStop >= excutionSteps.length-1 && <span id="send-log" style={{opacity:0}}>send-log</span>}
                     <div className='legend-item'>
                         <FaLongArrowAltRight className='green-arrow' />
                         <div className='legend-text'>Line that just executed</div>
@@ -511,7 +567,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                     </div>
                 </div>
 
-                <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} stop={questionStop}/>
+                <ExcutionTimeline totalSteps={excutionSteps.length} setCurrentStep={setCurrentStep} currentStep={currentStep} stop={questionStop}
+                setFirstClickCounter={setFirstClickCounter} setPrevClickCounter={setPrevClickCounter} setNextClickCounter={setNextClickCounter} setLastClickCounter={setLastClickCounter}/>
             </div>
 
             <div className='print-container'>
@@ -605,7 +662,35 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                                         className="question-submission-button"
                                         disabled={inputValue.trim().length === 0}
                                         onClick={() => {
+
                                             let solution = solutions![index];
+
+                                            // - answer question event:
+                                            // - highlighted_line_of_code: {string}
+                                            // - question_text: {string}
+                                            // - prev_student_answer: {string} // if this is a retry and they have tried before
+                                            // - prev_provided_feedback: {string} // if this is a retry and they have tried before
+                                            // - new_student_answer: {string}
+                                            // - attempt_number: {number}
+                                            let attemptNumber = currentWrongAnswers![index].filter((item) => item.length > 0).length + 1;
+                                            apiLogEvents(
+                                                context?.token,
+                                                taskID,
+                                                "trace predict answer question event",
+                                                {
+                                                  type: "trace predict answer question event",
+                                                  "current_step": currentStep,
+                                                  "highlighted_line_of_code": backendCode[excutionSteps[currentStep+1].currLine],
+                                                  "prev_student_answer": !currentWrongAnswers ? "" : currentWrongAnswers[index],
+                                                  "expected_solution": solution , //correct or incorrect
+                                                  "new_student_answer": inputValue,
+                                                  "attempt_number": attemptNumber,
+                                                },
+                                              )
+                                                .then(() => {})
+                                                .catch((error) => {
+                                                    logError("sendLog: " + error.toString());
+                                            });
                                             if ((solution && typeof(solution) == 'string' && inputValue.replace(/\s+/g, '') == solution.replace(/\s+/g, '')) || Number(inputValue) === Number(solution)) {
                                                 setShowSolution!(prev => {
                                                     let temp = [...prev!];

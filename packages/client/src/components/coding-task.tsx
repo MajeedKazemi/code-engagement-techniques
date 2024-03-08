@@ -200,6 +200,8 @@ export const CodingTask = (props: CodingTaskProps) => {
                 taskId={props.taskId}
                 starterCode={props.starterCode ? props.starterCode : ""}
                 updateCode={setUserCode}
+                onCompletion={handleSubmitTask}
+                description={props.description}
             />
         </div>
     );

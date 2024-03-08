@@ -17,6 +17,7 @@ interface VerifyGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
     taskID: string;
+    moveOn: () => void;
 }
 
 interface QuestionInterface {
@@ -42,7 +43,7 @@ function removeLineNumbers(code: string): string {
 }
   
 
-const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor, taskID })  => {
+const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
@@ -387,6 +388,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
           editorElement.style.zIndex = '1';
           setGeneratedCode("");
           setGeneratedExplanation("");
+          moveOn();
           verifyCancelClicked = !verifyCancelClicked;
         }
       };
@@ -408,7 +410,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
     return (
           <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID}/>
+                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
             )} 
             {isOpen && !isOver && (
               <div className="modal show" style={{ display: 'block' }}>
@@ -428,7 +430,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                     </div>
                 )}
                 {(!waiting && counter >= 5) && (
-                    <VerifyReview code={generatedCode} issueCode={issueCode} questions={questons}/>
+                    <VerifyReview code={generatedCode} issueCode={issueCode} questions={questons} taskID={taskID}/>
                     
                   )}
                 </div>

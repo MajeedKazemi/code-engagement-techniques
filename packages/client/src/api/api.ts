@@ -255,10 +255,24 @@ export const apiGetGeneratedCodeCodex = (
     });
 
 
+export const apiGetTaskById = (
+    token: string | null | undefined,
+    taskId: string
+) =>
+    fetch(env.API_URL + "/api/tasks/get-task/" + taskId, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+
 export const apiGetGeneratedFeedbackCodex = (
     token: string | null | undefined,
     prompt: string,
-    task: any[]
+    tasks: string,
 ) =>
     fetch(env.API_URL + "/api/technique-baseline/generateFeedback", {
         method: "POST",
@@ -269,7 +283,7 @@ export const apiGetGeneratedFeedbackCodex = (
         },
         body: JSON.stringify({
             prompt: prompt,
-            task: task,
+            task: tasks,
         }),
     });
 
@@ -323,6 +337,27 @@ export const apiGetPseudoCodex = (
             description: description,
             code: code,
         }),
+    });
+
+export const pseudoGetHintLevel1 = (
+    token: string | null | undefined,
+    code: string,
+    oneLineCode: string,
+    explaination: string
+) =>
+    fetch(env.API_URL + "/api/technique-pseudo/hintLevel1", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(
+            { 
+                code: code, 
+                oneLineCode: oneLineCode, explaination: explaination 
+            }
+        ),
     });
 
 export const apiGetPseudoVerifyCode = (
@@ -638,6 +673,7 @@ export const apiGenerateQuestionHint = (
 export const apiLogEvents = (
     token: string | null | undefined,
     taskId: string,
+    type: string,
     log: any
 ) =>
     fetch(env.API_URL + "/api/tasks/log/", {
@@ -649,6 +685,7 @@ export const apiLogEvents = (
         },
         body: JSON.stringify({
             taskId,
+            type,
             log,
         }),
     });
@@ -770,5 +807,21 @@ export const apiGetLeadReviewSimulation = (
             taskId: taskId,
         }),
     });
+
+export const apiGetTracingSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithTracePredict/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+});
 
 
