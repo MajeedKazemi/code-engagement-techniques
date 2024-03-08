@@ -19,13 +19,12 @@ interface Token {
     code: string;
     explanation: string;
     parent: number | null;
-  }
+}
 
 interface TreeToken {
     index: number;
     children: number[];
 }
-
 
 export const HoverableExplainCode = (props: IProps) => {
     const [hovering, setHovering] = useState(false);
@@ -33,7 +32,10 @@ export const HoverableExplainCode = (props: IProps) => {
     const closingParenthesisIndex = content.lastIndexOf(")");
     let firstPart = content;
     let lastPart = "";
-    if (closingParenthesisIndex !== -1 && closingParenthesisIndex === content.length - 1) {
+    if (
+        closingParenthesisIndex !== -1 &&
+        closingParenthesisIndex === content.length - 1
+    ) {
         firstPart = content.slice(0, closingParenthesisIndex);
         lastPart = content.slice(closingParenthesisIndex);
     }
@@ -41,46 +43,78 @@ export const HoverableExplainCode = (props: IProps) => {
     function findRealIndex(treeTokens: Token[], index: number): number {
         for (let i = 0; i < treeTokens.length; i++) {
             if (treeTokens[i].index === index) {
-                return i; 
+                return i;
             }
         }
-        return index; 
+        return index;
     }
 
     return (
         <div
             id={props.id}
             className={`hoverable-token ${props.isActive ? "active" : ""}`}
-        >   
+        >
             {/* <span className={"hoverable-code"}>
                 {highlightCodeBlock(props.content)}
             </span> */}
             <div className="token-child-container">
-                <span 
-                onMouseEnter={() => {
-                    setHovering(true);
-                }}
-                onMouseLeave={() => {
-                    setHovering(false);
-                }}
-                className={`hoverable-code ${props.isAfterActive ? "grayed" : ""}`
-            } dangerouslySetInnerHTML={{ __html: highlightCodeBlockCode(firstPart) }} />
+                <span
+                    onMouseEnter={() => {
+                        setHovering(true);
+                    }}
+                    onMouseLeave={() => {
+                        setHovering(false);
+                    }}
+                    className={`hoverable-code ${
+                        props.isAfterActive ? "grayed" : ""
+                    }`}
+                    dangerouslySetInnerHTML={{
+                        __html: highlightCodeBlockCode(firstPart),
+                    }}
+                />
                 {props.children?.map((child) => (
                     <HoverableExplainCode
                         id={`animated-token-${child}`}
-                        content={props.fullContent[findRealIndex(props.fullContent, child)].code || ""}
-                        explanation={props.fullContent[findRealIndex(props.fullContent, child)].explanation || ""}
-                        isActive={props.fullContent[findRealIndex(props.fullContent, child)].index <= props.currentActiveIndex()}
-                        isAfterActive={props.fullContent[findRealIndex(props.fullContent, child)].index < props.currentActiveIndex()}
+                        content={
+                            props.fullContent[
+                                findRealIndex(props.fullContent, child)
+                            ].code || ""
+                        }
+                        explanation={
+                            props.fullContent[
+                                findRealIndex(props.fullContent, child)
+                            ].explanation || ""
+                        }
+                        isActive={
+                            props.fullContent[
+                                findRealIndex(props.fullContent, child)
+                            ].index <= props.currentActiveIndex()
+                        }
+                        isAfterActive={
+                            props.fullContent[
+                                findRealIndex(props.fullContent, child)
+                            ].index < props.currentActiveIndex()
+                        }
                         fullContent={props.fullContent}
-                        children={props.treeContent[findRealIndex(props.fullContent, child)].children}
+                        children={
+                            props.treeContent[
+                                findRealIndex(props.fullContent, child)
+                            ].children
+                        }
                         treeContent={props.treeContent}
                         currentActiveIndex={props.currentActiveIndex}
                     />
                 ))}
-                <span className={`hoverable-code ${props.isAfterActive ? "grayed" : ""}`} dangerouslySetInnerHTML={{ __html: highlightCodeBlockCode(lastPart) }} />
+                <span
+                    className={`hoverable-code ${
+                        props.isAfterActive ? "grayed" : ""
+                    }`}
+                    dangerouslySetInnerHTML={{
+                        __html: highlightCodeBlockCode(lastPart),
+                    }}
+                />
             </div>
-            
+
             {hovering && props.explanation && (
                 <div
                     className="hoverable-code-line-explanation"
@@ -92,8 +126,8 @@ export const HoverableExplainCode = (props: IProps) => {
                     }}
                     dangerouslySetInnerHTML={{
                         __html: highlightCode(
-                            props.explanation,
-                            "exp-inline-code"
+                            props.explanation
+                            // ,"exp-inline-code"
                         ),
                     }}
                 ></div>
