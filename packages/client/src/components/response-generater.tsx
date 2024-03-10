@@ -22,6 +22,7 @@ import { ChatLoader } from './loader';
 import BaselineGenerateCode, { baselineCancelClicked } from './responses/baseline-chat';
 
 interface BaselineGeneratorProps {
+  technique: string;
   editor: monaco.editor.IStandaloneCodeEditor | null;
   taskID: string;
   task: string;
@@ -33,7 +34,7 @@ interface BaselinePromptsProps {
   assistant: string[];
 }
 
-const Baseline: React.FC<BaselineGeneratorProps> = ({ editor, taskID, task, moveOn}) => {
+const Baseline: React.FC<BaselineGeneratorProps> = ({ technique, editor, taskID, task, moveOn}) => {
   const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
   const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] = useState(false);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -290,7 +291,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor, taskID, task, move
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
-  const technique = 'stepByStep';
+  // const technique = 'stepByStep';
   // const technique = 'verify';
   // const technique = 'leadReveal';
 

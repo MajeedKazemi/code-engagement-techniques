@@ -22,7 +22,7 @@ import { log, LogType, RunEventType } from "../utils/logger";
 interface EditorProps {
     taskId: string;
     starterCode: string;
-    showCodex: boolean;
+    technique: string;
     updateCode?: (code: string) => void;
     onCompletion: () => void;
     description: string;
@@ -476,7 +476,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            {!excution && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask}/>}
+            {!excution && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask} technique={props.technique}/>}
         </Fragment>
     );
 });

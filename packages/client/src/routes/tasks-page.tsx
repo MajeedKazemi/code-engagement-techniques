@@ -48,9 +48,8 @@ export const TasksPage = () => {
                                 : task.starterCode
                         }
                         onCompletion={setNextTask}
-                        showCodex={
-                            task.type === TaskType.Authoring &&
-                            context?.user?.editorType === "copilot"
+                        technique={
+                            context?.user?.editorType ? context.user.editorType : ""
                         }
                         taskType={task.type}
                     ></CodingTask>
