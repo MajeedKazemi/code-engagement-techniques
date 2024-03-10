@@ -14,6 +14,7 @@ interface IProps {
     code: string;
     taskID: string;
     wholeCode: string;
+    syntaxHint: string;
 }
 
 export const HoverableExplainCode = (props: IProps) => {
@@ -21,7 +22,7 @@ export const HoverableExplainCode = (props: IProps) => {
     const [hoveringHovered, setHoveringHovered] = useState(false);
     const [hintLevel, setHintLevel] = useState(0);
     const { context, setContext } = useContext(AuthContext);
-    const [hint1, setHint1] = useState("");
+    const [hint1, setHint1] = useState<string>("");
     // const codeEl = useRef(null);
 
     // useEffect(() => {
@@ -56,45 +57,47 @@ export const HoverableExplainCode = (props: IProps) => {
     const getHintLevel1 = () => {
         // do something with explanation pass to the LLM
         //get the hint from the server
-        try {
-            pseudoGetHintLevel1(
-                context?.token,
-                props.code,
-                props.wholeCode,
-                props.explanation ? props.explanation : "",
-            )
-                .then(async (response) => {
+        // try {
+        //     pseudoGetHintLevel1(
+        //         context?.token,
+        //         props.code,
+        //         props.wholeCode,
+        //         props.explanation ? props.explanation : "",
+        //     )
+        //         .then(async (response) => {
 
-                    if (response.ok) {
-                        const data = await response.json();
+        //             if (response.ok) {
+        //                 const data = await response.json();
 
-                        apiLogEvents(
-                            context?.token,
-                            props.taskID,
-                            "clicking see implementation hints event pseudocode",
-                            {
-                              type: "clicking see implementation hints event pseudocode",
-                              "current-state-of-code-in-editor": props.wholeCode,
-                              "diplayed-explanation": props.explanation,
-                              "displayed-implementation-hint": data.level1Hint
-                            },
-                          )
-                            .then(() => {})
-                            .catch((error) => {
-                                logError("sendLog: " + error.toString());
-                        });
+        //                 apiLogEvents(
+        //                     context?.token,
+        //                     props.taskID,
+        //                     "clicking see implementation hints event pseudocode",
+        //                     {
+        //                       type: "clicking see implementation hints event pseudocode",
+        //                       "current-state-of-code-in-editor": props.wholeCode,
+        //                       "diplayed-explanation": props.explanation,
+        //                       "displayed-implementation-hint": data.level1Hint
+        //                     },
+        //                   )
+        //                     .then(() => {})
+        //                     .catch((error) => {
+        //                         logError("sendLog: " + error.toString());
+        //                 });
                 
-                        setHint1(data.level1Hint);
-                        setHintLevel(1);
+        //                 setHint1(data.level1Hint);
+        //                 setHintLevel(1);
                                   
-                    }
-                })
-                .catch((error) => {
-                    logError(error.toString());
-                });
-        } catch (error: any) {
-            logError(error.toString());
-        }
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             logError(error.toString());
+        //         });
+        // } catch (error: any) {
+        //     logError(error.toString());
+        // }
+        setHint1(props.syntaxHint);
+        setHintLevel(1);
     };
 
 
@@ -143,9 +146,14 @@ export const HoverableExplainCode = (props: IProps) => {
                     }
                     {hintLevel == 1 &&
                         <>
-                        <div className="hoverable-code-hint-level-1">
-                            {hint1}
-                        </div>
+                        <div 
+                            className="hoverable-code-hint-level-1"
+                            dangerouslySetInnerHTML={{
+                            __html: highlightPsudo(
+                                hint1,
+                            ),
+                            }}
+                        ></div>
                         <div className="hoverable-code-hint-level-1-button" onClick={revealCode}>
                             <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
                                 see code &gt;
@@ -154,9 +162,14 @@ export const HoverableExplainCode = (props: IProps) => {
                     }
                     {hintLevel == 2 &&
                         <>
-                        <div className="hoverable-code-hint-level-1">
-                            {hint1}
-                        </div>
+                        <div 
+                            className="hoverable-code-hint-level-1"
+                            dangerouslySetInnerHTML={{
+                            __html: highlightPsudo(
+                                hint1,
+                            ),
+                            }}
+                        ></div>
                         <div className="hoverable-code-hint-level-2">
                             <HighlightedPartWithoutTab part={props.code} />
                         </div>

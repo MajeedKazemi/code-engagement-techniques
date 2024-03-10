@@ -942,90 +942,57 @@ Finally, the \`print\` function is used to display the result.`,
 {
   "subgoals": [
       {
-          "title": "Define function",
+          "title": "Define the function",
           "code": [
               {
                   "indent": 0,
-                  "line": "def calculate_even_sum(numbers):",
-                  "pseudo-code": "Define a function named `calculate_even_sum` that takes a parameter `numbers`.",
-                  "explanation": "This line defines a function that will be used to calculate the sum of even numbers in a list."
+                  "line": "def reverse_stack(stack):",
+                  "pseudo-code": "Define a function named `reverse_stack` that takes a parameter `stack`",
+                  "syntax-hint": "`def` is used to define a function in Python. The function name is followed by parentheses containing the function parameters, and ends with a colon.",
+                  "explanation": "This line is needed to define the function and specify what parameters it will take. In this case, it will take a stack as input."
               }
           ]
       },
       {
-          "title": "Initialize sum variable",
+          "title": "Initialize temporary stack",
           "code": [
               {
                   "indent": 1,
-                  "line": "even_sum = 0",
-                  "pseudo-code": "Initialize a variable `even_sum` and set it to 0.",
-                  "explanation": "This line sets up a variable to hold the sum of the even numbers as they are found."
+                  "line": "temp = []",
+                  "pseudo-code": "Create an empty list named `temp`",
+                  "syntax-hint": "In Python, `=` is used for assignment. `[]` is used to create an empty list.",
+                  "explanation": "This line is needed to create a temporary stack that will be used to reverse the original stack."
               }
           ]
       },
       {
-          "title": "Iterate over numbers",
+          "title": "Reverse the stack",
           "code": [
               {
                   "indent": 1,
-                  "line": "for num in numbers:",
-                  "pseudo-code": "Start a for loop that iterates over each number in `numbers`.",
-                  "explanation": "This line starts a loop that will go through each number in the list one by one."
-              }
-          ]
-      },
-      {
-          "title": "Check if number is even",
-          "code": [
+                  "line": "while stack:",
+                  "pseudo-code": "Start a while loop that continues as long as `stack` is not empty",
+                  "syntax-hint": "In Python, `while` is used to start a loop that continues as long as the condition after it is true. Here, `stack` is truthy if it is not empty.",
+                  "explanation": "This line is needed to start a loop that will continue until the original stack is empty."
+              },
               {
                   "indent": 2,
-                  "line": "if num % 2 == 0:",
-                  "pseudo-code": "Check if the current number `num` is even by checking if the remainder when divided by 2 is 0.",
-                  "explanation": "This line checks if the current number is even. If it is, the remainder when divided by 2 will be 0."
+                  "line": "temp.append(stack.pop())",
+                  "pseudo-code": "Remove the top element from `stack` and add it to the end of `temp`",
+                  "syntax-hint": "In Python, `.append()` is used to add an element to the end of a list. `.pop()` is used to remove and return the last element of a list.",
+                  "explanation": "This line is needed to reverse the order of the elements in the stack by moving them from the original stack to the temporary stack."
               }
           ]
       },
       {
-          "title": "Add even number to sum",
-          "code": [
-              {
-                  "indent": 3,
-                  "line": "even_sum += num",
-                  "pseudo-code": "If the number is even, add it to `even_sum`.",
-                  "explanation": "This line adds the current number to the sum if it is even."
-              }
-          ]
-      },
-      {
-          "title": "Return sum of even numbers",
+          "title": "Return the reversed stack",
           "code": [
               {
                   "indent": 1,
-                  "line": "return even_sum",
-                  "pseudo-code": "Return the value of `even_sum`.",
-                  "explanation": "This line ends the function and returns the sum of the even numbers."
-              }
-          ]
-      },
-      {
-          "title": "Call function and store result",
-          "code": [
-              {
-                  "indent": 0,
-                  "line": "result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])",
-                  "pseudo-code": "Call the `calculate_even_sum` function with a list of numbers as an argument and store the result in `result`.",
-                  "explanation": "This line calls the function with a specific list of numbers and saves the returned value."
-              }
-          ]
-      },
-      {
-          "title": "Print result",
-          "code": [
-              {
-                  "indent": 0,
-                  "line": "print(\"Sum of even numbers:\", result)",
-                  "pseudo-code": "Print the string 'Sum of even numbers:' followed by the value of `result`.",
-                  "explanation": "This line prints the result of the function call to the console."
+                  "line": "return temp",
+                  "pseudo-code": "Return the list `temp`",
+                  "syntax-hint": "In Python, `return` is used to specify the result that a function should give back.",
+                  "explanation": "This line is needed to give the reversed stack back to whatever called the function."
               }
           ]
       }

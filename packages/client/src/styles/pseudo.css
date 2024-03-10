@@ -13,6 +13,11 @@
    width: 40%; 
 }
 
+
+.hoverable-code-hint-level-1 .default-inline {
+    color: black;
+}
+
 .pesudo-code-reader{
     font-family: "Courier New", Courier, monospace;
     font-size: 15px;

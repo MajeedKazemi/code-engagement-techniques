@@ -21,6 +21,7 @@ interface PesudoInterface {
     indent: number;
     code: string;
     pseudo: string;
+    syntax_hint: string;
     explanation: string;
 }
 
@@ -83,6 +84,7 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCod
                                             key={JSON.stringify(line) + index.toString()}
                                             taskID={taskID}
                                             wholeCode={wholeCode}
+                                            syntaxHint={line.syntax_hint || ""}
                                         />
                                     );
                                 })}

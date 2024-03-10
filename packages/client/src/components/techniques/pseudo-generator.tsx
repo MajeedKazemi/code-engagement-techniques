@@ -26,6 +26,7 @@ interface PesudoInterface {
     indent: number;
     code: string;
     pseudo: string;
+    syntax_hint: string;
     explanation: string;
 }
 
@@ -38,6 +39,7 @@ function responseToPseudo(response: any): PseudoCodeSubgoals[] {
                     indent: Number(codeItem.indent),
                     code: codeItem.line,
                     pseudo: codeItem["pseudo-code"],
+                    syntax_hint: codeItem["syntax-hint"],
                     explanation: codeItem.explanation
                 };
             })
