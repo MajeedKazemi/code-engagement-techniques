@@ -212,6 +212,25 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
             setRunning(false);
             editor?.focus();
         }
+        setRunCodeLog([...runCodeLog, 
+            {
+                type: "run code from verifyReview",
+                "code-that-was-executed": editor?.getValue(),
+                "used-test-cases": "", 
+                "test-inputs-outputs": loggedIO,
+            }
+        ]);
+
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "run code from verifyReview",
+            runCodeLog,
+        )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+        });
     };
 
     const handleClickReset = () => {
@@ -436,25 +455,6 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     // - submit code event (finish code)
     //     - code that was submitted {string}
 
-    setRunCodeLog([...runCodeLog, 
-        {
-            type: "run code from verifyReview",
-            "code-that-was-executed": editor?.getValue(),
-            "used-test-cases": "", 
-            "test-inputs-outputs": loggedIO,
-        }
-    ]);
-
-    apiLogEvents(
-        context?.token,
-        taskID,
-        "run code from verifyReview",
-        runCodeLog,
-      )
-        .then(() => {})
-        .catch((error) => {
-            logError("sendLog: " + error.toString());
-    });
     // - mid priority:
     // - run code:
     //     - code that was executed {string}

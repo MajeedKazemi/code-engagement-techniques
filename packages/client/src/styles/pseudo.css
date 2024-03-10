@@ -13,6 +13,9 @@
    width: 40%; 
 }
 
+.verifying-button {
+    background-color: rgb(234, 118, 234) !important;
+}
 
 .hoverable-code-hint-level-1 .default-inline {
     color: black;
@@ -55,7 +58,17 @@
 }
 
 .pseudocode-verify-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     height: 50px !important;
+}
+
+.pseudocode-verify-button-container span{
+    color:green;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .modal-body p {

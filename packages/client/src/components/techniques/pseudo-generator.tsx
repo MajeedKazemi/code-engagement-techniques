@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetPseudoCodex, apiGetPseudoCodexSimulation, apiGetPseudoVerifyCode, apiLogEvents, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetIssueHintLevel1, apiGetPseudoCodex, apiGetPseudoCodexSimulation, apiGetPseudoVerifyCode, apiLogEvents, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { AuthContext, SocketContext } from '../../context';
 import { LogType, log } from '../../utils/logger';
@@ -172,6 +172,9 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
     const [attemptTime, setAttemptTime] = useState<number>(0);
+    const [currentIssues, setCurrentIssues] = useState<any>([]);
+    const [decorations, setDecorations] = useState<string[]>([]);
+    const [studentEditor, setStudentEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [loggedIO, setLoggedIO] = useState<any>([]);
@@ -592,6 +595,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             editor.layout();
             editor.focus();
 
+            setStudentEditor(editor);
+
             return () => {
                 editor.dispose();
             };
@@ -650,6 +655,31 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     // }, [running]);
 
     useEffect(() => {
+        if(currentIssues.length > 0){
+            // currentIssues.forEach((issue) => {
+            //     console.log(issue.line);
+            // });
+            if (studentEditor && currentIssues.length > 0) {  
+                // Remove existing decorations
+                studentEditor.deltaDecorations(decorations, []);
+                
+                // Map over the issues to create new decorations
+                const newDecorations = currentIssues.map((issue:any) => ({
+                  range: new monaco.Range(issue.line, 1, issue.line, 1),
+                  options: { 
+                    isWholeLine: true,
+                    className: 'myLineHighlight'
+                  }
+                }));
+            
+                // Add new decorations and save them in the state
+                const ids = studentEditor.deltaDecorations([], newDecorations);
+                setDecorations(ids);
+            }
+        } 
+    }, [currentIssues]);
+
+    useEffect(() => {
         if(isOver){
             setIsOpen(false);
             const overlayElement = document.querySelector('.overlay') as HTMLElement;
@@ -661,7 +691,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     }, [isOver]);
 
-    const veirfyPseudoCode = () => {   
+    const verifyPseudoCode = () => {   
         // - submit code event (finish pseudo-code)
 		// - code that was submitted {string} 
         apiLogEvents(
@@ -683,20 +713,23 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         setAttemptTime(attemptTime + 1);
         // pass to the LLM to check if the user written code compare to the generated code
         try {
-            apiGetPseudoVerifyCode(
+            apiGetIssueHintLevel1(
                 context?.token,
-                prompt,
                 generatedCode,
-                userInputCode
-            )
-                .then(async (response) => {
+                userInputCode,
+            ).then(async (response) => {
 
-                    if (response.ok && editor) {
-                        const data = await response.json();
-                        if (data.correct == "1") {
-                            setButtonClickOver(true);
-                        }
+                if (response.ok && editor) {
+                    const data = await response.json();
+                    if (data.hint1.length === 0) {
+                        setCurrentIssues([]);
+                        setButtonClickOver(true);
+                    } else {
+                        console.log(data.hint1);
+                        setCurrentIssues(data.hint1);
                     }
+                    setChecking(false);
+                }
                 })
                 .catch((error) => {
                     editor?.updateOptions({ readOnly: false });
@@ -740,7 +773,17 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                     </div>
                     <div className='pesudocode-writer-container'>
                         <div className='pseudocode-verify-button-container'>
-                            <button className='btn btn-primary gpt-button' onClick={() => veirfyPseudoCode()}>Verify Code</button>
+                            {/* <button className='btn btn-primary gpt-button' onClick={() => veirfyPseudoCode()}>Verify Code</button> */}
+                            <div>
+                                {buttonClickOver && <p className="pseudo-code-verified"><span>Correct</span>, you may process to the next task</p>}
+                            </div>
+                            <button 
+                                className={`btn btn-primary gpt-button ${checking ? 'verifying-button' : ''} ${userInputCode.length === 0 ? 'disabled' : ''}`} 
+                                onClick={verifyPseudoCode}
+                                disabled={userInputCode.length === 0}
+                                >
+                                {checking ? 'Verifying' : 'Verify Code'}
+                            </button>
                         </div>
                         <div ref={editorRef} className="monaco-code-writer">
                         </div>
