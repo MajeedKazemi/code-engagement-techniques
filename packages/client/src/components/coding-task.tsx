@@ -44,6 +44,7 @@ export const CodingTask = (props: CodingTaskProps) => {
         apiLogEvents(
             context?.token,
             props.taskId,
+            "",
             getLogObject(props.taskId, context?.user?.id)
         )
             .then(() => {})

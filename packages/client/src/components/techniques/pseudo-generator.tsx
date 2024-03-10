@@ -627,7 +627,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             {
                 type: "run code from pseudoCode",
                 "code-that-was-executed": editor?.getValue(),
-                "used-test-cases": "", 
                 "test-inputs-outputs": loggedIO,
             }
         ]);

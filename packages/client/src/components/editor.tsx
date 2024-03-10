@@ -304,7 +304,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             {
                 type: "run code from baseline",
                 "code-that-was-executed": editor?.getValue(),
-                "used-test-cases": "", 
                 "test-inputs-outputs": loggedIO,
                 "strockes_counter": keyStrokes,
             }
