@@ -824,4 +824,20 @@ export const apiGetTracingSimulation = (
         }),
 });
 
+export const apiGetTestCaseSimulation = (
+    token: string | null | undefined,
+    taskId: string,
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithCodeWithTest/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+});
+
 

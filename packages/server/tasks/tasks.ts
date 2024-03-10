@@ -1,3 +1,5 @@
+import { Trace } from "vscode-languageserver";
+
 export enum TaskType {
     Authoring = "authoring",
     Modifying = "modifying",
@@ -58,6 +60,7 @@ export class AuthoringTask extends Task {
     // stage: TaskStage;
     baselineCode: string;
     explaination: string;
+    CodeWithTestCases: string;
     pseudoCodeJson: JSON;
     SelfExplainJson: JSON;
     writeOverJson: JSON;
@@ -79,12 +82,13 @@ export class AuthoringTask extends Task {
         description: string,
         baselineCode: string,
         explaination: string,
+        CodeWithTestCases: any,
         pseudoCodeJson: any,
         writeOverJson: any,
         SelfExplainJson: any,
         VerifyReviewJson: any,
         LeadRevealJson: any,
-        TracePredictQuestionJson: any
+        TracePredictQuestionJson: any,
     ){
         super(id, description, TaskType.Authoring);
 
@@ -95,6 +99,7 @@ export class AuthoringTask extends Task {
         // this.stage = stage;
         this.baselineCode = baselineCode;
         this.explaination = explaination;
+        this.CodeWithTestCases = CodeWithTestCases;
         this.pseudoCodeJson = pseudoCodeJson;
         this.SelfExplainJson = SelfExplainJson;
         this.writeOverJson = writeOverJson;
@@ -204,7 +209,392 @@ export enum TaskStage {
 
 export const CodingTasks = [
     new AuthoringTask(
-        "1",
+      "1w",
+      "write a function called `reverse_stack` that receives a stack and reverses it using another temporary stack.",
+`def reverse_stack(stack):
+    temp = []
+    while stack:
+        temp.append(stack.pop())
+    return temp
+`,
+`
+This code defines a function called \`reverse_stack\` that takes a stack (which is a list in Python) as input and returns the reversed stack.
+
+First, it creates an empty list \`temp\` which will be used as a temporary stack.
+
+Then, it enters a loop that continues as long as the input stack is not empty. In each iteration of the loop, it removes the top element from the input stack using the \`pop\` method and adds it to the temporary stack using the \`append\` method. Since \`pop\` removes the last element from a list and \`append\` adds an element to the end of a list, this effectively reverses the order of the elements.
+
+Finally, it returns the temporary stack, which now contains the elements of the input stack in reversed order.
+
+The \`pop\` method in Python removes the last element from a list and returns it. The \`append\` method adds an element to the end of a list. A stack is a data structure where the last element added is the first one to be removed (Last In, First Out or LIFO), and in Python, it can be implemented using a list with the \`append\` and \`pop\` methods.
+`,
+`def reverse_stack(stack):
+    temp = []
+    while stack:
+        temp.append(stack.pop())
+    return temp
+print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
+`,
+{
+  "subgoals": [
+      {
+          "title": "Define the function",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "def reverse_stack(stack):",
+                  "pseudo-code": "Define a function named `reverse_stack` that takes a parameter `stack`",
+                  "syntax-hint": "`def` is used to define a function in Python. The function name is followed by parentheses containing the function parameters, and ends with a colon.",
+                  "explanation": "This line is needed to define the function and specify what parameters it will take. In this case, it will take a stack as input."
+              }
+          ]
+      },
+      {
+          "title": "Initialize temporary stack",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "temp = []",
+                  "pseudo-code": "Create an empty list named `temp`",
+                  "syntax-hint": "In Python, `=` is used for assignment. `[]` is used to create an empty list.",
+                  "explanation": "This line is needed to create a temporary stack that will be used to reverse the original stack."
+              }
+          ]
+      },
+      {
+          "title": "Reverse the stack",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "while stack:",
+                  "pseudo-code": "Start a while loop that continues as long as `stack` is not empty",
+                  "syntax-hint": "In Python, `while` is used to start a loop that continues as long as the condition after it is true. Here, `stack` is truthy if it is not empty.",
+                  "explanation": "This line is needed to start a loop that will continue until the original stack is empty."
+              },
+              {
+                  "indent": 2,
+                  "line": "temp.append(stack.pop())",
+                  "pseudo-code": "Remove the top element from `stack` and add it to the end of `temp`",
+                  "syntax-hint": "In Python, `.append()` is used to add an element to the end of a list. `.pop()` is used to remove and return the last element of a list.",
+                  "explanation": "This line is needed to reverse the order of the elements in the stack by moving them from the original stack to the temporary stack."
+              }
+          ]
+      },
+      {
+          "title": "Return the reversed stack",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "return temp",
+                  "pseudo-code": "Return the list `temp`",
+                  "syntax-hint": "In Python, `return` is used to specify the result that a function should give back.",
+                  "explanation": "This line is needed to give the reversed stack back to whatever called the function."
+              }
+          ]
+      }
+  ]
+},
+{
+  "lines": [
+    {
+      "code": "def reverse_stack(stack):",
+      "explanation": "This line defines a function called reverse_stack that takes a stack as an argument.",
+      "criticalThinkingQuestion": "Why do we need to pass the stack as an argument to the function?",
+      "answer": "We need to pass the stack as an argument so that the function can manipulate it directly.",
+      "tokens": [
+        {
+          "token": "def ",
+          "explanation": "Keyword to define a function"
+        },
+        {
+          "token": "reverse_stack",
+          "explanation": "Name of the function"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "stack",
+          "explanation": "Parameter of the function"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the function's body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    temp = []",
+      "explanation": "This line initializes an empty list called temp.",
+      "criticalThinkingQuestion": "Why do we need a temporary list in this function?",
+      "answer": "We need a temporary list to hold the elements of the original stack as we pop them off.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "temp",
+          "explanation": "Name of the temporary list"
+        },
+        {
+          "token": " "
+        },
+        {
+          "token": "=",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": " "
+        },
+        {
+          "token": "[]",
+          "explanation": "An empty list"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    while stack:",
+      "explanation": "This line starts a while loop that continues as long as the stack is not empty.",
+      "criticalThinkingQuestion": "Why do we use a while loop here instead of a for loop?",
+      "answer": "We use a while loop because we don't know the exact number of iterations we need, it depends on the size of the stack.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "while ",
+          "explanation": "Starts a while loop"
+        },
+        {
+          "token": "stack",
+          "explanation": "Condition for the while loop"
+        },
+        {
+          "token": ":",
+          "explanation": "Starts the loop's body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        temp.append(stack.pop())",
+      "explanation": "This line pops an element from the stack and appends it to the temp list.",
+      "criticalThinkingQuestion": "What does the pop method do and why is it used here?",
+      "answer": "The pop method removes and returns the last element of the list. It is used here to reverse the order of the elements in the stack.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "temp",
+          "explanation": "The temporary list"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "append",
+          "explanation": "Method to add an element to the list"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "stack",
+          "explanation": "The original stack"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "pop",
+          "explanation": "Method to remove and return the last element of the list"
+        },
+        {
+          "token": "()"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    return temp",
+      "explanation": "This line returns the reversed stack.",
+      "criticalThinkingQuestion": "Why do we return the temp list and not the original stack?",
+      "answer": "We return the temp list because it now contains the elements of the original stack in reversed order.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "return ",
+          "explanation": "Keyword to indicate the result of the function"
+        },
+        {
+          "token": "temp",
+          "explanation": "The reversed stack"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    }
+  ]
+},
+{
+  "format": ["Short Answer", "Multiple Choice"],
+  "questions": [
+    {
+      "type": "Short Answer",
+      "question": "What is the purpose of the 'temp' variable?",
+      "answer": "It is used to temporarily store and reverse the elements of the stack.",
+      "question-code-lines": [
+        "2"
+      ],
+      "question-code-lines-explained": "temp = [] # This line of code is initializing an empty list to be used as a temporary stack."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What does the 'while' loop do in this function?",
+      "answer": {
+        "correct-choice": "It pops elements from the original stack and appends them to the temporary stack, effectively reversing the order.",
+        "incorrect-choice-1": "It checks if the stack is empty.",
+        "incorrect-choice-2": "It sorts the elements in the stack.",
+        "incorrect-choice-3": "It duplicates the stack."
+      },
+      "question-code-lines": [
+        "4-5"
+      ],
+      "question-code-lines-explained": "while stack: temp.append(stack.pop()) # This loop continues as long as there are elements in the original stack. It pops the last element from the original stack and appends it to the temporary stack, effectively reversing the order of the elements."
+    }
+  ]
+},
+{
+  "wrong-code": 
+`def reverse_stack(stack):
+    temp = []
+    while stack:
+        temp.append(stack.push())
+    return stack`,
+  
+  "issues":{
+              "logical-issue-1": {
+                      "type": "Misuse of Stack Method",
+                      "line": 4
+              },
+              "logical-issue-2": {
+                      "type": "Incorrect Return Value",
+                      "line": 5
+              }
+          }
+},
+{
+  "subgoals": [
+    {
+      "title": "Function Definition",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the input to the function?",
+              "correct-choice": "A stack",
+              "incorrect-choice-1": "A list",
+              "incorrect-choice-2": "A queue",
+              "incorrect-choice-3": "A dictionary"
+            }
+          ],
+          "code-lines-to-be-revealed": [1]
+        }
+      ]
+    },
+    {
+      "title": "Create Temporary Stack",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What data structure should we use to temporarily store the elements of the original stack?",
+              "correct-choice": "Another stack",
+              "incorrect-choice-1": "A queue",
+              "incorrect-choice-2": "A list",
+              "incorrect-choice-3": "A dictionary"
+            }
+          ],
+          "code-lines-to-be-revealed": [2]
+        }
+      ]
+    },
+    {
+      "title": "Reverse Stack",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What condition should we check to start reversing the stack?",
+              "correct-choice": "While the original stack is not empty",
+              "incorrect-choice-1": "While the temporary stack is not full",
+              "incorrect-choice-2": "While the original stack is full",
+              "incorrect-choice-3": "While the temporary stack is not empty"
+            },
+            {
+              "mcq-question": "What operation should we perform to reverse the stack?",
+              "correct-choice": "Pop elements from the original stack and push them into the temporary stack",
+              "incorrect-choice-1": "Pop elements from the temporary stack and push them into the original stack",
+              "incorrect-choice-2": "Push elements from the original stack into the temporary stack without popping",
+              "incorrect-choice-3": "Push elements from the temporary stack into the original stack without popping"
+            }
+          ],
+          "code-lines-to-be-revealed": [3,4]
+        }
+      ]
+    },
+    {
+      "title": "Return Reversed Stack",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the output of the function?",
+              "correct-choice": "The reversed stack",
+              "incorrect-choice-1": "The original stack",
+              "incorrect-choice-2": "The temporary stack without reversing",
+              "incorrect-choice-3": "None"
+            }
+          ],
+          "code-lines-to-be-revealed": [5]
+        }
+      ]
+    }
+  ]
+},
+[
+  {
+      "step": 6,
+      "variable": "temp"
+  },
+  {
+      "step": 12,
+      "variable": "stack"
+  }
+],
+    ),
+    new AuthoringTask(
+        "2",
         "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.",
 `def merge_intervals(intervals):
     intervals.sort(key=lambda x: x[0])
@@ -315,7 +705,7 @@ The \`print\` function is used to display the result of the \`merge_intervals\` 
               }
           ]
       }
-  ]
+  ],
 },
 {
   "lines": [
@@ -911,11 +1301,11 @@ print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
   { step: 14, variable: 'even_sum' },
   { step: 27, variable: 'num' }
 ],
-
+"",
 ),
 
 new AuthoringTask(
-  "2",
+  "3",
   "Write a Python function to calculate the sum of even numbers in a given list.",
 `def calculate_even_sum(numbers):
     even_sum = 0
@@ -1484,7 +1874,7 @@ print('Sum of even numbers:', result)`,
   { step: 14, variable: 'even_sum' },
   { step: 27, variable: 'num' }
 ],
-
+"",
 ),
 
     // new AuthoringTask(

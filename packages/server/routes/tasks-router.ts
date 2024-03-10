@@ -325,8 +325,14 @@ tasksRouter.post("/log", verifyUser, (req, res, next) => {
         if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
             UserTaskModel.findOne({ userId, taskId }).then((userTask) => {
                 if (userTask) {
-                    // console.log(log);
-                    userTask.log = [...userTask.log, log];
+                    if (userTask.log === undefined || userTask.log === null) {
+                        userTask.log = [log];
+                        console.log(log, userTask.log);
+                    }
+                    else
+                    {
+                        userTask.log = [...userTask.log, log];
+                    }
 
                     userTask.save((err, userTask) => {
                         if (err) {
@@ -622,6 +628,26 @@ tasksRouter.post("/matchTaskWithTracePredict/", verifyUser, (req, res, next) => 
             
             res.send({ 
                 tracePredict: task.TracePredictQuestionJson
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithCodeWithTest/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                code: task.CodeWithTestCases
             });
             
         }

@@ -67,8 +67,8 @@ const UserTaskSchema = new Schema({
         default: [],
     },
     log: {
-        type: JSON,
-        default: {},
+        type: Array,
+        default: [],
     },
     data: {
         type: JSON,

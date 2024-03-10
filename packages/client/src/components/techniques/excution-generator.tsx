@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { AuthContext } from "../../context";
 import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetCodeToPseudoCodex, apiGetLinesToRewrite, logError } from '../../api/api';
+import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetCodeToPseudoCodex, apiGetLinesToRewrite, apiGetTestCaseSimulation, logError } from '../../api/api';
 import * as monaco from 'monaco-editor';
 import { highlightCode } from '../../utils/utils';
 import { ExcutionSteps } from '../responses/excution-steps';
@@ -20,10 +20,6 @@ interface ExcutionGenerateCodeProps {
     moveOn: () => void;
 }
 
-interface CodeRepresentation {
-  pseudo: string;
-  code: string;
-}
   
 
 const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
@@ -364,9 +360,35 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                             const data = await response.json();
                             let taskId = data.taskId;
   
-                            setGeneratedCode(data.code);
-                            console.log(taskId);
-                            setBackendCodes(data.code.split('\n'));
+                            // setGeneratedCode(data.code);
+                            // console.log(taskId);
+                            // setBackendCodes(data.code.split('\n'));
+                            apiGetTestCaseSimulation(
+                                context?.token,
+                                taskId
+                            )
+                                .then(async (response) => {
+                
+                                    if (response.ok && editor) {
+                                        const data = await response.json();
+                                        setFeedback("");
+                                        log(
+                                            taskID,
+                                            context?.user?.id,
+                                            LogType.PromptEvent,
+                                            {
+                                                code: data.code,
+                                                userInput: prompt,
+                                            }
+                                        );
+                                        setGeneratedCode(data.code);
+                                        setBackendCodes(data.code.split('\n'));
+                                    }
+                                })
+                                .catch((error) => {
+                                    editor?.updateOptions({ readOnly: false });
+                                    logError(error.toString());
+                                });
                             apiGetBaselineExplainationCodexSimulation(
                                 context?.token,
                                 taskId

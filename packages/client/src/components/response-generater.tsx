@@ -286,11 +286,11 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ editor, taskID, task, move
 
 
   // const technique = 'baseline';
-  const technique = 'pseudo';
+  // const technique = 'pseudo';
   // const technique = 'parsons';
   // const technique = 'writeover';
   // const technique = 'selfexplain';
-  // const technique = 'stepByStep';
+  const technique = 'stepByStep';
   // const technique = 'verify';
   // const technique = 'leadReveal';
 
