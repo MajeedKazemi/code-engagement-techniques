@@ -62,8 +62,8 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCod
                 {goals.map((goal, index) => {
                     return (
                         <div key={index.toString()}>
-                            <div className="hoverable-code-header">
-                                <div className={`expandable-button ${isOpen[index] ? 'minus' : ''}`} onClick={() => handleClick(index)}>
+                            <div className="hoverable-code-header" onClick={() => handleClick(index)}>
+                                <div className={`expandable-button ${isOpen[index] ? 'minus' : ''}`}>
                                     {
                                         isOpen[index] ? 
                                         <IconsDoc iconName="minus"/> 

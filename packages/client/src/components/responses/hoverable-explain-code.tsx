@@ -112,6 +112,12 @@ export const HoverableExplainCode = (props: IProps) => {
     return (
         <div
             className="hoverable-code-line-container"
+            onMouseEnter={() => {
+                setHoveringHovered(true);
+            }}
+            onMouseLeave={() => {
+                setHoveringHovered(false);
+            }}
         >   
             {/* <span className={"hoverable-code"}>
                 {highlightCodeBlock(props.content)}
@@ -127,12 +133,7 @@ export const HoverableExplainCode = (props: IProps) => {
             
             dangerouslySetInnerHTML={{ __html: highlightPsudo(highlightCodeBlock(props.content))}} />
             {(hovering || hoveringHovered) && props.explanation && (
-                <div onMouseEnter={() => {
-                    setHoveringHovered(true);
-                }}
-                onMouseLeave={() => {
-                    setHoveringHovered(false);
-                }}
+                <div 
                 className="hoverable-code-container-with-hint">
                     <div
                         className="hoverable-code-line-explanation"

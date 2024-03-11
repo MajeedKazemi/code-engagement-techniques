@@ -478,7 +478,7 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
         "incorrect-choice-3": "It duplicates the stack."
       },
       "question-code-lines": [
-        "4-5"
+        "4", "5"
       ],
       "question-code-lines-explained": "while stack: temp.append(stack.pop()) # This loop continues as long as there are elements in the original stack. It pops the last element from the original stack and appends it to the temporary stack, effectively reversing the order of the elements."
     }

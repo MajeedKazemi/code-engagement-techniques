@@ -73,9 +73,10 @@
 
   .hoverable-code:hover{
     background-color: #ccc;
-    padding-right: 4rem;
-    padding-bottom: 2rem;
+    /* padding-right: 4rem;
+    padding-bottom: 2rem; */
   }
+
 
   .tokens-container {
     padding: 4px;

@@ -66,6 +66,9 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
             { correct: false, text: answer["incorrect-choice-3"] },
           ]);
 
+          console.log(lines);
+          console.log(revealLines);
+
           return {
             type: item.type,
             question: item.question,

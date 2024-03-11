@@ -576,7 +576,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                     value: "",
                     language: "python",
                     automaticLayout: true,
-                    fontSize: 12,
+                    fontSize: 16,
                     lineHeight: 25,
                     minimap: { enabled: false },
                     wordWrap: "on",
@@ -680,6 +680,31 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     }, [currentIssues]);
 
     useEffect(() => {
+        if(currentIssues.length > 0){
+            // currentIssues.forEach((issue) => {
+            //     console.log(issue.line);
+            // });
+            if (studentEditor && currentIssues) {  
+                // Remove existing decorations
+                studentEditor.deltaDecorations(decorations, []);
+                
+                // Map over the issues to create new decorations
+                const newDecorations = currentIssues.map((issue:any) => ({
+                  range: new monaco.Range(issue.line, 1, issue.line, 1),
+                  options: { 
+                    isWholeLine: true,
+                    className: 'myLineHighlightReset'
+                  }
+                }));
+            
+                // Add new decorations and save them in the state
+                const ids = studentEditor.deltaDecorations([], newDecorations);
+                setDecorations(ids);
+            }
+        } 
+    }, [userInputCode]);
+
+    useEffect(() => {
         if(isOver){
             setIsOpen(false);
             const overlayElement = document.querySelector('.overlay') as HTMLElement;
@@ -775,7 +800,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                         <div className='pseudocode-verify-button-container'>
                             {/* <button className='btn btn-primary gpt-button' onClick={() => veirfyPseudoCode()}>Verify Code</button> */}
                             <div>
-                                {buttonClickOver && <p className="pseudo-code-verified"><span>Correct</span>, you may process to the next task</p>}
+                                {buttonClickOver && <p className="pseudo-code-verified"><span>Correct</span>, you may exit to </p>}
                             </div>
                             <button 
                                 className={`btn btn-primary gpt-button ${checking ? 'verifying-button' : ''} ${userInputCode.length === 0 ? 'disabled' : ''}`} 

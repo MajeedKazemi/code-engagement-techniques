@@ -555,7 +555,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                 </div>
             </div>
 
-            <div className={`step-by-step-timeline-container ${isOnStop ? 'inactive' : ''}`}>
+            <div className={`step-by-step-timeline-container`}>
                 <div className='legend'>
                     {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
                     {questionStop >= excutionSteps.length-1 && <span id="send-log" style={{opacity:0}}>send-log</span>}

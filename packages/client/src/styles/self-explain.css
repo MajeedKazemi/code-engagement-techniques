@@ -81,6 +81,10 @@
     margin-top: 1rem;
 }
 
+.reveal-waiting-for-next-attempt {
+    color: red;
+}
+
 .explain-question-content {
     background-color: rgba(204,227,255,255);
     padding: 10px;

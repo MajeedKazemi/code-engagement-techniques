@@ -55,6 +55,10 @@
     background-color: rgb(243, 173, 173); 
 }
 
+.myLineHighlightReset {
+    background-color: transparent;
+}
+
 
 .verify-code-editor-container{
   width: 50%;
@@ -227,4 +231,8 @@
     display: inline-block;
     text-align: right;
     color: #75715e;
+}
+
+.issue-content.code-content {
+  user-select: none;
 }

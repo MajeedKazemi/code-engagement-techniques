@@ -38,6 +38,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     const [decorations, setDecorations] = useState<string[]>([]);
     const [generatingHint, setGeneratingHint] = useState<boolean>(false);
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
+    const [submitCurrentIssues, setSubmitCurrentIssues] = useState<any[]>([]);
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [loggedIO, setLoggedIO] = useState<any>([]);
@@ -67,6 +68,80 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
             }
         } 
     }, [currentIssues]);
+
+    useEffect(() => {
+        if(currentIssues[status].length > 0){
+            // currentIssues.forEach((issue) => {
+            //     console.log(issue.line);
+            // });
+            if (editor && currentIssues) {  
+                // Remove existing decorations
+                editor.deltaDecorations(decorations, []);
+                
+                // Map over the issues to create new decorations
+                const newDecorations = currentIssues[status].map((issue) => ({
+                  range: new monaco.Range(issue.line, 1, issue.line, 1),
+                  options: { 
+                    isWholeLine: true,
+                    className: 'myLineHighlightReset'
+                  }
+                }));
+            
+                // Add new decorations and save them in the state
+                const ids = editor.deltaDecorations([], newDecorations);
+                setDecorations(ids);
+            }
+        } 
+        if(submitCurrentIssues.length > 0){
+            console.log(submitCurrentIssues);
+            // currentIssues.forEach((issue) => {
+            //     console.log(issue.line);
+            // });
+            if (editor && submitCurrentIssues) {  
+                // Remove existing decorations
+                editor.deltaDecorations(decorations, []);
+                
+                // Map over the issues to create new decorations
+                const newDecorations = submitCurrentIssues.map((issue) => ({
+                  range: new monaco.Range(issue.line, 1, issue.line, 1),
+                  options: { 
+                    isWholeLine: true,
+                    className: 'myLineHighlightReset'
+                  }
+                }));
+            
+                // Add new decorations and save them in the state
+                const ids = editor.deltaDecorations([], newDecorations);
+                setDecorations(ids);
+            }
+        } 
+    }, [currentCode]);
+
+    useEffect(() => {
+        if(submitCurrentIssues.length > 0){
+            console.log(submitCurrentIssues);
+            // currentIssues.forEach((issue) => {
+            //     console.log(issue.line);
+            // });
+            if (editor && submitCurrentIssues) {  
+                // Remove existing decorations
+                editor.deltaDecorations(decorations, []);
+                
+                // Map over the issues to create new decorations
+                const newDecorations = submitCurrentIssues.map((issue) => ({
+                  range: new monaco.Range(issue.line, 1, issue.line, 1),
+                  options: { 
+                    isWholeLine: true,
+                    className: 'myLineHighlight'
+                  }
+                }));
+            
+                // Add new decorations and save them in the state
+                const ids = editor.deltaDecorations([], newDecorations);
+                setDecorations(ids);
+            }
+        } 
+    }, [submitCurrentIssues]);
 
     useEffect(() => {
         const currIssues = [...currentIssues];
@@ -257,15 +332,16 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             // const currIssues = [...currentIssues];
                             // currIssues[1] = data.hint1;
                             // setCurrentIssues(currIssues);
-                            setRevealStatus(1);
-                            setStatus(1);
-                            const currIssues = [...currentIssues];
-                            currIssues[0] = questions;
-                            currIssues[1] = data.hint1;
-                            currIssues[2] = [];
-                            currIssues[3] = [];
-                            currIssues[4] = [];
-                            setCurrentIssues(currIssues);
+                            // setRevealStatus(1);
+                            // setStatus(1);
+                            // const currIssues = [...currentIssues];
+                            // currIssues[0] = questions;
+                            // currIssues[1] = data.hint1;
+                            // currIssues[2] = [];
+                            // currIssues[3] = [];
+                            // currIssues[4] = [];
+                            // setCurrentIssues(currIssues);
+                            setSubmitCurrentIssues(data.hint1);
 
                             // - submit and check event
                             // - current state of code in editor {string}
@@ -277,7 +353,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                                 {
                                   type: "submit code from baseline",
                                   "current-state-of-code-in-editor": currentCode,
-                                  "lines-that-are-incorrect": currIssues,
+                                  "lines-that-are-incorrect": currentIssues,
                                 },
                               )
                                 .then(() => {})
@@ -562,7 +638,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                     <div className='hint-button-container'>
                         <button className={`hint-button ${(generatingHint || revealStatus == 4) ? 'disabled' : ''}`} onClick={handleGetHint}>Get Hint</button>
                         {/* <div>You have attempted <strong>{status}</strong> times</div> */}
-                        <button className={`hint-button verify-button ${generatingHint ? 'disabled' : ''}`} onClick={handleVerifyCode}>Submit and Check</button>
+                        <button className={`hint-button verify-button ${generatingHint ? 'disabled' : ''}`} onClick={handleVerifyCode}>Check Code</button>
                     </div>
                     {/* {status === 4 && <div className="monaco-editor-container" ref={monacoCorrectEl}></div>} */}
                     {status >0 && !generatingHint && 
@@ -571,12 +647,13 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             {/* <div className="issues-info current-issues">
                                 <p>You still have {currentIssues[status].length} logical issues in your current code</p>
                             </div> */}
-                            <div className="hint-button-container">
+                            {/* <div className="hint-button-container">
                                 <button className={`reveal-level-button ${revealStatus < 1 ? 'disabled' : ''}`}  onClick={() => setStatus(1)}>Hint Level 1</button>
                                 <button className={`reveal-level-button ${revealStatus < 2 ? 'disabled' : ''}`}  onClick={() => setStatus(2)}>Hint Level 2</button>
                                 <button className={`reveal-level-button ${revealStatus < 3 ? 'disabled' : ''}`}  onClick={() => setStatus(3)}>Hint Level 3</button>
                                 <button className={`reveal-level-button ${revealStatus < 4 ? 'disabled' : ''}`}  onClick={() => setStatus(4)}>Hint Level 4</button>
-                            </div>
+                            </div> */}
+                            {status >= 4 &&
                             <div className="hints-container">
                                 <div className='hints-header'>
                                     <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
@@ -585,38 +662,13 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
 
                                 <div className='verify-answer-container'>
                                 {currentIssues.map((currIssue, issueIndex) => (
-                                    <>{issueIndex == status && currIssue.map((issue, index) => (
+                                    <>{issueIndex == 4 && currIssue.map((issue, index) => (
                                         // status = 1: highlight the line(s) of code that need to be fixed
                                         // status = 2: pass to the LLM, ask a question to hint the student where to check for the issue for the line
                                         // status = 3: pass to the LLM, direct Hint
                                         // status = 4: show correct version
                                         <div key={index} className="issue-container">
-                                            {status == 1 && !generatingHint &&
-                                                <div className="issue-content">
-                                                    Line <strong>{issue.line}</strong>: {issue.issues}
-                                                </div>
-                                            }
-                                            {status == 2 && !generatingHint &&
-                                            <>
-                                                <div className="issue-content">
-                                                    Line <strong>{issue.line}</strong>: {issue.issues}
-                                                </div>
-                                                <div className="issue-content">
-                                                <strong>Question</strong>: {issue.question}
-                                                </div>
-                                            </>
-                                            }
-                                            {status == 3 && !generatingHint &&
-                                            <>
-                                                <div className="issue-content">
-                                                    Line <strong>{issue.line}</strong>: {issue.issues}
-                                                </div>
-                                                <div className="issue-content">
-                                                    <strong>Hint</strong>: {issue.hint}
-                                                </div>
-                                            </>
-                                            }
-                                            {status == 4 && !generatingHint &&
+                                            {status >= 4 && !generatingHint &&
                                             <>
                                                 <div className="issue-content">
                                                     Line <strong>{issue.line}</strong>: {issue.issues}
@@ -632,6 +684,98 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                                 ))}
                                 </div>
                             </div>
+                            }
+                            {status >= 3 &&
+                            <div className="hints-container">
+                                <div className='hints-header'>
+                                    <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                                    Hint
+                                </div>
+
+                                <div className='verify-answer-container'>
+                                {currentIssues.map((currIssue, issueIndex) => (
+                                    <>{issueIndex == 3 && currIssue.map((issue, index) => (
+                                        // status = 1: highlight the line(s) of code that need to be fixed
+                                        // status = 2: pass to the LLM, ask a question to hint the student where to check for the issue for the line
+                                        // status = 3: pass to the LLM, direct Hint
+                                        // status = 4: show correct version
+                                        <div key={index} className="issue-container">
+                                            {status >= 3 && !generatingHint &&
+                                            <>
+                                                <div className="issue-content">
+                                                    Line <strong>{issue.line}</strong>: {issue.issues}
+                                                </div>
+                                                <div className="issue-content">
+                                                    <strong>Hint</strong>: {issue.hint}
+                                                </div>
+                                            </>
+                                            }
+                                        </div>
+                                    ))}
+                                    </>
+                                ))}
+                                </div>
+                            </div>
+                            }
+                            {status >= 2 &&
+                            <div className="hints-container">
+                                <div className='hints-header'>
+                                    <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                                    Hint
+                                </div>
+
+                                <div className='verify-answer-container'>
+                                {currentIssues.map((currIssue, issueIndex) => (
+                                    <>{issueIndex == 2 && currIssue.map((issue, index) => (
+                                        // status = 1: highlight the line(s) of code that need to be fixed
+                                        // status = 2: pass to the LLM, ask a question to hint the student where to check for the issue for the line
+                                        // status = 3: pass to the LLM, direct Hint
+                                        // status = 4: show correct version
+                                        <div key={index} className="issue-container">
+                                            {status >= 2 && !generatingHint &&
+                                            <>
+                                                <div className="issue-content">
+                                                    Line <strong>{issue.line}</strong>: {issue.issues}
+                                                </div>
+                                                <div className="issue-content">
+                                                <strong>Question</strong>: {issue.question}
+                                                </div>
+                                            </>
+                                            }
+                                        </div>
+                                    ))}
+                                    </>
+                                ))}
+                                </div>
+                            </div>
+                            }
+                            {status >= 1 &&
+                            <div className="hints-container">
+                                <div className='hints-header'>
+                                    <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                                    Hint
+                                </div>
+
+                                <div className='verify-answer-container'>
+                                {currentIssues.map((currIssue, issueIndex) => (
+                                    <>{issueIndex == 1 && currIssue.map((issue, index) => (
+                                        // status = 1: highlight the line(s) of code that need to be fixed
+                                        // status = 2: pass to the LLM, ask a question to hint the student where to check for the issue for the line
+                                        // status = 3: pass to the LLM, direct Hint
+                                        // status = 4: show correct version
+                                        <div key={index} className="issue-container">
+                                            {status >= 1 && !generatingHint &&
+                                                <div className="issue-content">
+                                                    Line <strong>{issue.line}</strong>: {issue.issues}
+                                                </div>
+                                            }
+                                        </div>
+                                    ))}
+                                    </>
+                                ))}
+                                </div>
+                            </div>
+                            }
                         </div>
                         
                     }
