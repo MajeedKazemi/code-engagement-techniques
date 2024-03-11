@@ -20,7 +20,7 @@
 .reveal-parent-container {
     display: flex;
     flex-direction: row;
-    height: 100%;
+    height: calc(100% - 4rem);
 }
 
 .reveal-subgoal-container {

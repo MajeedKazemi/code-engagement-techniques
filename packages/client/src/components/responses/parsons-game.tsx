@@ -471,7 +471,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
         </span>
         </>
         } */}
-        {!gameOver && 
+        {/* {!gameOver && 
             <button 
                 disabled={columns.done.items.length != tasks.length} 
                 type="button" 
@@ -479,7 +479,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                 onClick={checkCode}>
                 Hint
             </button>
-        }
+        } */}
 
         {!gameOver && 
             <button 
@@ -487,7 +487,7 @@ export const ParsonsGame: React.FC<ParsonsGameProps> = ({ tasksOri, sectionHeigh
                 type="button" 
                 className={`check-button btn btn-secondary ${columns.done.items.length !== tasks.length ? 'disabled' : ''}`} 
                 onClick={checkCode}>
-                Check
+                Check Code
             </button>
         }
         {/* {timeUp &&

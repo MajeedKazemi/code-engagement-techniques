@@ -334,6 +334,24 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
       }, [userInput]);  // Run every time userInput changes
 
     return (
+        <>
+        <div className='write-over-reset-container'>
+            {completed && <div className='write-over-reset-text'>You may now hover over each line to see the explanations</div>}
+            <button 
+                className='write-over-reset-button gpt-button' 
+                onClick={() => {
+                    setUserInput('');
+                    setCurrentLineIndex(0);
+                    setCompleted(false);
+                    setCurrLineTime(0);
+                    setEnterLogs([]);
+                    setScores(Array(lines.length).fill(100));
+                    setErrorIndexes(Array.from<number, number[]>({ length: tokens.length }, () => []));
+                }}
+            >
+                Reset
+            </button>
+        </div>
         <div className='write-over-wrapper'>
             <div 
             className="write-over-container" 
@@ -403,7 +421,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
                                 <span key={i} className={`char-${i}`}>{char}</span>
                             ))}
                             </span>
-                            {index != lines.length-1 && <BsArrowReturnLeft className='enter-sign'/>}
+                            {index <= lines.length-1 && <BsArrowReturnLeft className='enter-sign'/>}
                             </pre>
                             
                         </div>
@@ -471,7 +489,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
             })}
         </div> */}
         </div>
-        
+        </>
     );
 };
 

@@ -5,7 +5,7 @@
     width: 100%;
     align-items: center;
     overflow-y: scroll;
-    height: calc(100% - 20px);
+    height: calc(100% - 20px - 4rem);
 }
 
 

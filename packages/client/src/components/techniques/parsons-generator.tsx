@@ -354,7 +354,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
 
         const interval = setInterval(() => {
           if (document.getElementById('game-over')) {
-            setIsOver(true);
+            setButtonClickOver(true);
             clearInterval(interval); 
           }
         }, 1000); 
@@ -454,6 +454,7 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                     AI Assistance:
                 </div>
                 <div className="modal-body">
+                  <div className="prompt-text"><span className='button-span'>Prompt:</span> {prompt}</div>
                   {/* <p>
                     <b>Prompts: </b> {prompt}
                   </p> */}
@@ -470,24 +471,18 @@ const ParsonsGenerateCode: React.FC<ParsonsGenerateCodeProps> = ({ prompt, edito
                   )}
                 </div>
                 <div className="modal-footer">
-                  <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                    Done
-                    </button>
-                  <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Next
-                  </button>
+                {buttonClickOver && 
+                <>
+                <div className='continue-next-task-message'>
+                Great job! Press <span className='button-span'> Return to Editor </span> to go back and test the AI-generated code!
                 </div>
-                {isModalOpen && (
-                      <div className="modal-next-confirm">
-                        <div className="modal-next-confirm-content">
-                        <h3>Are you sure you want to go to the next task?</h3>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
-                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
-                        </div>
-                        </div>
-                      </div>
-                  )}
+                <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                    Return to Editor
+                </button>
+                </>
+                }
+                </div>
+
               </div>
             )}
           </div>

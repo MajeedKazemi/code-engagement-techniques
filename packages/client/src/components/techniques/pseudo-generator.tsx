@@ -784,7 +784,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 {/* <p>
                   <b>Prompts: </b> {prompt}
                 </p> */}
-
+                <div className="prompt-text"><span className='button-span'>Prompt:</span> {prompt}</div>
                 {/* parsons main div */}
                 {(waiting) && (
                     <div className="gptLoader">
@@ -908,10 +908,17 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 )}
               </div>
               <div className="modal-footer">
-              <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                  Done
-                  </button>
-                <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
+                {buttonClickOver && 
+                <>
+                <div className='continue-next-task-message'>
+                Great job! Press <span className='button-span'> Return to Editor </span> to go back and test the AI-generated code!
+                </div>
+                <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                    Return to Editor
+                </button>
+                </>
+                }
+                {/* <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                   Next
                 </button>
                 {isModalOpen && (
@@ -924,7 +931,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                         </div>
                         </div>
                       </div>
-                  )}
+                  )} */}
               </div>
             </div>
           )}

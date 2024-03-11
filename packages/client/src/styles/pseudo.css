@@ -54,7 +54,7 @@
     padding: 12px 0 12px 0;
     overflow-y: scroll;
     width: 100%;
-    height: calc(100% - 28px - 40vh - 2.5rem - 50px);
+    height: calc(100% - 28px - 40vh - 5.5rem - 50px);
 }
 
 .pseudocode-verify-button-container {

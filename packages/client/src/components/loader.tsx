@@ -11,15 +11,22 @@ export const GPTLoader: React.FC = () => {
       
       const circleStyle: CSSProperties = {
         display: "block",
-        width: "10rem",
-        height: "10rem",
-        border: "1.5rem solid #e9e9e9",
-        borderTop: "1.5rem solid #3498db",
+        width: "5rem",
+        height: "5rem",
+        border: "1rem solid #e9e9e9",
+        borderTop: "1rem solid #3498db",
         borderRadius: "50%",
         position: "absolute",
         boxSizing: "border-box",
         top: 0,
         left: 0
+      };
+
+      const textStyle: CSSProperties = {
+        position: "absolute",
+        display: "block",
+        top: "7rem",
+        fontSize: "1rem"
       };
       
     const spinTransition = {
@@ -28,13 +35,16 @@ export const GPTLoader: React.FC = () => {
         duration: 1
       };
     return (
+      <>
       <div style={containerStyle}>
         <motion.span
           style={circleStyle}
           animate={{ rotate: 360 }}
           transition={spinTransition}
         />
+        <div className='generating-text' style={textStyle}> Generating ...</div>
       </div>
+      </>
     );
   }
 

@@ -3,7 +3,7 @@
     flex-direction: row;
     margin: 20px 0px 0px 0px;
     width: 100%;
-    height: calc(100% - 20px);
+    height: calc(100% - 20px - 4rem);
 }
 
 .self-explain-container .monaco-editor-container {
