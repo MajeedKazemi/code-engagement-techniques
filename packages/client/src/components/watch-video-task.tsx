@@ -35,30 +35,30 @@ export const WatchTutorialTask = (props: IWatchVideoTaskProps) => {
             });
     };
 
-    useEffect(() => {
-        if (
-            context?.user?.editorType === "copilot" &&
-            check1 &&
-            check2 &&
-            check3
-        ) {
-            setCanSubmit(true);
-        } else if (
-            context?.user?.editorType === "intellisense" &&
-            check1 &&
-            check3
-        ) {
-            setCanSubmit(true);
-        } else {
-            setCanSubmit(false);
-        }
-    }, [check1, check2, check3]);
+    // useEffect(() => {
+    //     if (
+    //         context?.user?.editorType === "copilot" &&
+    //         check1 &&
+    //         check2 &&
+    //         check3
+    //     ) {
+    //         setCanSubmit(true);
+    //     } else if (
+    //         context?.user?.editorType === "intellisense" &&
+    //         check1 &&
+    //         check3
+    //     ) {
+    //         setCanSubmit(true);
+    //     } else {
+    //         setCanSubmit(false);
+    //     }
+    // }, [check1, check2, check3]);
 
     return (
         <div className="simple-task-container">
             <section className="simple-task-info">
                 <div className="video-container">
-                    {context?.user?.editorType === "copilot" ? (
+                    {/* {context?.user?.editorType === "copilot" ? (
                         <iframe
                             width="900"
                             height="550"
@@ -78,7 +78,7 @@ export const WatchTutorialTask = (props: IWatchVideoTaskProps) => {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         ></iframe>
-                    )}
+                    )} */}
                 </div>
 
                 <div className="">
@@ -94,7 +94,7 @@ export const WatchTutorialTask = (props: IWatchVideoTaskProps) => {
                     <label>I watched the whole video</label>
                     <br />
 
-                    {context?.user?.editorType === "copilot" ? (
+                    {/* {context?.user?.editorType === "copilot" ? (
                         <Fragment>
                             <input
                                 className="confirm-checkbox"
@@ -109,7 +109,7 @@ export const WatchTutorialTask = (props: IWatchVideoTaskProps) => {
                             </label>
                             <br />
                         </Fragment>
-                    ) : null}
+                    ) : null} */}
 
                     <input
                         className="confirm-checkbox"
