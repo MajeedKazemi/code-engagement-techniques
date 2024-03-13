@@ -237,87 +237,85 @@ export enum TaskStage {
 
 export const CodingTasks = [
 
-    new AuthoringTask(
-      "1w",
-      "write a function called `reverse_stack` that receives a stack and reverses it using another temporary stack.",
-`def reverse_stack(stack):
+  new AuthoringTask(
+    "warmup",
+    "Write a function called `reverse_stack` that receives a list of items and reverses it using a temporary stack.",
+`def reverse_stack(items: list) -> list:
     temp = []
-    while stack:
-        temp.append(stack.pop())
-    return temp
-`,
-`
-This code defines a function called \`reverse_stack\` that takes a stack (which is a list in Python) as input and returns the reversed stack.
+    while items:
+        temp.append(items.pop())
+    return temp`,
+`This code defines a function called \`reverse_stack\` that takes a list of items as input and returns a new list with the items in reverse order.
 
-First, it creates an empty list \`temp\` which will be used as a temporary stack.
+First, it creates an empty list called \`temp\`.
 
-Then, it enters a loop that continues as long as the input stack is not empty. In each iteration of the loop, it removes the top element from the input stack using the \`pop\` method and adds it to the temporary stack using the \`append\` method. Since \`pop\` removes the last element from a list and \`append\` adds an element to the end of a list, this effectively reverses the order of the elements.
+Then, it enters a loop that continues as long as there are items in the input list. In each iteration of the loop, it removes the last item from the input list using the \`pop\` method and adds it to \`temp\` using the \`append\` method. The \`pop\` method removes the last item from a list and returns it. The \`append\` method adds an item to the end of a list.
 
-Finally, it returns the temporary stack, which now contains the elements of the input stack in reversed order.
+Because the \`pop\` method removes items from the end of the list and the \`append\` method adds items to the end of a list, the effect of the loop is to reverse the order of the items.
 
-The \`pop\` method in Python removes the last element from a list and returns it. The \`append\` method adds an element to the end of a list. A stack is a data structure where the last element added is the first one to be removed (Last In, First Out or LIFO), and in Python, it can be implemented using a list with the \`append\` and \`pop\` methods.
-`,
-`def reverse_stack(stack):
+Finally, it returns the \`temp\` list, which now contains the items in reverse order.`,
+`def reverse_stack(items: list) -> list:
     temp = []
-    while stack:
-        temp.append(stack.pop())
+    while items:
+        temp.append(items.pop())
     return temp
-print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
-`,
+
+print(reverse_stack(['a', 'b', 'c', 'd', 'e']))
+# Output: ['e', 'd', 'c', 'b', 'a']`,
 {
   "subgoals": [
       {
-          "title": "Define the function",
+          "title": "Function Definition",
           "code": [
               {
                   "indent": 0,
-                  "line": "def reverse_stack(stack):",
-                  "pseudo-code": "Define a function named `reverse_stack` that takes a parameter `stack`",
-                  "syntax-hint": "`def` is used to define a function in Python. The function name is followed by parentheses containing the function parameters, and ends with a colon.",
-                  "explanation": "This line is needed to define the function and specify what parameters it will take. In this case, it will take a stack as input."
+                  "line": "def reverse_stack(items: list) -> list:",
+                  "pseudo-code": "Define a function named 'reverse_stack' that takes a list 'items' as input and returns a list.",
+                  "syntax-hint": "`def` is used to define a function in Python. The `:` at the end indicates the start of a new block of code. The `-> list` is a type hint indicating the function returns a list.",
+                  "explanation": "This line is needed to define the function and specify its input and output types."
               }
           ]
       },
       {
-          "title": "Initialize temporary stack",
+          "title": "Initialize Temporary Stack",
           "code": [
               {
                   "indent": 1,
                   "line": "temp = []",
-                  "pseudo-code": "Create an empty list named `temp`",
+                  "pseudo-code": "Initialize an empty list 'temp'.",
                   "syntax-hint": "In Python, `=` is used for assignment. `[]` is used to create an empty list.",
-                  "explanation": "This line is needed to create a temporary stack that will be used to reverse the original stack."
+                  "explanation": "This line is needed to create a temporary stack for reversing the input list."
               }
           ]
       },
       {
-          "title": "Reverse the stack",
+          "title": "Reverse List Using Stack",
           "code": [
               {
                   "indent": 1,
-                  "line": "while stack:",
-                  "pseudo-code": "Start a while loop that continues as long as `stack` is not empty",
-                  "syntax-hint": "In Python, `while` is used to start a loop that continues as long as the condition after it is true. Here, `stack` is truthy if it is not empty.",
-                  "explanation": "This line is needed to start a loop that will continue until the original stack is empty."
+                  "line": "while items:",
+                  "pseudo-code": "Start a while loop that continues as long as 'items' is not empty.",
+                  "syntax-hint": "In Python, `while` is used to start a loop. The loop continues as long as the condition after `while` is true. Here, `items` is truthy if it is not empty.",
+                  "explanation": "This line is needed to start a loop that continues until 'items' is empty."
               },
               {
                   "indent": 2,
-                  "line": "temp.append(stack.pop())",
-                  "pseudo-code": "Remove the top element from `stack` and add it to the end of `temp`",
-                  "syntax-hint": "In Python, `.append()` is used to add an element to the end of a list. `.pop()` is used to remove and return the last element of a list.",
-                  "explanation": "This line is needed to reverse the order of the elements in the stack by moving them from the original stack to the temporary stack."
+                  "line": "temp.append(items.pop())",
+                  "pseudo-code": "Remove the last item from 'items' and add it to the end of 'temp'.",
+                  "syntax-hint": "In Python, `.append()` is used to add an item to the end of a list. `.pop()` is used to remove and return the last item from a list.",
+                  "explanation": "This line is needed to reverse the order of 'items' by moving its items to 'temp' one by one."
               }
           ]
       },
       {
-          "title": "Return the reversed stack",
+          "title": "Return Reversed List",
           "code": [
               {
                   "indent": 1,
                   "line": "return temp",
-                  "pseudo-code": "Return the list `temp`",
-                  "syntax-hint": "In Python, `return` is used to specify the result that a function should give back.",
-                  "explanation": "This line is needed to give the reversed stack back to whatever called the function."
+                  "pseudo-code": "Return the list 'temp'.",
+                  "syntax-hint": "In Python, `return` is used to specify the result that a function should produce.",
+                  "explanation": "This line is needed to provide the reversed list as the result of the function."
               }
           ]
       }
@@ -326,14 +324,12 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
 {
   "lines": [
     {
-      "code": "def reverse_stack(stack):",
-      "explanation": "This line defines a function called reverse_stack that takes a stack as an argument.",
-      "criticalThinkingQuestion": "Why do we need to pass the stack as an argument to the function?",
-      "answer": "We need to pass the stack as an argument so that the function can manipulate it directly.",
+      "code": "def reverse_stack(items: list) -> list:",
+      "explanation": "This line defines a function called 'reverse_stack' that takes a list as an argument and returns a list.",
       "tokens": [
         {
           "token": "def ",
-          "explanation": "Keyword to define a function"
+          "explanation": "Keyword to start a function definition"
         },
         {
           "token": "reverse_stack",
@@ -343,15 +339,19 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
           "token": "("
         },
         {
-          "token": "stack",
+          "token": "items",
           "explanation": "Parameter of the function"
         },
         {
-          "token": ")"
+          "token": ": list"
+        },
+        {
+          "token": ") -> list",
+          "explanation": "Indicates the function returns a list"
         },
         {
           "token": ":",
-          "explanation": "Starts the function's body"
+          "explanation": "End of function definition line"
         },
         {
           "token": "\n"
@@ -360,30 +360,21 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
     },
     {
       "code": "    temp = []",
-      "explanation": "This line initializes an empty list called temp.",
-      "criticalThinkingQuestion": "Why do we need a temporary list in this function?",
-      "answer": "We need a temporary list to hold the elements of the original stack as we pop them off.",
+      "explanation": "This line initializes an empty list 'temp' to store the reversed items.",
       "tokens": [
         {
           "token": "    "
         },
         {
           "token": "temp",
-          "explanation": "Name of the temporary list"
+          "explanation": "Variable to store reversed items"
         },
         {
-          "token": " "
-        },
-        {
-          "token": "=",
-          "explanation": "Assignment operator"
-        },
-        {
-          "token": " "
+          "token": " = "
         },
         {
           "token": "[]",
-          "explanation": "An empty list"
+          "explanation": "Empty list"
         },
         {
           "token": "\n"
@@ -391,25 +382,20 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
       ]
     },
     {
-      "code": "    while stack:",
-      "explanation": "This line starts a while loop that continues as long as the stack is not empty.",
-      "criticalThinkingQuestion": "Why do we use a while loop here instead of a for loop?",
-      "answer": "We use a while loop because we don't know the exact number of iterations we need, it depends on the size of the stack.",
+      "code": "    while items:",
+      "explanation": "This line starts a while loop that continues as long as 'items' is not empty.",
       "tokens": [
         {
-          "token": "    "
+          "token": "    while ",
+          "explanation": "Start of while loop"
         },
         {
-          "token": "while ",
-          "explanation": "Starts a while loop"
-        },
-        {
-          "token": "stack",
-          "explanation": "Condition for the while loop"
+          "token": "items",
+          "explanation": "Condition for while loop"
         },
         {
           "token": ":",
-          "explanation": "Starts the loop's body"
+          "explanation": "End of while loop condition"
         },
         {
           "token": "\n"
@@ -417,44 +403,29 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
       ]
     },
     {
-      "code": "        temp.append(stack.pop())",
-      "explanation": "This line pops an element from the stack and appends it to the temp list.",
-      "criticalThinkingQuestion": "What does the pop method do and why is it used here?",
-      "answer": "The pop method removes and returns the last element of the list. It is used here to reverse the order of the elements in the stack.",
+      "code": "        temp.append(items.pop())",
+      "explanation": "This line removes the last item from 'items' and appends it to 'temp'.",
       "tokens": [
         {
           "token": "        "
         },
         {
           "token": "temp",
-          "explanation": "The temporary list"
+          "explanation": "List to append to"
         },
         {
-          "token": "."
+          "token": ".append("
         },
         {
-          "token": "append",
-          "explanation": "Method to add an element to the list"
+          "token": "items",
+          "explanation": "List to pop from"
         },
         {
-          "token": "("
+          "token": ".pop()"
         },
         {
-          "token": "stack",
-          "explanation": "The original stack"
-        },
-        {
-          "token": "."
-        },
-        {
-          "token": "pop",
-          "explanation": "Method to remove and return the last element of the list"
-        },
-        {
-          "token": "()"
-        },
-        {
-          "token": ")"
+          "token": ")",
+          "explanation": "End of append method"
         },
         {
           "token": "\n"
@@ -463,20 +434,15 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
     },
     {
       "code": "    return temp",
-      "explanation": "This line returns the reversed stack.",
-      "criticalThinkingQuestion": "Why do we return the temp list and not the original stack?",
-      "answer": "We return the temp list because it now contains the elements of the original stack in reversed order.",
+      "explanation": "This line returns the reversed list 'temp'.",
       "tokens": [
         {
-          "token": "    "
-        },
-        {
-          "token": "return ",
-          "explanation": "Keyword to indicate the result of the function"
+          "token": "    return ",
+          "explanation": "Keyword to return a value from a function"
         },
         {
           "token": "temp",
-          "explanation": "The reversed stack"
+          "explanation": "Variable to return"
         },
         {
           "token": "\n"
@@ -486,48 +452,70 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
   ]
 },
 {
-  "format": ["Short Answer", "Multiple Choice"],
   "questions": [
     {
       "type": "Short Answer",
-      "question": "What is the purpose of the 'temp' variable?",
-      "answer": "It is used to temporarily store and reverse the elements of the stack.",
+      "question": "What is the purpose of the 'temp' variable in this code?",
+      "answer": "It serves as a temporary stack to reverse the order of items.",
       "question-code-lines": [
         "2"
       ],
-      "question-code-lines-explained": "temp = [] # This line of code is initializing an empty list to be used as a temporary stack."
+      "question-code-lines-explained": "temp = [] # This line initializes an empty list that will serve as a temporary stack to reverse the order of items."
     },
     {
       "type": "Multiple Choice",
-      "question": "What does the 'while' loop do in this function?",
+      "question": "What would happen if 'items.pop()' was replaced with 'items.pop(0)'?",
       "answer": {
-        "correct-choice": "It pops elements from the original stack and appends them to the temporary stack, effectively reversing the order.",
-        "incorrect-choice-1": "It checks if the stack is empty.",
-        "incorrect-choice-2": "It sorts the elements in the stack.",
-        "incorrect-choice-3": "It duplicates the stack."
+        "correct-choice": "The order of the items would not be reversed.",
+        "incorrect-choice-1": "The function would throw an error.",
+        "incorrect-choice-2": "The function would still reverse the order of items.",
+        "incorrect-choice-3": "The function would return an empty list."
       },
       "question-code-lines": [
-        "4", "5"
+        "4"
       ],
-      "question-code-lines-explained": "while stack: temp.append(stack.pop()) # This loop continues as long as there are elements in the original stack. It pops the last element from the original stack and appends it to the temporary stack, effectively reversing the order of the elements."
+      "question-code-lines-explained": "temp.append(items.pop()) # This line removes the last item from the 'items' list and adds it to the 'temp' list. If 'items.pop(0)' was used instead, it would remove the first item, not reversing the order."
+    },
+    {
+      "type": "Short Answer",
+      "question": "What is the role of the 'while' loop in this function?",
+      "answer": "It continues to pop items from the original list and append them to 'temp' until 'items' is empty.",
+      "question-code-lines": [
+        "3", "4"
+      ],
+      "question-code-lines-explained": "while items: temp.append(items.pop()) # This loop continues to pop items from the original list and append them to 'temp' until 'items' is empty."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What would be the output of the function if an empty list was passed as an argument?",
+      "answer": {
+        "correct-choice": "An empty list.",
+        "incorrect-choice-1": "A list with one None element.",
+        "incorrect-choice-2": "A list with one zero element.",
+        "incorrect-choice-3": "The function would throw an error."
+      },
+      "question-code-lines": [
+        "5"
+      ],
+      "question-code-lines-explained": "return temp # This line returns the 'temp' list. If 'items' was empty to begin with, 'temp' would also be empty."
     }
   ]
 },
 {
   "wrong-code": 
-`def reverse_stack(stack):
-    temp = []
-    while stack:
-        temp.append(stack.push())
-    return stack`,
+`def reverse_stack(items: list) -> list:
+      temp = []
+      while not items:
+          temp.append(items.pop())
+      return items`,
   
   "issues":{
               "logical-issue-1": {
-                      "type": "Misuse of Stack Method",
-                      "line": 4
+                      "type": "Incorrect Loop Condition",
+                      "line": 3
               },
               "logical-issue-2": {
-                      "type": "Incorrect Return Value",
+                      "type": "Wrong Return Value",
                       "line": 5
               }
           }
@@ -540,11 +528,18 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
         {
           "leading-questions": [
             {
-              "mcq-question": "What should be the input to the function?",
-              "correct-choice": "A stack",
-              "incorrect-choice-1": "A list",
-              "incorrect-choice-2": "A queue",
-              "incorrect-choice-3": "A dictionary"
+              "mcq-question": "What should be the input parameter type for our function?",
+              "correct-choice": "List",
+              "incorrect-choice-1": "Integer",
+              "incorrect-choice-2": "String",
+              "incorrect-choice-3": "Dictionary"
+            },
+            {
+              "mcq-question": "What should be the return type of our function?",
+              "correct-choice": "List",
+              "incorrect-choice-1": "Integer",
+              "incorrect-choice-2": "String",
+              "incorrect-choice-3": "None"
             }
           ],
           "code-lines-to-be-revealed": [1]
@@ -552,16 +547,16 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
       ]
     },
     {
-      "title": "Create Temporary Stack",
+      "title": "Initialize Temporary Stack",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "What data structure should we use to temporarily store the elements of the original stack?",
-              "correct-choice": "Another stack",
-              "incorrect-choice-1": "A queue",
-              "incorrect-choice-2": "A list",
-              "incorrect-choice-3": "A dictionary"
+              "mcq-question": "What data structure should we use to temporarily store the items?",
+              "correct-choice": "List",
+              "incorrect-choice-1": "Tuple",
+              "incorrect-choice-2": "Dictionary",
+              "incorrect-choice-3": "Set"
             }
           ],
           "code-lines-to-be-revealed": [2]
@@ -569,43 +564,43 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
       ]
     },
     {
-      "title": "Reverse Stack",
+      "title": "Reverse Items",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "What condition should we check to start reversing the stack?",
-              "correct-choice": "While the original stack is not empty",
-              "incorrect-choice-1": "While the temporary stack is not full",
-              "incorrect-choice-2": "While the original stack is full",
-              "incorrect-choice-3": "While the temporary stack is not empty"
+              "mcq-question": "What operation should we use to remove the last item from the list?",
+              "correct-choice": "pop",
+              "incorrect-choice-1": "remove",
+              "incorrect-choice-2": "del",
+              "incorrect-choice-3": "clear"
             },
             {
-              "mcq-question": "What operation should we perform to reverse the stack?",
-              "correct-choice": "Pop elements from the original stack and push them into the temporary stack",
-              "incorrect-choice-1": "Pop elements from the temporary stack and push them into the original stack",
-              "incorrect-choice-2": "Push elements from the original stack into the temporary stack without popping",
-              "incorrect-choice-3": "Push elements from the temporary stack into the original stack without popping"
+              "mcq-question": "How should we add the popped item to the temporary list?",
+              "correct-choice": "append",
+              "incorrect-choice-1": "insert",
+              "incorrect-choice-2": "extend",
+              "incorrect-choice-3": "add"
             }
           ],
-          "code-lines-to-be-revealed": [3,4]
+          "code-lines-to-be-revealed": [3]
         }
       ]
     },
     {
-      "title": "Return Reversed Stack",
+      "title": "Return Reversed List",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "What should be the output of the function?",
-              "correct-choice": "The reversed stack",
-              "incorrect-choice-1": "The original stack",
-              "incorrect-choice-2": "The temporary stack without reversing",
+              "mcq-question": "What should we return at the end of the function?",
+              "correct-choice": "The temporary list",
+              "incorrect-choice-1": "The original list",
+              "incorrect-choice-2": "The length of the temporary list",
               "incorrect-choice-3": "None"
             }
           ],
-          "code-lines-to-be-revealed": [5]
+          "code-lines-to-be-revealed": [4]
         }
       ]
     }
@@ -614,593 +609,655 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
 [
   {
       "step": 6,
-      "variable": "temp"
+      "variable": "items"
   },
   {
-      "step": 12,
-      "variable": "stack"
+      "step": 8,
+      "variable": "temp"
   }
 ],
-    ),
-    new AuthoringTask(
-        "2",
-        "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.",
-`def merge_intervals(intervals):
-    intervals.sort(key=lambda x: x[0])
-    merged = [intervals[0]]
-    for current in intervals[1:]:
-        if current[0] <= merged[-1][1]:
-            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
+  ),
+
+  new AuthoringTask(
+    "1",
+    "Write a function named calculate_span that receives a list of daily stock prices as integers. The function calculates the stock span for each day. The stock span Si for a day i is the count of consecutive days leading up and including day i, for which the stock price on day i is not less than or equal to the price on those days.",
+`def calculate_span(prices: list[int]) -> list[int]:
+    stack = []
+    span = [0] * len(prices)
+    for i in range(len(prices)):
+        while stack and prices[stack[-1]] <= prices[i]:
+            stack.pop()
+        if not stack:
+            span[i] = i + 1
         else:
-            merged.append(current)
-    return merged
+            span[i] = i - stack[-1]
+        stack.append(i)
+    return span`,
+`This code defines a function called \`calculate_span\` that calculates the stock span for each day given a list of daily stock prices.
 
-print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
-`This code defines a function called \`merge_intervals\` that takes a list of intervals as input and returns a list of merged intervals. 
+First, it initializes an empty list \`stack\` and a list \`span\` of the same length as \`prices\` filled with zeros.
 
-First, it sorts the intervals in ascending order based on the first element of each interval using the \`sorted\` function. The \`lambda\` keyword is used to create a small anonymous function to specify the sorting key.
+Then, it iterates over the \`prices\` list. For each price, it pops elements from the \`stack\` while the top element of the \`stack\` (which is an index) points to a price that is less than or equal to the current price. This is done using a \`while\` loop.
 
-Then, it initializes the \`merged\` list with the first interval. 
+After that, it checks if the \`stack\` is empty. If it is, it means that the current price is greater than all previous prices, so the span for the current day is the current day number plus one (since day numbers start from zero). If the \`stack\` is not empty, it means that the current price is less than the price on the day pointed to by the top element of the \`stack\`, so the span for the current day is the difference between the current day number and the day number at the top of the \`stack\`.
 
-Next, it iterates over the sorted intervals. For each interval, it compares the start of the current interval with the end of the last merged interval. If they overlap (i.e., the start of the current interval is less than or equal to the end of the last merged interval), it merges them by updating the end of the last merged interval to be the maximum of the ends of the current and last merged intervals. If they don't overlap, it adds the current interval to the \`merged\` list.
+Next, it adds the current day number to the \`stack\`.
 
-Finally, it returns the \`merged\` list.
+Finally, it returns the \`span\` list.
 
-The \`print\` function is used to display the result of the \`merge_intervals\` function when it is called with the list \`[(1, 3), (2, 6), (8, 10), (15, 18)]\` as an argument.`,
+The \`stack\` is used to keep track of the days with a price greater than the current price. The \`while\` loop and the \`if\` statement together ensure that for each day, its span is calculated correctly according to the problem statement.`,
+`def calculate_span(prices: list[int]) -> list[int]:
+    stack = []
+    span = [0] * len(prices)
+    for i in range(len(prices)):
+        while stack and prices[stack[-1]] <= prices[i]:
+            stack.pop()
+        if not stack:
+            span[i] = i + 1
+        else:
+            span[i] = i - stack[-1]
+        stack.append(i)
+    return span
+    
+print(calculate_span([95, 90, 85]))
+# Output: [1, 1, 1]
+# Explanation: In this case, each price is less than or equal to its predecessor, meaning each stock price has a span of 1 day because no previous stock prices are lower than the current price.`,
 {
   "subgoals": [
       {
-          "title": "Define function and sort intervals",
+          "title": "Function Definition",
           "code": [
               {
                   "indent": 0,
-                  "line": "def merge_intervals(intervals):",
-                  "pseudo-code": "Define a function named 'merge_intervals' that takes a list 'intervals' as an argument",
-                  "explanation": "This line is defining a function that will be used to merge overlapping intervals."
-              },
-              {
-                  "indent": 1,
-                  "line": "intervals.sort(key=lambda x: x[0])",
-                  "pseudo-code": "Sort the list 'intervals' based on the first element of each tuple",
-                  "explanation": "Sorting the intervals makes it easier to merge overlapping ones, as they will be adjacent in the list."
+                  "line": "def calculate_span(prices: list[int]) -> list[int]:",
+                  "pseudo-code": "Define a function named 'calculate_span' that takes a list of integers 'prices' as input and returns a list of integers.",
+                  "syntax-hint": "`def` is used to define a function in Python. The `:` indicates the start of a new block of code. The `-> list[int]` is a type hint indicating the function returns a list of integers.",
+                  "explanation": "This line is needed to define the function and specify its input and output types."
               }
           ]
       },
       {
-          "title": "Initialize merged list and iterate over intervals",
+          "title": "Initialize Variables",
           "code": [
               {
                   "indent": 1,
-                  "line": "merged = [intervals[0]]",
-                  "pseudo-code": "Initialize a list 'merged' with the first interval",
-                  "explanation": "We start the merged list with the first interval, as it's guaranteed to be the earliest one due to the sorting."
+                  "line": "stack = []",
+                  "pseudo-code": "Initialize an empty list 'stack'.",
+                  "syntax-hint": "`=` is the assignment operator in Python. `[]` is an empty list.",
+                  "explanation": "This line is needed to create a stack that will be used to keep track of the indices of the days with higher stock prices."
               },
               {
                   "indent": 1,
-                  "line": "for current in intervals[1:]:",
-                  "pseudo-code": "Iterate over the rest of the intervals",
-                  "explanation": "We start from the second interval, as the first one is already in the merged list."
+                  "line": "span = [0] * len(prices)",
+                  "pseudo-code": "Initialize a list 'span' with the same length as 'prices', filled with zeros.",
+                  "syntax-hint": "`[0] * len(prices)` creates a new list with the same length as 'prices', filled with zeros.",
+                  "explanation": "This line is needed to create a list that will store the stock span for each day."
               }
           ]
       },
       {
-          "title": "Merge overlapping intervals and append non-overlapping ones",
+          "title": "Calculate Stock Span",
           "code": [
+              {
+                  "indent": 1,
+                  "line": "for i in range(len(prices)):",
+                  "pseudo-code": "Start a loop over the indices of the 'prices' list.",
+                  "syntax-hint": "`for` starts a loop in Python. `range(len(prices))` generates a sequence of numbers from 0 to the length of 'prices' minus 1.",
+                  "explanation": "This line is needed to iterate over each day's stock price."
+              },
               {
                   "indent": 2,
-                  "line": "if current[0] <= merged[-1][1]:",
-                  "pseudo-code": "Check if the start of the current interval is less than or equal to the end of the last merged interval",
-                  "explanation": "This condition checks if the current interval overlaps with the last merged one."
+                  "line": "while stack and prices[stack[-1]] <= prices[i]:",
+                  "pseudo-code": "Start a loop while 'stack' is not empty and the price on the day at the top of the stack is less than or equal to the price on day 'i'.",
+                  "syntax-hint": "`while` starts a loop in Python. `stack and prices[stack[-1]] <= prices[i]` is a condition that checks if 'stack' is not empty and if the price on the day at the top of the stack is less than or equal to the price on day 'i'.",
+                  "explanation": "This line is needed to find the most recent day with a higher stock price."
               },
               {
                   "indent": 3,
-                  "line": "merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))",
-                  "pseudo-code": "If they overlap, merge them by setting the end of the last merged interval to the maximum of its current end and the end of the current interval",
-                  "explanation": "This line merges overlapping intervals by extending the end of the last merged interval."
+                  "line": "stack.pop()",
+                  "pseudo-code": "Remove the top element from 'stack'.",
+                  "syntax-hint": "`stack.pop()` removes and returns the last element from 'stack'.",
+                  "explanation": "This line is needed to remove the day at the top of the stack because its price is less than or equal to the price on day 'i'."
+              },
+              {
+                  "indent": 2,
+                  "line": "if not stack:",
+                  "pseudo-code": "Check if 'stack' is empty.",
+                  "syntax-hint": "`if not stack:` checks if 'stack' is empty.",
+                  "explanation": "This line is needed to handle the case where there are no previous days with a higher stock price."
+              },
+              {
+                  "indent": 3,
+                  "line": "span[i] = i + 1",
+                  "pseudo-code": "Set the stock span for day 'i' to 'i' plus 1.",
+                  "syntax-hint": "`span[i] = i + 1` assigns the value of 'i' plus 1 to the 'i'-th element of 'span'.",
+                  "explanation": "This line is needed to set the stock span for day 'i' when there are no previous days with a higher stock price."
               },
               {
                   "indent": 2,
                   "line": "else:",
-                  "pseudo-code": "If the current interval does not overlap with the last merged one",
-                  "explanation": "This condition handles the case where the current interval does not overlap with the last merged one."
+                  "pseudo-code": "Handle the case where 'stack' is not empty.",
+                  "syntax-hint": "`else:` is used to specify a block of code to be executed if the condition in the `if` statement is false.",
+                  "explanation": "This line is needed to handle the case where there are previous days with a higher stock price."
               },
               {
                   "indent": 3,
-                  "line": "merged.append(current)",
-                  "pseudo-code": "Append the current interval to the 'merged' list",
-                  "explanation": "This line adds non-overlapping intervals to the merged list."
+                  "line": "span[i] = i - stack[-1]",
+                  "pseudo-code": "Set the stock span for day 'i' to the difference between 'i' and the day at the top of the stack.",
+                  "syntax-hint": "`span[i] = i - stack[-1]` assigns the value of 'i' minus the last element of 'stack' to the 'i'-th element of 'span'.",
+                  "explanation": "This line is needed to set the stock span for day 'i' when there are previous days with a higher stock price."
+              },
+              {
+                  "indent": 2,
+                  "line": "stack.append(i)",
+                  "pseudo-code": "Add 'i' to the end of 'stack'.",
+                  "syntax-hint": "`stack.append(i)` adds 'i' to the end of 'stack'.",
+                  "explanation": "This line is needed to add the current day to the stack for future comparisons."
               }
           ]
       },
       {
-          "title": "Return merged intervals",
+          "title": "Return Result",
           "code": [
               {
                   "indent": 1,
-                  "line": "return merged",
-                  "pseudo-code": "Return the 'merged' list",
-                  "explanation": "This line returns the final list of merged intervals."
-              }
-          ]
-      },
-      {
-          "title": "Test the function",
-          "code": [
-              {
-                  "indent": 0,
-                  "line": "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))",
-                  "pseudo-code": "Print the result of calling 'merge_intervals' with a test list of intervals",
-                  "explanation": "This line tests the function with a specific list of intervals and prints the result."
+                  "line": "return span",
+                  "pseudo-code": "Return the list 'span'.",
+                  "syntax-hint": "`return` is used to specify the result that a function should return.",
+                  "explanation": "This line is needed to provide the final result of the function, which is the stock span for each day."
               }
           ]
       }
-  ],
+  ]
 },
 {
   "lines": [
     {
-      "code": "def merge_intervals(intervals):",
-      "explanation": "This line defines a function named 'merge_intervals' that takes a list of intervals as input.",
-      "criticalThinkingQuestion": "Why do we need to define a function for this task?",
-      "answer": "Defining a function allows us to reuse this code whenever we need to merge intervals, without having to rewrite the code.",
+      "code": "def calculate_span(prices: list[int]) -> list[int]:",
+      "explanation": "This line defines the function calculate_span that takes a list of integers as input and returns a list of integers.",
       "tokens": [
         {
           "token": "def ",
-          "explanation": "Keyword to define a function in Python"
+          "explanation": "Keyword to start a function definition"
         },
         {
-          "token": "merge_intervals",
+          "token": "calculate_span",
           "explanation": "Name of the function"
         },
         {
-          "token": "("
+          "token": "(",
+          "explanation": "Start of function parameters"
         },
         {
-          "token": "intervals",
-          "explanation": "Parameter of the function"
+          "token": "prices",
+          "explanation": "Name of the parameter"
         },
         {
-          "token": ")"
+          "token": ": ",
+          "explanation": "Used to specify the type of parameter"
+        },
+        {
+          "token": "list[int]",
+          "explanation": "Type of the parameter, a list of integers"
+        },
+        {
+          "token": ") ",
+          "explanation": "End of function parameters"
+        },
+        {
+          "token": "-> ",
+          "explanation": "Used to specify the return type of the function"
+        },
+        {
+          "token": "list[int]",
+          "explanation": "Return type of the function, a list of integers"
         },
         {
           "token": ":",
-          "explanation": "Starts the function body"
-        },
-        {
-          "token": "\n"
+          "explanation": "End of function definition"
         }
       ]
     },
     {
-      "code": "    intervals.sort(key=lambda x: x[0])",
-      "explanation": "This line sorts the intervals in ascending order based on their start times.",
-      "criticalThinkingQuestion": "Why is it important to sort the intervals before merging them?",
-      "answer": "Sorting the intervals ensures that we merge all overlapping intervals correctly.",
+      "code": "    stack = []",
+      "explanation": "This line initializes an empty list named stack which will be used to keep track of the indices of the days.",
       "tokens": [
         {
-          "token": "    "
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
         },
         {
-          "token": "intervals",
-          "explanation": "The list of intervals"
+          "token": "stack",
+          "explanation": "Name of the variable"
         },
         {
-          "token": "."
+          "token": " = ",
+          "explanation": "Assignment operator"
         },
         {
-          "token": "sort",
-          "explanation": "Method to sort the list"
+          "token": "[]",
+          "explanation": "An empty list"
+        }
+      ]
+    },
+    {
+      "code": "    span = [0] * len(prices)",
+      "explanation": "This line initializes a list named span with the same length as prices, filled with zeros. This list will store the span for each day.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
         },
         {
-          "token": "("
+          "token": "span",
+          "explanation": "Name of the variable"
         },
         {
-          "token": "key",
-          "explanation": "Keyword to specify sorting criteria"
-        },
-        {
-          "token": "="
-        },
-        {
-          "token": "lambda ",
-          "explanation": "Keyword to define an anonymous function"
-        },
-        {
-          "token": "x",
-          "explanation": "Parameter of the anonymous function"
-        },
-        {
-          "token": ":"
-        },
-        {
-          "token": "x",
-          "explanation": "Parameter of the anonymous function"
+          "token": " = ",
+          "explanation": "Assignment operator"
         },
         {
           "token": "[0]",
-          "explanation": "Accesses the first element of the interval"
+          "explanation": "A list with a single element 0"
         },
         {
-          "token": ")"
+          "token": " * ",
+          "explanation": "Multiplication operator"
         },
         {
-          "token": "\n"
+          "token": "len(",
+          "explanation": "Start of function call to get the length of a list"
+        },
+        {
+          "token": "prices",
+          "explanation": "Name of the list"
+        },
+        {
+          "token": ")",
+          "explanation": "End of function call"
         }
       ]
     },
     {
-      "code": "    merged = [intervals[0]]",
-      "explanation": "This line initializes the 'merged' list with the first interval.",
-      "criticalThinkingQuestion": "Why do we start the 'merged' list with the first interval?",
-      "answer": "We start with the first interval because it's the earliest one after sorting.",
+      "code": "    for i in range(len(prices)):",
+      "explanation": "This line starts a for loop that iterates over the indices of the prices list.",
       "tokens": [
         {
-          "token": "    "
-        },
-        {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
-        },
-        {
-          "token": " = "
-        },
-        {
-          "token": "[",
-          "explanation": "Starts a list"
-        },
-        {
-          "token": "intervals",
-          "explanation": "The list of intervals"
-        },
-        {
-          "token": "[0]",
-          "explanation": "Accesses the first interval"
-        },
-        {
-          "token": "]",
-          "explanation": "Ends the list"
-        },
-        {
-          "token": "\n"
-        }
-      ]
-    },
-    {
-      "code": "    for current in intervals[1:]:",
-      "explanation": "This line starts a loop over the intervals, starting from the second one.",
-      "criticalThinkingQuestion": "Why do we start the loop from the second interval?",
-      "answer": "We start from the second interval because the first one is already in the 'merged' list.",
-      "tokens": [
-        {
-          "token": "    "
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
         },
         {
           "token": "for ",
-          "explanation": "Keyword to start a loop"
+          "explanation": "Keyword to start a for loop"
         },
         {
-          "token": "current",
-          "explanation": "Variable to hold the current interval"
+          "token": "i",
+          "explanation": "Variable to hold the current index"
         },
         {
-          "token": " in "
+          "token": " in ",
+          "explanation": "Keyword to specify the iterable"
         },
         {
-          "token": "intervals",
-          "explanation": "The list of intervals"
+          "token": "range(",
+          "explanation": "Start of function call to create an iterable of indices"
         },
         {
-          "token": "[1:]",
-          "explanation": "Slices the list from the second element"
+          "token": "len(",
+          "explanation": "Start of function call to get the length of a list"
+        },
+        {
+          "token": "prices",
+          "explanation": "Name of the list"
+        },
+        {
+          "token": ")",
+          "explanation": "End of function call"
+        },
+        {
+          "token": ")",
+          "explanation": "End of function call"
         },
         {
           "token": ":",
-          "explanation": "Starts the loop body"
-        },
-        {
-          "token": "\n"
+          "explanation": "End of for loop definition"
         }
       ]
     },
     {
-      "code": "        if current[0] <= merged[-1][1]:",
-      "explanation": "This line checks if the current interval overlaps with the last merged interval.",
-      "criticalThinkingQuestion": "How does this condition determine if two intervals overlap?",
-      "answer": "Two intervals overlap if the start of the second one is less than or equal to the end of the first one.",
+      "code": "        while stack and prices[stack[-1]] <= prices[i]:",
+      "explanation": "This line starts a while loop that continues as long as the stack is not empty and the price on the day at the top of the stack is less than or equal to the price on the current day.",
       "tokens": [
         {
-          "token": "        "
+          "token": "        ",
+          "explanation": "Indentation for code inside the for loop"
+        },
+        {
+          "token": "while ",
+          "explanation": "Keyword to start a while loop"
+        },
+        {
+          "token": "stack",
+          "explanation": "Name of the list"
+        },
+        {
+          "token": " and ",
+          "explanation": "Logical operator to combine conditions"
+        },
+        {
+          "token": "prices[",
+          "explanation": "Start of indexing into the list"
+        },
+        {
+          "token": "stack[-1]",
+          "explanation": "Indexing into the stack to get the last element"
+        },
+        {
+          "token": "]",
+          "explanation": "End of indexing into the list"
+        },
+        {
+          "token": " <= ",
+          "explanation": "Less than or equal to operator"
+        },
+        {
+          "token": "prices[",
+          "explanation": "Start of indexing into the list"
+        },
+        {
+          "token": "i",
+          "explanation": "Variable holding the current index"
+        },
+        {
+          "token": "]",
+          "explanation": "End of indexing into the list"
+        },
+        {
+          "token": ":",
+          "explanation": "End of while loop definition"
+        }
+      ]
+    },
+    {
+      "code": "            stack.pop()",
+      "explanation": "This line removes the last element from the stack. This is done because the price on the current day is greater than the price on the day at the top of the stack.",
+      "tokens": [
+        {
+          "token": "            ",
+          "explanation": "Indentation for code inside the while loop"
+        },
+        {
+          "token": "stack",
+          "explanation": "Name of the list"
+        },
+        {
+          "token": ".",
+          "explanation": "Dot operator to access methods of the list"
+        },
+        {
+          "token": "pop",
+          "explanation": "Method to remove the last element from the list"
+        },
+        {
+          "token": "()",
+          "explanation": "Parentheses to call the method"
+        }
+      ]
+    },
+    {
+      "code": "        if not stack:",
+      "explanation": "This line starts an if statement that checks if the stack is empty. If it is, it means that the current price is the highest so far.",
+      "tokens": [
+        {
+          "token": "        ",
+          "explanation": "Indentation for code inside the for loop"
         },
         {
           "token": "if ",
-          "explanation": "Keyword to start a conditional statement"
+          "explanation": "Keyword to start an if statement"
         },
         {
-          "token": "current",
-          "explanation": "The current interval"
+          "token": "not ",
+          "explanation": "Logical operator to negate a condition"
         },
         {
-          "token": "[0]",
-          "explanation": "Accesses the start of the current interval"
-        },
-        {
-          "token": " <= "
-        },
-        {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
-        },
-        {
-          "token": "[-1]",
-          "explanation": "Accesses the last merged interval"
-        },
-        {
-          "token": "[1]",
-          "explanation": "Accesses the end of the last merged interval"
+          "token": "stack",
+          "explanation": "Name of the list"
         },
         {
           "token": ":",
-          "explanation": "Starts the if statement body"
-        },
-        {
-          "token": "\n"
+          "explanation": "End of if statement definition"
         }
       ]
     },
     {
-      "code": "            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))",
-      "explanation": "This line merges the current interval with the last merged interval if they overlap.",
-      "criticalThinkingQuestion": "How does this line merge two overlapping intervals?",
-      "answer": "It merges two intervals by taking the start of the first one and the maximum end between the two.",
+      "code": "            span[i] = i + 1",
+      "explanation": "This line sets the span for the current day to the current index plus one. This is done because the current price is the highest so far.",
       "tokens": [
         {
-          "token": "            "
+          "token": "            ",
+          "explanation": "Indentation for code inside the if statement"
         },
         {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
+          "token": "span[",
+          "explanation": "Start of indexing into the list"
         },
         {
-          "token": "[-1]",
-          "explanation": "Accesses the last merged interval"
+          "token": "i",
+          "explanation": "Variable holding the current index"
         },
         {
-          "token": " = "
+          "token": "]",
+          "explanation": "End of indexing into the list"
         },
         {
-          "token": "("
+          "token": " = ",
+          "explanation": "Assignment operator"
         },
         {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
+          "token": "i",
+          "explanation": "Variable holding the current index"
         },
         {
-          "token": "[-1]",
-          "explanation": "Accesses the last merged interval"
+          "token": " + ",
+          "explanation": "Addition operator"
         },
         {
-          "token": "[0]",
-          "explanation": "Accesses the start of the last merged interval"
-        },
-        {
-          "token": ", "
-        },
-        {
-          "token": "max",
-          "explanation": "Function to get the maximum value"
-        },
-        {
-          "token": "("
-        },
-        {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
-        },
-        {
-          "token": "[-1]",
-          "explanation": "Accesses the last merged interval"
-        },
-        {
-          "token": "[1]",
-          "explanation": "Accesses the end of the last merged interval"
-        },
-        {
-          "token": ", "
-        },
-        {
-          "token": "current",
-          "explanation": "The current interval"
-        },
-        {
-          "token": "[1]",
-          "explanation": "Accesses the end of the current interval"
-        },
-        {
-          "token": ")"
-        },
-        {
-          "token": ")"
-        },
-        {
-          "token": "\n"
+          "token": "1",
+          "explanation": "Integer literal"
         }
       ]
     },
     {
       "code": "        else:",
-      "explanation": "This line starts the else block of the if statement.",
-      "criticalThinkingQuestion": "What happens if the current interval does not overlap with the last merged interval?",
-      "answer": "If the current interval does not overlap with the last merged interval, it is added as a new interval to the 'merged' list.",
+      "explanation": "This line starts an else statement that is executed if the stack is not empty. This means that there is a day with a higher price before the current day.",
       "tokens": [
         {
-          "token": "        "
+          "token": "        ",
+          "explanation": "Indentation for code inside the for loop"
         },
         {
           "token": "else",
-          "explanation": "Keyword to start the else block"
+          "explanation": "Keyword to start an else statement"
         },
         {
           "token": ":",
-          "explanation": "Starts the else block body"
-        },
-        {
-          "token": "\n"
+          "explanation": "End of else statement definition"
         }
       ]
     },
     {
-      "code": "            merged.append(current)",
-      "explanation": "This line adds the current interval to the 'merged' list as a new interval.",
-      "criticalThinkingQuestion": "Why do we add the current interval as a new interval to the 'merged' list?",
-      "answer": "We add the current interval as a new interval because it does not overlap with the last merged interval.",
+      "code": "            span[i] = i - stack[-1]",
+      "explanation": "This line sets the span for the current day to the difference between the current index and the index at the top of the stack. This is the number of consecutive days with a lower or equal price.",
       "tokens": [
         {
-          "token": "            "
+          "token": "            ",
+          "explanation": "Indentation for code inside the else statement"
         },
         {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
+          "token": "span[",
+          "explanation": "Start of indexing into the list"
         },
         {
-          "token": "."
+          "token": "i",
+          "explanation": "Variable holding the current index"
+        },
+        {
+          "token": "]",
+          "explanation": "End of indexing into the list"
+        },
+        {
+          "token": " = ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "i",
+          "explanation": "Variable holding the current index"
+        },
+        {
+          "token": " - ",
+          "explanation": "Subtraction operator"
+        },
+        {
+          "token": "stack[",
+          "explanation": "Start of indexing into the list"
+        },
+        {
+          "token": "-1",
+          "explanation": "Index to get the last element of the list"
+        },
+        {
+          "token": "]",
+          "explanation": "End of indexing into the list"
+        }
+      ]
+    },
+    {
+      "code": "        stack.append(i)",
+      "explanation": "This line adds the current index to the stack. This is done to keep track of the days with a higher price.",
+      "tokens": [
+        {
+          "token": "        ",
+          "explanation": "Indentation for code inside the for loop"
+        },
+        {
+          "token": "stack",
+          "explanation": "Name of the list"
+        },
+        {
+          "token": ".",
+          "explanation": "Dot operator to access methods of the list"
         },
         {
           "token": "append",
           "explanation": "Method to add an element to the end of the list"
         },
         {
-          "token": "("
+          "token": "(",
+          "explanation": "Start of method parameters"
         },
         {
-          "token": "current",
-          "explanation": "The current interval"
+          "token": "i",
+          "explanation": "Variable holding the current index"
         },
         {
-          "token": ")"
-        },
-        {
-          "token": "\n"
+          "token": ")",
+          "explanation": "End of method parameters"
         }
       ]
     },
     {
-      "code": "    return merged",
-      "explanation": "This line returns the 'merged' list as the result of the function.",
-      "criticalThinkingQuestion": "Why do we return the 'merged' list?",
-      "answer": "We return the 'merged' list because it contains the merged intervals, which is the result of the function.",
+      "code": "    return span",
+      "explanation": "This line returns the list span. This list contains the span for each day.",
       "tokens": [
         {
-          "token": "    "
+          "token": "    ",
+          "explanation": "Indentation for code inside the function"
         },
         {
           "token": "return ",
-          "explanation": "Keyword to return a value from a function"
+          "explanation": "Keyword to return a value from the function"
         },
         {
-          "token": "merged",
-          "explanation": "The list of merged intervals"
-        },
-        {
-          "token": "\n"
-        }
-      ]
-    },
-    {
-      "code": "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))",
-      "explanation": "This line calls the 'merge_intervals' function with a list of intervals and prints the result.",
-      "criticalThinkingQuestion": "What is the expected output of this line?",
-      "answer": "The expected output is a list of merged intervals: [(1, 6), (8, 10), (15, 18)].",
-      "tokens": [
-        {
-          "token": "print",
-          "explanation": "Function to output data to the console"
-        },
-        {
-          "token": "("
-        },
-        {
-          "token": "merge_intervals",
-          "explanation": "The function to merge intervals"
-        },
-        {
-          "token": "("
-        },
-        {
-          "token": "[(1, 3), (2, 6), (8, 10), (15, 18)]",
-          "explanation": "The list of intervals to merge"
-        },
-        {
-          "token": ")"
-        },
-        {
-          "token": ")"
-        },
-        {
-          "token": "\n"
+          "token": "span",
+          "explanation": "Name of the list to return"
         }
       ]
     }
   ]
 },
 {
-  "format": ["Short Answer", "Multiple Choice", "Short Answer"],
   "questions": [
     {
       "type": "Short Answer",
-      "question": "What does the 'sort' function do in this code?",
-      "answer": "It sorts the intervals based on the first element of each tuple.",
+      "question": "What is the purpose of the 'stack' in this function?",
+      "answer": "The 'stack' is used to keep track of the indices of the days with higher stock prices.",
       "question-code-lines": [
         "2"
       ],
-      "question-code-lines-explained": "intervals.sort(key=lambda x: x[0]) # This line sorts the intervals based on the first element of each tuple."
+      "question-code-lines-explained": "stack = [] # An empty list is initialized to be used as a stack to store the indices of the days with higher stock prices."
     },
     {
       "type": "Multiple Choice",
-      "question": "What does the 'if' condition check in the for loop?",
+      "question": "What does the 'while' loop inside the 'for' loop do?",
       "answer": {
-        "correct-choice": "It checks if the start of the current interval is less than or equal to the end of the last merged interval.",
-        "incorrect-choice-1": "It checks if the start of the current interval is greater than the end of the last merged interval.",
-        "incorrect-choice-2": "It checks if the end of the current interval is less than the start of the last merged interval.",
-        "incorrect-choice-3": "It checks if the end of the current interval is greater than the start of the last merged interval."
+        "correct-choice": "It pops elements from the stack while the top of the stack has a price less than or equal to the current price.",
+        "incorrect-choice-1": "It pushes elements to the stack while the top of the stack has a price less than or equal to the current price.",
+        "incorrect-choice-2": "It pops elements from the stack while the top of the stack has a price greater than the current price.",
+        "incorrect-choice-3": "It pushes elements to the stack while the top of the stack has a price greater than the current price."
       },
       "question-code-lines": [
-        "4"
+        "5"
       ],
-      "question-code-lines-explained": "if current[0] <= merged[-1][1]: # This line checks if the start of the current interval is less than or equal to the end of the last merged interval."
+      "question-code-lines-explained": "while stack and prices[stack[-1]] <= prices[i]: stack.pop() # This loop pops elements from the stack while the top of the stack has a price less than or equal to the current price."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What does 'span[i] = i + 1' do when the stack is empty?",
+      "answer": {
+        "correct-choice": "It sets the span of the current day to be the number of days so far.",
+        "incorrect-choice-1": "It sets the span of the current day to be the total number of days.",
+        "incorrect-choice-2": "It sets the span of the current day to be the number of days remaining.",
+        "incorrect-choice-3": "It sets the span of the current day to be the number of days with higher stock prices."
+      },
+      "question-code-lines": [
+        "8"
+      ],
+      "question-code-lines-explained": "span[i] = i + 1 # If the stack is empty, it means that the current price is the highest so far. Therefore, the span of the current day is set to be the number of days so far."
     },
     {
       "type": "Short Answer",
-      "question": "What does the 'else' condition do in the for loop?",
-      "answer": "It appends the current interval to the merged list if it doesn't overlap with the last merged interval.",
+      "question": "What does 'span[i] = i - stack[-1]' do when the stack is not empty?",
+      "answer": "It sets the span of the current day to be the number of consecutive days with prices not less than the current price.",
       "question-code-lines": [
-        "7"
+        "10"
       ],
-      "question-code-lines-explained": "else: merged.append(current) # This line appends the current interval to the merged list if it doesn't overlap with the last merged interval."
+      "question-code-lines-explained": "span[i] = i - stack[-1] # If the stack is not empty, it means that there are days with higher prices before the current day. Therefore, the span of the current day is set to be the number of consecutive days with prices not less than the current price."
     }
   ]
 },
 {
   "wrong-code": 
-`def merge_intervals(intervals):
-  intervals.sort(key=lambda x: x[1])
-  merged = [intervals[0]]
-  for current in intervals[1:]:
-      if current[0] >= merged[-1][1]:
-          merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
-      else:
-          merged.append(current)
-  return merged
-  
-print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
-  
+`def calculate_span(prices: list[int]) -> list[int]:
+    stack = []
+    span = [0] * len(prices)
+    for i in range(len(prices)):
+        while stack and prices[stack[-1]] >= prices[i]:
+            stack.pop()
+        if not stack:
+            span[i] = i - 1
+        else:
+            span[i] = i - stack[-1]
+        stack.append(i)
+    return span`,
   "issues":{
               "logical-issue-1": {
-                      "type": "Incorrect sorting key",
-                      "line": 2
+                      "type": "Incorrect Boolean Logic",
+                      "line": 5
               },
               "logical-issue-2": {
-                      "type": "Incorrect comparison operator",
-                      "line": 5
+                      "type": "Wrong Variable Assignments",
+                      "line": 7
               }
           }
 },
@@ -1212,11 +1269,11 @@ print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
         {
           "leading-questions": [
             {
-              "mcq-question": "What should be the input to our function?",
-              "correct-choice": "A list of tuples representing intervals",
-              "incorrect-choice-1": "A list of integers",
-              "incorrect-choice-2": "A single tuple representing an interval",
-              "incorrect-choice-3": "Two integers"
+              "mcq-question": "What is the appropriate data type for the input of the function?",
+              "correct-choice": "List of integers",
+              "incorrect-choice-1": "List of strings",
+              "incorrect-choice-2": "Integer",
+              "incorrect-choice-3": "String"
             }
           ],
           "code-lines-to-be-revealed": [1]
@@ -1224,23 +1281,16 @@ print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
       ]
     },
     {
-      "title": "Sort Intervals",
+      "title": "Initialize Stack",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "Why do we need to sort the intervals?",
-              "correct-choice": "To ensure we process intervals in increasing order",
-              "incorrect-choice-1": "To make the list look neat",
-              "incorrect-choice-2": "To find the smallest interval",
-              "incorrect-choice-3": "To find the largest interval"
-            },
-            {
-              "mcq-question": "On what basis should we sort the intervals?",
-              "correct-choice": "Starting point of the intervals",
-              "incorrect-choice-1": "Ending point of the intervals",
-              "incorrect-choice-2": "Length of the intervals",
-              "incorrect-choice-3": "Middle point of the intervals"
+              "mcq-question": "What data structure is suitable for storing the indices of the days?",
+              "correct-choice": "Stack (List)",
+              "incorrect-choice-1": "Queue",
+              "incorrect-choice-2": "Dictionary",
+              "incorrect-choice-3": "Set"
             }
           ],
           "code-lines-to-be-revealed": [2]
@@ -1248,16 +1298,16 @@ print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
       ]
     },
     {
-      "title": "Initialize Merged List",
+      "title": "Initialize Span List",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "Why do we need to initialize the merged list with the first interval?",
-              "correct-choice": "To have a starting point for merging",
-              "incorrect-choice-1": "To make the list non-empty",
-              "incorrect-choice-2": "To ensure the list has at least one element",
-              "incorrect-choice-3": "To avoid an index error"
+              "mcq-question": "What should be the initial value of the span for each day?",
+              "correct-choice": "0",
+              "incorrect-choice-1": "1",
+              "incorrect-choice-2": "The price of the stock on that day",
+              "incorrect-choice-3": "The index of the day"
             }
           ],
           "code-lines-to-be-revealed": [3]
@@ -1265,153 +1315,326 @@ print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
       ]
     },
     {
-      "title": "Merge Overlapping Intervals",
+      "title": "Iterate Over Prices",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "What condition should be checked to determine if two intervals overlap?",
-              "correct-choice": "The start of the current interval is less than or equal to the end of the last merged interval",
-              "incorrect-choice-1": "The start of the current interval is greater than the end of the last merged interval",
-              "incorrect-choice-2": "The end of the current interval is less than the start of the last merged interval",
-              "incorrect-choice-3": "The end of the current interval is greater than the start of the last merged interval"
+              "mcq-question": "How many times should we iterate over the prices?",
+              "correct-choice": "The number of days (length of prices)",
+              "incorrect-choice-1": "The number of days minus 1",
+              "incorrect-choice-2": "The maximum price",
+              "incorrect-choice-3": "The minimum price"
             }
           ],
           "code-lines-to-be-revealed": [4]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How should we merge two overlapping intervals?",
-              "correct-choice": "Take the start of the first interval and the maximum end of the two intervals",
-              "incorrect-choice-1": "Take the start of the first interval and the end of the second interval",
-              "incorrect-choice-2": "Take the start of the second interval and the end of the first interval",
-              "incorrect-choice-3": "Take the start of the second interval and the maximum end of the two intervals"
-            }
-          ],
-          "code-lines-to-be-revealed": [5]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if two intervals do not overlap?",
-              "correct-choice": "Add the current interval to the merged list",
-              "incorrect-choice-1": "Ignore the current interval",
-              "incorrect-choice-2": "Add the last merged interval to the merged list",
-              "incorrect-choice-3": "Merge the current interval with the last merged interval"
-            }
-          ],
-          "code-lines-to-be-revealed": [6]
         }
       ]
     },
     {
-      "title": "Return Merged Intervals",
+      "title": "Remove Lower Prices",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "When should we remove a day from the stack?",
+              "correct-choice": "When the price on that day is less than or equal to the current price",
+              "incorrect-choice-1": "When the price on that day is greater than the current price",
+              "incorrect-choice-2": "When the price on that day is equal to the current price",
+              "incorrect-choice-3": "When the price on that day is less than the current price"
+            }
+          ],
+          "code-lines-to-be-revealed": [5, 6]
+        }
+      ]
+    },
+    {
+      "title": "Calculate Span When Stack is Empty",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the span on a day when the stack is empty?",
+              "correct-choice": "The index of the day plus 1",
+              "incorrect-choice-1": "The index of the day",
+              "incorrect-choice-2": "0",
+              "incorrect-choice-3": "The price of the stock on that day"
+            }
+          ],
+          "code-lines-to-be-revealed": [7, 8]
+        }
+      ]
+    },
+    {
+      "title": "Calculate Span When Stack is Not Empty",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the span on a day when the stack is not empty?",
+              "correct-choice": "The difference between the index of the day and the index of the top day in the stack",
+              "incorrect-choice-1": "The sum of the index of the day and the index of the top day in the stack",
+              "incorrect-choice-2": "The index of the day",
+              "incorrect-choice-3": "The index of the top day in the stack"
+            }
+          ],
+          "code-lines-to-be-revealed": [9, 10]
+        }
+      ]
+    },
+    {
+      "title": "Append Current Day to Stack",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we append to the stack after calculating the span for a day?",
+              "correct-choice": "The index of the day",
+              "incorrect-choice-1": "The price of the stock on that day",
+              "incorrect-choice-2": "The span of the day",
+              "incorrect-choice-3": "The index of the day plus 1"
+            }
+          ],
+          "code-lines-to-be-revealed": [11]
+        }
+      ]
+    },
+    {
+      "title": "Return Span List",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
               "mcq-question": "What should the function return?",
-              "correct-choice": "The list of merged intervals",
-              "incorrect-choice-1": "The original list of intervals",
-              "incorrect-choice-2": "The number of merged intervals",
-              "incorrect-choice-3": "The length of the merged intervals"
+              "correct-choice": "The list of spans",
+              "incorrect-choice-1": "The list of prices",
+              "incorrect-choice-2": "The stack",
+              "incorrect-choice-3": "The length of the list of spans"
             }
           ],
-          "code-lines-to-be-revealed": [7]
+          "code-lines-to-be-revealed": [12]
         }
       ]
     }
   ]
 },
-//trace predict
 [
-  { step: 5, variable: 'num' },
-  { step: 14, variable: 'even_sum' },
-  { step: 27, variable: 'num' }
+  {
+      "step": 6,
+      "variable": "i"
+  },
+  {
+      "step": 10,
+      "variable": "stack"
+  },
+  {
+      "step": 19,
+      "variable": "span"
+  }
 ],
-"",
-),
+  ),
 
-new AuthoringTask(
-  "3",
-  "Write a Python function to calculate the sum of even numbers in a given list.",
-`def calculate_even_sum(numbers):
-    even_sum = 0
-    for num in numbers:
-        if num % 2 == 0:
-            even_sum += num
-    return even_sum
+  new AuthoringTask(
+    "2",
+    "Write a function called longest_valid_brackets that takes a string consisting of only opening ( and closing ) parenthesis, and returns the length of the longest valid parenthesis substring. A sequence is considered valid if every opening bracket has a corresponding closing bracket in the correct order without any mismatches. The function should use a stack to calculate the longest valid parenthesis substring.",
+`def longest_valid_brackets(s: str) -> int:
+    map = {'(': ')', '[': ']'}
+    stack = [-1]
+    max_length = 0
+    for i, char in enumerate(s):
+        if char in map:
+            stack.append(i)
+        else:
+            not_empty = len(stack) > 1
+            last_is_open = stack[-1] != -1 and s[stack[-1]] in map
+            is_match = last_is_open and map[s[stack[-1]]] == char
+            if not_empty and is_match:
+                stack.pop()
+                max_length = max(max_length, i - stack[-1])
+            else:
+                stack[-1] = i
+    return max_length`,
+`
+This code defines a function called \`longest_valid_brackets\` that takes a string of parentheses as input and returns the length of the longest valid parentheses substring. 
 
-result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-print("Sum of even numbers:", result)`,
-`This code defines a function called \`calculate_even_sum\` that takes a list of numbers as input and returns the sum of the even numbers in the list.
+First, it creates a dictionary called \`map\` that maps opening parentheses to their corresponding closing parentheses. 
 
-First, it initializes a variable \`even_sum\` to 0. This variable will be used to keep track of the sum of the even numbers.
+Then, it initializes a list called \`stack\` with \`-1\` and a variable called \`max_length\` with \`0\`. The \`stack\` is used to keep track of the indices of the opening parentheses, and \`max_length\` is used to keep track of the maximum length of valid parentheses substring found so far.
 
-Next, it uses a \`for\` loop to iterate over each number in the input list. For each number, it checks if the number is even by using the modulus operator \`%\`. The modulus operator gives the remainder of the division of the number by 2. If the remainder is 0, the number is even.
+Next, it iterates over the string. For each character, if it's an opening parenthesis, it adds its index to the \`stack\`. If it's a closing parenthesis, it checks if the \`stack\` is not empty and the last element in the \`stack\` is an opening parenthesis that matches the current closing parenthesis. If both conditions are true, it removes the last element from the \`stack\` and updates \`max_length\` to be the maximum of \`max_length\` and the difference between the current index and the last element in the \`stack\`. If either condition is false, it updates the last element in the \`stack\` to be the current index.
 
-If the number is even, it adds the number to \`even_sum\` using the \`+=\` operator, which is a shorthand for \`even_sum = even_sum + num\`.
+Finally, it returns \`max_length\`.
 
-After all numbers in the list have been processed, the function returns the sum of the even numbers.
+This function uses a stack to keep track of the indices of the opening parentheses, and for each closing parenthesis, it tries to match it with the last opening parenthesis in the stack. If they match, it removes the last opening parenthesis from the stack and updates the maximum length of valid parentheses substring. If they don't match, it updates the last element in the stack to be the current index. This way, it ensures that every opening parenthesis has a corresponding closing parenthesis in the correct order without any mismatches.`,
+`def longest_valid_brackets(s: str) -> int:
+    map = {'(': ')', '[': ']'}
+    stack = [-1]
+    max_length = 0
+    for i, char in enumerate(s):
+        if char in map:
+            stack.append(i)
+        else:
+            not_empty = len(stack) > 1
+            last_is_open = stack[-1] != -1 and s[stack[-1]] in map
+            is_match = last_is_open and map[s[stack[-1]]] == char
+            if not_empty and is_match:
+                stack.pop()
+                max_length = max(max_length, i - stack[-1])
+            else:
+                stack[-1] = i
+    return max_length
 
-The function is then called with the list \`[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\` as an argument, and the result is stored in the variable \`result\`.
-
-Finally, the \`print\` function is used to display the result.`,
+print(longest_valid_brackets('()(()))))'))
+# Output: 6
+`,
 {
   "subgoals": [
       {
-          "title": "Define the function",
+          "title": "Function Definition",
           "code": [
               {
                   "indent": 0,
-                  "line": "def reverse_stack(stack):",
-                  "pseudo-code": "Define a function named `reverse_stack` that takes a parameter `stack`",
-                  "syntax-hint": "`def` is used to define a function in Python. The function name is followed by parentheses containing the function parameters, and ends with a colon.",
-                  "explanation": "This line is needed to define the function and specify what parameters it will take. In this case, it will take a stack as input."
+                  "line": "def longest_valid_brackets(s: str) -> int:",
+                  "pseudo-code": "Define a function named 'longest_valid_brackets' that takes a string 's' as input and returns an integer.",
+                  "syntax-hint": "The `def` keyword is used to define a function in Python. The `->` symbol is used to denote the return type of the function.",
+                  "explanation": "This line is needed to define the function and specify its input and output types."
               }
           ]
       },
       {
-          "title": "Initialize temporary stack",
+          "title": "Initialize Variables",
           "code": [
               {
                   "indent": 1,
-                  "line": "temp = []",
-                  "pseudo-code": "Create an empty list named `temp`",
-                  "syntax-hint": "In Python, `=` is used for assignment. `[]` is used to create an empty list.",
-                  "explanation": "This line is needed to create a temporary stack that will be used to reverse the original stack."
-              }
-          ]
-      },
-      {
-          "title": "Reverse the stack",
-          "code": [
-              {
-                  "indent": 1,
-                  "line": "while stack:",
-                  "pseudo-code": "Start a while loop that continues as long as `stack` is not empty",
-                  "syntax-hint": "In Python, `while` is used to start a loop that continues as long as the condition after it is true. Here, `stack` is truthy if it is not empty.",
-                  "explanation": "This line is needed to start a loop that will continue until the original stack is empty."
+                  "line": "map = {'(': ')', '[': ']'}",
+                  "pseudo-code": "Create a dictionary 'map' where the keys are opening brackets and the values are the corresponding closing brackets.",
+                  "syntax-hint": "In Python, dictionaries are defined using curly braces `{}` with key-value pairs separated by a colon `:`.",
+                  "explanation": "This line is needed to map opening brackets to their corresponding closing brackets."
               },
               {
-                  "indent": 2,
-                  "line": "temp.append(stack.pop())",
-                  "pseudo-code": "Remove the top element from `stack` and add it to the end of `temp`",
-                  "syntax-hint": "In Python, `.append()` is used to add an element to the end of a list. `.pop()` is used to remove and return the last element of a list.",
-                  "explanation": "This line is needed to reverse the order of the elements in the stack by moving them from the original stack to the temporary stack."
+                  "indent": 1,
+                  "line": "stack = [-1]",
+                  "pseudo-code": "Initialize a list 'stack' with a single element -1.",
+                  "syntax-hint": "In Python, lists are defined using square brackets `[]`.",
+                  "explanation": "This line is needed to initialize the stack that will be used to track the indices of the opening brackets."
+              },
+              {
+                  "indent": 1,
+                  "line": "max_length = 0",
+                  "pseudo-code": "Initialize a variable 'max_length' to 0.",
+                  "syntax-hint": "In Python, variables are defined using the `=` operator.",
+                  "explanation": "This line is needed to keep track of the length of the longest valid parenthesis substring."
               }
           ]
       },
       {
-          "title": "Return the reversed stack",
+          "title": "Iterate Over String",
           "code": [
               {
                   "indent": 1,
-                  "line": "return temp",
-                  "pseudo-code": "Return the list `temp`",
-                  "syntax-hint": "In Python, `return` is used to specify the result that a function should give back.",
-                  "explanation": "This line is needed to give the reversed stack back to whatever called the function."
+                  "line": "for i, char in enumerate(s):",
+                  "pseudo-code": "Start a loop that iterates over each character 'char' in the string 's', with 'i' being the index of the character.",
+                  "syntax-hint": "The `for` keyword is used to start a loop in Python. The `enumerate` function is used to get both the index and value of each element in a sequence.",
+                  "explanation": "This line is needed to iterate over each character in the string."
+              }
+          ]
+      },
+      {
+          "title": "Handle Opening Brackets",
+          "code": [
+              {
+                  "indent": 2,
+                  "line": "if char in map:",
+                  "pseudo-code": "Check if the current character 'char' is an opening bracket.",
+                  "syntax-hint": "The `in` keyword is used to check if a value is present in a sequence or dictionary in Python.",
+                  "explanation": "This line is needed to check if the current character is an opening bracket."
+              },
+              {
+                  "indent": 3,
+                  "line": "stack.append(i)",
+                  "pseudo-code": "If the current character is an opening bracket, append its index 'i' to the 'stack'.",
+                  "syntax-hint": "The `append` method is used to add an element to the end of a list in Python.",
+                  "explanation": "This line is needed to keep track of the indices of the opening brackets."
+              }
+          ]
+      },
+      {
+          "title": "Handle Closing Brackets",
+          "code": [
+              {
+                  "indent": 2,
+                  "line": "else:",
+                  "pseudo-code": "If the current character is not an opening bracket, it must be a closing bracket.",
+                  "syntax-hint": "The `else` keyword is used to specify a block of code to be executed if the condition in the `if` statement is false.",
+                  "explanation": "This line is needed to handle the case where the current character is a closing bracket."
+              },
+              {
+                  "indent": 3,
+                  "line": "not_empty = len(stack) > 1",
+                  "pseudo-code": "Check if the 'stack' has more than one element.",
+                  "syntax-hint": "The `len` function is used to get the number of elements in a sequence in Python.",
+                  "explanation": "This line is needed to check if the stack is not empty."
+              },
+              {
+                  "indent": 3,
+                  "line": "last_is_open = stack[-1] != -1 and s[stack[-1]] in map",
+                  "pseudo-code": "Check if the last element in the 'stack' is an index of an opening bracket.",
+                  "syntax-hint": "The `-1` index is used to access the last element in a sequence in Python.",
+                  "explanation": "This line is needed to check if the last element in the stack is an index of an opening bracket."
+              },
+              {
+                  "indent": 3,
+                  "line": "is_match = last_is_open and map[s[stack[-1]]] == char",
+                  "pseudo-code": "Check if the current character 'char' is a match for the last opening bracket in the 'stack'.",
+                  "syntax-hint": "The `and` keyword is used to combine two conditions in Python.",
+                  "explanation": "This line is needed to check if the current character is a match for the last opening bracket in the stack."
+              },
+              {
+                  "indent": 3,
+                  "line": "if not_empty and is_match:",
+                  "pseudo-code": "If the 'stack' is not empty and the current character is a match for the last opening bracket, then the current substring is valid.",
+                  "syntax-hint": "The `if` keyword is used to start a conditional statement in Python.",
+                  "explanation": "This line is needed to check if the current substring is valid."
+              },
+              {
+                  "indent": 4,
+                  "line": "stack.pop()",
+                  "pseudo-code": "If the current substring is valid, remove the last element from the 'stack'.",
+                  "syntax-hint": "The `pop` method is used to remove the last element from a list in Python.",
+                  "explanation": "This line is needed to remove the index of the last opening bracket from the stack."
+              },
+              {
+                  "indent": 4,
+                  "line": "max_length = max(max_length, i - stack[-1])",
+                  "pseudo-code": "Update 'max_length' to be the maximum of its current value and the length of the current valid substring.",
+                  "syntax-hint": "The `max` function is used to get the maximum of two or more values in Python.",
+                  "explanation": "This line is needed to update the length of the longest valid parenthesis substring."
+              },
+              {
+                  "indent": 3,
+                  "line": "else:",
+                  "pseudo-code": "If the 'stack' is empty or the current character is not a match for the last opening bracket, then the current substring is not valid.",
+                  "syntax-hint": "The `else` keyword is used to specify a block of code to be executed if the condition in the `if` statement is false.",
+                  "explanation": "This line is needed to handle the case where the current substring is not valid."
+              },
+              {
+                  "indent": 4,
+                  "line": "stack[-1] = i",
+                  "pseudo-code": "If the current substring is not valid, update the last element in the 'stack' to be the index of the current character.",
+                  "syntax-hint": "In Python, you can modify the value of an element in a list by accessing it using its index and the `=` operator.",
+                  "explanation": "This line is needed to update the index of the last opening bracket in the stack."
+              }
+          ]
+      },
+      {
+          "title": "Return Result",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "return max_length",
+                  "pseudo-code": "Return the length of the longest valid parenthesis substring.",
+                  "syntax-hint": "The `return` keyword is used to specify the result that a function should return.",
+                  "explanation": "This line is needed to return the result of the function."
               }
           ]
       }
@@ -1420,339 +1643,382 @@ Finally, the \`print\` function is used to display the result.`,
 {
   "lines": [
     {
-      "code": "def calculate_even_sum(numbers):",
-      "explanation": "This line defines a function to calculate the sum of even numbers in a list.",
-      "criticalThinkingQuestion": "Why do we need to pass 'numbers' as a parameter to the function?",
-      "answer": "We pass 'numbers' to make the function reusable for any list of numbers.",
+      "code": "def longest_valid_brackets(s: str) -> int:",
+      "explanation": "This line defines the function 'longest_valid_brackets' which takes a string 's' as input and returns an integer.",
       "tokens": [
         {
           "token": "def ",
-          "explanation": "Keyword to define a function"
+          "explanation": "Keyword to start a function definition"
         },
         {
-          "token": "calculate_even_sum",
+          "token": "longest_valid_brackets",
           "explanation": "Name of the function"
         },
         {
-          "token": "(",
-        },
-        {
-          "token": "numbers",
-          "explanation": "Parameter of the function"
-        },
-        {
-          "token": ")",
-        },
-        {
-          "token": ":",
-          "explanation": "Starts the function's body"
-        },
-        {
-          "token": "\n"
+          "token": "(s: str) -> int:",
+          "explanation": "Function parameters and return type"
         }
       ]
     },
     {
-      "code": "    even_sum = 0",
-      "explanation": "This line initializes a variable to keep track of the sum of even numbers.",
-      "criticalThinkingQuestion": "Why do we initialize 'even_sum' to 0?",
-      "answer": "We initialize 'even_sum' to 0 because we start with no sum and add to it.",
+      "code": "    map = {'(': ')', '[': ']'}",
+      "explanation": "This line creates a dictionary 'map' that maps opening brackets to their corresponding closing brackets.",
       "tokens": [
         {
-          "token": "    ",
-          "explanation": "Indentation for code inside the function"
+          "token": "map ",
+          "explanation": "Variable name"
         },
         {
-          "token": "even_sum",
-          "explanation": "Variable to store the sum"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "=",
+          "token": "= ",
           "explanation": "Assignment operator"
         },
         {
-          "token": " ",
-        },
-        {
-          "token": "0",
-          "explanation": "Initial value of the sum"
-        },
-        {
-          "token": "\n"
+          "token": "{'(': ')', '[': ']'}",
+          "explanation": "Dictionary of opening and closing brackets"
         }
       ]
     },
     {
-      "code": "    for num in numbers:",
-      "explanation": "This line starts a loop to iterate over each number in the list.",
-      "criticalThinkingQuestion": "Why do we use a 'for' loop here?",
-      "answer": "We use a 'for' loop to iterate over each number in the list.",
+      "code": "    stack = [-1]",
+      "explanation": "This line initializes a stack with -1. The stack will be used to keep track of the indices of the opening brackets.",
       "tokens": [
         {
-          "token": "    ",
-          "explanation": "Indentation for code inside the function"
+          "token": "stack ",
+          "explanation": "Variable name"
         },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "[-1]",
+          "explanation": "Initial stack with -1"
+        }
+      ]
+    },
+    {
+      "code": "    max_length = 0",
+      "explanation": "This line initializes 'max_length' to 0. 'max_length' will be used to keep track of the longest valid parenthesis substring.",
+      "tokens": [
+        {
+          "token": "max_length ",
+          "explanation": "Variable name"
+        },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "0",
+          "explanation": "Initial value"
+        }
+      ]
+    },
+    {
+      "code": "    for i, char in enumerate(s):",
+      "explanation": "This line starts a for loop that iterates over the string 's', with 'i' being the index and 'char' being the character at that index.",
+      "tokens": [
         {
           "token": "for ",
-          "explanation": "Keyword to start a loop"
+          "explanation": "Keyword to start a for loop"
         },
         {
-          "token": "num",
-          "explanation": "Variable to hold the current number"
-        },
-        {
-          "token": " ",
+          "token": "i, char ",
+          "explanation": "Loop variables"
         },
         {
           "token": "in ",
-          "explanation": "Keyword to iterate over a list"
+          "explanation": "Keyword to specify the iterable"
         },
         {
-          "token": "numbers",
-          "explanation": "The list to iterate over"
-        },
-        {
-          "token": ":",
-          "explanation": "Starts the loop's body"
-        },
-        {
-          "token": "\n"
+          "token": "enumerate(s):",
+          "explanation": "Function to get index and value from iterable"
         }
       ]
     },
     {
-      "code": "        if num % 2 == 0:",
-      "explanation": "This line checks if the current number is even.",
-      "criticalThinkingQuestion": "How does 'num % 2 == 0' check if a number is even?",
-      "answer": "If a number modulo 2 equals 0, it means the number is even.",
+      "code": "        if char in map:",
+      "explanation": "This line checks if the current character is an opening bracket by checking if it is a key in the 'map' dictionary.",
       "tokens": [
-        {
-          "token": "        ",
-          "explanation": "Indentation for code inside the loop"
-        },
         {
           "token": "if ",
-          "explanation": "Keyword to start a conditional"
+          "explanation": "Keyword to start an if statement"
         },
         {
-          "token": "num",
-          "explanation": "The current number"
+          "token": "char ",
+          "explanation": "Variable name"
         },
         {
-          "token": " ",
+          "token": "in ",
+          "explanation": "Keyword to check membership in a collection"
         },
         {
-          "token": "%",
-          "explanation": "Modulo operator"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "2",
-          "explanation": "Divisor for the modulo operation"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "==",
-          "explanation": "Equality operator"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "0",
-          "explanation": "Zero, the result for even numbers"
-        },
-        {
-          "token": ":",
-          "explanation": "Starts the conditional's body"
-        },
-        {
-          "token": "\n"
+          "token": "map:",
+          "explanation": "Dictionary of opening and closing brackets"
         }
       ]
     },
     {
-      "code": "            even_sum += num",
-      "explanation": "This line adds the current number to the sum if it is even.",
-      "criticalThinkingQuestion": "What does 'even_sum += num' do?",
-      "answer": "It adds the current number to the sum if the number is even.",
+      "code": "            stack.append(i)",
+      "explanation": "This line appends the index of the opening bracket to the stack.",
       "tokens": [
         {
-          "token": "            ",
-          "explanation": "Indentation for code inside the conditional"
+          "token": "stack",
+          "explanation": "Variable name"
         },
         {
-          "token": "even_sum",
-          "explanation": "The sum of even numbers"
+          "token": ".append",
+          "explanation": "Method to add an item to the end of a list"
         },
         {
-          "token": " ",
-        },
-        {
-          "token": "+=",
-          "explanation": "Addition assignment operator"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "num",
-          "explanation": "The current number"
-        },
-        {
-          "token": "\n"
+          "token": "(i)",
+          "explanation": "Index of the opening bracket"
         }
       ]
     },
     {
-      "code": "    return even_sum",
-      "explanation": "This line returns the sum of even numbers.",
-      "criticalThinkingQuestion": "Why do we need to return 'even_sum'?",
-      "answer": "We return 'even_sum' to provide the result of the function to the caller.",
+      "code": "        else:",
+      "explanation": "This line starts an else block that will be executed if the current character is not an opening bracket.",
       "tokens": [
         {
-          "token": "    ",
-          "explanation": "Indentation for code inside the function"
+          "token": "else:",
+          "explanation": "Keyword to start an else block"
+        }
+      ]
+    },
+    {
+      "code": "            not_empty = len(stack) > 1",
+      "explanation": "This line checks if the stack is not empty by checking if its length is greater than 1.",
+      "tokens": [
+        {
+          "token": "not_empty ",
+          "explanation": "Variable name"
         },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "len(stack) > 1",
+          "explanation": "Check if stack is not empty"
+        }
+      ]
+    },
+    {
+      "code": "            last_is_open = stack[-1] != -1 and s[stack[-1]] in map",
+      "explanation": "This line checks if the last item in the stack is an opening bracket.",
+      "tokens": [
+        {
+          "token": "last_is_open ",
+          "explanation": "Variable name"
+        },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "stack[-1] != -1 and s[stack[-1]] in map",
+          "explanation": "Check if last item in stack is an opening bracket"
+        }
+      ]
+    },
+    {
+      "code": "            is_match = last_is_open and map[s[stack[-1]]] == char",
+      "explanation": "This line checks if the last opening bracket in the stack matches the current closing bracket.",
+      "tokens": [
+        {
+          "token": "is_match ",
+          "explanation": "Variable name"
+        },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "last_is_open and map[s[stack[-1]]] == char",
+          "explanation": "Check if last opening bracket matches current closing bracket"
+        }
+      ]
+    },
+    {
+      "code": "            if not_empty and is_match:",
+      "explanation": "This line checks if the stack is not empty and the last opening bracket matches the current closing bracket.",
+      "tokens": [
+        {
+          "token": "if ",
+          "explanation": "Keyword to start an if statement"
+        },
+        {
+          "token": "not_empty and is_match:",
+          "explanation": "Check if stack is not empty and brackets match"
+        }
+      ]
+    },
+    {
+      "code": "                stack.pop()",
+      "explanation": "This line removes the last item from the stack, which is the index of the matching opening bracket.",
+      "tokens": [
+        {
+          "token": "stack",
+          "explanation": "Variable name"
+        },
+        {
+          "token": ".pop",
+          "explanation": "Method to remove the last item from a list"
+        },
+        {
+          "token": "()",
+          "explanation": "Call the method"
+        }
+      ]
+    },
+    {
+      "code": "                max_length = max(max_length, i - stack[-1])",
+      "explanation": "This line updates 'max_length' to be the maximum of its current value and the difference between the current index and the last item in the stack.",
+      "tokens": [
+        {
+          "token": "max_length ",
+          "explanation": "Variable name"
+        },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "max(max_length, i - stack[-1])",
+          "explanation": "Update max_length with the maximum value"
+        }
+      ]
+    },
+    {
+      "code": "            else:",
+      "explanation": "This line starts an else block that will be executed if the stack is empty or the last opening bracket does not match the current closing bracket.",
+      "tokens": [
+        {
+          "token": "else:",
+          "explanation": "Keyword to start an else block"
+        }
+      ]
+    },
+    {
+      "code": "                stack[-1] = i",
+      "explanation": "This line updates the last item in the stack to be the current index.",
+      "tokens": [
+        {
+          "token": "stack[-1] ",
+          "explanation": "Last item in the stack"
+        },
+        {
+          "token": "= ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "i",
+          "explanation": "Current index"
+        }
+      ]
+    },
+    {
+      "code": "    return max_length",
+      "explanation": "This line returns 'max_length', which is the length of the longest valid parenthesis substring.",
+      "tokens": [
         {
           "token": "return ",
           "explanation": "Keyword to return a value from a function"
         },
         {
-          "token": "even_sum",
-          "explanation": "The sum of even numbers"
-        },
-        {
-          "token": "\n"
-        }
-      ]
-    },
-    {
-      "code": "result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])",
-      "explanation": "This line calls the function with a list of numbers and stores the result.",
-      "criticalThinkingQuestion": "What is the purpose of 'result' in this line?",
-      "answer": "'result' is used to store the return value of the function call.",
-      "tokens": [
-        {
-          "token": "result",
-          "explanation": "Variable to store the result"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "=",
-          "explanation": "Assignment operator"
-        },
-        {
-          "token": " ",
-        },
-        {
-          "token": "calculate_even_sum",
-          "explanation": "Function to calculate the sum of even numbers"
-        },
-        {
-          "token": "(",
-        },
-        {
-          "token": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-          "explanation": "List of numbers to pass to the function"
-        },
-        {
-          "token": ")",
-        },
-        {
-          "token": "\n"
-        }
-      ]
-    },
-    {
-      "code": "print(\"Sum of even numbers:\", result)",
-      "explanation": "This line prints the sum of even numbers.",
-      "criticalThinkingQuestion": "Why do we use 'print' in this line?",
-      "answer": "We use 'print' to display the result to the user.",
-      "tokens": [
-        {
-          "token": "print",
-          "explanation": "Function to display output"
-        },
-        {
-          "token": "(",
-        },
-        {
-          "token": "\"Sum of even numbers:\"",
-          "explanation": "String to display before the result"
-        },
-        {
-          "token": ", ",
-        },
-        {
-          "token": "result",
-          "explanation": "The result to display"
-        },
-        {
-          "token": ")",
-        },
-        {
-          "token": "\n"
+          "token": "max_length",
+          "explanation": "Variable holding the length of the longest valid parenthesis substring"
         }
       ]
     }
   ]
 },
 {
-  "format": ["Short Answer", "Multiple Choice"],
   "questions": [
     {
       "type": "Short Answer",
-      "question": "What does the calculate_even_sum function do?",
-      "answer": "It calculates the sum of even numbers in a list.",
+      "question": "What is the purpose of the 'map' dictionary in the function?",
+      "answer": "It is used to map opening brackets to their corresponding closing brackets.",
       "question-code-lines": [
-        "1-5"
+        "2"
       ],
-      "question-code-lines-explained": "def calculate_even_sum(numbers):\n    even_sum = 0\n    for num in numbers:\n        if num % 2 == 0:\n            even_sum += num # This function iterates over a list of numbers, checks if each number is even, and if it is, adds it to the sum."
+      "question-code-lines-explained": "map = {'(': ')', '[': ']'} # This line creates a dictionary that maps opening brackets to their corresponding closing brackets."
     },
     {
       "type": "Multiple Choice",
-      "question": "What does the '%' operator do in Python?",
+      "question": "What does the 'stack' list represent in the function?",
       "answer": {
-        "correct-choice": "It calculates the remainder of a division operation.",
-        "incorrect-choice-1": "It performs exponentiation.",
-        "incorrect-choice-2": "It performs integer division.",
-        "incorrect-choice-3": "It calculates the quotient of a division operation."
+        "correct-choice": "It keeps track of the indices of the opening brackets.",
+        "incorrect-choice-1": "It stores the characters of the string.",
+        "incorrect-choice-2": "It holds the lengths of valid parenthesis substrings.",
+        "incorrect-choice-3": "It is used to reverse the string."
+      },
+      "question-code-lines": [
+        "3"
+      ],
+      "question-code-lines-explained": "stack = [-1] # This line initializes a list with -1, which is used to store the indices of the opening brackets."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What does the 'max_length' variable represent in the function?",
+      "answer": {
+        "correct-choice": "It stores the length of the longest valid parenthesis substring found so far.",
+        "incorrect-choice-1": "It represents the total length of the string.",
+        "incorrect-choice-2": "It holds the number of valid parenthesis substrings in the string.",
+        "incorrect-choice-3": "It is used to keep track of the current index in the string."
       },
       "question-code-lines": [
         "4"
       ],
-      "question-code-lines-explained": "if num % 2 == 0: # The '%' operator is used to calculate the remainder of the division of 'num' by 2. If the remainder is 0, that means 'num' is an even number."
+      "question-code-lines-explained": "max_length = 0 # This line initializes a variable to keep track of the length of the longest valid parenthesis substring found so far."
+    },
+    {
+      "type": "Short Answer",
+      "question": "What is the purpose of the 'is_match' variable in the function?",
+      "answer": "It checks if the current character matches the last opening bracket in the stack.",
+      "question-code-lines": [
+        "9"
+      ],
+      "question-code-lines-explained": "is_match = last_is_open and map[s[stack[-1]]] == char # This line checks if the current character matches the last opening bracket in the stack."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What happens when a matching closing bracket is found for the last opening bracket in the stack?",
+      "answer": {
+        "correct-choice": "The last opening bracket is popped from the stack and the length of the current valid substring is updated.",
+        "incorrect-choice-1": "The closing bracket is added to the stack.",
+        "incorrect-choice-2": "The function returns the current length of the valid substring.",
+        "incorrect-choice-3": "The matching closing bracket is removed from the string."
+      },
+      "question-code-lines": [
+        "10", "11"
+      ],
+      "question-code-lines-explained": "if not_empty and is_match: stack.pop(); max_length = max(max_length, i - stack[-1]) # If a matching closing bracket is found, the last opening bracket is popped from the stack and the length of the current valid substring is updated."
     }
   ]
 },
 {
   "wrong-code": 
-`def calculate_even_sum(numbers):
-  even_sum = 0
-  for num in numbers:        
-    if num % 2 != 0:            
-      even_sum += num
-  return even_sum
-  
-result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-print('Sum of even numbers:', result)`,
+`def calculate_span(prices: list[int]) -> list[int]:
+    stack = []
+    span = [0] * len(prices)
+    for i in range(len(prices)):
+        while stack and prices[stack[-1]] >= prices[i]:
+            stack.pop()
+        if not stack:
+            span[i] = i - 1
+        else:
+            span[i] = i - stack[-1]
+        stack.append(i)
+    return span`,
   "issues":{
               "logical-issue-1": {
                       "type": "Incorrect Boolean Logic",
-                      "line": 4
+                      "line": 5
               },
               "logical-issue-2": {
-                      "type": "Wrong Function Call",
+                      "type": "Wrong Variable Assignments",
                       "line": 7
               }
           }
@@ -1766,10 +2032,10 @@ print('Sum of even numbers:', result)`,
           "leading-questions": [
             {
               "mcq-question": "What should be the input to our function?",
-              "correct-choice": "A list of numbers",
-              "incorrect-choice-1": "A single number",
-              "incorrect-choice-2": "A string",
-              "incorrect-choice-3": "A list of strings"
+              "correct-choice": "A string of parentheses",
+              "incorrect-choice-1": "A list of parentheses",
+              "incorrect-choice-2": "A tuple of parentheses",
+              "incorrect-choice-3": "A dictionary of parentheses"
             }
           ],
           "code-lines-to-be-revealed": [1]
@@ -1777,50 +2043,40 @@ print('Sum of even numbers:', result)`,
       ]
     },
     {
-      "title": "Initialize Sum",
+      "title": "Initialize Variables",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "What should be the initial value of the sum of even numbers?",
-              "correct-choice": "0",
-              "incorrect-choice-1": "1",
-              "incorrect-choice-2": "The first number in the list",
-              "incorrect-choice-3": "The last number in the list"
+              "mcq-question": "What data structure can we use to map opening brackets to their corresponding closing brackets?",
+              "correct-choice": "Dictionary",
+              "incorrect-choice-1": "List",
+              "incorrect-choice-2": "Tuple",
+              "incorrect-choice-3": "Set"
             }
           ],
           "code-lines-to-be-revealed": [2]
-        }
-      ]
-    },
-    {
-      "title": "Iterate Over Numbers",
-      "sub-subgoal-items": [
+        },
         {
           "leading-questions": [
             {
-              "mcq-question": "What should we do for each number in the list?",
-              "correct-choice": "Check if it is even and add it to the sum if it is",
-              "incorrect-choice-1": "Add it to the sum regardless of whether it is even or not",
-              "incorrect-choice-2": "Check if it is odd and add it to the sum if it is",
-              "incorrect-choice-3": "Subtract it from the sum"
+              "mcq-question": "What data structure can we use to keep track of the indices of the opening brackets?",
+              "correct-choice": "Stack (represented as a list)",
+              "incorrect-choice-1": "Queue",
+              "incorrect-choice-2": "Dictionary",
+              "incorrect-choice-3": "Set"
             }
           ],
           "code-lines-to-be-revealed": [3]
-        }
-      ]
-    },
-    {
-      "title": "Check Evenness",
-      "sub-subgoal-items": [
+        },
         {
           "leading-questions": [
             {
-              "mcq-question": "How can we check if a number is even?",
-              "correct-choice": "If the remainder when the number is divided by 2 is 0",
-              "incorrect-choice-1": "If the number is greater than 0",
-              "incorrect-choice-2": "If the number is less than 0",
-              "incorrect-choice-3": "If the number is divisible by 3"
+              "mcq-question": "What variable can we use to keep track of the maximum length of valid parentheses substring?",
+              "correct-choice": "An integer variable",
+              "incorrect-choice-1": "A list",
+              "incorrect-choice-2": "A dictionary",
+              "incorrect-choice-3": "A set"
             }
           ],
           "code-lines-to-be-revealed": [4]
@@ -1828,19 +2084,115 @@ print('Sum of even numbers:', result)`,
       ]
     },
     {
-      "title": "Add to Sum",
+      "title": "Iterate Over String",
       "sub-subgoal-items": [
         {
           "leading-questions": [
             {
-              "mcq-question": "What should we do if a number is even?",
-              "correct-choice": "Add it to the sum",
-              "incorrect-choice-1": "Subtract it from the sum",
-              "incorrect-choice-2": "Multiply the sum by it",
-              "incorrect-choice-3": "Divide the sum by it"
+              "mcq-question": "How can we iterate over the string while keeping track of the index of each character?",
+              "correct-choice": "Using the enumerate function",
+              "incorrect-choice-1": "Using a while loop",
+              "incorrect-choice-2": "Using the range function",
+              "incorrect-choice-3": "Using a for loop without enumerate"
             }
           ],
           "code-lines-to-be-revealed": [5]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How can we check if a character is an opening bracket?",
+              "correct-choice": "Check if the character is in the map",
+              "incorrect-choice-1": "Check if the character is not in the map",
+              "incorrect-choice-2": "Check if the character is in the stack",
+              "incorrect-choice-3": "Check if the character is not in the stack"
+            }
+          ],
+          "code-lines-to-be-revealed": [6]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if the character is an opening bracket?",
+              "correct-choice": "Append the index to the stack",
+              "incorrect-choice-1": "Append the character to the stack",
+              "incorrect-choice-2": "Pop the stack",
+              "incorrect-choice-3": "Do nothing"
+            }
+          ],
+          "code-lines-to-be-revealed": [7]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if the character is not an opening bracket?",
+              "correct-choice": "Check if the stack is not empty",
+              "incorrect-choice-1": "Append the index to the stack",
+              "incorrect-choice-2": "Pop the stack",
+              "incorrect-choice-3": "Do nothing"
+            }
+          ],
+          "code-lines-to-be-revealed": [8, 9]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How can we check if the last item in the stack is an opening bracket?",
+              "correct-choice": "Check if the last item in the stack is not -1 and is in the map",
+              "incorrect-choice-1": "Check if the last item in the stack is -1",
+              "incorrect-choice-2": "Check if the last item in the stack is not in the map",
+              "incorrect-choice-3": "Check if the last item in the stack is in the stack"
+            }
+          ],
+          "code-lines-to-be-revealed": [10]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How can we check if the last item in the stack is a match for the current character?",
+              "correct-choice": "Check if the last item in the stack is an opening bracket and its corresponding closing bracket is the current character",
+              "incorrect-choice-1": "Check if the last item in the stack is the current character",
+              "incorrect-choice-2": "Check if the last item in the stack is not the current character",
+              "incorrect-choice-3": "Check if the last item in the stack is not an opening bracket"
+            }
+          ],
+          "code-lines-to-be-revealed": [11]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if the stack is not empty and the last item in the stack is a match for the current character?",
+              "correct-choice": "Pop the stack",
+              "incorrect-choice-1": "Append the index to the stack",
+              "incorrect-choice-2": "Do nothing",
+              "incorrect-choice-3": "Leave the stack as it is"
+            }
+          ],
+          "code-lines-to-be-revealed": [12]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do after popping the stack?",
+              "correct-choice": "Update the maximum length",
+              "incorrect-choice-1": "Append the index to the stack",
+              "incorrect-choice-2": "Do nothing",
+              "incorrect-choice-3": "Pop the stack again"
+            }
+          ],
+          "code-lines-to-be-revealed": [13, 14]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if the stack is empty or the last item in the stack is not a match for the current character?",
+              "correct-choice": "Update the last item in the stack to be the current index",
+              "incorrect-choice-1": "Append the index to the stack",
+              "incorrect-choice-2": "Pop the stack",
+              "incorrect-choice-3": "Do nothing"
+            }
+          ],
+          "code-lines-to-be-revealed": [15, 16]
         }
       ]
     },
@@ -1850,87 +2202,3392 @@ print('Sum of even numbers:', result)`,
         {
           "leading-questions": [
             {
-              "mcq-question": "What should the function return?",
-              "correct-choice": "The sum of the even numbers",
-              "incorrect-choice-1": "The sum of the odd numbers",
-              "incorrect-choice-2": "The total number of even numbers",
-              "incorrect-choice-3": "The total number of odd numbers"
+              "mcq-question": "What should we return as the result?",
+              "correct-choice": "The maximum length",
+              "incorrect-choice-1": "The stack",
+              "incorrect-choice-2": "The map",
+              "incorrect-choice-3": "The string"
             }
           ],
-          "code-lines-to-be-revealed": [6]
-        }
-      ]
-    },
-    {
-      "title": "Function Call",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do to get the sum of the even numbers in a list?",
-              "correct-choice": "Call the function with the list as argument",
-              "incorrect-choice-1": "Call the function without any arguments",
-              "incorrect-choice-2": "Call the function with the sum of the list as argument",
-              "incorrect-choice-3": "Call the function with the length of the list as argument"
-            }
-          ],
-          "code-lines-to-be-revealed": [8]
-        }
-      ]
-    },
-    {
-      "title": "Print Result",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How can we display the result?",
-              "correct-choice": "Print the result",
-              "incorrect-choice-1": "Return the result",
-              "incorrect-choice-2": "Store the result in a variable",
-              "incorrect-choice-3": "Pass the result to another function"
-            }
-          ],
-          "code-lines-to-be-revealed": [9]
+          "code-lines-to-be-revealed": [17]
         }
       ]
     }
   ]
 },
-//trace predict
-[
-  { step: 5, variable: 'num' },
-  { step: 14, variable: 'even_sum' },
-  { step: 27, variable: 'num' }
-],
-"",
+{},
+  ),
+
+
+new AuthoringTask(
+  "3",
+  "Write a function called `binary_numbers` that receives two numbers `n1` and `n2` as integers and returns a list of all binary numbers (as strings) between `n1` and `n2`. The function should use a queue to generate these binary numbers efficiently.",
+`def binary_numbers(n1: int, n2: int) -> list[str]:
+    result = []
+    q = Queue()
+    q.put("1")
+    for i in range(n2):
+        current = q.get()
+        current_int = int(current, 2)
+		if n1 <= current_int <= n2:
+            result.append(current)     
+        q.put(current + "0")        
+        q.put(current + "1")    
+    return result`,
+`This code defines a function called \`binary_numbers\` that takes two integers \`n1\` and \`n2\` as input and returns a list of all binary numbers between \`n1\` and \`n2\`.
+
+First, it initializes an empty list \`result\` to store the binary numbers and a queue \`q\` to generate the binary numbers.
+
+Then, it adds the binary number "1" to the queue.
+
+Next, it starts a loop that runs \`n2\` times. In each iteration, it removes the front binary number from the queue and converts it to an integer. If the integer is between \`n1\` and \`n2\`, it adds the binary number to the \`result\` list.
+
+Then, it generates the next two binary numbers by appending "0" and "1" to the current binary number and adds them to the queue.
+
+Finally, it returns the \`result\` list.
+
+The queue is used to generate the binary numbers efficiently. By appending "0" and "1" to the current binary number, it generates the next two binary numbers. This way, it generates all binary numbers between \`n1\` and \`n2\` in a breadth-first manner.`,
+`def binary_numbers(n1: int, n2: int) -> list[str]:
+    result = []
+    q = Queue()
+    q.put("1")
+    for i in range(n2):
+        current = q.get()
+        current_int = int(current, 2)
+    if n1 <= current_int <= n2:
+            result.append(current)
+        q.put(current + "0")        
+        q.put(current + "1")
+    return result
+print(binary_numbers(1, 2))
+# Output: ['1', '10']`,
+{
+  "subgoals": [
+      {
+          "title": "Function Definition",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "def binary_numbers(n1: int, n2: int) -> list[str]:",
+                  "pseudo-code": "Define a function named `binary_numbers` that takes two integer parameters `n1` and `n2` and returns a list of strings.",
+                  "syntax-hint": "`def` is used to define a function in Python. The `:` symbol is used to denote the start of a block of code.",
+                  "explanation": "This line is defining the function `binary_numbers` which will be used to generate binary numbers between `n1` and `n2`."
+              }
+          ]
+      },
+      {
+          "title": "Initialize Variables",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "result = []",
+                  "pseudo-code": "Initialize an empty list `result`.",
+                  "syntax-hint": "In Python, `[]` is used to denote an empty list.",
+                  "explanation": "This line is initializing an empty list `result` which will be used to store the binary numbers."
+              },
+              {
+                  "indent": 1,
+                  "line": "q = Queue()",
+                  "pseudo-code": "Initialize a queue `q`.",
+                  "syntax-hint": "`Queue()` is a constructor that creates a new queue.",
+                  "explanation": "This line is initializing a queue `q` which will be used to generate binary numbers."
+              }
+          ]
+      },
+      {
+          "title": "Start Queue",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "q.put(\"1\")",
+                  "pseudo-code": "Put the string \"1\" into the queue `q`.",
+                  "syntax-hint": "`put()` is a method of `Queue` that adds an element to the queue.",
+                  "explanation": "This line is adding the string \"1\" to the queue `q` as the starting point for generating binary numbers."
+              }
+          ]
+      },
+      {
+          "title": "Generate Binary Numbers",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "for i in range(n2):",
+                  "pseudo-code": "Start a loop that iterates `n2` times.",
+                  "syntax-hint": "`for` is used to start a loop in Python. `range(n2)` generates a sequence of numbers from 0 to `n2-1`.",
+                  "explanation": "This line is starting a loop that will iterate `n2` times to generate binary numbers."
+              },
+              {
+                  "indent": 2,
+                  "line": "current = q.get()",
+                  "pseudo-code": "Get the first element from the queue `q` and assign it to the variable `current`.",
+                  "syntax-hint": "`get()` is a method of `Queue` that removes and returns the first element of the queue.",
+                  "explanation": "This line is getting the first element from the queue `q` and assigning it to the variable `current`."
+              },
+              {
+                  "indent": 2,
+                  "line": "current_int = int(current, 2)",
+                  "pseudo-code": "Convert the binary string `current` to an integer and assign it to the variable `current_int`.",
+                  "syntax-hint": "`int()` is a built-in function in Python that converts a string to an integer. The second parameter `2` specifies the base of the number.",
+                  "explanation": "This line is converting the binary string `current` to an integer and assigning it to the variable `current_int`."
+              },
+              {
+                  "indent": 2,
+                  "line": "if n1 <= current_int <= n2:",
+                  "pseudo-code": "Check if `current_int` is between `n1` and `n2`.",
+                  "syntax-hint": "`if` is used to start a conditional statement in Python. `<=` is a comparison operator that checks if the left operand is less than or equal to the right operand.",
+                  "explanation": "This line is checking if `current_int` is between `n1` and `n2`."
+              },
+              {
+                  "indent": 3,
+                  "line": "result.append(current)",
+                  "pseudo-code": "If `current_int` is between `n1` and `n2`, append `current` to the list `result`.",
+                  "syntax-hint": "`append()` is a method of `list` that adds an element to the end of the list.",
+                  "explanation": "This line is adding `current` to the list `result` if `current_int` is between `n1` and `n2`."
+              },
+              {
+                  "indent": 2,
+                  "line": "q.put(current + \"0\")",
+                  "pseudo-code": "Append the string \"0\" to `current` and put it into the queue `q`.",
+                  "syntax-hint": "`+` is used to concatenate strings in Python.",
+                  "explanation": "This line is generating the next binary number by appending \"0\" to `current` and adding it to the queue `q`."
+              },
+              {
+                  "indent": 2,
+                  "line": "q.put(current + \"1\")",
+                  "pseudo-code": "Append the string \"1\" to `current` and put it into the queue `q`.",
+                  "syntax-hint": "`+` is used to concatenate strings in Python.",
+                  "explanation": "This line is generating the next binary number by appending \"1\" to `current` and adding it to the queue `q`."
+              }
+          ]
+      },
+      {
+          "title": "Return Result",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "return result",
+                  "pseudo-code": "Return the list `result`.",
+                  "syntax-hint": "`return` is used to specify the result that a function should produce.",
+                  "explanation": "This line is returning the list `result` which contains all the binary numbers between `n1` and `n2`."
+              }
+          ]
+      }
+  ]
+},
+{
+  "lines": [
+    {
+      "code": "def binary_numbers(n1: int, n2: int) -> list[str]:",
+      "explanation": "This line defines the function `binary_numbers` that takes two integers `n1` and `n2` as input and returns a list of strings.",
+      "tokens": [
+        {
+          "token": "def ",
+          "explanation": "Keyword to start the definition of a function"
+        },
+        {
+          "token": "binary_numbers",
+          "explanation": "Name of the function"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "n1",
+          "explanation": "First parameter of the function"
+        },
+        {
+          "token": ": int"
+        },
+        {
+          "token": ", "
+        },
+        {
+          "token": "n2",
+          "explanation": "Second parameter of the function"
+        },
+        {
+          "token": ": int"
+        },
+        {
+          "token": ") -> list[str]"
+        },
+        {
+          "token": ":",
+          "explanation": "End of function definition"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    result = []",
+      "explanation": "This line initializes an empty list `result` to store the binary numbers between `n1` and `n2`.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "result",
+          "explanation": "Variable to store the result"
+        },
+        {
+          "token": " = "
+        },
+        {
+          "token": "[]",
+          "explanation": "Empty list"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    q = Queue()",
+      "explanation": "This line initializes a queue `q` to generate binary numbers efficiently.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "q",
+          "explanation": "Variable to store the queue"
+        },
+        {
+          "token": " = "
+        },
+        {
+          "token": "Queue()",
+          "explanation": "Initialization of a queue"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    q.put(\"1\")",
+      "explanation": "This line puts the binary number '1' into the queue as a starting point.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "q",
+          "explanation": "Queue variable"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "put",
+          "explanation": "Method to add an element to the queue"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "\"1\"",
+          "explanation": "First binary number"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    for i in range(n2):",
+      "explanation": "This line starts a loop that iterates `n2` times to generate binary numbers.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "for",
+          "explanation": "Keyword to start a loop"
+        },
+        {
+          "token": " i "
+        },
+        {
+          "token": "in",
+          "explanation": "Keyword to iterate over a sequence"
+        },
+        {
+          "token": " range",
+          "explanation": "Function to generate a sequence of numbers"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "n2",
+          "explanation": "Upper limit of the range"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": ":",
+          "explanation": "End of loop definition"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        current = q.get()",
+      "explanation": "This line gets the front element of the queue and assigns it to the variable `current`.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "current",
+          "explanation": "Variable to store the current binary number"
+        },
+        {
+          "token": " = "
+        },
+        {
+          "token": "q",
+          "explanation": "Queue variable"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "get",
+          "explanation": "Method to remove and return the front element of the queue"
+        },
+        {
+          "token": "()",
+          "explanation": "Call to the method"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        current_int = int(current, 2)",
+      "explanation": "This line converts the binary number `current` to an integer `current_int`.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "current_int",
+          "explanation": "Variable to store the integer representation of the current binary number"
+        },
+        {
+          "token": " = "
+        },
+        {
+          "token": "int",
+          "explanation": "Function to convert a string to an integer"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "current",
+          "explanation": "Current binary number"
+        },
+        {
+          "token": ", "
+        },
+        {
+          "token": "2",
+          "explanation": "Base of the number system"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        if n1 <= current_int <= n2:",
+      "explanation": "This line checks if the integer `current_int` is between `n1` and `n2`.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "if",
+          "explanation": "Keyword to start a conditional statement"
+        },
+        {
+          "token": " n1 "
+        },
+        {
+          "token": "<=",
+          "explanation": "Less than or equal to operator"
+        },
+        {
+          "token": " current_int ",
+          "explanation": "Integer representation of the current binary number"
+        },
+        {
+          "token": "<=",
+          "explanation": "Less than or equal to operator"
+        },
+        {
+          "token": " n2",
+          "explanation": "Upper limit of the range"
+        },
+        {
+          "token": ":",
+          "explanation": "End of conditional statement"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            result.append(current)",
+      "explanation": "This line appends the binary number `current` to the list `result` if it is between `n1` and `n2`.",
+      "tokens": [
+        {
+          "token": "            "
+        },
+        {
+          "token": "result",
+          "explanation": "List to store the result"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "append",
+          "explanation": "Method to add an element to the end of the list"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "current",
+          "explanation": "Current binary number"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        q.put(current + \"0\")",
+      "explanation": "This line appends '0' to the binary number `current` and puts it into the queue.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "q",
+          "explanation": "Queue variable"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "put",
+          "explanation": "Method to add an element to the queue"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "current",
+          "explanation": "Current binary number"
+        },
+        {
+          "token": " + "
+        },
+        {
+          "token": "\"0\"",
+          "explanation": "Binary digit to append"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        q.put(current + \"1\")",
+      "explanation": "This line appends '1' to the binary number `current` and puts it into the queue.",
+      "tokens": [
+        {
+          "token": "        "
+        },
+        {
+          "token": "q",
+          "explanation": "Queue variable"
+        },
+        {
+          "token": "."
+        },
+        {
+          "token": "put",
+          "explanation": "Method to add an element to the queue"
+        },
+        {
+          "token": "("
+        },
+        {
+          "token": "current",
+          "explanation": "Current binary number"
+        },
+        {
+          "token": " + "
+        },
+        {
+          "token": "\"1\"",
+          "explanation": "Binary digit to append"
+        },
+        {
+          "token": ")"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    return result",
+      "explanation": "This line returns the list `result` containing all binary numbers between `n1` and `n2`.",
+      "tokens": [
+        {
+          "token": "    "
+        },
+        {
+          "token": "return",
+          "explanation": "Keyword to return a value from a function"
+        },
+        {
+          "token": " result",
+          "explanation": "List of binary numbers between `n1` and `n2`"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    }
+  ]
+},
+{
+  "questions": [
+    {
+      "type": "Short Answer",
+      "question": "What does the `put` method do in the context of a queue?",
+      "answer": "It adds an element to the end of the queue.",
+      "question-code-lines": [
+        4
+      ],
+      "question-code-lines-explained": "q.put(\"1\") # This line puts the string \"1\" at the end of the queue."
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What would happen if the condition `n1 <= current_int <= n2` was not present?",
+      "answer": {
+        "correct-choice": "The function would return all binary numbers up to n2, not just those between n1 and n2.",
+        "incorrect-choice-1": "The function would return an error.",
+        "incorrect-choice-2": "The function would return all binary numbers up to n1.",
+        "incorrect-choice-3": "The function would not return any binary numbers."
+      },
+      "question-code-lines": [
+        6, 7
+      ],
+      "question-code-lines-explained": "current_int = int(current, 2) # Convert the binary number to an integer\nif n1 <= current_int <= n2: # Check if the integer is between n1 and n2"
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What is the effect of the lines `q.put(current + \"0\")` and `q.put(current + \"1\")`?",
+      "answer": {
+        "correct-choice": "They generate the next binary numbers by appending 0 and 1 to the current binary number.",
+        "incorrect-choice-1": "They convert the current binary number to an integer.",
+        "incorrect-choice-2": "They add the current binary number to the result list.",
+        "incorrect-choice-3": "They remove the current binary number from the queue."
+      },
+      "question-code-lines": [
+        9, 10
+      ],
+      "question-code-lines-explained": "q.put(current + \"0\") # Add the binary number with an added 0 to the queue\nq.put(current + \"1\") # Add the binary number with an added 1 to the queue"
+    }
+  ]
+},
+{
+  "wrong-code": 
+`def binary_numbers(n1: int, n2: int) -> list[str]:
+    result = []
+    q = Queue()
+    q.put('1')
+    for i in range(n1):
+        current = q.get()
+        current_int = int(current, 2)
+        if n1 >= current_int >= n2:
+            result.append(current)
+        q.put(current + '0')        
+        q.put(current + '1')
+    return result`,
+  
+  "issues":{
+              "logical-issue-1": {
+                      "type": "Incorrect Loop Conditions",
+                      "line": 5
+              },
+              "logical-issue-2": {
+                      "type": "Incorrect Boolean Logic",
+                      "line": 8
+              }
+          }
+},
+{
+  "subgoals": [
+    {
+      "title": "Function Definition",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the input parameters to our function?",
+              "correct-choice": "Two integers, n1 and n2",
+              "incorrect-choice-1": "Two binary numbers, n1 and n2",
+              "incorrect-choice-2": "A list of integers",
+              "incorrect-choice-3": "A list of binary numbers"
+            }
+          ],
+          "code-lines-to-be-revealed": [1]
+        }
+      ]
+    },
+    {
+      "title": "Initialize Result List",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What data structure should we use to store the binary numbers?",
+              "correct-choice": "A list",
+              "incorrect-choice-1": "A queue",
+              "incorrect-choice-2": "A stack",
+              "incorrect-choice-3": "A dictionary"
+            }
+          ],
+          "code-lines-to-be-revealed": [2]
+        }
+      ]
+    },
+    {
+      "title": "Initialize Queue",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What data structure should we use to generate binary numbers efficiently?",
+              "correct-choice": "A queue",
+              "incorrect-choice-1": "A list",
+              "incorrect-choice-2": "A stack",
+              "incorrect-choice-3": "A dictionary"
+            }
+          ],
+          "code-lines-to-be-revealed": [3]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the first element in our queue?",
+              "correct-choice": "The binary number '1'",
+              "incorrect-choice-1": "The binary number '0'",
+              "incorrect-choice-2": "The integer number 1",
+              "incorrect-choice-3": "The integer number 0"
+            }
+          ],
+          "code-lines-to-be-revealed": [4]
+        }
+      ]
+    },
+    {
+      "title": "Generate Binary Numbers",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How many times should we loop to generate binary numbers?",
+              "correct-choice": "n2 times",
+              "incorrect-choice-1": "n1 times",
+              "incorrect-choice-2": "n1 to n2 times",
+              "incorrect-choice-3": "Until the queue is empty"
+            }
+          ],
+          "code-lines-to-be-revealed": [5]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How do we get the current binary number from the queue?",
+              "correct-choice": "By using the get() method",
+              "incorrect-choice-1": "By using the put() method",
+              "incorrect-choice-2": "By using the pop() method",
+              "incorrect-choice-3": "By using the append() method"
+            }
+          ],
+          "code-lines-to-be-revealed": [6]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How do we convert a binary number to an integer?",
+              "correct-choice": "By using the int() function with base 2",
+              "incorrect-choice-1": "By using the int() function with base 10",
+              "incorrect-choice-2": "By using the str() function",
+              "incorrect-choice-3": "By using the bin() function"
+            }
+          ],
+          "code-lines-to-be-revealed": [7]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "When should we add the current binary number to the result list?",
+              "correct-choice": "If the integer value of the binary number is between n1 and n2",
+              "incorrect-choice-1": "If the binary number is between n1 and n2",
+              "incorrect-choice-2": "If the integer value of the binary number is less than n2",
+              "incorrect-choice-3": "If the integer value of the binary number is greater than n1"
+            }
+          ],
+          "code-lines-to-be-revealed": [8]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How do we add the current binary number to the result list?",
+              "correct-choice": "By using the append() method",
+              "incorrect-choice-1": "By using the put() method",
+              "incorrect-choice-2": "By using the get() method",
+              "incorrect-choice-3": "By using the pop() method"
+            }
+          ],
+          "code-lines-to-be-revealed": [9]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How do we generate the next binary number with a '0' at the end?",
+              "correct-choice": "By appending '0' to the current binary number",
+              "incorrect-choice-1": "By appending '1' to the current binary number",
+              "incorrect-choice-2": "By prepending '0' to the current binary number",
+              "incorrect-choice-3": "By prepending '1' to the current binary number"
+            }
+          ],
+          "code-lines-to-be-revealed": [10]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How do we generate the next binary number with a '1' at the end?",
+              "correct-choice": "By appending '1' to the current binary number",
+              "incorrect-choice-1": "By appending '0' to the current binary number",
+              "incorrect-choice-2": "By prepending '1' to the current binary number",
+              "incorrect-choice-3": "By prepending '0' to the current binary number"
+            }
+          ],
+          "code-lines-to-be-revealed": [11]
+        }
+      ]
+    },
+    {
+      "title": "Return Result",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we return from our function?",
+              "correct-choice": "The list of binary numbers",
+              "incorrect-choice-1": "The queue of binary numbers",
+              "incorrect-choice-2": "The number of binary numbers",
+              "incorrect-choice-3": "The last binary number"
+            }
+          ],
+          "code-lines-to-be-revealed": [12]
+        }
+      ]
+    }
+  ]
+},
+{},
+),
+
+new AuthoringTask(
+  "4",
+  "Write a Python function named `dna_sequences` that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument (`pattern`) and return a list of strings. The input pattern consists of the characters `A`, `T`, `C`, `G`, and a special placeholder `N`. The `N` acts as a wildcard that can be replaced by any of the four DNA bases (`A`, `C`, `G`, `T`). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every `N` in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.",
+`def dna_sequences(pattern: str) -> list[str]:
+    dna_chars = ['A', 'C', 'G', 'T']
+    queue = Queue()
+    queue.put('')
+    result = []
+    while not queue.empty():
+        seq = queue.get()
+        if len(seq) == len(pattern):
+            result.append(seq)
+        else:
+            if pattern[len(seq)] == 'N':
+                for ch in dna_chars:
+                    queue.put(seq + ch)
+            else:
+                queue.put(seq + pattern[len(seq)])          
+    return result`,
+`This code defines a function called \`dna_sequences\` that takes a DNA pattern as input and returns all possible DNA sequences for that pattern. 
+
+The function uses a queue to generate the sequences. A queue is a data structure that follows the First-In-First-Out (FIFO) rule. You can think of it like a line of people waiting for the bus. The person who gets in line first, gets on the bus first.
+
+The function starts by creating an empty queue and adding an empty string to it. Then it enters a loop that continues until the queue is empty.
+
+In each iteration of the loop, it removes a sequence from the front of the queue. If the length of the sequence is equal to the length of the pattern, it adds the sequence to the result list. Otherwise, it checks the character in the pattern at the position corresponding to the length of the sequence. If the character is 'N', it adds four new sequences to the queue, each obtained by appending one of the DNA characters ('A', 'C', 'G', 'T') to the current sequence. If the character is not 'N', it adds a new sequence to the queue, obtained by appending the character to the current sequence.
+
+Finally, the function returns the result list, which contains all possible DNA sequences for the given pattern.`,
+`def dna_sequences(pattern: str) -> list[str]:
+    dna_chars = ['A', 'C', 'G', 'T']
+    queue = Queue()
+    queue.put('')
+    result = []
+    while not queue.empty():
+        seq = queue.get()
+        if len(seq) == len(pattern):
+            result.append(seq)
+        else:
+            if pattern[len(seq)] == 'N':
+                for ch in dna_chars:
+                    queue.put(seq + ch)
+            else:
+                queue.put(seq + pattern[len(seq)])          
+    return result
+
+print(temperature_potential([30, 35, 40]))
+# Output: [1, 1, 1]
+# Explanation: Each day is warmer than the previous, so each day's potential is 1, meaning no previous day had a temperature less than or equal to the current day.
+`,
+{
+  "subgoals": [
+      {
+          "title": "Function Definition",
+          "code": [
+              {
+                  "indent": 0,
+                  "line": "def dna_sequences(pattern: str) -> list[str]:",
+                  "pseudo-code": "Define a function named `dna_sequences` that takes a string `pattern` as input and returns a list of strings.",
+                  "syntax-hint": "`def` is used to define a function in Python. The `:` indicates the start of a block of code. The `-> list[str]` is a type hint indicating the function returns a list of strings.",
+                  "explanation": "This line is needed to define the function and specify its input and output types."
+              }
+          ]
+      },
+      {
+          "title": "Initialize Variables",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "dna_chars = ['A', 'C', 'G', 'T']",
+                  "pseudo-code": "Create a list `dna_chars` containing the four DNA characters.",
+                  "syntax-hint": "In Python, lists are defined using square brackets `[]` and items are separated by commas.",
+                  "explanation": "This line is needed to store the four possible DNA characters that can be used to generate sequences."
+              },
+              {
+                  "indent": 1,
+                  "line": "queue = Queue()",
+                  "pseudo-code": "Initialize an empty queue.",
+                  "syntax-hint": "`Queue()` is a constructor that creates a new queue object.",
+                  "explanation": "This line is needed to create a queue that will be used to generate the DNA sequences."
+              },
+              {
+                  "indent": 1,
+                  "line": "queue.put('')",
+                  "pseudo-code": "Add an empty string to the queue.",
+                  "syntax-hint": "The `put` method is used to add an item to a queue.",
+                  "explanation": "This line is needed to start the generation process with an empty sequence."
+              },
+              {
+                  "indent": 1,
+                  "line": "result = []",
+                  "pseudo-code": "Initialize an empty list `result`.",
+                  "syntax-hint": "In Python, an empty list is created using `[]`.",
+                  "explanation": "This line is needed to store the generated DNA sequences."
+              }
+          ]
+      },
+      {
+          "title": "Generate DNA Sequences",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "while not queue.empty():",
+                  "pseudo-code": "Start a loop that continues as long as the queue is not empty.",
+                  "syntax-hint": "The `while` keyword is used to start a loop in Python. The `not` keyword negates a condition. The `empty` method checks if a queue is empty.",
+                  "explanation": "This line is needed to continue generating sequences until all possibilities have been explored."
+              },
+              {
+                  "indent": 2,
+                  "line": "seq = queue.get()",
+                  "pseudo-code": "Remove and get the first item from the queue and assign it to `seq`.",
+                  "syntax-hint": "The `get` method is used to remove and return the first item from a queue.",
+                  "explanation": "This line is needed to get the next sequence to be expanded."
+              },
+              {
+                  "indent": 2,
+                  "line": "if len(seq) == len(pattern):",
+                  "pseudo-code": "Check if the length of `seq` is equal to the length of `pattern`.",
+                  "syntax-hint": "The `if` keyword is used to start a conditional block in Python. The `len` function returns the length of a string or list.",
+                  "explanation": "This line is needed to check if a sequence is complete."
+              },
+              {
+                  "indent": 3,
+                  "line": "result.append(seq)",
+                  "pseudo-code": "Add `seq` to the end of `result`.",
+                  "syntax-hint": "The `append` method is used to add an item to the end of a list.",
+                  "explanation": "This line is needed to store a completed sequence."
+              },
+              {
+                  "indent": 2,
+                  "line": "else:",
+                  "pseudo-code": "Start a block of code that is executed if the length of `seq` is not equal to the length of `pattern`.",
+                  "syntax-hint": "The `else` keyword is used to start a block of code that is executed if the preceding `if` condition is not met.",
+                  "explanation": "This line is needed to handle the case where a sequence is not yet complete."
+              },
+              {
+                  "indent": 3,
+                  "line": "if pattern[len(seq)] == 'N':",
+                  "pseudo-code": "Check if the character at the current position in `pattern` is 'N'.",
+                  "syntax-hint": "In Python, strings are indexed using square brackets `[]`.",
+                  "explanation": "This line is needed to check if the current position in the pattern can be any DNA character."
+              },
+              {
+                  "indent": 4,
+                  "line": "for ch in dna_chars:",
+                  "pseudo-code": "Start a loop that iterates over each character `ch` in `dna_chars`.",
+                  "syntax-hint": "The `for` keyword is used to start a loop in Python. The `in` keyword is used to check membership in a list or string.",
+                  "explanation": "This line is needed to generate all possible sequences for the current position."
+              },
+              {
+                  "indent": 5,
+                  "line": "queue.put(seq + ch)",
+                  "pseudo-code": "Add the string formed by appending `ch` to `seq` to the queue.",
+                  "syntax-hint": "In Python, strings are concatenated using the `+` operator.",
+                  "explanation": "This line is needed to generate a new sequence by appending the current character to the existing sequence."
+              },
+              {
+                  "indent": 3,
+                  "line": "else:",
+                  "pseudo-code": "Start a block of code that is executed if the character at the current position in `pattern` is not 'N'.",
+                  "syntax-hint": "The `else` keyword is used to start a block of code that is executed if the preceding `if` condition is not met.",
+                  "explanation": "This line is needed to handle the case where the current position in the pattern is a specific DNA character."
+              },
+              {
+                  "indent": 4,
+                  "line": "queue.put(seq + pattern[len(seq)])",
+                  "pseudo-code": "Add the string formed by appending the character at the current position in `pattern` to `seq` to the queue.",
+                  "syntax-hint": "In Python, strings are indexed and concatenated using the `[]` and `+` operators, respectively.",
+                  "explanation": "This line is needed to generate a new sequence by appending the specified character to the existing sequence."
+              }
+          ]
+      },
+      {
+          "title": "Return Result",
+          "code": [
+              {
+                  "indent": 1,
+                  "line": "return result",
+                  "pseudo-code": "Return the list `result`.",
+                  "syntax-hint": "The `return` keyword is used to specify the result of a function in Python.",
+                  "explanation": "This line is needed to provide the generated DNA sequences as the result of the function."
+              }
+          ]
+      }
+  ]
+},
+{
+  "lines": [
+    {
+      "code": "def dna_sequences(pattern: str) -> list[str]:",
+      "explanation": "This line defines the function dna_sequences that takes a string pattern and returns a list of strings.",
+      "tokens": [
+        {
+          "token": "def ",
+          "explanation": "Keyword to start function definition"
+        },
+        {
+          "token": "dna_sequences",
+          "explanation": "Name of the function"
+        },
+        {
+          "token": "(",
+          "explanation": "Start of parameter list"
+        },
+        {
+          "token": "pattern: str",
+          "explanation": "Parameter 'pattern' of type string"
+        },
+        {
+          "token": ") -> list[str]",
+          "explanation": "End of parameter list and function return type"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of function body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    dna_chars = ['A', 'C', 'G', 'T']",
+      "explanation": "This line initializes a list of DNA characters.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for function body"
+        },
+        {
+          "token": "dna_chars",
+          "explanation": "Variable name"
+        },
+        {
+          "token": " = ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "['A', 'C', 'G', 'T']",
+          "explanation": "List of DNA characters"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    queue = Queue()",
+      "explanation": "This line initializes an empty queue.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for function body"
+        },
+        {
+          "token": "queue",
+          "explanation": "Variable name"
+        },
+        {
+          "token": " = ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "Queue()",
+          "explanation": "Creating an instance of Queue"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    queue.put('')",
+      "explanation": "This line puts an empty string into the queue.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for function body"
+        },
+        {
+          "token": "queue.put",
+          "explanation": "Method to add an item to the queue"
+        },
+        {
+          "token": "('')",
+          "explanation": "Empty string being added to the queue"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    result = []",
+      "explanation": "This line initializes an empty list to store the results.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for function body"
+        },
+        {
+          "token": "result",
+          "explanation": "Variable name"
+        },
+        {
+          "token": " = ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "[]",
+          "explanation": "Empty list"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    while not queue.empty():",
+      "explanation": "This line starts a while loop that continues until the queue is empty.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for function body"
+        },
+        {
+          "token": "while",
+          "explanation": "Keyword to start a while loop"
+        },
+        {
+          "token": " not ",
+          "explanation": "Negation operator"
+        },
+        {
+          "token": "queue.empty",
+          "explanation": "Method to check if the queue is empty"
+        },
+        {
+          "token": "()",
+          "explanation": "Calling the method"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of while loop body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        seq = queue.get()",
+      "explanation": "This line gets the next item from the queue and assigns it to the variable 'seq'.",
+      "tokens": [
+        {
+          "token": "        ",
+          "explanation": "Indentation for while loop body"
+        },
+        {
+          "token": "seq",
+          "explanation": "Variable name"
+        },
+        {
+          "token": " = ",
+          "explanation": "Assignment operator"
+        },
+        {
+          "token": "queue.get",
+          "explanation": "Method to get an item from the queue"
+        },
+        {
+          "token": "()",
+          "explanation": "Calling the method"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        if len(seq) == len(pattern):",
+      "explanation": "This line checks if the length of the sequence is equal to the length of the pattern.",
+      "tokens": [
+        {
+          "token": "        ",
+          "explanation": "Indentation for while loop body"
+        },
+        {
+          "token": "if",
+          "explanation": "Keyword to start an if statement"
+        },
+        {
+          "token": " len(seq)",
+          "explanation": "Function to get the length of the sequence"
+        },
+        {
+          "token": " == ",
+          "explanation": "Equality operator"
+        },
+        {
+          "token": "len(pattern)",
+          "explanation": "Function to get the length of the pattern"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of if statement body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            result.append(seq)",
+      "explanation": "This line appends the sequence to the result list if the length of the sequence is equal to the length of the pattern.",
+      "tokens": [
+        {
+          "token": "            ",
+          "explanation": "Indentation for if statement body"
+        },
+        {
+          "token": "result.append",
+          "explanation": "Method to add an item to the list"
+        },
+        {
+          "token": "(seq)",
+          "explanation": "The sequence being added to the list"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "        else:",
+      "explanation": "This line starts the else block of the if statement.",
+      "tokens": [
+        {
+          "token": "        ",
+          "explanation": "Indentation for while loop body"
+        },
+        {
+          "token": "else",
+          "explanation": "Keyword to start an else block"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of else block body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            if pattern[len(seq)] == 'N':",
+      "explanation": "This line checks if the character at the current position in the pattern is 'N'.",
+      "tokens": [
+        {
+          "token": "            ",
+          "explanation": "Indentation for else block body"
+        },
+        {
+          "token": "if",
+          "explanation": "Keyword to start an if statement"
+        },
+        {
+          "token": " pattern[len(seq)]",
+          "explanation": "Accessing the character at the current position in the pattern"
+        },
+        {
+          "token": " == ",
+          "explanation": "Equality operator"
+        },
+        {
+          "token": "'N'",
+          "explanation": "The character 'N'"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of if statement body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "                for ch in dna_chars:",
+      "explanation": "This line starts a for loop that iterates over the DNA characters.",
+      "tokens": [
+        {
+          "token": "                ",
+          "explanation": "Indentation for if statement body"
+        },
+        {
+          "token": "for",
+          "explanation": "Keyword to start a for loop"
+        },
+        {
+          "token": " ch",
+          "explanation": "Loop variable"
+        },
+        {
+          "token": " in ",
+          "explanation": "Keyword to specify the iterable"
+        },
+        {
+          "token": "dna_chars",
+          "explanation": "The iterable (list of DNA characters)"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of for loop body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "                    queue.put(seq + ch)",
+      "explanation": "This line adds a new sequence to the queue by appending the current DNA character to the sequence.",
+      "tokens": [
+        {
+          "token": "                    ",
+          "explanation": "Indentation for for loop body"
+        },
+        {
+          "token": "queue.put",
+          "explanation": "Method to add an item to the queue"
+        },
+        {
+          "token": "(seq + ch)",
+          "explanation": "The new sequence being added to the queue"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "            else:",
+      "explanation": "This line starts the else block of the if statement.",
+      "tokens": [
+        {
+          "token": "            ",
+          "explanation": "Indentation for else block body"
+        },
+        {
+          "token": "else",
+          "explanation": "Keyword to start an else block"
+        },
+        {
+          "token": ":",
+          "explanation": "Start of else block body"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "                queue.put(seq + pattern[len(seq)])",
+      "explanation": "This line adds a new sequence to the queue by appending the character at the current position in the pattern to the sequence.",
+      "tokens": [
+        {
+          "token": "                ",
+          "explanation": "Indentation for else block body"
+        },
+        {
+          "token": "queue.put",
+          "explanation": "Method to add an item to the queue"
+        },
+        {
+          "token": "(seq + pattern[len(seq)])",
+          "explanation": "The new sequence being added to the queue"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    },
+    {
+      "code": "    return result",
+      "explanation": "This line returns the result list, which contains all the DNA sequences that match the pattern.",
+      "tokens": [
+        {
+          "token": "    ",
+          "explanation": "Indentation for function body"
+        },
+        {
+          "token": "return",
+          "explanation": "Keyword to return a value from the function"
+        },
+        {
+          "token": " result",
+          "explanation": "The value being returned"
+        },
+        {
+          "token": "\n"
+        }
+      ]
+    }
+  ]
+},
+{
+  "questions": [
+    {
+      "type": "Short Answer",
+      "question": "What is the purpose of the 'queue' in this code?",
+      "answer": "The queue is used to generate all possible DNA sequences.",
+      "question-code-lines": [
+        "3",
+      ],
+      "question-code-lines-explained": "queue = Queue() # Initializes an empty queue\nqueue.put('') # Adds an empty string to the queue\nwhile not queue.empty(): # While the queue is not empty\nseq = queue.get() # Get the first sequence in the queue\nif len(seq) == len(pattern): # If the sequence length equals the pattern length\nresult.append(seq) # Add the sequence to the result list\nelse: # If the sequence length is less than the pattern length\nif pattern[len(seq)] == 'N': # If the next character in the pattern is 'N'\nfor ch in dna_chars: # For each character in 'dna_chars'\nqueue.put(seq + ch) # Add a new sequence to the queue\nelse: # If the next character in the pattern is not 'N'\nqueue.put(seq + pattern[len(seq)]) # Add a new sequence to the queue"
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What would happen if 'queue.put('')' was not included in the code?",
+      "answer": {
+        "correct-choice": "The while loop would never run, as the queue would be empty.",
+        "incorrect-choice-1": "The program would enter an infinite loop.",
+        "incorrect-choice-2": "The function would return an empty list.",
+        "incorrect-choice-3": "The function would return a list of all DNA characters."
+      },
+      "question-code-lines": [
+        "4"
+      ],
+      "question-code-lines-explained": "queue.put('') # Adds an empty string to the queue, which is the starting point for generating the sequences"
+    },
+    {
+      "type": "Multiple Choice",
+      "question": "What is the purpose of the 'if' statement inside the 'while' loop?",
+      "answer": {
+        "correct-choice": "It checks if the current sequence length equals the pattern length.",
+        "incorrect-choice-1": "It checks if the queue is empty.",
+        "incorrect-choice-2": "It checks if the current sequence is a valid DNA sequence.",
+        "incorrect-choice-3": "It checks if the current sequence contains the pattern."
+      },
+      "question-code-lines": [
+        "7"
+      ],
+      "question-code-lines-explained": "if len(seq) == len(pattern): # Checks if the current sequence length equals the pattern length"
+    },
+    {
+      "type": "Short Answer",
+      "question": "What does 'seq + ch' do in this context?",
+      "answer": "It concatenates the current sequence with a new DNA character.",
+      "question-code-lines": [
+        "11"
+      ],
+      "question-code-lines-explained": "queue.put(seq + ch) # Adds a new sequence to the queue by concatenating the current sequence with a new DNA character"
+    }
+  ]
+},
+{
+  "wrong-code": 
+`def dna_sequences(pattern: str) -> list[str]:
+    dna_chars = ['A', 'C', 'G', 'T']
+    queue = Queue()
+    queue.put('')
+    result = []
+    while queue.empty():
+        seq = queue.get()
+        if len(seq) == len(pattern):
+            result.append(seq)
+        else:
+            if pattern[len(seq)] == 'N':
+                for ch in dna_chars:
+                    queue.put(seq + ch)
+            else:
+                queue.put(seq + pattern[len(seq)])          
+    return result`,
+  "issues":{
+              "logical-issue-1": {
+                      "type": "Incorrect Loop Condition",
+                      "line": 6
+              },
+              "logical-issue-2": {
+                      "type": "Misuse of Data Structures",
+                      "line": 3
+              }
+          }
+},
+{
+  "subgoals": [
+    {
+      "title": "Function Definition",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the input to our function?",
+              "correct-choice": "A string pattern",
+              "incorrect-choice-1": "Two integers n1 and n2",
+              "incorrect-choice-2": "A list of integers",
+              "incorrect-choice-3": "A list of binary numbers"
+            }
+          ],
+          "code-lines-to-be-revealed": [1]
+        }
+      ]
+    },
+    {
+      "title": "Initialize DNA Characters",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What are the possible characters in a DNA sequence?",
+              "correct-choice": "'A', 'C', 'G', 'T'",
+              "incorrect-choice-1": "'A', 'B', 'C', 'D'",
+              "incorrect-choice-2": "'1', '2', '3', '4'",
+              "incorrect-choice-3": "'W', 'X', 'Y', 'Z'"
+            }
+          ],
+          "code-lines-to-be-revealed": [2]
+        }
+      ]
+    },
+    {
+      "title": "Initialize Queue",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What data structure should we use to generate the DNA sequences?",
+              "correct-choice": "Queue",
+              "incorrect-choice-1": "Stack",
+              "incorrect-choice-2": "List",
+              "incorrect-choice-3": "Dictionary"
+            }
+          ],
+          "code-lines-to-be-revealed": [3]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should be the initial element in the queue?",
+              "correct-choice": "An empty string",
+              "incorrect-choice-1": "The pattern",
+              "incorrect-choice-2": "A string of 'N's",
+              "incorrect-choice-3": "A string of 'A's"
+            }
+          ],
+          "code-lines-to-be-revealed": [4]
+        }
+      ]
+    },
+    {
+      "title": "Initialize Result List",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What data structure should we use to store the generated DNA sequences?",
+              "correct-choice": "List",
+              "incorrect-choice-1": "Queue",
+              "incorrect-choice-2": "Stack",
+              "incorrect-choice-3": "Dictionary"
+            }
+          ],
+          "code-lines-to-be-revealed": [5]
+        }
+      ]
+    },
+    {
+      "title": "Generate DNA Sequences",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "How long should we continue generating DNA sequences?",
+              "correct-choice": "Until the queue is empty",
+              "incorrect-choice-1": "Until we have generated a certain number of sequences",
+              "incorrect-choice-2": "Until the length of the sequence is equal to the length of the pattern",
+              "incorrect-choice-3": "Until the sequence matches the pattern"
+            }
+          ],
+          "code-lines-to-be-revealed": [6]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do with the sequence at the front of the queue?",
+              "correct-choice": "Remove it from the queue and process it",
+              "incorrect-choice-1": "Leave it in the queue and process it",
+              "incorrect-choice-2": "Remove it from the queue and ignore it",
+              "incorrect-choice-3": "Leave it in the queue and ignore it"
+            }
+          ],
+          "code-lines-to-be-revealed": [7]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "When should we add a sequence to the result list?",
+              "correct-choice": "When the length of the sequence is equal to the length of the pattern",
+              "incorrect-choice-1": "When the sequence matches the pattern",
+              "incorrect-choice-2": "When the queue is empty",
+              "incorrect-choice-3": "When we have generated a certain number of sequences"
+            }
+          ],
+          "code-lines-to-be-revealed": [8, 9]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if the current character in the pattern is 'N'?",
+              "correct-choice": "Add all possible DNA characters to the sequence",
+              "incorrect-choice-1": "Skip this character",
+              "incorrect-choice-2": "Stop generating sequences",
+              "incorrect-choice-3": "Add a random DNA character to the sequence"
+            }
+          ],
+          "code-lines-to-be-revealed": [10, 11]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do for each possible DNA character when the current character in the pattern is 'N'?",
+              "correct-choice": "Add it to the sequence and put the new sequence in the queue",
+              "incorrect-choice-1": "Add it to the sequence and ignore the new sequence",
+              "incorrect-choice-2": "Ignore it",
+              "incorrect-choice-3": "Add it to the sequence and add the new sequence to the result list"
+            }
+          ],
+          "code-lines-to-be-revealed": [12, 13]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do if the current character in the pattern is not 'N'?",
+              "correct-choice": "Add this character to the sequence",
+              "incorrect-choice-1": "Skip this character",
+              "incorrect-choice-2": "Stop generating sequences",
+              "incorrect-choice-3": "Add a random DNA character to the sequence"
+            }
+          ],
+          "code-lines-to-be-revealed": [14]
+        },
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should we do after adding the current character in the pattern to the sequence?",
+              "correct-choice": "Put the new sequence in the queue",
+              "incorrect-choice-1": "Ignore the new sequence",
+              "incorrect-choice-2": "Add the new sequence to the result list",
+              "incorrect-choice-3": "Put the new sequence at the front of the queue"
+            }
+          ],
+          "code-lines-to-be-revealed": [15]
+        }
+      ]
+    },
+    {
+      "title": "Return Result",
+      "sub-subgoal-items": [
+        {
+          "leading-questions": [
+            {
+              "mcq-question": "What should our function return?",
+              "correct-choice": "The list of generated DNA sequences",
+              "incorrect-choice-1": "The number of generated sequences",
+              "incorrect-choice-2": "The last generated sequence",
+              "incorrect-choice-3": "The first generated sequence"
+            }
+          ],
+          "code-lines-to-be-revealed": [16]
+        }
+      ]
+    }
+  ]
+},
+{},
 ),
 
 
 
+//     new AuthoringTask(
+//       "1w",
+//       "write a function called `reverse_stack` that receives a stack and reverses it using another temporary stack.",
+// `def reverse_stack(stack):
+//     temp = []
+//     while stack:
+//         temp.append(stack.pop())
+//     return temp
+// `,
+// `
+// This code defines a function called \`reverse_stack\` that takes a stack (which is a list in Python) as input and returns the reversed stack.
 
+// First, it creates an empty list \`temp\` which will be used as a temporary stack.
 
+// Then, it enters a loop that continues as long as the input stack is not empty. In each iteration of the loop, it removes the top element from the input stack using the \`pop\` method and adds it to the temporary stack using the \`append\` method. Since \`pop\` removes the last element from a list and \`append\` adds an element to the end of a list, this effectively reverses the order of the elements.
 
+// Finally, it returns the temporary stack, which now contains the elements of the input stack in reversed order.
 
+// The \`pop\` method in Python removes the last element from a list and returns it. The \`append\` method adds an element to the end of a list. A stack is a data structure where the last element added is the first one to be removed (Last In, First Out or LIFO), and in Python, it can be implemented using a list with the \`append\` and \`pop\` methods.
+// `,
+// `def reverse_stack(stack):
+//     temp = []
+//     while stack:
+//         temp.append(stack.pop())
+//     return temp
+// print(reverse_stack(['a', 'b', 'c', 'd', 'e'])) # -> ['e', 'd', 'c', 'b', 'a']
+// `,
+// {
+//   "subgoals": [
+//       {
+//           "title": "Define the function",
+//           "code": [
+//               {
+//                   "indent": 0,
+//                   "line": "def reverse_stack(stack):",
+//                   "pseudo-code": "Define a function named `reverse_stack` that takes a parameter `stack`",
+//                   "syntax-hint": "`def` is used to define a function in Python. The function name is followed by parentheses containing the function parameters, and ends with a colon.",
+//                   "explanation": "This line is needed to define the function and specify what parameters it will take. In this case, it will take a stack as input."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Initialize temporary stack",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "temp = []",
+//                   "pseudo-code": "Create an empty list named `temp`",
+//                   "syntax-hint": "In Python, `=` is used for assignment. `[]` is used to create an empty list.",
+//                   "explanation": "This line is needed to create a temporary stack that will be used to reverse the original stack."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Reverse the stack",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "while stack:",
+//                   "pseudo-code": "Start a while loop that continues as long as `stack` is not empty",
+//                   "syntax-hint": "In Python, `while` is used to start a loop that continues as long as the condition after it is true. Here, `stack` is truthy if it is not empty.",
+//                   "explanation": "This line is needed to start a loop that will continue until the original stack is empty."
+//               },
+//               {
+//                   "indent": 2,
+//                   "line": "temp.append(stack.pop())",
+//                   "pseudo-code": "Remove the top element from `stack` and add it to the end of `temp`",
+//                   "syntax-hint": "In Python, `.append()` is used to add an element to the end of a list. `.pop()` is used to remove and return the last element of a list.",
+//                   "explanation": "This line is needed to reverse the order of the elements in the stack by moving them from the original stack to the temporary stack."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Return the reversed stack",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "return temp",
+//                   "pseudo-code": "Return the list `temp`",
+//                   "syntax-hint": "In Python, `return` is used to specify the result that a function should give back.",
+//                   "explanation": "This line is needed to give the reversed stack back to whatever called the function."
+//               }
+//           ]
+//       }
+//   ]
+// },
+// {
+//   "lines": [
+//     {
+//       "code": "def reverse_stack(stack):",
+//       "explanation": "This line defines a function called reverse_stack that takes a stack as an argument.",
+//       "criticalThinkingQuestion": "Why do we need to pass the stack as an argument to the function?",
+//       "answer": "We need to pass the stack as an argument so that the function can manipulate it directly.",
+//       "tokens": [
+//         {
+//           "token": "def ",
+//           "explanation": "Keyword to define a function"
+//         },
+//         {
+//           "token": "reverse_stack",
+//           "explanation": "Name of the function"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "stack",
+//           "explanation": "Parameter of the function"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the function's body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    temp = []",
+//       "explanation": "This line initializes an empty list called temp.",
+//       "criticalThinkingQuestion": "Why do we need a temporary list in this function?",
+//       "answer": "We need a temporary list to hold the elements of the original stack as we pop them off.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "temp",
+//           "explanation": "Name of the temporary list"
+//         },
+//         {
+//           "token": " "
+//         },
+//         {
+//           "token": "=",
+//           "explanation": "Assignment operator"
+//         },
+//         {
+//           "token": " "
+//         },
+//         {
+//           "token": "[]",
+//           "explanation": "An empty list"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    while stack:",
+//       "explanation": "This line starts a while loop that continues as long as the stack is not empty.",
+//       "criticalThinkingQuestion": "Why do we use a while loop here instead of a for loop?",
+//       "answer": "We use a while loop because we don't know the exact number of iterations we need, it depends on the size of the stack.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "while ",
+//           "explanation": "Starts a while loop"
+//         },
+//         {
+//           "token": "stack",
+//           "explanation": "Condition for the while loop"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the loop's body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "        temp.append(stack.pop())",
+//       "explanation": "This line pops an element from the stack and appends it to the temp list.",
+//       "criticalThinkingQuestion": "What does the pop method do and why is it used here?",
+//       "answer": "The pop method removes and returns the last element of the list. It is used here to reverse the order of the elements in the stack.",
+//       "tokens": [
+//         {
+//           "token": "        "
+//         },
+//         {
+//           "token": "temp",
+//           "explanation": "The temporary list"
+//         },
+//         {
+//           "token": "."
+//         },
+//         {
+//           "token": "append",
+//           "explanation": "Method to add an element to the list"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "stack",
+//           "explanation": "The original stack"
+//         },
+//         {
+//           "token": "."
+//         },
+//         {
+//           "token": "pop",
+//           "explanation": "Method to remove and return the last element of the list"
+//         },
+//         {
+//           "token": "()"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    return temp",
+//       "explanation": "This line returns the reversed stack.",
+//       "criticalThinkingQuestion": "Why do we return the temp list and not the original stack?",
+//       "answer": "We return the temp list because it now contains the elements of the original stack in reversed order.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "return ",
+//           "explanation": "Keyword to indicate the result of the function"
+//         },
+//         {
+//           "token": "temp",
+//           "explanation": "The reversed stack"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     }
+//   ]
+// },
+// {
+//   "format": ["Short Answer", "Multiple Choice"],
+//   "questions": [
+//     {
+//       "type": "Short Answer",
+//       "question": "What is the purpose of the 'temp' variable?",
+//       "answer": "It is used to temporarily store and reverse the elements of the stack.",
+//       "question-code-lines": [
+//         "2"
+//       ],
+//       "question-code-lines-explained": "temp = [] # This line of code is initializing an empty list to be used as a temporary stack."
+//     },
+//     {
+//       "type": "Multiple Choice",
+//       "question": "What does the 'while' loop do in this function?",
+//       "answer": {
+//         "correct-choice": "It pops elements from the original stack and appends them to the temporary stack, effectively reversing the order.",
+//         "incorrect-choice-1": "It checks if the stack is empty.",
+//         "incorrect-choice-2": "It sorts the elements in the stack.",
+//         "incorrect-choice-3": "It duplicates the stack."
+//       },
+//       "question-code-lines": [
+//         "4", "5"
+//       ],
+//       "question-code-lines-explained": "while stack: temp.append(stack.pop()) # This loop continues as long as there are elements in the original stack. It pops the last element from the original stack and appends it to the temporary stack, effectively reversing the order of the elements."
+//     }
+//   ]
+// },
+// {
+//   "wrong-code": 
+// `def reverse_stack(stack):
+//     temp = []
+//     while stack:
+//         temp.append(stack.push())
+//     return stack`,
+  
+//   "issues":{
+//               "logical-issue-1": {
+//                       "type": "Misuse of Stack Method",
+//                       "line": 4
+//               },
+//               "logical-issue-2": {
+//                       "type": "Incorrect Return Value",
+//                       "line": 5
+//               }
+//           }
+// },
+// {
+//   "subgoals": [
+//     {
+//       "title": "Function Definition",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should be the input to the function?",
+//               "correct-choice": "A stack",
+//               "incorrect-choice-1": "A list",
+//               "incorrect-choice-2": "A queue",
+//               "incorrect-choice-3": "A dictionary"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [1]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Create Temporary Stack",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What data structure should we use to temporarily store the elements of the original stack?",
+//               "correct-choice": "Another stack",
+//               "incorrect-choice-1": "A queue",
+//               "incorrect-choice-2": "A list",
+//               "incorrect-choice-3": "A dictionary"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [2]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Reverse Stack",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What condition should we check to start reversing the stack?",
+//               "correct-choice": "While the original stack is not empty",
+//               "incorrect-choice-1": "While the temporary stack is not full",
+//               "incorrect-choice-2": "While the original stack is full",
+//               "incorrect-choice-3": "While the temporary stack is not empty"
+//             },
+//             {
+//               "mcq-question": "What operation should we perform to reverse the stack?",
+//               "correct-choice": "Pop elements from the original stack and push them into the temporary stack",
+//               "incorrect-choice-1": "Pop elements from the temporary stack and push them into the original stack",
+//               "incorrect-choice-2": "Push elements from the original stack into the temporary stack without popping",
+//               "incorrect-choice-3": "Push elements from the temporary stack into the original stack without popping"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [3,4]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Return Reversed Stack",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should be the output of the function?",
+//               "correct-choice": "The reversed stack",
+//               "incorrect-choice-1": "The original stack",
+//               "incorrect-choice-2": "The temporary stack without reversing",
+//               "incorrect-choice-3": "None"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [5]
+//         }
+//       ]
+//     }
+//   ]
+// },
+// [
+//   {
+//       "step": 6,
+//       "variable": "temp"
+//   },
+//   {
+//       "step": 12,
+//       "variable": "stack"
+//   }
+// ],
+//     ),
+//     new AuthoringTask(
+//         "2",
+//         "Write a function that takes a list of intervals (e.g., ranges of numbers) and merges any overlapping intervals.",
+// `def merge_intervals(intervals):
+//     intervals.sort(key=lambda x: x[0])
+//     merged = [intervals[0]]
+//     for current in intervals[1:]:
+//         if current[0] <= merged[-1][1]:
+//             merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
+//         else:
+//             merged.append(current)
+//     return merged
 
+// print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
+// `This code defines a function called \`merge_intervals\` that takes a list of intervals as input and returns a list of merged intervals. 
 
+// First, it sorts the intervals in ascending order based on the first element of each interval using the \`sorted\` function. The \`lambda\` keyword is used to create a small anonymous function to specify the sorting key.
 
+// Then, it initializes the \`merged\` list with the first interval. 
 
+// Next, it iterates over the sorted intervals. For each interval, it compares the start of the current interval with the end of the last merged interval. If they overlap (i.e., the start of the current interval is less than or equal to the end of the last merged interval), it merges them by updating the end of the last merged interval to be the maximum of the ends of the current and last merged intervals. If they don't overlap, it adds the current interval to the \`merged\` list.
 
+// Finally, it returns the \`merged\` list.
 
+// The \`print\` function is used to display the result of the \`merge_intervals\` function when it is called with the list \`[(1, 3), (2, 6), (8, 10), (15, 18)]\` as an argument.`,
+// {
+//   "subgoals": [
+//       {
+//           "title": "Define function and sort intervals",
+//           "code": [
+//               {
+//                   "indent": 0,
+//                   "line": "def merge_intervals(intervals):",
+//                   "pseudo-code": "Define a function named 'merge_intervals' that takes a list 'intervals' as an argument",
+//                   "explanation": "This line is defining a function that will be used to merge overlapping intervals."
+//               },
+//               {
+//                   "indent": 1,
+//                   "line": "intervals.sort(key=lambda x: x[0])",
+//                   "pseudo-code": "Sort the list 'intervals' based on the first element of each tuple",
+//                   "explanation": "Sorting the intervals makes it easier to merge overlapping ones, as they will be adjacent in the list."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Initialize merged list and iterate over intervals",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "merged = [intervals[0]]",
+//                   "pseudo-code": "Initialize a list 'merged' with the first interval",
+//                   "explanation": "We start the merged list with the first interval, as it's guaranteed to be the earliest one due to the sorting."
+//               },
+//               {
+//                   "indent": 1,
+//                   "line": "for current in intervals[1:]:",
+//                   "pseudo-code": "Iterate over the rest of the intervals",
+//                   "explanation": "We start from the second interval, as the first one is already in the merged list."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Merge overlapping intervals and append non-overlapping ones",
+//           "code": [
+//               {
+//                   "indent": 2,
+//                   "line": "if current[0] <= merged[-1][1]:",
+//                   "pseudo-code": "Check if the start of the current interval is less than or equal to the end of the last merged interval",
+//                   "explanation": "This condition checks if the current interval overlaps with the last merged one."
+//               },
+//               {
+//                   "indent": 3,
+//                   "line": "merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))",
+//                   "pseudo-code": "If they overlap, merge them by setting the end of the last merged interval to the maximum of its current end and the end of the current interval",
+//                   "explanation": "This line merges overlapping intervals by extending the end of the last merged interval."
+//               },
+//               {
+//                   "indent": 2,
+//                   "line": "else:",
+//                   "pseudo-code": "If the current interval does not overlap with the last merged one",
+//                   "explanation": "This condition handles the case where the current interval does not overlap with the last merged one."
+//               },
+//               {
+//                   "indent": 3,
+//                   "line": "merged.append(current)",
+//                   "pseudo-code": "Append the current interval to the 'merged' list",
+//                   "explanation": "This line adds non-overlapping intervals to the merged list."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Return merged intervals",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "return merged",
+//                   "pseudo-code": "Return the 'merged' list",
+//                   "explanation": "This line returns the final list of merged intervals."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Test the function",
+//           "code": [
+//               {
+//                   "indent": 0,
+//                   "line": "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))",
+//                   "pseudo-code": "Print the result of calling 'merge_intervals' with a test list of intervals",
+//                   "explanation": "This line tests the function with a specific list of intervals and prints the result."
+//               }
+//           ]
+//       }
+//   ],
+// },
+// {
+//   "lines": [
+//     {
+//       "code": "def merge_intervals(intervals):",
+//       "explanation": "This line defines a function named 'merge_intervals' that takes a list of intervals as input.",
+//       "criticalThinkingQuestion": "Why do we need to define a function for this task?",
+//       "answer": "Defining a function allows us to reuse this code whenever we need to merge intervals, without having to rewrite the code.",
+//       "tokens": [
+//         {
+//           "token": "def ",
+//           "explanation": "Keyword to define a function in Python"
+//         },
+//         {
+//           "token": "merge_intervals",
+//           "explanation": "Name of the function"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "intervals",
+//           "explanation": "Parameter of the function"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the function body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    intervals.sort(key=lambda x: x[0])",
+//       "explanation": "This line sorts the intervals in ascending order based on their start times.",
+//       "criticalThinkingQuestion": "Why is it important to sort the intervals before merging them?",
+//       "answer": "Sorting the intervals ensures that we merge all overlapping intervals correctly.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "intervals",
+//           "explanation": "The list of intervals"
+//         },
+//         {
+//           "token": "."
+//         },
+//         {
+//           "token": "sort",
+//           "explanation": "Method to sort the list"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "key",
+//           "explanation": "Keyword to specify sorting criteria"
+//         },
+//         {
+//           "token": "="
+//         },
+//         {
+//           "token": "lambda ",
+//           "explanation": "Keyword to define an anonymous function"
+//         },
+//         {
+//           "token": "x",
+//           "explanation": "Parameter of the anonymous function"
+//         },
+//         {
+//           "token": ":"
+//         },
+//         {
+//           "token": "x",
+//           "explanation": "Parameter of the anonymous function"
+//         },
+//         {
+//           "token": "[0]",
+//           "explanation": "Accesses the first element of the interval"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    merged = [intervals[0]]",
+//       "explanation": "This line initializes the 'merged' list with the first interval.",
+//       "criticalThinkingQuestion": "Why do we start the 'merged' list with the first interval?",
+//       "answer": "We start with the first interval because it's the earliest one after sorting.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": " = "
+//         },
+//         {
+//           "token": "[",
+//           "explanation": "Starts a list"
+//         },
+//         {
+//           "token": "intervals",
+//           "explanation": "The list of intervals"
+//         },
+//         {
+//           "token": "[0]",
+//           "explanation": "Accesses the first interval"
+//         },
+//         {
+//           "token": "]",
+//           "explanation": "Ends the list"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    for current in intervals[1:]:",
+//       "explanation": "This line starts a loop over the intervals, starting from the second one.",
+//       "criticalThinkingQuestion": "Why do we start the loop from the second interval?",
+//       "answer": "We start from the second interval because the first one is already in the 'merged' list.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "for ",
+//           "explanation": "Keyword to start a loop"
+//         },
+//         {
+//           "token": "current",
+//           "explanation": "Variable to hold the current interval"
+//         },
+//         {
+//           "token": " in "
+//         },
+//         {
+//           "token": "intervals",
+//           "explanation": "The list of intervals"
+//         },
+//         {
+//           "token": "[1:]",
+//           "explanation": "Slices the list from the second element"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the loop body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "        if current[0] <= merged[-1][1]:",
+//       "explanation": "This line checks if the current interval overlaps with the last merged interval.",
+//       "criticalThinkingQuestion": "How does this condition determine if two intervals overlap?",
+//       "answer": "Two intervals overlap if the start of the second one is less than or equal to the end of the first one.",
+//       "tokens": [
+//         {
+//           "token": "        "
+//         },
+//         {
+//           "token": "if ",
+//           "explanation": "Keyword to start a conditional statement"
+//         },
+//         {
+//           "token": "current",
+//           "explanation": "The current interval"
+//         },
+//         {
+//           "token": "[0]",
+//           "explanation": "Accesses the start of the current interval"
+//         },
+//         {
+//           "token": " <= "
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": "[-1]",
+//           "explanation": "Accesses the last merged interval"
+//         },
+//         {
+//           "token": "[1]",
+//           "explanation": "Accesses the end of the last merged interval"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the if statement body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))",
+//       "explanation": "This line merges the current interval with the last merged interval if they overlap.",
+//       "criticalThinkingQuestion": "How does this line merge two overlapping intervals?",
+//       "answer": "It merges two intervals by taking the start of the first one and the maximum end between the two.",
+//       "tokens": [
+//         {
+//           "token": "            "
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": "[-1]",
+//           "explanation": "Accesses the last merged interval"
+//         },
+//         {
+//           "token": " = "
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": "[-1]",
+//           "explanation": "Accesses the last merged interval"
+//         },
+//         {
+//           "token": "[0]",
+//           "explanation": "Accesses the start of the last merged interval"
+//         },
+//         {
+//           "token": ", "
+//         },
+//         {
+//           "token": "max",
+//           "explanation": "Function to get the maximum value"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": "[-1]",
+//           "explanation": "Accesses the last merged interval"
+//         },
+//         {
+//           "token": "[1]",
+//           "explanation": "Accesses the end of the last merged interval"
+//         },
+//         {
+//           "token": ", "
+//         },
+//         {
+//           "token": "current",
+//           "explanation": "The current interval"
+//         },
+//         {
+//           "token": "[1]",
+//           "explanation": "Accesses the end of the current interval"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "        else:",
+//       "explanation": "This line starts the else block of the if statement.",
+//       "criticalThinkingQuestion": "What happens if the current interval does not overlap with the last merged interval?",
+//       "answer": "If the current interval does not overlap with the last merged interval, it is added as a new interval to the 'merged' list.",
+//       "tokens": [
+//         {
+//           "token": "        "
+//         },
+//         {
+//           "token": "else",
+//           "explanation": "Keyword to start the else block"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the else block body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "            merged.append(current)",
+//       "explanation": "This line adds the current interval to the 'merged' list as a new interval.",
+//       "criticalThinkingQuestion": "Why do we add the current interval as a new interval to the 'merged' list?",
+//       "answer": "We add the current interval as a new interval because it does not overlap with the last merged interval.",
+//       "tokens": [
+//         {
+//           "token": "            "
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": "."
+//         },
+//         {
+//           "token": "append",
+//           "explanation": "Method to add an element to the end of the list"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "current",
+//           "explanation": "The current interval"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    return merged",
+//       "explanation": "This line returns the 'merged' list as the result of the function.",
+//       "criticalThinkingQuestion": "Why do we return the 'merged' list?",
+//       "answer": "We return the 'merged' list because it contains the merged intervals, which is the result of the function.",
+//       "tokens": [
+//         {
+//           "token": "    "
+//         },
+//         {
+//           "token": "return ",
+//           "explanation": "Keyword to return a value from a function"
+//         },
+//         {
+//           "token": "merged",
+//           "explanation": "The list of merged intervals"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))",
+//       "explanation": "This line calls the 'merge_intervals' function with a list of intervals and prints the result.",
+//       "criticalThinkingQuestion": "What is the expected output of this line?",
+//       "answer": "The expected output is a list of merged intervals: [(1, 6), (8, 10), (15, 18)].",
+//       "tokens": [
+//         {
+//           "token": "print",
+//           "explanation": "Function to output data to the console"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "merge_intervals",
+//           "explanation": "The function to merge intervals"
+//         },
+//         {
+//           "token": "("
+//         },
+//         {
+//           "token": "[(1, 3), (2, 6), (8, 10), (15, 18)]",
+//           "explanation": "The list of intervals to merge"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": ")"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     }
+//   ]
+// },
+// {
+//   "format": ["Short Answer", "Multiple Choice", "Short Answer"],
+//   "questions": [
+//     {
+//       "type": "Short Answer",
+//       "question": "What does the 'sort' function do in this code?",
+//       "answer": "It sorts the intervals based on the first element of each tuple.",
+//       "question-code-lines": [
+//         "2"
+//       ],
+//       "question-code-lines-explained": "intervals.sort(key=lambda x: x[0]) # This line sorts the intervals based on the first element of each tuple."
+//     },
+//     {
+//       "type": "Multiple Choice",
+//       "question": "What does the 'if' condition check in the for loop?",
+//       "answer": {
+//         "correct-choice": "It checks if the start of the current interval is less than or equal to the end of the last merged interval.",
+//         "incorrect-choice-1": "It checks if the start of the current interval is greater than the end of the last merged interval.",
+//         "incorrect-choice-2": "It checks if the end of the current interval is less than the start of the last merged interval.",
+//         "incorrect-choice-3": "It checks if the end of the current interval is greater than the start of the last merged interval."
+//       },
+//       "question-code-lines": [
+//         "4"
+//       ],
+//       "question-code-lines-explained": "if current[0] <= merged[-1][1]: # This line checks if the start of the current interval is less than or equal to the end of the last merged interval."
+//     },
+//     {
+//       "type": "Short Answer",
+//       "question": "What does the 'else' condition do in the for loop?",
+//       "answer": "It appends the current interval to the merged list if it doesn't overlap with the last merged interval.",
+//       "question-code-lines": [
+//         "7"
+//       ],
+//       "question-code-lines-explained": "else: merged.append(current) # This line appends the current interval to the merged list if it doesn't overlap with the last merged interval."
+//     }
+//   ]
+// },
+// {
+//   "wrong-code": 
+// `def merge_intervals(intervals):
+//   intervals.sort(key=lambda x: x[1])
+//   merged = [intervals[0]]
+//   for current in intervals[1:]:
+//       if current[0] >= merged[-1][1]:
+//           merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))
+//       else:
+//           merged.append(current)
+//   return merged
+  
+// print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))`,
+  
+//   "issues":{
+//               "logical-issue-1": {
+//                       "type": "Incorrect sorting key",
+//                       "line": 2
+//               },
+//               "logical-issue-2": {
+//                       "type": "Incorrect comparison operator",
+//                       "line": 5
+//               }
+//           }
+// },
+// {
+//   "subgoals": [
+//     {
+//       "title": "Function Definition",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should be the input to our function?",
+//               "correct-choice": "A list of tuples representing intervals",
+//               "incorrect-choice-1": "A list of integers",
+//               "incorrect-choice-2": "A single tuple representing an interval",
+//               "incorrect-choice-3": "Two integers"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [1]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Sort Intervals",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "Why do we need to sort the intervals?",
+//               "correct-choice": "To ensure we process intervals in increasing order",
+//               "incorrect-choice-1": "To make the list look neat",
+//               "incorrect-choice-2": "To find the smallest interval",
+//               "incorrect-choice-3": "To find the largest interval"
+//             },
+//             {
+//               "mcq-question": "On what basis should we sort the intervals?",
+//               "correct-choice": "Starting point of the intervals",
+//               "incorrect-choice-1": "Ending point of the intervals",
+//               "incorrect-choice-2": "Length of the intervals",
+//               "incorrect-choice-3": "Middle point of the intervals"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [2]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Initialize Merged List",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "Why do we need to initialize the merged list with the first interval?",
+//               "correct-choice": "To have a starting point for merging",
+//               "incorrect-choice-1": "To make the list non-empty",
+//               "incorrect-choice-2": "To ensure the list has at least one element",
+//               "incorrect-choice-3": "To avoid an index error"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [3]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Merge Overlapping Intervals",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What condition should be checked to determine if two intervals overlap?",
+//               "correct-choice": "The start of the current interval is less than or equal to the end of the last merged interval",
+//               "incorrect-choice-1": "The start of the current interval is greater than the end of the last merged interval",
+//               "incorrect-choice-2": "The end of the current interval is less than the start of the last merged interval",
+//               "incorrect-choice-3": "The end of the current interval is greater than the start of the last merged interval"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [4]
+//         },
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "How should we merge two overlapping intervals?",
+//               "correct-choice": "Take the start of the first interval and the maximum end of the two intervals",
+//               "incorrect-choice-1": "Take the start of the first interval and the end of the second interval",
+//               "incorrect-choice-2": "Take the start of the second interval and the end of the first interval",
+//               "incorrect-choice-3": "Take the start of the second interval and the maximum end of the two intervals"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [5]
+//         },
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should we do if two intervals do not overlap?",
+//               "correct-choice": "Add the current interval to the merged list",
+//               "incorrect-choice-1": "Ignore the current interval",
+//               "incorrect-choice-2": "Add the last merged interval to the merged list",
+//               "incorrect-choice-3": "Merge the current interval with the last merged interval"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [6]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Return Merged Intervals",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should the function return?",
+//               "correct-choice": "The list of merged intervals",
+//               "incorrect-choice-1": "The original list of intervals",
+//               "incorrect-choice-2": "The number of merged intervals",
+//               "incorrect-choice-3": "The length of the merged intervals"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [7]
+//         }
+//       ]
+//     }
+//   ]
+// },
+// //trace predict
+// [
+//   { step: 5, variable: 'num' },
+//   { step: 14, variable: 'even_sum' },
+//   { step: 27, variable: 'num' }
+// ],
+// "",
+// ),
+
+// new AuthoringTask(
+//   "3",
+//   "Write a Python function to calculate the sum of even numbers in a given list.",
+// `def calculate_even_sum(numbers):
+//     even_sum = 0
+//     for num in numbers:
+//         if num % 2 == 0:
+//             even_sum += num
+//     return even_sum
+
+// result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+// print("Sum of even numbers:", result)`,
+// `This code defines a function called \`calculate_even_sum\` that takes a list of numbers as input and returns the sum of the even numbers in the list.
+
+// First, it initializes a variable \`even_sum\` to 0. This variable will be used to keep track of the sum of the even numbers.
+
+// Next, it uses a \`for\` loop to iterate over each number in the input list. For each number, it checks if the number is even by using the modulus operator \`%\`. The modulus operator gives the remainder of the division of the number by 2. If the remainder is 0, the number is even.
+
+// If the number is even, it adds the number to \`even_sum\` using the \`+=\` operator, which is a shorthand for \`even_sum = even_sum + num\`.
+
+// After all numbers in the list have been processed, the function returns the sum of the even numbers.
+
+// The function is then called with the list \`[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\` as an argument, and the result is stored in the variable \`result\`.
+
+// Finally, the \`print\` function is used to display the result.`,
+// {
+//   "subgoals": [
+//       {
+//           "title": "Define the function",
+//           "code": [
+//               {
+//                   "indent": 0,
+//                   "line": "def reverse_stack(stack):",
+//                   "pseudo-code": "Define a function named `reverse_stack` that takes a parameter `stack`",
+//                   "syntax-hint": "`def` is used to define a function in Python. The function name is followed by parentheses containing the function parameters, and ends with a colon.",
+//                   "explanation": "This line is needed to define the function and specify what parameters it will take. In this case, it will take a stack as input."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Initialize temporary stack",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "temp = []",
+//                   "pseudo-code": "Create an empty list named `temp`",
+//                   "syntax-hint": "In Python, `=` is used for assignment. `[]` is used to create an empty list.",
+//                   "explanation": "This line is needed to create a temporary stack that will be used to reverse the original stack."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Reverse the stack",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "while stack:",
+//                   "pseudo-code": "Start a while loop that continues as long as `stack` is not empty",
+//                   "syntax-hint": "In Python, `while` is used to start a loop that continues as long as the condition after it is true. Here, `stack` is truthy if it is not empty.",
+//                   "explanation": "This line is needed to start a loop that will continue until the original stack is empty."
+//               },
+//               {
+//                   "indent": 2,
+//                   "line": "temp.append(stack.pop())",
+//                   "pseudo-code": "Remove the top element from `stack` and add it to the end of `temp`",
+//                   "syntax-hint": "In Python, `.append()` is used to add an element to the end of a list. `.pop()` is used to remove and return the last element of a list.",
+//                   "explanation": "This line is needed to reverse the order of the elements in the stack by moving them from the original stack to the temporary stack."
+//               }
+//           ]
+//       },
+//       {
+//           "title": "Return the reversed stack",
+//           "code": [
+//               {
+//                   "indent": 1,
+//                   "line": "return temp",
+//                   "pseudo-code": "Return the list `temp`",
+//                   "syntax-hint": "In Python, `return` is used to specify the result that a function should give back.",
+//                   "explanation": "This line is needed to give the reversed stack back to whatever called the function."
+//               }
+//           ]
+//       }
+//   ]
+// },
+// {
+//   "lines": [
+//     {
+//       "code": "def calculate_even_sum(numbers):",
+//       "explanation": "This line defines a function to calculate the sum of even numbers in a list.",
+//       "criticalThinkingQuestion": "Why do we need to pass 'numbers' as a parameter to the function?",
+//       "answer": "We pass 'numbers' to make the function reusable for any list of numbers.",
+//       "tokens": [
+//         {
+//           "token": "def ",
+//           "explanation": "Keyword to define a function"
+//         },
+//         {
+//           "token": "calculate_even_sum",
+//           "explanation": "Name of the function"
+//         },
+//         {
+//           "token": "(",
+//         },
+//         {
+//           "token": "numbers",
+//           "explanation": "Parameter of the function"
+//         },
+//         {
+//           "token": ")",
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the function's body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    even_sum = 0",
+//       "explanation": "This line initializes a variable to keep track of the sum of even numbers.",
+//       "criticalThinkingQuestion": "Why do we initialize 'even_sum' to 0?",
+//       "answer": "We initialize 'even_sum' to 0 because we start with no sum and add to it.",
+//       "tokens": [
+//         {
+//           "token": "    ",
+//           "explanation": "Indentation for code inside the function"
+//         },
+//         {
+//           "token": "even_sum",
+//           "explanation": "Variable to store the sum"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "=",
+//           "explanation": "Assignment operator"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "0",
+//           "explanation": "Initial value of the sum"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    for num in numbers:",
+//       "explanation": "This line starts a loop to iterate over each number in the list.",
+//       "criticalThinkingQuestion": "Why do we use a 'for' loop here?",
+//       "answer": "We use a 'for' loop to iterate over each number in the list.",
+//       "tokens": [
+//         {
+//           "token": "    ",
+//           "explanation": "Indentation for code inside the function"
+//         },
+//         {
+//           "token": "for ",
+//           "explanation": "Keyword to start a loop"
+//         },
+//         {
+//           "token": "num",
+//           "explanation": "Variable to hold the current number"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "in ",
+//           "explanation": "Keyword to iterate over a list"
+//         },
+//         {
+//           "token": "numbers",
+//           "explanation": "The list to iterate over"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the loop's body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "        if num % 2 == 0:",
+//       "explanation": "This line checks if the current number is even.",
+//       "criticalThinkingQuestion": "How does 'num % 2 == 0' check if a number is even?",
+//       "answer": "If a number modulo 2 equals 0, it means the number is even.",
+//       "tokens": [
+//         {
+//           "token": "        ",
+//           "explanation": "Indentation for code inside the loop"
+//         },
+//         {
+//           "token": "if ",
+//           "explanation": "Keyword to start a conditional"
+//         },
+//         {
+//           "token": "num",
+//           "explanation": "The current number"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "%",
+//           "explanation": "Modulo operator"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "2",
+//           "explanation": "Divisor for the modulo operation"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "==",
+//           "explanation": "Equality operator"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "0",
+//           "explanation": "Zero, the result for even numbers"
+//         },
+//         {
+//           "token": ":",
+//           "explanation": "Starts the conditional's body"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "            even_sum += num",
+//       "explanation": "This line adds the current number to the sum if it is even.",
+//       "criticalThinkingQuestion": "What does 'even_sum += num' do?",
+//       "answer": "It adds the current number to the sum if the number is even.",
+//       "tokens": [
+//         {
+//           "token": "            ",
+//           "explanation": "Indentation for code inside the conditional"
+//         },
+//         {
+//           "token": "even_sum",
+//           "explanation": "The sum of even numbers"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "+=",
+//           "explanation": "Addition assignment operator"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "num",
+//           "explanation": "The current number"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "    return even_sum",
+//       "explanation": "This line returns the sum of even numbers.",
+//       "criticalThinkingQuestion": "Why do we need to return 'even_sum'?",
+//       "answer": "We return 'even_sum' to provide the result of the function to the caller.",
+//       "tokens": [
+//         {
+//           "token": "    ",
+//           "explanation": "Indentation for code inside the function"
+//         },
+//         {
+//           "token": "return ",
+//           "explanation": "Keyword to return a value from a function"
+//         },
+//         {
+//           "token": "even_sum",
+//           "explanation": "The sum of even numbers"
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])",
+//       "explanation": "This line calls the function with a list of numbers and stores the result.",
+//       "criticalThinkingQuestion": "What is the purpose of 'result' in this line?",
+//       "answer": "'result' is used to store the return value of the function call.",
+//       "tokens": [
+//         {
+//           "token": "result",
+//           "explanation": "Variable to store the result"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "=",
+//           "explanation": "Assignment operator"
+//         },
+//         {
+//           "token": " ",
+//         },
+//         {
+//           "token": "calculate_even_sum",
+//           "explanation": "Function to calculate the sum of even numbers"
+//         },
+//         {
+//           "token": "(",
+//         },
+//         {
+//           "token": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+//           "explanation": "List of numbers to pass to the function"
+//         },
+//         {
+//           "token": ")",
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     },
+//     {
+//       "code": "print(\"Sum of even numbers:\", result)",
+//       "explanation": "This line prints the sum of even numbers.",
+//       "criticalThinkingQuestion": "Why do we use 'print' in this line?",
+//       "answer": "We use 'print' to display the result to the user.",
+//       "tokens": [
+//         {
+//           "token": "print",
+//           "explanation": "Function to display output"
+//         },
+//         {
+//           "token": "(",
+//         },
+//         {
+//           "token": "\"Sum of even numbers:\"",
+//           "explanation": "String to display before the result"
+//         },
+//         {
+//           "token": ", ",
+//         },
+//         {
+//           "token": "result",
+//           "explanation": "The result to display"
+//         },
+//         {
+//           "token": ")",
+//         },
+//         {
+//           "token": "\n"
+//         }
+//       ]
+//     }
+//   ]
+// },
+// {
+//   "format": ["Short Answer", "Multiple Choice"],
+//   "questions": [
+//     {
+//       "type": "Short Answer",
+//       "question": "What does the calculate_even_sum function do?",
+//       "answer": "It calculates the sum of even numbers in a list.",
+//       "question-code-lines": [
+//         "1-5"
+//       ],
+//       "question-code-lines-explained": "def calculate_even_sum(numbers):\n    even_sum = 0\n    for num in numbers:\n        if num % 2 == 0:\n            even_sum += num # This function iterates over a list of numbers, checks if each number is even, and if it is, adds it to the sum."
+//     },
+//     {
+//       "type": "Multiple Choice",
+//       "question": "What does the '%' operator do in Python?",
+//       "answer": {
+//         "correct-choice": "It calculates the remainder of a division operation.",
+//         "incorrect-choice-1": "It performs exponentiation.",
+//         "incorrect-choice-2": "It performs integer division.",
+//         "incorrect-choice-3": "It calculates the quotient of a division operation."
+//       },
+//       "question-code-lines": [
+//         "4"
+//       ],
+//       "question-code-lines-explained": "if num % 2 == 0: # The '%' operator is used to calculate the remainder of the division of 'num' by 2. If the remainder is 0, that means 'num' is an even number."
+//     }
+//   ]
+// },
+// {
+//   "wrong-code": 
+// `def calculate_even_sum(numbers):
+//   even_sum = 0
+//   for num in numbers:        
+//     if num % 2 != 0:            
+//       even_sum += num
+//   return even_sum
+  
+// result = calculate_even_sum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+// print('Sum of even numbers:', result)`,
+//   "issues":{
+//               "logical-issue-1": {
+//                       "type": "Incorrect Boolean Logic",
+//                       "line": 4
+//               },
+//               "logical-issue-2": {
+//                       "type": "Wrong Function Call",
+//                       "line": 7
+//               }
+//           }
+// },
+// {
+//   "subgoals": [
+//     {
+//       "title": "Function Definition",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should be the input to our function?",
+//               "correct-choice": "A list of numbers",
+//               "incorrect-choice-1": "A single number",
+//               "incorrect-choice-2": "A string",
+//               "incorrect-choice-3": "A list of strings"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [1]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Initialize Sum",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should be the initial value of the sum of even numbers?",
+//               "correct-choice": "0",
+//               "incorrect-choice-1": "1",
+//               "incorrect-choice-2": "The first number in the list",
+//               "incorrect-choice-3": "The last number in the list"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [2]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Iterate Over Numbers",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should we do for each number in the list?",
+//               "correct-choice": "Check if it is even and add it to the sum if it is",
+//               "incorrect-choice-1": "Add it to the sum regardless of whether it is even or not",
+//               "incorrect-choice-2": "Check if it is odd and add it to the sum if it is",
+//               "incorrect-choice-3": "Subtract it from the sum"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [3]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Check Evenness",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "How can we check if a number is even?",
+//               "correct-choice": "If the remainder when the number is divided by 2 is 0",
+//               "incorrect-choice-1": "If the number is greater than 0",
+//               "incorrect-choice-2": "If the number is less than 0",
+//               "incorrect-choice-3": "If the number is divisible by 3"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [4]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Add to Sum",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should we do if a number is even?",
+//               "correct-choice": "Add it to the sum",
+//               "incorrect-choice-1": "Subtract it from the sum",
+//               "incorrect-choice-2": "Multiply the sum by it",
+//               "incorrect-choice-3": "Divide the sum by it"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [5]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Return Result",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should the function return?",
+//               "correct-choice": "The sum of the even numbers",
+//               "incorrect-choice-1": "The sum of the odd numbers",
+//               "incorrect-choice-2": "The total number of even numbers",
+//               "incorrect-choice-3": "The total number of odd numbers"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [6]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Function Call",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "What should we do to get the sum of the even numbers in a list?",
+//               "correct-choice": "Call the function with the list as argument",
+//               "incorrect-choice-1": "Call the function without any arguments",
+//               "incorrect-choice-2": "Call the function with the sum of the list as argument",
+//               "incorrect-choice-3": "Call the function with the length of the list as argument"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [8]
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Print Result",
+//       "sub-subgoal-items": [
+//         {
+//           "leading-questions": [
+//             {
+//               "mcq-question": "How can we display the result?",
+//               "correct-choice": "Print the result",
+//               "incorrect-choice-1": "Return the result",
+//               "incorrect-choice-2": "Store the result in a variable",
+//               "incorrect-choice-3": "Pass the result to another function"
+//             }
+//           ],
+//           "code-lines-to-be-revealed": [9]
+//         }
+//       ]
+//     }
+//   ]
+// },
+// //trace predict
+// [
+//   { step: 5, variable: 'num' },
+//   { step: 14, variable: 'even_sum' },
+//   { step: 27, variable: 'num' }
+// ],
+// "",
+// ),
 
 
 // coding tasks for evaluations
 new ManualCodingTask(
   "mc1",
-  "def calculate_rainwater_potential(rain: list[int]) -> list[int]:",
-`def calculate_rainwater_potential(rain: list[int]) -> list[int]:`,
+  "Write a function named temperature_potential that receives a list of daily temperatures as integers. The function calculates the temperature potential for each day. The temperature potential Ti for a day i is the count of consecutive days leading up and including day i, for which the temperature on day i is not greater than the temperature on those days. Based on the usages of Queue and Stack that you learned from during the training tasks, you should now use either a Queue or a Stack to solve this task.",
+`def temperature_potential(temperatures: list[int]) -> list[int]:
+`,
 ),
-new ManualCodingTask(
-  "mc2",
-  "def generate_dna_sequences(length: int):",
-  'def generate_dna_sequences(length: int):',
-)
+
 
     // new AuthoringTask(
     //     "1a",
