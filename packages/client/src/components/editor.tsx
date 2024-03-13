@@ -9,7 +9,13 @@ import {
     useState,
 } from "react";
 
-import { apiGetSavedUserCode, apiLogEvents, apiSaveUserCode, apiUserNextTask, logError } from "../api/api";
+import {
+    apiGetSavedUserCode,
+    apiLogEvents,
+    apiSaveUserCode,
+    apiUserNextTask,
+    logError,
+} from "../api/api";
 import {
     initLanguageClient,
     retryOpeningLanguageClient,
@@ -18,6 +24,7 @@ import {
 import { Baseline } from "./response-generater";
 import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
+import { connectSocket } from "../api/python-shell";
 
 interface EditorProps {
     taskId: string;
@@ -30,7 +37,7 @@ interface EditorProps {
 
 export const Editor = forwardRef((props: EditorProps, ref) => {
     const { context } = useContext(AuthContext);
-    const { socket } = useContext(SocketContext);
+    const { socket, setSocket } = useContext(SocketContext);
 
     const [runId, setRunId] = useState(0);
 
@@ -47,8 +54,10 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const [lastEditedAt, setLastEditedAt] = useState<Date | null>(null);
     const [saved, setSaved] = useState(true);
     const [canReset, setCanReset] = useState(false);
-    const [cursorPosition, setCursorPosition] = useState({ lineNumber: 0, column: 0 });
-    
+    const [cursorPosition, setCursorPosition] = useState({
+        lineNumber: 0,
+        column: 0,
+    });
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [keyStrokes, setKeyStrokes] = useState<number>(0);
@@ -61,7 +70,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             }
         },
     }));
-
 
     const setNextTask = () => {
         setKeyStrokes(0);
@@ -104,36 +112,46 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                     minimap: { enabled: false },
                                     wordWrap: "on",
                                     wrappingIndent: "indent",
-                                    lineNumbers: 'on',
+                                    lineNumbers: "on",
                                 }
                             );
-
 
                             editor.onDidChangeCursorPosition((e) => {
                                 setCursorPosition(e.position);
                             });
 
                             editor.addAction({
-                                id: 'show-ai-assistance',
-                                label: 'AI Assistance',
-                                contextMenuGroupId: 'navigation',
+                                id: "show-ai-assistance",
+                                label: "AI Assistance",
+                                contextMenuGroupId: "navigation",
                                 contextMenuOrder: 1,
                                 run: function (editor) {
-                                    const currentPosition = editor.getPosition();
+                                    const currentPosition =
+                                        editor.getPosition();
                                     const model = editor.getModel();
-                                
+
                                     if (currentPosition && model) {
-                                      const codeAboveCursor = model.getValueInRange({
-                                        startLineNumber: 1,
-                                        startColumn: 1,
-                                        endLineNumber: currentPosition.lineNumber - 1,
-                                        endColumn: model.getLineMaxColumn(currentPosition.lineNumber - 1),
-                                      });
-                                
-                                      console.log('Code above cursor:', codeAboveCursor);
+                                        const codeAboveCursor =
+                                            model.getValueInRange({
+                                                startLineNumber: 1,
+                                                startColumn: 1,
+                                                endLineNumber:
+                                                    currentPosition.lineNumber -
+                                                    1,
+                                                endColumn:
+                                                    model.getLineMaxColumn(
+                                                        currentPosition.lineNumber -
+                                                            1
+                                                    ),
+                                            });
+
+                                        console.log(
+                                            "Code above cursor:",
+                                            codeAboveCursor
+                                        );
                                     }
                                 },
-                              });
+                            });
 
                             editor.onDidChangeModelContent((e) => {
                                 log(
@@ -143,7 +161,9 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                                     e
                                 );
 
-                                setKeyStrokes(prevKeyStrokes => prevKeyStrokes + 1);
+                                setKeyStrokes(
+                                    (prevKeyStrokes) => prevKeyStrokes + 1
+                                );
 
                                 retryOpeningLanguageClient();
 
@@ -259,16 +279,15 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (document.getElementById('game-over')) {
-              setOutput([]);
-              clearInterval(interval); 
+            if (document.getElementById("game-over")) {
+                setOutput([]);
+                clearInterval(interval);
             }
-          }, 1000); 
+        }, 1000);
         return () => {
             stopLanguageClient();
-            clearInterval(interval)
+            clearInterval(interval);
         };
-        
     }, []);
 
     const handleClickRun = () => {
@@ -299,26 +318,34 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             editor?.focus();
         }
 
-
-        setRunCodeLog([...runCodeLog, 
+        setRunCodeLog([
+            ...runCodeLog,
             {
                 type: "run code from baseline",
                 "code-that-was-executed": editor?.getValue(),
                 "test-inputs-outputs": loggedIO,
-                "strockes_counter": keyStrokes,
-            }
+                strockes_counter: keyStrokes,
+            },
         ]);
 
         apiLogEvents(
             context?.token,
             props.taskId,
             "run code from baseline",
-            runCodeLog,
-          )
+            runCodeLog
+        )
             .then(() => {})
             .catch((error) => {
                 logError("sendLog: " + error.toString());
-        });
+            });
+    };
+
+    const handleSocketReconnect = () => {
+        if (context?.token) {
+            setSocket(null);
+
+            setSocket(connectSocket(context?.token));
+        }
     };
 
     const handleClickReset = () => {
@@ -328,7 +355,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const handleClickUndo = () => {
         editor?.trigger("myapp", "undo", {});
     };
-
 
     const handleClickSave = () => {
         const code = editor?.getValue();
@@ -361,10 +387,20 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         <Fragment>
                             {" "}
                             <div className="code-container-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
-                            </svg>
-
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="white"
+                                    className="w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z"
+                                    />
+                                </svg>
                             </div>
                         </Fragment>
                         Console Input and Output
@@ -387,6 +423,12 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                             Next Task
                         </button> */}
                     </div>
+                    <button
+                        // className={`editor-button-purple`}
+                        onClick={handleSocketReconnect}
+                    >
+                        ReConnect
+                    </button>
                     <button
                         className={`editor-button ${
                             running ? "stop-button" : "run-button"
@@ -476,7 +518,14 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            {!excution && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask}/>}
+            {!excution && (
+                <Baseline
+                    editor={editor}
+                    taskID={props.taskId}
+                    task={props.description}
+                    moveOn={setNextTask}
+                />
+            )}
         </Fragment>
     );
 });
