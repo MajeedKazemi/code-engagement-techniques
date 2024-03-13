@@ -196,6 +196,7 @@ export const CodingTask = (props: CodingTaskProps) => {
             </section> */}
 
             <Editor
+                type={props.taskType}
                 ref={editorRef}
                 technique={props.technique? props.technique : "baseline"}
                 taskId={props.taskId}

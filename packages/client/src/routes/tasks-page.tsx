@@ -34,6 +34,7 @@ export const TasksPage = () => {
         switch (task.type) {
             case TaskType.Authoring:
             case TaskType.Modifying:
+            case TaskType.Coding:
                 return (
                     <CodingTask
                         key={task.id}

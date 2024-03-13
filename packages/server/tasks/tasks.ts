@@ -6,6 +6,7 @@ export enum TaskType {
     ShortAnswer = "shortAnswer",
     MultipleChoice = "multipleChoice",
     WatchVideo = "watchVideo",
+    Coding = "coding",
 }
 
 export interface IUserTask {
@@ -122,6 +123,33 @@ export class AuthoringTask extends Task {
     }
 }
 
+export class ManualCodingTask extends Task {
+
+    starterCode: string;
+    constructor(
+        id: string,
+        description: string,
+        starterCode: string,
+    ) {
+      super(id, description, TaskType.Coding);
+
+      this.starterCode = starterCode;
+    }
+
+    checkCode(code: string): CodeCheckResult {
+        if (code.length > 10) {
+            return {
+                passed: true,
+            };
+        } else {
+            return {
+                passed: false,
+                message: "code is too short",
+            };
+        }
+    }
+}
+
 export class ModifyingTask extends Task {
     starterCode: string;
     timeLimit: number;
@@ -208,6 +236,7 @@ export enum TaskStage {
 }
 
 export const CodingTasks = [
+
     new AuthoringTask(
       "1w",
       "write a function called `reverse_stack` that receives a stack and reverses it using another temporary stack.",
@@ -1876,6 +1905,32 @@ print('Sum of even numbers:', result)`,
 ],
 "",
 ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// coding tasks for evaluations
+new ManualCodingTask(
+  "mc1",
+  "def calculate_rainwater_potential(rain: list[int]) -> list[int]:",
+`def calculate_rainwater_potential(rain: list[int]) -> list[int]:`,
+),
+new ManualCodingTask(
+  "mc2",
+  "def generate_dna_sequences(length: int):",
+  'def generate_dna_sequences(length: int):',
+)
 
     // new AuthoringTask(
     //     "1a",

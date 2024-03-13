@@ -20,6 +20,7 @@ import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
 
 interface EditorProps {
+    type: string;
     taskId: string;
     starterCode: string;
     technique: string;
@@ -180,6 +181,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
 
         return () => editor?.dispose();
     }, [monacoEl.current]);
+
 
     useEffect(() => {
         socket?.on("python", (data: any) => {
@@ -353,10 +355,10 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
 
     return (
         <Fragment>
-            <section className="task-workspace">
+            <section className={`task-workspace ${props.type=='coding' ? 'coding-task-workspace' : ''}`}>
                 <div className="overlay"></div>
-                <div className="editor" ref={monacoEl}></div>
-                <div className="editor-buttons-container">
+                <div className={`editor ${props.type=='coding' ? 'coding-task-workspace' : ''}`} ref={monacoEl}></div>
+                <div className={`editor-buttons-container ${props.type=='coding' ? 'coding-task-workspace' : ''}`}>
                     <div className="quick-editing-buttons-container">
                         <Fragment>
                             {" "}
@@ -416,7 +418,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         )}
                     </button>
                 </div>
-                <div className="output">
+                <div className={`output ${props.type=='coding' ? 'coding-task-workspace' : ''}`}>
                     {output.map((i, index) => (
                         <p
                             className={
@@ -476,7 +478,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            {!excution && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask} technique={props.technique}/>}
+            {!excution && props.type != 'coding' && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask} technique={props.technique}/>}
         </Fragment>
     );
 });
