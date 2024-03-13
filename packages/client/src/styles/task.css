@@ -174,11 +174,10 @@
     line-height: 16px;
     font-weight: 500;
     margin: 0;
-    padding: 12px;
+    padding: 5px;
     color: black;
     border: rgba(231,233,145,1) 4px solid;
     border-radius: 6px;
-    margin-top: 12px;
     margin-bottom: 12px;
     height: 40px;
 }

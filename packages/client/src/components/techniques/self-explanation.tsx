@@ -66,6 +66,9 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
             { correct: false, text: answer["incorrect-choice-3"] },
           ]);
 
+          console.log(lines);
+          console.log(revealLines);
+
           return {
             type: item.type,
             question: item.question,
@@ -506,6 +509,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                     AI Assistance:
                 </div>
                 <div className="modal-body">
+                  <div className="prompt-text"><span className='button-span'>Prompt:</span> {prompt}</div>
                   {/* <p>
                     <b>Prompts: </b> {prompt}
                   </p> */}
@@ -521,7 +525,17 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                   )}
                 </div>
                 <div className="modal-footer">
+                {passed && 
+                <>
+                <div className='continue-next-task-message'>
+                Great job! Press <span className='button-span'> Return to Editor </span> to go back and test the AI-generated code!
+                </div>
                 <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                    Return to Editor
+                </button>
+                </>
+                }
+                {/* <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
                     Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
@@ -537,7 +551,7 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                         </div>
                         </div>
                       </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             )}

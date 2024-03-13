@@ -361,7 +361,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
 
     useEffect(() => {
         if (excutionSteps.length > 0 && currentStep < excutionSteps.length) {
-          setCurrStep(excutionSteps[currentStep]);
+          setCurrStep(excutionSteps[currentStep+1]);
         }
         // const targetDivs = document.getElementsByClassName('step-by-step-questions-container');
         if (questionStop === currentStep && currentStep > 1) {
@@ -519,7 +519,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
         const currentQuestion = questions[index];
         if(currentQuestion){
             let currStep = currentQuestion.step;
-            let currFrame = excutionSteps[currStep-1].frame;
+            let currFrame = excutionSteps[currStep+1].frame;
             let currVariable = currentQuestion.variable;
             let currValue = currFrame.find(item => item.name === currVariable)?.value;
             if(typeof currValue != 'number'){
@@ -555,7 +555,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                 </div>
             </div>
 
-            <div className={`step-by-step-timeline-container ${isOnStop ? 'inactive' : ''}`}>
+            <div className={`step-by-step-timeline-container`}>
                 <div className='legend'>
                     {questionStop >= excutionSteps.length-1 && <span id="game-over" style={{opacity:0}}>Game Over</span>}
                     {questionStop >= excutionSteps.length-1 && <span id="send-log" style={{opacity:0}}>send-log</span>}

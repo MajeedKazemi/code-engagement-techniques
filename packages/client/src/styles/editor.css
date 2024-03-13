@@ -182,6 +182,10 @@
     width: 55vw;
 }
 
+.coding-task-workspace {
+    width: calc(100vw - 48px);
+}
+
 .read-only-editor {
     min-height: 100px;
     height: 30vh;

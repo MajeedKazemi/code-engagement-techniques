@@ -3,6 +3,8 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: calc(70vh  - 4rem);
+    overflow-y: scroll;
 }
   .writeover-code-reader {
     padding: 1rem;
@@ -67,7 +69,9 @@
 }
 
 .explanation-write-over {
+  font-size: 18px;
   padding: 10px;
+  z-index: 99;
 }
 /* .text-span {
   height: 100%;
@@ -136,6 +140,7 @@
 
 .write-over-container {
     width: 100%;
+    z-index: 99;
 }
 
 .remaining-text {
@@ -179,6 +184,19 @@
     color:#008c85;
 }
 
+.write-over-reset-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.write-over-reset-text {
+  background-color: #4edfd8;
+  padding: 5px;
+  border-radius: 15px;
+}
+
 
 .write-over-wrapper .string-writeover{
     color: red;
@@ -189,14 +207,18 @@
 }
 
 .write-over-explanation{
-    font-size: 14px;
+    font-size: 16px;
     background-color: rgba(204, 202, 202, 0.593);
     padding: 5px;
     border-radius: 15px;
     margin-top: 5px;
     max-width: 20%;
     z-index: 99;
-    position: fixed;
+    /* position: fixed; */
+}
+
+.write-over-reset-button {
+  float: right;
 }
 
 .hoverable-writeover-icon{

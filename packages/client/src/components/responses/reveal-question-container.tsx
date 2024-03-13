@@ -30,13 +30,33 @@ function RevealQuestionComponent({data, taskID}: {data: QuestionInterface[], tas
     const [lastAnswered, setLastAnswered] = useState(new Array(data.length).fill(false));
     const [reachedMax, setReachedMax] = useState(new Array(data.length).fill(false));
     const [questionAnsweredTimes, setQuestionAnsweredTimes] = useState(new Array(data.length).fill({currentTime: 0, currentAnswer: ""}));
+    const [count, setCount] = useState(5);
+
+    useEffect(() => {
+        let counter = null;
+        if(isWaitingForNextAttempt) {
+          counter = setInterval(() => {
+            setCount(prevCount => prevCount > 0 ? prevCount - 1 : 0);
+          }, 1000); 
+        }
+    
+        return () => {
+          clearInterval(counter!);
+        }
+      }, [isWaitingForNextAttempt]);
+    
+      useEffect(() => {
+        if(count === 0) {
+          setIsWaitingForNextAttempt(false);
+        }
+      }, [count]);
 
     useEffect(() => {
         let timer: number | undefined;
         if (isWaitingForNextAttempt) {
             timer = setTimeout(() => {
                 setIsWaitingForNextAttempt(false);
-            }, 10000);
+            }, 5000);
         }
         return () => {
             clearTimeout(timer);
@@ -139,6 +159,7 @@ function RevealQuestionComponent({data, taskID}: {data: QuestionInterface[], tas
         }
 
         setIsWaitingForNextAttempt(true);
+        setCount(5);
         
     };
 
@@ -158,13 +179,14 @@ function RevealQuestionComponent({data, taskID}: {data: QuestionInterface[], tas
             <div className='reveal-subgoal-container'>
                 <div className={`reveal-question-container ${index <= currentQuestionIndex ? 'active' : ''} ${index < currentQuestionIndex ? 'answered' : ''}`} key={`rq${index}`}>
                     <h1>{question.title}</h1>
-                    <div className='reveal-question-content-container'><b>Q: </b> 
+                    <div className='reveal-question-content-container'><b>Question: </b> 
                         <p className='reveal-question-content'>{question.question}</p>
                     </div>
                     <>
                     {!reachedMax[index] &&
                     <>
                         <div className={`reveal-select-all`}>
+                        {isWaitingForNextAttempt && <div className="reveal-waiting-for-next-attempt"><p>You may retry in {count} seconds</p></div>}
                         {question.choices!.map((choice, i) => (
                             <div className={isWaitingForNextAttempt ? "reveal-select-container disabled" : "reveal-select-container"} key={`${index}details${i}`} onClick={() => handleSelect(choice.correct, index, choice.text)}>
                                 <div className='reveal-select-dot'></div>

@@ -419,6 +419,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                     AI Assistance:
                 </div>
                 <div className="modal-body">
+                  <div className="prompt-text"><span className='button-span'>Prompt:</span> {prompt}</div>
                   {/* <p>
                     <b>Prompts: </b> {prompt}
                   </p> */}
@@ -435,7 +436,17 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                   )}
                 </div>
                 <div className="modal-footer">
+                {buttonClickOver && 
+                <>
+                <div className='continue-next-task-message'>
+                Great job! Press <span className='button-span'> Return to Editor </span> to go back and test the AI-generated code!
+                </div>
                 <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                    Return to Editor
+                </button>
+                </>
+                }
+                {/* <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
                     Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
@@ -451,7 +462,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                         </div>
                         </div>
                       </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             )}

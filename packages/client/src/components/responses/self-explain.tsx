@@ -46,12 +46,32 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
     const [correctAnswer, setCorrectAnswer] = useState(new Array(questions.length).fill(""));
     const [revealAnswer, setRevealAnswer] = useState(new Array(questions.length).fill(false));
     const [questionAnsweredTimes, setQuestionAnsweredTimes] = useState(new Array(questions.length).fill({currentTime: 0, currentAnswer: ""}));
+    const [count, setCount] = useState(5);
     const [isDisabled, setIsDisabled] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [reachedMax, setReachedMax] = useState(new Array(questions.length).fill(false));
     const [feedback, setFeedback] = useState(new Array(questions.length).fill(""));
 
     const editorInstances = useRef<(monaco.editor.IStandaloneCodeEditor | null)[]>([]);
+
+    useEffect(() => {
+        let counter = null;
+        if(isDisabled) {
+          counter = setInterval(() => {
+            setCount(prevCount => prevCount > 0 ? prevCount - 1 : 0);
+          }, 1000); 
+        }
+    
+        return () => {
+          clearInterval(counter!);
+        }
+      }, [isDisabled]);
+    
+      useEffect(() => {
+        if(count === 0) {
+            setIsDisabled(false);
+        }
+      }, [count]);
     
     // useEffect(() => {
     //    console.log(questions);
@@ -253,6 +273,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
         }
 
         setIsDisabled(true);
+        setCount(5);
 
     };
 
@@ -261,7 +282,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
         if (isDisabled) {
             timer = setTimeout(() => {
                 setIsDisabled(false);
-            }, 10000);
+            }, 5000);
         }
         return () => {
             clearTimeout(timer);
@@ -409,7 +430,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>
@@ -422,7 +443,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>
@@ -435,6 +456,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
                                     {!reachedMax[index] &&
                                     <>
                                         <div className={`self-explain-mc-container`}>
+                                        {isDisabled && <div className="reveal-waiting-for-next-attempt"><p>You may retry in {count} seconds</p></div>}
                                         {question.choices!.map((choice, i) => (
                                             <div className={isDisabled ? "reveal-select-container disabled" : "reveal-select-container"} key={`${index}details${i}`} onClick={() => handleSelect(choice.correct, index, choice.text)}>
                                                 <div className='reveal-select-dot'></div>
@@ -446,7 +468,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>
@@ -468,7 +490,7 @@ export const SelfExplain: React.FC<SelfExplainProps> = ({ code, questions, taskI
                                         {/* show the current code the question refering to */}
                                         <div className={`code-self-explain-container`} id={`code-container${index}`}>
                                             {question.questionCodeLines.split('\n').map((line, i) =>
-                                                <HighlightedPart part={line} />
+                                                <HighlightedPartWithoutTab part={line} />
                                             )}
                                         </div>
                                     </>

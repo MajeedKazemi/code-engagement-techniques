@@ -1,6 +1,12 @@
 export enum EditorType {
-    Intellisense = "intellisense",
-    Copilot = "copilot",
+    baseline = "baseline",
+    pseudo = "pseudo",
+    parsons = "parsons",
+    writeover = "writeover",
+    selfexplain = "selfexplain",
+    stepByStep = "stepByStep",
+    verify = "verify",
+    leadReveal = "leadReveal",
 }
 
 export enum TaskType {
@@ -9,4 +15,5 @@ export enum TaskType {
     ShortAnswer = "shortAnswer",
     MultipleChoice = "multipleChoice",
     WatchVideo = "watchVideo",
+    Coding = "coding",
 }

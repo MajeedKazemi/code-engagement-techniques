@@ -34,6 +34,7 @@ export const TasksPage = () => {
         switch (task.type) {
             case TaskType.Authoring:
             case TaskType.Modifying:
+            case TaskType.Coding:
                 return (
                     <CodingTask
                         key={task.id}
@@ -48,9 +49,8 @@ export const TasksPage = () => {
                                 : task.starterCode
                         }
                         onCompletion={setNextTask}
-                        showCodex={
-                            task.type === TaskType.Authoring &&
-                            context?.user?.editorType === "copilot"
+                        technique={
+                            context?.user?.editorType ? context.user.editorType : ""
                         }
                         taskType={task.type}
                     ></CodingTask>

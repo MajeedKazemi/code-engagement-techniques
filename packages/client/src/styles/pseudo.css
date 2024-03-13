@@ -13,6 +13,9 @@
    width: 40%; 
 }
 
+.verifying-button {
+    background-color: rgb(234, 118, 234) !important;
+}
 
 .hoverable-code-hint-level-1 .default-inline {
     color: black;
@@ -51,11 +54,21 @@
     padding: 12px 0 12px 0;
     overflow-y: scroll;
     width: 100%;
-    height: calc(100% - 28px - 40vh - 2.5rem - 50px);
+    height: calc(100% - 28px - 40vh - 5.5rem - 50px);
 }
 
 .pseudocode-verify-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     height: 50px !important;
+}
+
+.pseudocode-verify-button-container span{
+    color:green;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .modal-body p {
@@ -91,6 +104,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
 }
 
 .hoverable-code-line-container {
@@ -126,6 +140,11 @@
 
 .hoverable-code-line-container:hover {
     border-radius: 12px;
+}
+
+.hoverable-code{
+    padding: 0.5rem !important;
+    font-size: 18px;
 }
 
 .hoverable-code-line-container .exp-inline-code {
@@ -165,6 +184,7 @@
 .hoverable-code-hint-level-2 {
     background-color: rgba(170,172,216,255);
     padding-left: 12px;
+    user-select: none;
 }
 
 .hoverable-code-hint-level-1 {

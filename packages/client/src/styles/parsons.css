@@ -60,6 +60,7 @@
   .modal-body {
     padding: 2rem 2rem;
     height: calc(100% - 9.5rem);
+    overflow-y: scroll;
   }
   
   .modal-footer {
@@ -96,6 +97,7 @@
 
     cursor: pointer;
     padding: 0 20px;
+    width: 200px;
   }
   
   .btn {
@@ -139,7 +141,7 @@
 .parsons-problem {
     display: flex;
     overflow: scroll;
-    height: calc(100% - 64px - 2rem);
+    height: calc(100% - 40px - 6rem);
 }
 
 .parsons-game-0  {

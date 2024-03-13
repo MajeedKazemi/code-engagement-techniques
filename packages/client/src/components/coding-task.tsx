@@ -17,7 +17,7 @@ interface CodingTaskProps {
     starterCode?: string;
 
     taskType: TaskType;
-    showCodex: boolean;
+    technique: string;
 
     onCompletion: () => void;
 }
@@ -196,8 +196,9 @@ export const CodingTask = (props: CodingTaskProps) => {
             </section> */}
 
             <Editor
+                type={props.taskType}
                 ref={editorRef}
-                showCodex={props.showCodex}
+                technique={props.technique? props.technique : "baseline"}
                 taskId={props.taskId}
                 starterCode={props.starterCode ? props.starterCode : ""}
                 updateCode={setUserCode}

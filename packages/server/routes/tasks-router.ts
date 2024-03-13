@@ -4,7 +4,7 @@ import { IUser } from "../models/user";
 import { UserTaskModel } from "../models/user-task";
 import {
     AuthoringTask,
-    CodingTasks,
+    ManualCodingTask,
     getNextTask,
     getTaskFromTaskId,
     getTaskSequenceFromTaskId,
@@ -108,7 +108,7 @@ tasksRouter.post("/eval-code", verifyUser, (req, res, next) => {
     if (userId !== undefined && taskId !== undefined) {
         const task = getTaskFromTaskId(taskId);
 
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+        if (task instanceof AuthoringTask || task instanceof ModifyingTask || task instanceof ManualCodingTask) {
             if (data !== undefined && data.code === undefined) {
                 res.statusCode = 500;
                 res.send({ message: `Missing code: ${data.code}` });
@@ -162,7 +162,7 @@ tasksRouter.get("/grading-status/:taskId", verifyUser, (req, res, next) => {
     if (userId !== undefined && taskId !== undefined) {
         const task = getTaskFromTaskId(taskId);
 
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+        if (task instanceof AuthoringTask || task instanceof ModifyingTask || task instanceof ManualCodingTask) {
             UserTaskModel.findOne({ userId, taskId }).then((userTask) => {
                 if (userTask) {
                     res.send({
@@ -199,7 +199,7 @@ tasksRouter.post("/submit", verifyUser, (req, res, next) => {
     if (userId !== undefined && taskId !== undefined) {
         const task = getTaskFromTaskId(taskId);
 
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+        if (task instanceof AuthoringTask || task instanceof ModifyingTask || task instanceof ManualCodingTask) {
             UserTaskModel.findOne({ userId, taskId }).then((userTask) => {
                 if (userTask) {
                     userTask.finishedAt = finishedAt;
@@ -322,7 +322,7 @@ tasksRouter.post("/log", verifyUser, (req, res, next) => {
     if (userId !== undefined && taskId !== undefined) {
         const task = getTaskFromTaskId(taskId);
 
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+        if (task instanceof AuthoringTask || task instanceof ModifyingTask || task instanceof ManualCodingTask) {
             UserTaskModel.findOne({ userId, taskId }).then((userTask) => {
                 if (userTask) {
                     if (userTask.log === undefined || userTask.log === null) {
@@ -365,7 +365,7 @@ tasksRouter.post("/save-code", verifyUser, (req, res, next) => {
     if (userId !== undefined && taskId !== undefined) {
         const task = getTaskFromTaskId(taskId);
 
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+        if (task instanceof AuthoringTask || task instanceof ModifyingTask || task instanceof ManualCodingTask) {
             UserTaskModel.findOne({ userId, taskId }).then((userTask) => {
                 if (userTask) {
                     userTask.savedCode = code;
@@ -414,7 +414,7 @@ tasksRouter.get("/get-saved-code/:taskId", verifyUser, (req, res, next) => {
     if (userId !== undefined && taskId !== undefined) {
         const task = getTaskFromTaskId(taskId);
 
-        if (task instanceof AuthoringTask || task instanceof ModifyingTask) {
+        if (task instanceof AuthoringTask || task instanceof ModifyingTask || task instanceof ManualCodingTask) {
             UserTaskModel.findOne({ userId, taskId }).then((userTask) => {
                 if (userTask) {
                     res.send({
