@@ -45,14 +45,17 @@ const UserTaskSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        index: true,
     },
     userId: {
         type: String,
         required: true,
+        index: true,
     },
     taskId: {
         type: String,
         required: true,
+        index: true,
     },
     startedAt: {
         type: Date,
