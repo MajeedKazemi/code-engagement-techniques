@@ -2049,197 +2049,247 @@ print(longest_valid_brackets('()(()))))'))
               }
           }
   },
-{
-  "subgoals": [
-    {
-      "title": "Function Definition",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should be the input to our function?",
-              "correct-choice": "A string of parentheses",
-              "incorrect-choice-1": "A list of parentheses",
-              "incorrect-choice-2": "A tuple of parentheses",
-              "incorrect-choice-3": "A dictionary of parentheses"
-            }
-          ],
-          "code-lines-to-be-revealed": [1]
-        }
-      ]
-    },
-    {
-      "title": "Initialize Variables",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What data structure can we use to map opening brackets to their corresponding closing brackets?",
-              "correct-choice": "Dictionary",
-              "incorrect-choice-1": "List",
-              "incorrect-choice-2": "Tuple",
-              "incorrect-choice-3": "Set"
-            }
-          ],
-          "code-lines-to-be-revealed": [2]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What data structure can we use to keep track of the indices of the opening brackets?",
-              "correct-choice": "Stack (represented as a list)",
-              "incorrect-choice-1": "Queue",
-              "incorrect-choice-2": "Dictionary",
-              "incorrect-choice-3": "Set"
-            }
-          ],
-          "code-lines-to-be-revealed": [3]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What variable can we use to keep track of the maximum length of valid parentheses substring?",
-              "correct-choice": "An integer variable",
-              "incorrect-choice-1": "A list",
-              "incorrect-choice-2": "A dictionary",
-              "incorrect-choice-3": "A set"
-            }
-          ],
-          "code-lines-to-be-revealed": [4]
-        }
-      ]
-    },
-    {
-      "title": "Iterate Over String",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How can we iterate over the string while keeping track of the index of each character?",
-              "correct-choice": "Using the enumerate function",
-              "incorrect-choice-1": "Using a while loop",
-              "incorrect-choice-2": "Using the range function",
-              "incorrect-choice-3": "Using a for loop without enumerate"
-            }
-          ],
-          "code-lines-to-be-revealed": [5]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How can we check if a character is an opening bracket?",
-              "correct-choice": "Check if the character is in the map",
-              "incorrect-choice-1": "Check if the character is not in the map",
-              "incorrect-choice-2": "Check if the character is in the stack",
-              "incorrect-choice-3": "Check if the character is not in the stack"
-            }
-          ],
-          "code-lines-to-be-revealed": [6]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if the character is an opening bracket?",
-              "correct-choice": "Append the index to the stack",
-              "incorrect-choice-1": "Append the character to the stack",
-              "incorrect-choice-2": "Pop the stack",
-              "incorrect-choice-3": "Do nothing"
-            }
-          ],
-          "code-lines-to-be-revealed": [7]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if the character is not an opening bracket?",
-              "correct-choice": "Check if the stack is not empty",
-              "incorrect-choice-1": "Append the index to the stack",
-              "incorrect-choice-2": "Pop the stack",
-              "incorrect-choice-3": "Do nothing"
-            }
-          ],
-          "code-lines-to-be-revealed": [8, 9]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How can we check if the last item in the stack is an opening bracket?",
-              "correct-choice": "Check if the last item in the stack is not -1 and is in the map",
-              "incorrect-choice-1": "Check if the last item in the stack is -1",
-              "incorrect-choice-2": "Check if the last item in the stack is not in the map",
-              "incorrect-choice-3": "Check if the last item in the stack is in the stack"
-            }
-          ],
-          "code-lines-to-be-revealed": [10]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How can we check if the last item in the stack is a match for the current character?",
-              "correct-choice": "Check if the last item in the stack is an opening bracket and its corresponding closing bracket is the current character",
-              "incorrect-choice-1": "Check if the last item in the stack is the current character",
-              "incorrect-choice-2": "Check if the last item in the stack is not the current character",
-              "incorrect-choice-3": "Check if the last item in the stack is not an opening bracket"
-            }
-          ],
-          "code-lines-to-be-revealed": [11]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if the stack is not empty and the last item in the stack is a match for the current character?",
-              "correct-choice": "Pop the stack",
-              "incorrect-choice-1": "Append the index to the stack",
-              "incorrect-choice-2": "Do nothing",
-              "incorrect-choice-3": "Leave the stack as it is"
-            }
-          ],
-          "code-lines-to-be-revealed": [12]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do after popping the stack?",
-              "correct-choice": "Update the maximum length",
-              "incorrect-choice-1": "Append the index to the stack",
-              "incorrect-choice-2": "Do nothing",
-              "incorrect-choice-3": "Pop the stack again"
-            }
-          ],
-          "code-lines-to-be-revealed": [13, 14]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if the stack is empty or the last item in the stack is not a match for the current character?",
-              "correct-choice": "Update the last item in the stack to be the current index",
-              "incorrect-choice-1": "Append the index to the stack",
-              "incorrect-choice-2": "Pop the stack",
-              "incorrect-choice-3": "Do nothing"
-            }
-          ],
-          "code-lines-to-be-revealed": [15, 16]
-        }
-      ]
-    },
-    {
-      "title": "Return Result",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we return as the result?",
-              "correct-choice": "The maximum length",
-              "incorrect-choice-1": "The stack",
-              "incorrect-choice-2": "The map",
-              "incorrect-choice-3": "The string"
-            }
-          ],
-          "code-lines-to-be-revealed": [17]
-        }
-      ]
-    }
-  ]
+  {
+    "subgoals": [
+      {
+        "title": "Function Definition",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What is the appropriate data type for the input of the function?",
+                "correct-choice": "String",
+                "incorrect-choice-1": "List of strings",
+                "incorrect-choice-2": "Integer",
+                "incorrect-choice-3": "List of integers"
+              }
+            ],
+            "code-lines-to-be-revealed": [1]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Map",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What data structure is suitable for mapping open brackets to their corresponding close brackets?",
+                "correct-choice": "Dictionary",
+                "incorrect-choice-1": "List",
+                "incorrect-choice-2": "Set",
+                "incorrect-choice-3": "Tuple"
+              }
+            ],
+            "code-lines-to-be-revealed": [2]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Stack",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the initial value of the stack?",
+                "correct-choice": "[-1]",
+                "incorrect-choice-1": "[0]",
+                "incorrect-choice-2": "[]",
+                "incorrect-choice-3": "[1]"
+              }
+            ],
+            "code-lines-to-be-revealed": [3]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Max Length",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the initial value of the max length?",
+                "correct-choice": "0",
+                "incorrect-choice-1": "1",
+                "incorrect-choice-2": "-1",
+                "incorrect-choice-3": "The length of the string"
+              }
+            ],
+            "code-lines-to-be-revealed": [4]
+          }
+        ]
+      },
+      {
+        "title": "Iterate Over Characters",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How many times should we iterate over the characters?",
+                "correct-choice": "The length of the string",
+                "incorrect-choice-1": "The length of the string minus 1",
+                "incorrect-choice-2": "The length of the string plus 1",
+                "incorrect-choice-3": "Twice the length of the string"
+              }
+            ],
+            "code-lines-to-be-revealed": [5]
+          }
+        ]
+      },
+      {
+        "title": "Check If Character Is Open Bracket",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How can we check if a character is an open bracket?",
+                "correct-choice": "If the character is in the map",
+                "incorrect-choice-1": "If the character is not in the map",
+                "incorrect-choice-2": "If the character is equal to '(' or '['",
+                "incorrect-choice-3": "If the character is equal to ')' or ']'"
+              }
+            ],
+            "code-lines-to-be-revealed": [6]
+          }
+        ]
+      },
+      {
+        "title": "Append Index to Stack",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should we append to the stack if a character is an open bracket?",
+                "correct-choice": "The index of the character",
+                "incorrect-choice-1": "The character itself",
+                "incorrect-choice-2": "The corresponding close bracket",
+                "incorrect-choice-3": "The index of the character plus 1"
+              }
+            ],
+            "code-lines-to-be-revealed": [7]
+          }
+        ]
+      },
+      {
+        "title": "Check If Stack Is Not Empty",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How can we check if the stack is not empty?",
+                "correct-choice": "If the length of the stack is greater than 1",
+                "incorrect-choice-1": "If the length of the stack is less than 1",
+                "incorrect-choice-2": "If the length of the stack is equal to 1",
+                "incorrect-choice-3": "If the length of the stack is equal to 0"
+              }
+            ],
+            "code-lines-to-be-revealed": [8, 9]
+          }
+        ]
+      },
+      {
+        "title": "Check If Last Character Is Open Bracket",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How can we check if the last character in the stack is an open bracket?",
+                "correct-choice": "If the last character in the stack is in the map",
+                "incorrect-choice-1": "If the last character in the stack is not in the map",
+                "incorrect-choice-2": "If the last character in the stack is equal to '(' or '['",
+                "incorrect-choice-3": "If the last character in the stack is equal to ')' or ']'"
+              }
+            ],
+            "code-lines-to-be-revealed": [10]
+          }
+        ]
+      },
+      {
+        "title": "Check If Character Matches Last Open Bracket",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How can we check if a character matches the last open bracket in the stack?",
+                "correct-choice": "If the character is equal to the value of the last open bracket in the map",
+                "incorrect-choice-1": "If the character is not equal to the value of the last open bracket in the map",
+                "incorrect-choice-2": "If the character is equal to the last open bracket",
+                "incorrect-choice-3": "If the character is not equal to the last open bracket"
+              }
+            ],
+            "code-lines-to-be-revealed": [11, 12]
+          }
+        ]
+      },
+      {
+        "title": "Remove Last Open Bracket",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should we do if a character matches the last open bracket in the stack?",
+                "correct-choice": "Remove the last open bracket from the stack",
+                "incorrect-choice-1": "Append the character to the stack",
+                "incorrect-choice-2": "Remove the character from the string",
+                "incorrect-choice-3": "Append the index of the character to the stack"
+              }
+            ],
+            "code-lines-to-be-revealed": [13]
+          }
+        ]
+      },
+      {
+        "title": "Update Max Length",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How can we update the max length?",
+                "correct-choice": "Set it to the maximum of the current max length and the difference between the current index and the last index in the stack",
+                "incorrect-choice-1": "Set it to the minimum of the current max length and the difference between the current index and the last index in the stack",
+                "incorrect-choice-2": "Set it to the current index minus the last index in the stack",
+                "incorrect-choice-3": "Set it to the current index plus the last index in the stack"
+              }
+            ],
+            "code-lines-to-be-revealed": [14]
+          }
+        ]
+      },
+      {
+        "title": "Update Last Index",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should we do if a character does not match the last open bracket in the stack or the stack is empty?",
+                "correct-choice": "Set the last index in the stack to the current index",
+                "incorrect-choice-1": "Append the current index to the stack",
+                "incorrect-choice-2": "Remove the last index from the stack",
+                "incorrect-choice-3": "Set the last index in the stack to the current index plus 1"
+              }
+            ],
+            "code-lines-to-be-revealed": [15, 16]
+          }
+        ]
+      },
+      {
+        "title": "Return Max Length",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should the function return?",
+                "correct-choice": "The max length",
+                "incorrect-choice-1": "The string",
+                "incorrect-choice-2": "The stack",
+                "incorrect-choice-3": "The map"
+              }
+            ],
+            "code-lines-to-be-revealed": [17]
+          }
+        ]
+      }
+    ]
 },
 [
   {
@@ -3550,11 +3600,11 @@ print(dna_sequences('ANT'))
           {
             "leading-questions": [
               {
-                "mcq-question": "What should be the input to the function?",
-                "correct-choice": "A string representing the DNA pattern",
-                "incorrect-choice-1": "A list of DNA sequences",
-                "incorrect-choice-2": "A list of DNA bases",
-                "incorrect-choice-3": "A dictionary of DNA bases"
+                "mcq-question": "What is the appropriate data type for the input of the function?",
+                "correct-choice": "String",
+                "incorrect-choice-1": "List of strings",
+                "incorrect-choice-2": "Integer",
+                "incorrect-choice-3": "List of integers"
               }
             ],
             "code-lines-to-be-revealed": [1]
@@ -3562,153 +3612,169 @@ print(dna_sequences('ANT'))
         ]
       },
       {
-        "title": "Initialize Variables",
+        "title": "Initialize DNA Characters",
         "sub-subgoal-items": [
           {
             "leading-questions": [
               {
-                "mcq-question": "What are the possible DNA bases?",
+                "mcq-question": "What are the possible characters in a DNA sequence?",
                 "correct-choice": "A, C, G, T",
                 "incorrect-choice-1": "A, B, C, D",
-                "incorrect-choice-2": "A, C, G, N",
-                "incorrect-choice-3": "A, C, G, T, N"
+                "incorrect-choice-2": "1, 2, 3, 4",
+                "incorrect-choice-3": "N, S, E, W"
               }
             ],
             "code-lines-to-be-revealed": [2]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What data structure should be used to generate and explore all combinations of sequences?",
-                "correct-choice": "Queue",
-                "incorrect-choice-1": "Stack",
-                "incorrect-choice-2": "List",
-                "incorrect-choice-3": "Dictionary"
-              }
-            ],
-            "code-lines-to-be-revealed": [3]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the initial state of the queue?",
-                "correct-choice": "An empty string",
-                "incorrect-choice-1": "The input pattern",
-                "incorrect-choice-2": "A list of DNA bases",
-                "incorrect-choice-3": "None"
-              },
-              {
-                "mcq-question": "What data structure should be used to store the result?",
-                "correct-choice": "List",
-                "incorrect-choice-1": "Queue",
-                "incorrect-choice-2": "Stack",
-                "incorrect-choice-3": "Dictionary"
-              }
-            ],
-            "code-lines-to-be-revealed": [4]
           }
         ]
       },
       {
-        "title": "Generate Sequences",
+        "title": "Initialize Queue and Result List",
         "sub-subgoal-items": [
           {
             "leading-questions": [
               {
-                "mcq-question": "What condition should be checked to continue generating sequences?",
-                "correct-choice": "The queue is not empty",
-                "incorrect-choice-1": "The queue is empty",
-                "incorrect-choice-2": "The result list is not empty",
-                "incorrect-choice-3": "The result list is empty"
+                "mcq-question": "What should be the initial value of the queue and the result list?",
+                "correct-choice": "Empty list",
+                "incorrect-choice-1": "List containing the input pattern",
+                "incorrect-choice-2": "List containing the DNA characters",
+                "incorrect-choice-3": "None"
               }
             ],
-            "code-lines-to-be-revealed": [5]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How should the next sequence be obtained from the queue?",
-                "correct-choice": "By removing the first element",
-                "incorrect-choice-1": "By removing the last element",
-                "incorrect-choice-2": "By removing a random element",
-                "incorrect-choice-3": "By removing the middle element"
-              }
-            ],
-            "code-lines-to-be-revealed": [6]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What condition should be checked to add a sequence to the result list?",
-                "correct-choice": "The length of the sequence equals the length of the pattern",
-                "incorrect-choice-1": "The length of the sequence is less than the length of the pattern",
-                "incorrect-choice-2": "The length of the sequence is greater than the length of the pattern",
-                "incorrect-choice-3": "The length of the sequence is not equal to the length of the pattern"
-              }
-            ],
-            "code-lines-to-be-revealed": [7]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be done if the length of the sequence equals the length of the pattern?",
-                "correct-choice": "The sequence should be added to the result list",
-                "incorrect-choice-1": "The sequence should be added to the queue",
-                "incorrect-choice-2": "The sequence should be ignored",
-                "incorrect-choice-3": "The sequence should be removed from the queue"
-              }
-            ],
-            "code-lines-to-be-revealed": [8]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be done if the current character in the pattern is a wildcard?",
-                "correct-choice": "Add a new sequence to the queue for each possible DNA base",
-                "incorrect-choice-1": "Add the wildcard to the current sequence",
-                "incorrect-choice-2": "Ignore the wildcard",
-                "incorrect-choice-3": "Add a new sequence to the result list for each possible DNA base"
-              }
-            ],
-            "code-lines-to-be-revealed": [9, 10]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be done for each possible DNA base if the current character in the pattern is a wildcard?",
-                "correct-choice": "Add a new sequence to the queue",
-                "incorrect-choice-1": "Add a new sequence to the result list",
-                "incorrect-choice-2": "Ignore the DNA base",
-                "incorrect-choice-3": "Add the DNA base to the current sequence"
-              }
-            ],
-            "code-lines-to-be-revealed": [11, 12]
-          },
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be done if the current character in the pattern is not a wildcard?",
-                "correct-choice": "Add the current character to the current sequence and add the new sequence to the queue",
-                "incorrect-choice-1": "Add the current character to the current sequence and add the new sequence to the result list",
-                "incorrect-choice-2": "Ignore the current character",
-                "incorrect-choice-3": "Add a new sequence to the queue for each possible DNA base"
-              }
-            ],
-            "code-lines-to-be-revealed": [14]
+            "code-lines-to-be-revealed": [3, 4]
           }
         ]
       },
       {
-        "title": "Return Result",
+        "title": "Iterate Over Queue",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "When should we stop iterating over the queue?",
+                "correct-choice": "When the queue is empty",
+                "incorrect-choice-1": "When the queue is full",
+                "incorrect-choice-2": "When the queue contains the input pattern",
+                "incorrect-choice-3": "When the queue contains all DNA sequences"
+              }
+            ],
+            "code-lines-to-be-revealed": [5]
+          }
+        ]
+      },
+      {
+        "title": "Remove Sequence from Queue",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Which sequence should we remove from the queue?",
+                "correct-choice": "The first sequence",
+                "incorrect-choice-1": "The last sequence",
+                "incorrect-choice-2": "The sequence that matches the input pattern",
+                "incorrect-choice-3": "The sequence that contains all DNA characters"
+              }
+            ],
+            "code-lines-to-be-revealed": [6]
+          }
+        ]
+      },
+      {
+        "title": "Check Length of Sequence",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the length of a sequence before we add it to the result list?",
+                "correct-choice": "The length of the input pattern",
+                "incorrect-choice-1": "The length of the input pattern plus 1",
+                "incorrect-choice-2": "The length of the input pattern minus 1",
+                "incorrect-choice-3": "The length of the DNA characters"
+              }
+            ],
+            "code-lines-to-be-revealed": [7]
+          }
+        ]
+      },
+      {
+        "title": "Add Sequence to Result List",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "When should we add a sequence to the result list?",
+                "correct-choice": "When the length of the sequence is equal to the length of the input pattern",
+                "incorrect-choice-1": "When the length of the sequence is less than the length of the input pattern",
+                "incorrect-choice-2": "When the length of the sequence is greater than the length of the input pattern",
+                "incorrect-choice-3": "When the sequence contains all DNA characters"
+              }
+            ],
+            "code-lines-to-be-revealed": [8]
+          }
+        ]
+      },
+      {
+        "title": "Check Character in Pattern",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Which character in the input pattern should we check?",
+                "correct-choice": "The character at the position equal to the length of the sequence",
+                "incorrect-choice-1": "The first character",
+                "incorrect-choice-2": "The last character",
+                "incorrect-choice-3": "The character at the position equal to the length of the sequence plus 1"
+              }
+            ],
+            "code-lines-to-be-revealed": [9, 10]
+          }
+        ]
+      },
+      {
+        "title": "Append All DNA Characters to Sequence",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "When should we append all DNA characters to the sequence?",
+                "correct-choice": "When the character in the input pattern is 'N'",
+                "incorrect-choice-1": "When the character in the input pattern is a DNA character",
+                "incorrect-choice-2": "When the sequence is empty",
+                "incorrect-choice-3": "When the sequence contains all DNA characters"
+              }
+            ],
+            "code-lines-to-be-revealed": [11, 12]
+          }
+        ]
+      },
+      {
+        "title": "Append Character in Pattern to Sequence",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "When should we append the character in the input pattern to the sequence?",
+                "correct-choice": "When the character in the input pattern is a DNA character",
+                "incorrect-choice-1": "When the character in the input pattern is 'N'",
+                "incorrect-choice-2": "When the sequence is empty",
+                "incorrect-choice-3": "When the sequence contains all DNA characters"
+              }
+            ],
+            "code-lines-to-be-revealed": [13, 14]
+          }
+        ]
+      },
+      {
+        "title": "Return Result List",
         "sub-subgoal-items": [
           {
             "leading-questions": [
               {
                 "mcq-question": "What should the function return?",
-                "correct-choice": "The list of generated DNA sequences",
+                "correct-choice": "The list of DNA sequences",
                 "incorrect-choice-1": "The input pattern",
                 "incorrect-choice-2": "The queue",
-                "incorrect-choice-3": "The number of generated DNA sequences"
+                "incorrect-choice-3": "The length of the result list"
               }
             ],
             "code-lines-to-be-revealed": [15]
@@ -3716,7 +3782,7 @@ print(dna_sequences('ANT'))
         ]
       }
     ]
-  },
+},
 [
   {
       "step": 13,
