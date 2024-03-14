@@ -426,7 +426,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         </button> */}
                     </div>
                     <button
-                        // className={`editor-button-purple`}
+                        className={`editor-button`}
                         onClick={handleSocketReconnect}
                     >
                         ReConnect
