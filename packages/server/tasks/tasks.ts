@@ -614,6 +614,14 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e']))
   {
       "step": 8,
       "variable": "temp"
+  },
+  {
+    "step": 10,
+    "variable": "items"
+  },
+  {
+    "step": 12,
+    "variable": "temp"
   }
 ],
   ),
@@ -1420,16 +1428,28 @@ print(calculate_span([95, 90, 85]))
 },
 [
   {
-      "step": 6,
-      "variable": "i"
+    "step": 5,
+    "variable": "span"
   },
   {
-      "step": 10,
-      "variable": "stack"
+    "step": 9,
+    "variable": "stack"
   },
   {
-      "step": 19,
-      "variable": "span"
+    "step": 14,
+    "variable": "span"
+  },
+  {
+    "step": 15,
+    "variable": "stack"
+  },
+  {
+    "step": 18,
+    "variable": "span"
+  },
+  {
+    "step": 20,
+    "variable": "stack"
   }
 ],
   ),
@@ -2223,16 +2243,32 @@ print(longest_valid_brackets('()(()))))'))
 },
 [
   {
-      "step": 7,
-      "variable": "char"
+    "step": 5,
+    "variable": "stack",
   },
   {
-      "step": 10,
-      "variable": "stack"
+    "step": 7,
+    "variable": "char",
   },
   {
-      "step": 14,
-      "variable": "max_length"
+    "step": 12,
+    "variable": "char",
+  },
+  {
+    "step": 21,
+    "variable": "stack",
+  },
+  {
+    "step": 24,
+    "variable": "map",
+  },
+  {
+    "step": 31,
+    "variable": "stack",
+  },
+  {
+    "step": 39,
+    "variable": "map",
   }
 ],
   ),
@@ -2920,24 +2956,25 @@ print(binary_numbers(1, 2))
     ]
   },
 
-[
-  {
+  [
+    {
       "step": 7,
       "variable": "current"
-  },
-  {
+    },
+    {
       "step": 10,
-      "variable": "result"
-  },
-  {
-      "step": 15,
-      "variable": "current_int"
-  },
-  {
-      "step": 19,
       "variable": "q"
-  }
-],
+    },
+    {
+      "step": 17,
+      "variable": "result"
+    },
+    {
+      "step": 18,
+      "variable": "q"
+    }
+  ]
+  ,
 ),
 
 new AuthoringTask(
@@ -3688,6 +3725,14 @@ print(dna_sequences('ANT'))
   {
       "step": 18,
       "variable": "result"
+  },
+  {
+      "step": 29,
+      "variable": "q"
+  },
+  {
+      "step": 36,
+      "variable": "seq"
   },
   {
       "step": 46,

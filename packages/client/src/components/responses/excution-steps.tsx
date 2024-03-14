@@ -170,37 +170,37 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
 
 
     const generateQuestion = () => {
-        try {
-            apiGenerateTracingQuestion(
-                context?.token,
-                backendCode,
-                excutionSteps ? JSON.stringify(excutionSteps) : ""
-            ).then(async (response) => {
-                                      
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log("questions", data.response);
-                    setQuestions(data.response);
-                }
-            })
-        } catch (error: any) {
-            logError(error.toString());
-        }
-
         // try {
-        //     apiGetTracingSimulation(
+        //     apiGenerateTracingQuestion(
         //         context?.token,
-        //         taskID,
+        //         backendCode,
+        //         excutionSteps ? JSON.stringify(excutionSteps) : ""
         //     ).then(async (response) => {
                                       
         //         if (response.ok) {
         //             const data = await response.json();
-        //             setQuestions(data.tracePredict);
+        //             console.log("questions", data.response);
+        //             setQuestions(data.response);
         //         }
         //     })
         // } catch (error: any) {
         //     logError(error.toString());
         // }
+
+        try {
+            apiGetTracingSimulation(
+                context?.token,
+                taskID,
+            ).then(async (response) => {
+                                      
+                if (response.ok) {
+                    const data = await response.json();
+                    setQuestions(data.tracePredict);
+                }
+            })
+        } catch (error: any) {
+            logError(error.toString());
+        }
 
     };
 
