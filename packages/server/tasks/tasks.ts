@@ -2979,16 +2979,16 @@ print(binary_numbers(1, 2))
 
   [
     {
-      "step": 7,
-      "variable": "current"
+      "step": 6,
+      "variable": "current_int"
     },
     {
-      "step": 10,
+      "step": 6,
       "variable": "q"
     },
     {
-      "step": 17,
-      "variable": "result"
+      "step": 13,
+      "variable": "current_int"
     },
     {
       "step": 18,
