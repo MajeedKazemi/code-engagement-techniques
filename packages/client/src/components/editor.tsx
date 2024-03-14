@@ -63,6 +63,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [keyStrokes, setKeyStrokes] = useState<number>(0);
     const [loggedIO, setLoggedIO] = useState<any>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useImperativeHandle(ref, () => ({
         setCode(code: string) {
@@ -279,6 +280,18 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         });
     }, [output, runId]);
 
+    const submitClicked = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleModalClick = (confirmed: boolean) => {
+        setIsModalOpen(false);
+        
+        if (confirmed) {
+          setNextTask();
+        }
+      };
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (document.getElementById("game-over")) {
@@ -419,7 +432,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                             className={`editor-button ${
                                 editor.getValue() == props.starterCode? "editing-btn-disabled" : "editing-btn"
                             }`}
-                            onClick={setNextTask}
+                            onClick={submitClicked}
                             disabled={editor.getValue() == props.starterCode}
                         >
                             Submit Code
@@ -522,6 +535,17 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                 </div>
             </section>
             {!excution && props.type != 'coding' && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask} technique={props.technique}/>}
+            {isModalOpen && (
+                      <div className="modal-next-confirm">
+                        <div className="modal-next-confirm-content">
+                        <h3>Are you sure you want submit?</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
+                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        </div>
+                        </div>
+                      </div>
+                  )} 
         </Fragment>
     );
 });
