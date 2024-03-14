@@ -2215,7 +2215,20 @@ print(longest_valid_brackets('()(()))))'))
     }
   ]
 },
-{},
+[
+  {
+      "step": 7,
+      "variable": "char"
+  },
+  {
+      "step": 10,
+      "variable": "stack"
+  },
+  {
+      "step": 14,
+      "variable": "max_length"
+  }
+],
   ),
 
 
@@ -2224,43 +2237,41 @@ new AuthoringTask(
   "Write a function called `binary_numbers` that receives two numbers `n1` and `n2` as integers and returns a list of all binary numbers (as strings) between `n1` and `n2`. The function should use a queue to generate these binary numbers efficiently.",
 `def binary_numbers(n1: int, n2: int) -> list[str]:
     result = []
-    q = Queue()
-    q.put("1")
+    q = ['1']
     for i in range(n2):
-        current = q.get()
+        current = q.pop(0)
         current_int = int(current, 2)
-		if n1 <= current_int <= n2:
-            result.append(current)     
-        q.put(current + "0")        
-        q.put(current + "1")    
+        if n1 <= current_int <= n2:
+            result.append(current)
+        q.append(current + '0')
+        q.append(current + '1')
     return result`,
 `This code defines a function called \`binary_numbers\` that takes two integers \`n1\` and \`n2\` as input and returns a list of all binary numbers between \`n1\` and \`n2\`.
 
-First, it initializes an empty list \`result\` to store the binary numbers and a queue \`q\` to generate the binary numbers.
+First, it initializes an empty list \`result\` to store the binary numbers and a queue \`q\` with the binary number '1'.
 
-Then, it adds the binary number "1" to the queue.
+Then, it enters a loop that runs \`n2\` times. In each iteration, it removes the first element from the queue and converts it to an integer using the \`int\` function with base 2. If this integer is between \`n1\` and \`n2\`, it adds the binary number to the \`result\` list.
 
-Next, it starts a loop that runs \`n2\` times. In each iteration, it removes the front binary number from the queue and converts it to an integer. If the integer is between \`n1\` and \`n2\`, it adds the binary number to the \`result\` list.
-
-Then, it generates the next two binary numbers by appending "0" and "1" to the current binary number and adds them to the queue.
+Next, it adds two new binary numbers to the queue by appending '0' and '1' to the current binary number. This is how it generates all binary numbers.
 
 Finally, it returns the \`result\` list.
 
-The queue is used to generate the binary numbers efficiently. By appending "0" and "1" to the current binary number, it generates the next two binary numbers. This way, it generates all binary numbers between \`n1\` and \`n2\` in a breadth-first manner.`,
+The queue is used to generate the binary numbers efficiently. Instead of generating all binary numbers up to \`n2\` and then filtering out those between \`n1\` and \`n2\`, it generates and checks each binary number one by one and stops when it has generated \`n2\` binary numbers. This way, it doesn't generate more binary numbers than necessary.`,
 `def binary_numbers(n1: int, n2: int) -> list[str]:
     result = []
-    q = Queue()
-    q.put("1")
+    q = ['1']
     for i in range(n2):
-        current = q.get()
+        current = q.pop(0)
         current_int = int(current, 2)
-    if n1 <= current_int <= n2:
+        if n1 <= current_int <= n2:
             result.append(current)
-        q.put(current + "0")        
-        q.put(current + "1")
+        q.append(current + '0')
+        q.append(current + '1')
     return result
+  
 print(binary_numbers(1, 2))
-# Output: ['1', '10']`,
+# Output: ['1', '10']
+`,
 {
   "subgoals": [
       {
@@ -2269,9 +2280,9 @@ print(binary_numbers(1, 2))
               {
                   "indent": 0,
                   "line": "def binary_numbers(n1: int, n2: int) -> list[str]:",
-                  "pseudo-code": "Define a function named `binary_numbers` that takes two integer parameters `n1` and `n2` and returns a list of strings.",
-                  "syntax-hint": "`def` is used to define a function in Python. The `:` symbol is used to denote the start of a block of code.",
-                  "explanation": "This line is defining the function `binary_numbers` which will be used to generate binary numbers between `n1` and `n2`."
+                  "pseudo-code": "Define a function named `binary_numbers` that takes two parameters, `n1` and `n2`.",
+                  "syntax-hint": "`def` is used to define a function in Python. The `:` at the end indicates the start of a new block of code.",
+                  "explanation": "This line defines the function `binary_numbers` that will be used to generate binary numbers between `n1` and `n2`."
               }
           ]
       },
@@ -2282,27 +2293,15 @@ print(binary_numbers(1, 2))
                   "indent": 1,
                   "line": "result = []",
                   "pseudo-code": "Initialize an empty list `result`.",
-                  "syntax-hint": "In Python, `[]` is used to denote an empty list.",
-                  "explanation": "This line is initializing an empty list `result` which will be used to store the binary numbers."
+                  "syntax-hint": "In Python, `[]` is used to create an empty list.",
+                  "explanation": "This line creates an empty list `result` that will be used to store the binary numbers."
               },
               {
                   "indent": 1,
-                  "line": "q = Queue()",
-                  "pseudo-code": "Initialize a queue `q`.",
-                  "syntax-hint": "`Queue()` is a constructor that creates a new queue.",
-                  "explanation": "This line is initializing a queue `q` which will be used to generate binary numbers."
-              }
-          ]
-      },
-      {
-          "title": "Start Queue",
-          "code": [
-              {
-                  "indent": 1,
-                  "line": "q.put(\"1\")",
-                  "pseudo-code": "Put the string \"1\" into the queue `q`.",
-                  "syntax-hint": "`put()` is a method of `Queue` that adds an element to the queue.",
-                  "explanation": "This line is adding the string \"1\" to the queue `q` as the starting point for generating binary numbers."
+                  "line": "q = ['1']",
+                  "pseudo-code": "Initialize a list `q` with a single element '1'.",
+                  "syntax-hint": "In Python, `['1']` is used to create a list with a single string element '1'.",
+                  "explanation": "This line creates a list `q` that will be used as a queue to generate binary numbers."
               }
           ]
       },
@@ -2313,50 +2312,50 @@ print(binary_numbers(1, 2))
                   "indent": 1,
                   "line": "for i in range(n2):",
                   "pseudo-code": "Start a loop that iterates `n2` times.",
-                  "syntax-hint": "`for` is used to start a loop in Python. `range(n2)` generates a sequence of numbers from 0 to `n2-1`.",
-                  "explanation": "This line is starting a loop that will iterate `n2` times to generate binary numbers."
+                  "syntax-hint": "`for` is used to start a loop in Python. `range(n2)` generates a sequence of numbers from 0 to `n2`-1.",
+                  "explanation": "This line starts a loop that will be used to generate binary numbers."
               },
               {
                   "indent": 2,
-                  "line": "current = q.get()",
-                  "pseudo-code": "Get the first element from the queue `q` and assign it to the variable `current`.",
-                  "syntax-hint": "`get()` is a method of `Queue` that removes and returns the first element of the queue.",
-                  "explanation": "This line is getting the first element from the queue `q` and assigning it to the variable `current`."
+                  "line": "current = q.pop(0)",
+                  "pseudo-code": "Remove and get the first element from `q` and assign it to `current`.",
+                  "syntax-hint": "`pop(0)` is used to remove and return the first element of a list in Python.",
+                  "explanation": "This line gets the first binary number from the queue `q`."
               },
               {
                   "indent": 2,
                   "line": "current_int = int(current, 2)",
-                  "pseudo-code": "Convert the binary string `current` to an integer and assign it to the variable `current_int`.",
-                  "syntax-hint": "`int()` is a built-in function in Python that converts a string to an integer. The second parameter `2` specifies the base of the number.",
-                  "explanation": "This line is converting the binary string `current` to an integer and assigning it to the variable `current_int`."
+                  "pseudo-code": "Convert `current` from binary to integer and assign it to `current_int`.",
+                  "syntax-hint": "`int(current, 2)` is used to convert a binary string to an integer in Python.",
+                  "explanation": "This line converts the binary number to an integer for comparison."
               },
               {
                   "indent": 2,
                   "line": "if n1 <= current_int <= n2:",
                   "pseudo-code": "Check if `current_int` is between `n1` and `n2`.",
                   "syntax-hint": "`if` is used to start a conditional statement in Python. `<=` is a comparison operator that checks if the left operand is less than or equal to the right operand.",
-                  "explanation": "This line is checking if `current_int` is between `n1` and `n2`."
+                  "explanation": "This line checks if the current binary number is within the specified range."
               },
               {
                   "indent": 3,
                   "line": "result.append(current)",
-                  "pseudo-code": "If `current_int` is between `n1` and `n2`, append `current` to the list `result`.",
-                  "syntax-hint": "`append()` is a method of `list` that adds an element to the end of the list.",
-                  "explanation": "This line is adding `current` to the list `result` if `current_int` is between `n1` and `n2`."
+                  "pseudo-code": "Add `current` to the end of `result`.",
+                  "syntax-hint": "`append` is a list method in Python that adds an element to the end of the list.",
+                  "explanation": "This line adds the current binary number to the result list if it is within the specified range."
               },
               {
                   "indent": 2,
-                  "line": "q.put(current + \"0\")",
-                  "pseudo-code": "Append the string \"0\" to `current` and put it into the queue `q`.",
+                  "line": "q.append(current + '0')",
+                  "pseudo-code": "Add `current` concatenated with '0' to the end of `q`.",
                   "syntax-hint": "`+` is used to concatenate strings in Python.",
-                  "explanation": "This line is generating the next binary number by appending \"0\" to `current` and adding it to the queue `q`."
+                  "explanation": "This line generates the next binary number by appending '0' to the current binary number."
               },
               {
                   "indent": 2,
-                  "line": "q.put(current + \"1\")",
-                  "pseudo-code": "Append the string \"1\" to `current` and put it into the queue `q`.",
+                  "line": "q.append(current + '1')",
+                  "pseudo-code": "Add `current` concatenated with '1' to the end of `q`.",
                   "syntax-hint": "`+` is used to concatenate strings in Python.",
-                  "explanation": "This line is generating the next binary number by appending \"1\" to `current` and adding it to the queue `q`."
+                  "explanation": "This line generates the next binary number by appending '1' to the current binary number."
               }
           ]
       },
@@ -2367,8 +2366,8 @@ print(binary_numbers(1, 2))
                   "indent": 1,
                   "line": "return result",
                   "pseudo-code": "Return the list `result`.",
-                  "syntax-hint": "`return` is used to specify the result that a function should produce.",
-                  "explanation": "This line is returning the list `result` which contains all the binary numbers between `n1` and `n2`."
+                  "syntax-hint": "`return` is used to specify the result that a function should return.",
+                  "explanation": "This line returns the list of binary numbers that were generated."
               }
           ]
       }
@@ -2378,11 +2377,11 @@ print(binary_numbers(1, 2))
   "lines": [
     {
       "code": "def binary_numbers(n1: int, n2: int) -> list[str]:",
-      "explanation": "This line defines the function `binary_numbers` that takes two integers `n1` and `n2` as input and returns a list of strings.",
+      "explanation": "This line defines the function binary_numbers that takes two integers and returns a list of strings.",
       "tokens": [
         {
           "token": "def ",
-          "explanation": "Keyword to start the definition of a function"
+          "explanation": "Keyword to start function definition"
         },
         {
           "token": "binary_numbers",
@@ -2392,28 +2391,19 @@ print(binary_numbers(1, 2))
           "token": "("
         },
         {
-          "token": "n1",
-          "explanation": "First parameter of the function"
-        },
-        {
-          "token": ": int"
+          "token": "n1: int",
+          "explanation": "First parameter of the function, an integer"
         },
         {
           "token": ", "
         },
         {
-          "token": "n2",
-          "explanation": "Second parameter of the function"
+          "token": "n2: int",
+          "explanation": "Second parameter of the function, an integer"
         },
         {
-          "token": ": int"
-        },
-        {
-          "token": ") -> list[str]"
-        },
-        {
-          "token": ":",
-          "explanation": "End of function definition"
+          "token": ") -> list[str]:",
+          "explanation": "Function return type, a list of strings"
         },
         {
           "token": "\n"
@@ -2422,17 +2412,18 @@ print(binary_numbers(1, 2))
     },
     {
       "code": "    result = []",
-      "explanation": "This line initializes an empty list `result` to store the binary numbers between `n1` and `n2`.",
+      "explanation": "This line initializes an empty list to store the binary numbers.",
       "tokens": [
         {
           "token": "    "
         },
         {
-          "token": "result",
-          "explanation": "Variable to store the result"
+          "token": "result ",
+          "explanation": "Variable to store the binary numbers"
         },
         {
-          "token": " = "
+          "token": "= ",
+          "explanation": "Assignment operator"
         },
         {
           "token": "[]",
@@ -2444,55 +2435,23 @@ print(binary_numbers(1, 2))
       ]
     },
     {
-      "code": "    q = Queue()",
-      "explanation": "This line initializes a queue `q` to generate binary numbers efficiently.",
+      "code": "    q = ['1']",
+      "explanation": "This line initializes a queue with the binary number '1'.",
       "tokens": [
         {
           "token": "    "
         },
         {
-          "token": "q",
+          "token": "q ",
           "explanation": "Variable to store the queue"
         },
         {
-          "token": " = "
+          "token": "= ",
+          "explanation": "Assignment operator"
         },
         {
-          "token": "Queue()",
-          "explanation": "Initialization of a queue"
-        },
-        {
-          "token": "\n"
-        }
-      ]
-    },
-    {
-      "code": "    q.put(\"1\")",
-      "explanation": "This line puts the binary number '1' into the queue as a starting point.",
-      "tokens": [
-        {
-          "token": "    "
-        },
-        {
-          "token": "q",
-          "explanation": "Queue variable"
-        },
-        {
-          "token": "."
-        },
-        {
-          "token": "put",
-          "explanation": "Method to add an element to the queue"
-        },
-        {
-          "token": "("
-        },
-        {
-          "token": "\"1\"",
-          "explanation": "First binary number"
-        },
-        {
-          "token": ")"
+          "token": "['1']",
+          "explanation": "List with the binary number '1'"
         },
         {
           "token": "\n"
@@ -2501,39 +2460,30 @@ print(binary_numbers(1, 2))
     },
     {
       "code": "    for i in range(n2):",
-      "explanation": "This line starts a loop that iterates `n2` times to generate binary numbers.",
+      "explanation": "This line starts a loop that will iterate n2 times.",
       "tokens": [
         {
           "token": "    "
         },
         {
-          "token": "for",
+          "token": "for ",
           "explanation": "Keyword to start a loop"
         },
         {
-          "token": " i "
+          "token": "i ",
+          "explanation": "Loop variable"
         },
         {
-          "token": "in",
-          "explanation": "Keyword to iterate over a sequence"
+          "token": "in ",
+          "explanation": "Keyword to specify the iterable"
         },
         {
-          "token": " range",
-          "explanation": "Function to generate a sequence of numbers"
-        },
-        {
-          "token": "("
-        },
-        {
-          "token": "n2",
-          "explanation": "Upper limit of the range"
-        },
-        {
-          "token": ")"
+          "token": "range(n2)",
+          "explanation": "Function that generates numbers from 0 to n2-1"
         },
         {
           "token": ":",
-          "explanation": "End of loop definition"
+          "explanation": "Start of the loop body"
         },
         {
           "token": "\n"
@@ -2541,33 +2491,23 @@ print(binary_numbers(1, 2))
       ]
     },
     {
-      "code": "        current = q.get()",
-      "explanation": "This line gets the front element of the queue and assigns it to the variable `current`.",
+      "code": "        current = q.pop(0)",
+      "explanation": "This line removes and returns the first element of the queue.",
       "tokens": [
         {
           "token": "        "
         },
         {
-          "token": "current",
-          "explanation": "Variable to store the current binary number"
+          "token": "current ",
+          "explanation": "Variable to store the first element of the queue"
         },
         {
-          "token": " = "
+          "token": "= ",
+          "explanation": "Assignment operator"
         },
         {
-          "token": "q",
-          "explanation": "Queue variable"
-        },
-        {
-          "token": "."
-        },
-        {
-          "token": "get",
-          "explanation": "Method to remove and return the front element of the queue"
-        },
-        {
-          "token": "()",
-          "explanation": "Call to the method"
+          "token": "q.pop(0)",
+          "explanation": "Method that removes and returns the first element of the queue"
         },
         {
           "token": "\n"
@@ -2576,38 +2516,22 @@ print(binary_numbers(1, 2))
     },
     {
       "code": "        current_int = int(current, 2)",
-      "explanation": "This line converts the binary number `current` to an integer `current_int`.",
+      "explanation": "This line converts the binary number to an integer.",
       "tokens": [
         {
           "token": "        "
         },
         {
-          "token": "current_int",
-          "explanation": "Variable to store the integer representation of the current binary number"
+          "token": "current_int ",
+          "explanation": "Variable to store the integer representation of the binary number"
         },
         {
-          "token": " = "
+          "token": "= ",
+          "explanation": "Assignment operator"
         },
         {
-          "token": "int",
-          "explanation": "Function to convert a string to an integer"
-        },
-        {
-          "token": "("
-        },
-        {
-          "token": "current",
-          "explanation": "Current binary number"
-        },
-        {
-          "token": ", "
-        },
-        {
-          "token": "2",
-          "explanation": "Base of the number system"
-        },
-        {
-          "token": ")"
+          "token": "int(current, 2)",
+          "explanation": "Function that converts a binary number to an integer"
         },
         {
           "token": "\n"
@@ -2616,37 +2540,22 @@ print(binary_numbers(1, 2))
     },
     {
       "code": "        if n1 <= current_int <= n2:",
-      "explanation": "This line checks if the integer `current_int` is between `n1` and `n2`.",
+      "explanation": "This line checks if the integer is between n1 and n2.",
       "tokens": [
         {
           "token": "        "
         },
         {
-          "token": "if",
+          "token": "if ",
           "explanation": "Keyword to start a conditional statement"
         },
         {
-          "token": " n1 "
-        },
-        {
-          "token": "<=",
-          "explanation": "Less than or equal to operator"
-        },
-        {
-          "token": " current_int ",
-          "explanation": "Integer representation of the current binary number"
-        },
-        {
-          "token": "<=",
-          "explanation": "Less than or equal to operator"
-        },
-        {
-          "token": " n2",
-          "explanation": "Upper limit of the range"
+          "token": "n1 <= current_int <= n2",
+          "explanation": "Condition that checks if the integer is between n1 and n2"
         },
         {
           "token": ":",
-          "explanation": "End of conditional statement"
+          "explanation": "Start of the conditional body"
         },
         {
           "token": "\n"
@@ -2655,31 +2564,25 @@ print(binary_numbers(1, 2))
     },
     {
       "code": "            result.append(current)",
-      "explanation": "This line appends the binary number `current` to the list `result` if it is between `n1` and `n2`.",
+      "explanation": "This line adds the binary number to the result list if the condition is true.",
       "tokens": [
         {
           "token": "            "
         },
         {
-          "token": "result",
-          "explanation": "List to store the result"
-        },
-        {
-          "token": "."
-        },
-        {
-          "token": "append",
-          "explanation": "Method to add an element to the end of the list"
+          "token": "result.append",
+          "explanation": "Method that adds an element to the end of the list"
         },
         {
           "token": "("
         },
         {
           "token": "current",
-          "explanation": "Current binary number"
+          "explanation": "The binary number to add to the list"
         },
         {
-          "token": ")"
+          "token": ")",
+          "explanation": "End of the method call"
         },
         {
           "token": "\n"
@@ -2687,39 +2590,26 @@ print(binary_numbers(1, 2))
       ]
     },
     {
-      "code": "        q.put(current + \"0\")",
-      "explanation": "This line appends '0' to the binary number `current` and puts it into the queue.",
+      "code": "        q.append(current + '0')",
+      "explanation": "This line adds the binary number with an appended '0' to the queue.",
       "tokens": [
         {
           "token": "        "
         },
         {
-          "token": "q",
-          "explanation": "Queue variable"
-        },
-        {
-          "token": "."
-        },
-        {
-          "token": "put",
-          "explanation": "Method to add an element to the queue"
+          "token": "q.append",
+          "explanation": "Method that adds an element to the end of the queue"
         },
         {
           "token": "("
         },
         {
-          "token": "current",
-          "explanation": "Current binary number"
+          "token": "current + '0'",
+          "explanation": "The binary number with an appended '0'"
         },
         {
-          "token": " + "
-        },
-        {
-          "token": "\"0\"",
-          "explanation": "Binary digit to append"
-        },
-        {
-          "token": ")"
+          "token": ")",
+          "explanation": "End of the method call"
         },
         {
           "token": "\n"
@@ -2727,39 +2617,26 @@ print(binary_numbers(1, 2))
       ]
     },
     {
-      "code": "        q.put(current + \"1\")",
-      "explanation": "This line appends '1' to the binary number `current` and puts it into the queue.",
+      "code": "        q.append(current + '1')",
+      "explanation": "This line adds the binary number with an appended '1' to the queue.",
       "tokens": [
         {
           "token": "        "
         },
         {
-          "token": "q",
-          "explanation": "Queue variable"
-        },
-        {
-          "token": "."
-        },
-        {
-          "token": "put",
-          "explanation": "Method to add an element to the queue"
+          "token": "q.append",
+          "explanation": "Method that adds an element to the end of the queue"
         },
         {
           "token": "("
         },
         {
-          "token": "current",
-          "explanation": "Current binary number"
+          "token": "current + '1'",
+          "explanation": "The binary number with an appended '1'"
         },
         {
-          "token": " + "
-        },
-        {
-          "token": "\"1\"",
-          "explanation": "Binary digit to append"
-        },
-        {
-          "token": ")"
+          "token": ")",
+          "explanation": "End of the method call"
         },
         {
           "token": "\n"
@@ -2768,18 +2645,18 @@ print(binary_numbers(1, 2))
     },
     {
       "code": "    return result",
-      "explanation": "This line returns the list `result` containing all binary numbers between `n1` and `n2`.",
+      "explanation": "This line returns the list of binary numbers.",
       "tokens": [
         {
           "token": "    "
         },
         {
-          "token": "return",
-          "explanation": "Keyword to return a value from a function"
+          "token": "return ",
+          "explanation": "Keyword that ends the function and returns a value"
         },
         {
-          "token": " result",
-          "explanation": "List of binary numbers between `n1` and `n2`"
+          "token": "result",
+          "explanation": "The list of binary numbers to return"
         },
         {
           "token": "\n"
@@ -2792,40 +2669,49 @@ print(binary_numbers(1, 2))
   "questions": [
     {
       "type": "Short Answer",
-      "question": "What does the `put` method do in the context of a queue?",
-      "answer": "It adds an element to the end of the queue.",
+      "question": "Why is the queue 'q' initialized with the binary number '1'?",
+      "answer": "It's the starting point for generating binary numbers.",
       "question-code-lines": [
-        4
+        3
       ],
-      "question-code-lines-explained": "q.put(\"1\") # This line puts the string \"1\" at the end of the queue."
+      "question-code-lines-explained": "q = ['1'] # Initializes the queue with the binary number '1'"
     },
     {
       "type": "Multiple Choice",
-      "question": "What would happen if the condition `n1 <= current_int <= n2` was not present?",
+      "question": "What is the effect of popping the first element of 'q' in each iteration?",
       "answer": {
-        "correct-choice": "The function would return all binary numbers up to n2, not just those between n1 and n2.",
-        "incorrect-choice-1": "The function would return an error.",
-        "incorrect-choice-2": "The function would return all binary numbers up to n1.",
-        "incorrect-choice-3": "The function would not return any binary numbers."
+        "correct-choice": "It ensures the oldest binary number is processed first.",
+        "incorrect-choice-1": "It ensures the newest binary number is processed first.",
+        "incorrect-choice-2": "It removes the binary number from the queue.",
+        "incorrect-choice-3": "It has no effect on the queue."
       },
       "question-code-lines": [
-        6, 7
+        5
       ],
-      "question-code-lines-explained": "current_int = int(current, 2) # Convert the binary number to an integer\nif n1 <= current_int <= n2: # Check if the integer is between n1 and n2"
+      "question-code-lines-explained": "current = q.pop(0) # Pops the first element from the queue, which is the oldest binary number"
+    },
+    {
+      "type": "Short Answer",
+      "question": "What is the purpose of the 'current_int' variable?",
+      "answer": "It converts the binary number to an integer for comparison.",
+      "question-code-lines": [
+        6
+      ],
+      "question-code-lines-explained": "current_int = int(current, 2) # Converts the binary number to an integer"
     },
     {
       "type": "Multiple Choice",
-      "question": "What is the effect of the lines `q.put(current + \"0\")` and `q.put(current + \"1\")`?",
+      "question": "What is the effect of appending 'current + '0'' and 'current + '1'' to 'q'?",
       "answer": {
-        "correct-choice": "They generate the next binary numbers by appending 0 and 1 to the current binary number.",
-        "incorrect-choice-1": "They convert the current binary number to an integer.",
-        "incorrect-choice-2": "They add the current binary number to the result list.",
-        "incorrect-choice-3": "They remove the current binary number from the queue."
+        "correct-choice": "It generates the next binary numbers in sequence.",
+        "incorrect-choice-1": "It doubles the size of the queue.",
+        "incorrect-choice-2": "It converts the binary numbers to integers.",
+        "incorrect-choice-3": "It has no effect on the queue."
       },
       "question-code-lines": [
         9, 10
       ],
-      "question-code-lines-explained": "q.put(current + \"0\") # Add the binary number with an added 0 to the queue\nq.put(current + \"1\") # Add the binary number with an added 1 to the queue"
+      "question-code-lines-explained": "q.append(current + '0')\nq.append(current + '1') # Appends the next binary numbers in sequence to the queue"
     }
   ]
 },
@@ -2833,253 +2719,269 @@ print(binary_numbers(1, 2))
   "wrong-code": 
 `def binary_numbers(n1: int, n2: int) -> list[str]:
     result = []
-    q = Queue()
-    q.put('1')
+    q = ['1']
     for i in range(n1):
-        current = q.get()
+        current = q.pop(0)
         current_int = int(current, 2)
-        if n1 >= current_int >= n2:
+        if n1 <= current_int <= n2:
             result.append(current)
-        q.put(current + '0')        
-        q.put(current + '1')
+        q.append(current + '0')
+        q.append(current + '1')
     return result`,
-  
   "issues":{
               "logical-issue-1": {
                       "type": "Incorrect Loop Conditions",
-                      "line": 5
+                      "line": 4
               },
               "logical-issue-2": {
-                      "type": "Incorrect Boolean Logic",
-                      "line": 8
+                      "type": "Misuse of Data Structures",
+                      "line": 5
               }
           }
-},
-{
-  "subgoals": [
-    {
-      "title": "Function Definition",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should be the input parameters to our function?",
-              "correct-choice": "Two integers, n1 and n2",
-              "incorrect-choice-1": "Two binary numbers, n1 and n2",
-              "incorrect-choice-2": "A list of integers",
-              "incorrect-choice-3": "A list of binary numbers"
-            }
-          ],
-          "code-lines-to-be-revealed": [1]
-        }
-      ]
-    },
-    {
-      "title": "Initialize Result List",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What data structure should we use to store the binary numbers?",
-              "correct-choice": "A list",
-              "incorrect-choice-1": "A queue",
-              "incorrect-choice-2": "A stack",
-              "incorrect-choice-3": "A dictionary"
-            }
-          ],
-          "code-lines-to-be-revealed": [2]
-        }
-      ]
-    },
-    {
-      "title": "Initialize Queue",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What data structure should we use to generate binary numbers efficiently?",
-              "correct-choice": "A queue",
-              "incorrect-choice-1": "A list",
-              "incorrect-choice-2": "A stack",
-              "incorrect-choice-3": "A dictionary"
-            }
-          ],
-          "code-lines-to-be-revealed": [3]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should be the first element in our queue?",
-              "correct-choice": "The binary number '1'",
-              "incorrect-choice-1": "The binary number '0'",
-              "incorrect-choice-2": "The integer number 1",
-              "incorrect-choice-3": "The integer number 0"
-            }
-          ],
-          "code-lines-to-be-revealed": [4]
-        }
-      ]
-    },
-    {
-      "title": "Generate Binary Numbers",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How many times should we loop to generate binary numbers?",
-              "correct-choice": "n2 times",
-              "incorrect-choice-1": "n1 times",
-              "incorrect-choice-2": "n1 to n2 times",
-              "incorrect-choice-3": "Until the queue is empty"
-            }
-          ],
-          "code-lines-to-be-revealed": [5]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How do we get the current binary number from the queue?",
-              "correct-choice": "By using the get() method",
-              "incorrect-choice-1": "By using the put() method",
-              "incorrect-choice-2": "By using the pop() method",
-              "incorrect-choice-3": "By using the append() method"
-            }
-          ],
-          "code-lines-to-be-revealed": [6]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How do we convert a binary number to an integer?",
-              "correct-choice": "By using the int() function with base 2",
-              "incorrect-choice-1": "By using the int() function with base 10",
-              "incorrect-choice-2": "By using the str() function",
-              "incorrect-choice-3": "By using the bin() function"
-            }
-          ],
-          "code-lines-to-be-revealed": [7]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "When should we add the current binary number to the result list?",
-              "correct-choice": "If the integer value of the binary number is between n1 and n2",
-              "incorrect-choice-1": "If the binary number is between n1 and n2",
-              "incorrect-choice-2": "If the integer value of the binary number is less than n2",
-              "incorrect-choice-3": "If the integer value of the binary number is greater than n1"
-            }
-          ],
-          "code-lines-to-be-revealed": [8]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How do we add the current binary number to the result list?",
-              "correct-choice": "By using the append() method",
-              "incorrect-choice-1": "By using the put() method",
-              "incorrect-choice-2": "By using the get() method",
-              "incorrect-choice-3": "By using the pop() method"
-            }
-          ],
-          "code-lines-to-be-revealed": [9]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How do we generate the next binary number with a '0' at the end?",
-              "correct-choice": "By appending '0' to the current binary number",
-              "incorrect-choice-1": "By appending '1' to the current binary number",
-              "incorrect-choice-2": "By prepending '0' to the current binary number",
-              "incorrect-choice-3": "By prepending '1' to the current binary number"
-            }
-          ],
-          "code-lines-to-be-revealed": [10]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How do we generate the next binary number with a '1' at the end?",
-              "correct-choice": "By appending '1' to the current binary number",
-              "incorrect-choice-1": "By appending '0' to the current binary number",
-              "incorrect-choice-2": "By prepending '1' to the current binary number",
-              "incorrect-choice-3": "By prepending '0' to the current binary number"
-            }
-          ],
-          "code-lines-to-be-revealed": [11]
-        }
-      ]
-    },
-    {
-      "title": "Return Result",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we return from our function?",
-              "correct-choice": "The list of binary numbers",
-              "incorrect-choice-1": "The queue of binary numbers",
-              "incorrect-choice-2": "The number of binary numbers",
-              "incorrect-choice-3": "The last binary number"
-            }
-          ],
-          "code-lines-to-be-revealed": [12]
-        }
-      ]
-    }
-  ]
-},
-{},
+  },
+  {
+    "subgoals": [
+      {
+        "title": "Function Definition",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the input parameters to our function?",
+                "correct-choice": "Two integers n1 and n2",
+                "incorrect-choice-1": "Two binary numbers n1 and n2",
+                "incorrect-choice-2": "A list of integers",
+                "incorrect-choice-3": "A list of binary numbers"
+              }
+            ],
+            "code-lines-to-be-revealed": [1]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Result List",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What data structure should we use to store the binary numbers between n1 and n2?",
+                "correct-choice": "A list",
+                "incorrect-choice-1": "A queue",
+                "incorrect-choice-2": "A stack",
+                "incorrect-choice-3": "A dictionary"
+              }
+            ],
+            "code-lines-to-be-revealed": [2]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Queue",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the initial value in our queue?",
+                "correct-choice": "'1'",
+                "incorrect-choice-1": "'0'",
+                "incorrect-choice-2": "n1",
+                "incorrect-choice-3": "n2"
+              }
+            ],
+            "code-lines-to-be-revealed": [3]
+          }
+        ]
+      },
+      {
+        "title": "Iterate Over Range",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How many times should we iterate to generate binary numbers?",
+                "correct-choice": "n2 times",
+                "incorrect-choice-1": "n1 times",
+                "incorrect-choice-2": "(n2 - n1) times",
+                "incorrect-choice-3": "(n1 + n2) times"
+              }
+            ],
+            "code-lines-to-be-revealed": [4]
+          }
+        ]
+      },
+      {
+        "title": "Pop from Queue",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "Which element should we remove from the queue in each iteration?",
+                "correct-choice": "The first element",
+                "incorrect-choice-1": "The last element",
+                "incorrect-choice-2": "The middle element",
+                "incorrect-choice-3": "A random element"
+              }
+            ],
+            "code-lines-to-be-revealed": [5]
+          }
+        ]
+      },
+      {
+        "title": "Convert to Integer",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How should we convert the binary string to an integer?",
+                "correct-choice": "Using int function with base 2",
+                "incorrect-choice-1": "Using int function with base 10",
+                "incorrect-choice-2": "Using str function",
+                "incorrect-choice-3": "Using float function"
+              }
+            ],
+            "code-lines-to-be-revealed": [6]
+          }
+        ]
+      },
+      {
+        "title": "Check Range",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "When should we add the binary string to our result list?",
+                "correct-choice": "If the integer value is between n1 and n2",
+                "incorrect-choice-1": "If the integer value is less than n1",
+                "incorrect-choice-2": "If the integer value is greater than n2",
+                "incorrect-choice-3": "In every iteration"
+              }
+            ],
+            "code-lines-to-be-revealed": [7]
+          }
+        ]
+      },
+      {
+        "title": "Add to Result",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should we add to our result list?",
+                "correct-choice": "The binary string",
+                "incorrect-choice-1": "The integer value",
+                "incorrect-choice-2": "The binary string and integer value",
+                "incorrect-choice-3": "The binary string converted to a list"
+              }
+            ],
+            "code-lines-to-be-revealed": [8]
+          }
+        ]
+      },
+      {
+        "title": "Add to Queue",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should we add to our queue in each iteration?",
+                "correct-choice": "The binary string concatenated with '0' and '1'",
+                "incorrect-choice-1": "The binary string",
+                "incorrect-choice-2": "The integer value",
+                "incorrect-choice-3": "The binary string converted to a list"
+              }
+            ],
+            "code-lines-to-be-revealed": [9, 10]
+          }
+        ]
+      },
+      {
+        "title": "Return Result",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should our function return?",
+                "correct-choice": "The list of binary numbers",
+                "incorrect-choice-1": "The queue",
+                "incorrect-choice-2": "The number of binary numbers",
+                "incorrect-choice-3": "The last binary number"
+              }
+            ],
+            "code-lines-to-be-revealed": [11]
+          }
+        ]
+      }
+    ]
+  },
+
+[
+  {
+      "step": 7,
+      "variable": "current"
+  },
+  {
+      "step": 10,
+      "variable": "result"
+  },
+  {
+      "step": 15,
+      "variable": "current_int"
+  },
+  {
+      "step": 19,
+      "variable": "q"
+  }
+],
 ),
 
 new AuthoringTask(
   "4",
   "Write a Python function named `dna_sequences` that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument (`pattern`) and return a list of strings. The input pattern consists of the characters `A`, `T`, `C`, `G`, and a special placeholder `N`. The `N` acts as a wildcard that can be replaced by any of the four DNA bases (`A`, `C`, `G`, `T`). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every `N` in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.",
 `def dna_sequences(pattern: str) -> list[str]:
-    dna_chars = ['A', 'C', 'G', 'T']
-    queue = Queue()
-    queue.put('')
+    dna_chars = ["A", "C", "G", "T"]
+    q = [""]
     result = []
-    while not queue.empty():
-        seq = queue.get()
+    while len(q) > 0:
+        seq = q.pop(0)
         if len(seq) == len(pattern):
             result.append(seq)
         else:
-            if pattern[len(seq)] == 'N':
+            if pattern[len(seq)] == "N":
                 for ch in dna_chars:
-                    queue.put(seq + ch)
+                    q.append(seq + ch)
             else:
-                queue.put(seq + pattern[len(seq)])          
+                q.append(seq + pattern[len(seq)])
     return result`,
-`This code defines a function called \`dna_sequences\` that takes a DNA pattern as input and returns all possible DNA sequences for that pattern. 
+`This code defines a function called \`dna_sequences\` that takes a DNA pattern as input and returns a list of all possible DNA sequences that can be generated by replacing the 'N' in the pattern with each of the four DNA bases ('A', 'C', 'G', 'T').
 
-The function uses a queue to generate the sequences. A queue is a data structure that follows the First-In-First-Out (FIFO) rule. You can think of it like a line of people waiting for the bus. The person who gets in line first, gets on the bus first.
+First, it initializes a list \`dna_chars\` with the four DNA bases, an empty queue \`q\` with an empty string, and an empty list \`result\` to store the generated DNA sequences.
 
-The function starts by creating an empty queue and adding an empty string to it. Then it enters a loop that continues until the queue is empty.
+Then, it enters a loop that continues until the queue is empty. In each iteration, it removes the first sequence from the queue. If the length of this sequence is equal to the length of the pattern, it means that the sequence is complete, so it adds it to the \`result\` list.
 
-In each iteration of the loop, it removes a sequence from the front of the queue. If the length of the sequence is equal to the length of the pattern, it adds the sequence to the result list. Otherwise, it checks the character in the pattern at the position corresponding to the length of the sequence. If the character is 'N', it adds four new sequences to the queue, each obtained by appending one of the DNA characters ('A', 'C', 'G', 'T') to the current sequence. If the character is not 'N', it adds a new sequence to the queue, obtained by appending the character to the current sequence.
+Otherwise, it checks the character in the pattern at the position corresponding to the length of the current sequence. If this character is 'N', it means that it can be replaced by any DNA base, so it adds four new sequences to the queue, each obtained by appending one of the DNA bases to the current sequence. If the character is not 'N', it means that it is a specific DNA base, so it adds a new sequence to the queue obtained by appending this base to the current sequence.
 
-Finally, the function returns the result list, which contains all possible DNA sequences for the given pattern.`,
+Finally, it returns the \`result\` list.
+
+The queue is used to generate the DNA sequences efficiently. Instead of generating all possible sequences and then filtering out those that match the pattern, it generates and checks each sequence one by one. This way, it doesn't generate more sequences than necessary.`,
 `def dna_sequences(pattern: str) -> list[str]:
-    dna_chars = ['A', 'C', 'G', 'T']
-    queue = Queue()
-    queue.put('')
+    dna_chars = ["A", "C", "G", "T"]
+    q = [""]
     result = []
-    while not queue.empty():
-        seq = queue.get()
+    while len(q) > 0:
+        seq = q.pop(0)
         if len(seq) == len(pattern):
             result.append(seq)
         else:
-            if pattern[len(seq)] == 'N':
+            if pattern[len(seq)] == "N":
                 for ch in dna_chars:
-                    queue.put(seq + ch)
+                    q.append(seq + ch)
             else:
-                queue.put(seq + pattern[len(seq)])          
+                q.append(seq + pattern[len(seq)])
     return result
-
-print(temperature_potential([30, 35, 40]))
-# Output: [1, 1, 1]
-# Explanation: Each day is warmer than the previous, so each day's potential is 1, meaning no previous day had a temperature less than or equal to the current day.
-`,
+    
+print(dna_sequences('ANT'))
+# Output: ['AAT', 'ACT', 'AGT', 'ATT']
+# Explanation: The input contains one N, indicating a single position where any of the four bases can be placed. The function generates sequences by replacing N with each of A, C, G, and T in turn, while keeping the other positions in the sequence constant.`,
 {
   "subgoals": [
       {
@@ -3088,9 +2990,9 @@ print(temperature_potential([30, 35, 40]))
               {
                   "indent": 0,
                   "line": "def dna_sequences(pattern: str) -> list[str]:",
-                  "pseudo-code": "Define a function named `dna_sequences` that takes a string `pattern` as input and returns a list of strings.",
-                  "syntax-hint": "`def` is used to define a function in Python. The `:` indicates the start of a block of code. The `-> list[str]` is a type hint indicating the function returns a list of strings.",
-                  "explanation": "This line is needed to define the function and specify its input and output types."
+                  "pseudo-code": "Define a function named dna_sequences that takes a string argument pattern and returns a list of strings",
+                  "syntax-hint": "`def` is used to define a function in Python. The `:` indicates the start of a new block of code. The `-> list[str]` is a type hint indicating the function returns a list of strings.",
+                  "explanation": "This line defines the function dna_sequences, which will generate all possible DNA sequences based on a given pattern."
               }
           ]
       },
@@ -3099,31 +3001,24 @@ print(temperature_potential([30, 35, 40]))
           "code": [
               {
                   "indent": 1,
-                  "line": "dna_chars = ['A', 'C', 'G', 'T']",
-                  "pseudo-code": "Create a list `dna_chars` containing the four DNA characters.",
+                  "line": "dna_chars = [\"A\", \"C\", \"G\", \"T\"]",
+                  "pseudo-code": "Create a list dna_chars containing the four DNA bases",
                   "syntax-hint": "In Python, lists are defined using square brackets `[]` and items are separated by commas.",
-                  "explanation": "This line is needed to store the four possible DNA characters that can be used to generate sequences."
+                  "explanation": "This line initializes a list of the four DNA bases that will be used to replace the wildcard 'N' in the pattern."
               },
               {
                   "indent": 1,
-                  "line": "queue = Queue()",
-                  "pseudo-code": "Initialize an empty queue.",
-                  "syntax-hint": "`Queue()` is a constructor that creates a new queue object.",
-                  "explanation": "This line is needed to create a queue that will be used to generate the DNA sequences."
-              },
-              {
-                  "indent": 1,
-                  "line": "queue.put('')",
-                  "pseudo-code": "Add an empty string to the queue.",
-                  "syntax-hint": "The `put` method is used to add an item to a queue.",
-                  "explanation": "This line is needed to start the generation process with an empty sequence."
+                  "line": "q = [\"\"]",
+                  "pseudo-code": "Initialize an empty queue q with an empty string",
+                  "syntax-hint": "In Python, lists can be used as queues. Here, `q` is initialized with an empty string.",
+                  "explanation": "This line initializes a queue that will be used to generate and explore all combinations of sequences."
               },
               {
                   "indent": 1,
                   "line": "result = []",
-                  "pseudo-code": "Initialize an empty list `result`.",
-                  "syntax-hint": "In Python, an empty list is created using `[]`.",
-                  "explanation": "This line is needed to store the generated DNA sequences."
+                  "pseudo-code": "Initialize an empty list result",
+                  "syntax-hint": "In Python, an empty list is created by `[]`.",
+                  "explanation": "This line initializes an empty list that will store the final DNA sequences."
               }
           ]
       },
@@ -3132,73 +3027,73 @@ print(temperature_potential([30, 35, 40]))
           "code": [
               {
                   "indent": 1,
-                  "line": "while not queue.empty():",
-                  "pseudo-code": "Start a loop that continues as long as the queue is not empty.",
-                  "syntax-hint": "The `while` keyword is used to start a loop in Python. The `not` keyword negates a condition. The `empty` method checks if a queue is empty.",
-                  "explanation": "This line is needed to continue generating sequences until all possibilities have been explored."
+                  "line": "while len(q) > 0:",
+                  "pseudo-code": "Start a while loop that continues as long as the queue q is not empty",
+                  "syntax-hint": "The `while` keyword is used to start a loop in Python. The `len()` function returns the number of items in a list.",
+                  "explanation": "This line starts a loop that will continue until all possible DNA sequences have been generated and added to the result list."
               },
               {
                   "indent": 2,
-                  "line": "seq = queue.get()",
-                  "pseudo-code": "Remove and get the first item from the queue and assign it to `seq`.",
-                  "syntax-hint": "The `get` method is used to remove and return the first item from a queue.",
-                  "explanation": "This line is needed to get the next sequence to be expanded."
+                  "line": "seq = q.pop(0)",
+                  "pseudo-code": "Remove and get the first element from the queue q and assign it to the variable seq",
+                  "syntax-hint": "The `pop()` method removes the item at the specified position in the list, and returns the removed item.",
+                  "explanation": "This line retrieves the next sequence from the queue to be processed."
               },
               {
                   "indent": 2,
                   "line": "if len(seq) == len(pattern):",
-                  "pseudo-code": "Check if the length of `seq` is equal to the length of `pattern`.",
-                  "syntax-hint": "The `if` keyword is used to start a conditional block in Python. The `len` function returns the length of a string or list.",
-                  "explanation": "This line is needed to check if a sequence is complete."
+                  "pseudo-code": "Check if the length of the sequence seq is equal to the length of the pattern",
+                  "syntax-hint": "The `if` keyword is used to start a conditional statement in Python. The `==` operator checks for equality.",
+                  "explanation": "This line checks if the current sequence has reached the desired length. If it has, it's a valid DNA sequence and should be added to the result list."
               },
               {
                   "indent": 3,
                   "line": "result.append(seq)",
-                  "pseudo-code": "Add `seq` to the end of `result`.",
-                  "syntax-hint": "The `append` method is used to add an item to the end of a list.",
-                  "explanation": "This line is needed to store a completed sequence."
+                  "pseudo-code": "Add the sequence seq to the result list",
+                  "syntax-hint": "The `append()` method adds an item to the end of the list.",
+                  "explanation": "This line adds the current sequence to the result list because it's a valid DNA sequence."
               },
               {
                   "indent": 2,
                   "line": "else:",
-                  "pseudo-code": "Start a block of code that is executed if the length of `seq` is not equal to the length of `pattern`.",
-                  "syntax-hint": "The `else` keyword is used to start a block of code that is executed if the preceding `if` condition is not met.",
-                  "explanation": "This line is needed to handle the case where a sequence is not yet complete."
+                  "pseudo-code": "Start the else block for the if statement",
+                  "syntax-hint": "The `else` keyword is used to define a block of code to be executed if the condition in the `if` statement is false.",
+                  "explanation": "This line starts the else block, which will be executed if the current sequence hasn't reached the desired length yet."
               },
               {
                   "indent": 3,
-                  "line": "if pattern[len(seq)] == 'N':",
-                  "pseudo-code": "Check if the character at the current position in `pattern` is 'N'.",
-                  "syntax-hint": "In Python, strings are indexed using square brackets `[]`.",
-                  "explanation": "This line is needed to check if the current position in the pattern can be any DNA character."
+                  "line": "if pattern[len(seq)] == \"N\":",
+                  "pseudo-code": "Check if the character at the current position in the pattern is the wildcard 'N'",
+                  "syntax-hint": "The `[]` operator is used to access an item at a specific position in a list or string.",
+                  "explanation": "This line checks if the character at the current position in the pattern is the wildcard 'N'. If it is, it needs to be replaced by each of the four DNA bases."
               },
               {
                   "indent": 4,
                   "line": "for ch in dna_chars:",
-                  "pseudo-code": "Start a loop that iterates over each character `ch` in `dna_chars`.",
-                  "syntax-hint": "The `for` keyword is used to start a loop in Python. The `in` keyword is used to check membership in a list or string.",
-                  "explanation": "This line is needed to generate all possible sequences for the current position."
+                  "pseudo-code": "Start a for loop that iterates over each character ch in the list dna_chars",
+                  "syntax-hint": "The `for` keyword is used to start a loop in Python. The `in` keyword is used to check if a value is present in a list or other collection.",
+                  "explanation": "This line starts a loop that will iterate over each of the four DNA bases."
               },
               {
                   "indent": 5,
-                  "line": "queue.put(seq + ch)",
-                  "pseudo-code": "Add the string formed by appending `ch` to `seq` to the queue.",
-                  "syntax-hint": "In Python, strings are concatenated using the `+` operator.",
-                  "explanation": "This line is needed to generate a new sequence by appending the current character to the existing sequence."
+                  "line": "q.append(seq + ch)",
+                  "pseudo-code": "Add the sequence seq concatenated with the character ch to the queue q",
+                  "syntax-hint": "The `+` operator is used to concatenate strings in Python.",
+                  "explanation": "This line generates a new sequence by replacing the wildcard 'N' with the current DNA base, and adds it to the queue for further processing."
               },
               {
                   "indent": 3,
                   "line": "else:",
-                  "pseudo-code": "Start a block of code that is executed if the character at the current position in `pattern` is not 'N'.",
-                  "syntax-hint": "The `else` keyword is used to start a block of code that is executed if the preceding `if` condition is not met.",
-                  "explanation": "This line is needed to handle the case where the current position in the pattern is a specific DNA character."
+                  "pseudo-code": "Start the else block for the inner if statement",
+                  "syntax-hint": "The `else` keyword is used to define a block of code to be executed if the condition in the `if` statement is false.",
+                  "explanation": "This line starts the else block, which will be executed if the character at the current position in the pattern is not the wildcard 'N'."
               },
               {
                   "indent": 4,
-                  "line": "queue.put(seq + pattern[len(seq)])",
-                  "pseudo-code": "Add the string formed by appending the character at the current position in `pattern` to `seq` to the queue.",
-                  "syntax-hint": "In Python, strings are indexed and concatenated using the `[]` and `+` operators, respectively.",
-                  "explanation": "This line is needed to generate a new sequence by appending the specified character to the existing sequence."
+                  "line": "q.append(seq + pattern[len(seq)])",
+                  "pseudo-code": "Add the sequence seq concatenated with the character at the current position in the pattern to the queue q",
+                  "syntax-hint": "The `+` operator is used to concatenate strings in Python.",
+                  "explanation": "This line generates a new sequence by adding the character at the current position in the pattern to the current sequence, and adds it to the queue for further processing."
               }
           ]
       },
@@ -3208,9 +3103,9 @@ print(temperature_potential([30, 35, 40]))
               {
                   "indent": 1,
                   "line": "return result",
-                  "pseudo-code": "Return the list `result`.",
-                  "syntax-hint": "The `return` keyword is used to specify the result of a function in Python.",
-                  "explanation": "This line is needed to provide the generated DNA sequences as the result of the function."
+                  "pseudo-code": "Return the result list",
+                  "syntax-hint": "The `return` keyword is used to end the execution of a function and return a value.",
+                  "explanation": "This line returns the final list of DNA sequences."
               }
           ]
       }
@@ -3220,11 +3115,11 @@ print(temperature_potential([30, 35, 40]))
   "lines": [
     {
       "code": "def dna_sequences(pattern: str) -> list[str]:",
-      "explanation": "This line defines the function dna_sequences that takes a string pattern and returns a list of strings.",
+      "explanation": "This line defines the function dna_sequences, which will generate all possible DNA sequences based on a given pattern.",
       "tokens": [
         {
           "token": "def ",
-          "explanation": "Keyword to start function definition"
+          "explanation": "Keyword to start a function definition"
         },
         {
           "token": "dna_sequences",
@@ -3232,244 +3127,175 @@ print(temperature_potential([30, 35, 40]))
         },
         {
           "token": "(",
-          "explanation": "Start of parameter list"
+          "explanation": "Start of function parameters"
         },
         {
           "token": "pattern: str",
-          "explanation": "Parameter 'pattern' of type string"
+          "explanation": "Function parameter with type hint"
         },
         {
           "token": ") -> list[str]",
-          "explanation": "End of parameter list and function return type"
+          "explanation": "End of function parameters and return type hint"
         },
         {
           "token": ":",
           "explanation": "Start of function body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
-      "code": "    dna_chars = ['A', 'C', 'G', 'T']",
-      "explanation": "This line initializes a list of DNA characters.",
+      "code": "    dna_chars = [\"A\", \"C\", \"G\", \"T\"]",
+      "explanation": "This line initializes a list of the four DNA bases that will be used to replace the wildcard 'N' in the pattern.",
       "tokens": [
         {
           "token": "    ",
-          "explanation": "Indentation for function body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "dna_chars",
+          "token": "dna_chars ",
           "explanation": "Variable name"
         },
         {
-          "token": " = ",
+          "token": "= ",
           "explanation": "Assignment operator"
         },
         {
-          "token": "['A', 'C', 'G', 'T']",
-          "explanation": "List of DNA characters"
-        },
-        {
-          "token": "\n"
+          "token": "[\"A\", \"C\", \"G\", \"T\"]",
+          "explanation": "List of DNA bases"
         }
       ]
     },
     {
-      "code": "    queue = Queue()",
-      "explanation": "This line initializes an empty queue.",
+      "code": "    q = [\"\"]",
+      "explanation": "This line initializes a queue that will be used to generate and explore all combinations of sequences.",
       "tokens": [
         {
           "token": "    ",
-          "explanation": "Indentation for function body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "queue",
+          "token": "q ",
           "explanation": "Variable name"
         },
         {
-          "token": " = ",
+          "token": "= ",
           "explanation": "Assignment operator"
         },
         {
-          "token": "Queue()",
-          "explanation": "Creating an instance of Queue"
-        },
-        {
-          "token": "\n"
-        }
-      ]
-    },
-    {
-      "code": "    queue.put('')",
-      "explanation": "This line puts an empty string into the queue.",
-      "tokens": [
-        {
-          "token": "    ",
-          "explanation": "Indentation for function body"
-        },
-        {
-          "token": "queue.put",
-          "explanation": "Method to add an item to the queue"
-        },
-        {
-          "token": "('')",
-          "explanation": "Empty string being added to the queue"
-        },
-        {
-          "token": "\n"
+          "token": "[\"\"]",
+          "explanation": "List with an empty string"
         }
       ]
     },
     {
       "code": "    result = []",
-      "explanation": "This line initializes an empty list to store the results.",
+      "explanation": "This line initializes an empty list that will store the final DNA sequences.",
       "tokens": [
         {
           "token": "    ",
-          "explanation": "Indentation for function body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "result",
+          "token": "result ",
           "explanation": "Variable name"
         },
         {
-          "token": " = ",
+          "token": "= ",
           "explanation": "Assignment operator"
         },
         {
           "token": "[]",
           "explanation": "Empty list"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
-      "code": "    while not queue.empty():",
-      "explanation": "This line starts a while loop that continues until the queue is empty.",
+      "code": "    while len(q) > 0:",
+      "explanation": "This line starts a loop that will continue until all possible DNA sequences have been generated and added to the result list.",
       "tokens": [
         {
           "token": "    ",
-          "explanation": "Indentation for function body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "while",
+          "token": "while ",
           "explanation": "Keyword to start a while loop"
         },
         {
-          "token": " not ",
-          "explanation": "Negation operator"
-        },
-        {
-          "token": "queue.empty",
-          "explanation": "Method to check if the queue is empty"
-        },
-        {
-          "token": "()",
-          "explanation": "Calling the method"
+          "token": "len(q) > 0",
+          "explanation": "Condition for the while loop"
         },
         {
           "token": ":",
           "explanation": "Start of while loop body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
-      "code": "        seq = queue.get()",
-      "explanation": "This line gets the next item from the queue and assigns it to the variable 'seq'.",
+      "code": "        seq = q.pop(0)",
+      "explanation": "This line retrieves the next sequence from the queue to be processed.",
       "tokens": [
         {
           "token": "        ",
-          "explanation": "Indentation for while loop body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "seq",
+          "token": "seq ",
           "explanation": "Variable name"
         },
         {
-          "token": " = ",
+          "token": "= ",
           "explanation": "Assignment operator"
         },
         {
-          "token": "queue.get",
-          "explanation": "Method to get an item from the queue"
-        },
-        {
-          "token": "()",
-          "explanation": "Calling the method"
-        },
-        {
-          "token": "\n"
+          "token": "q.pop(0)",
+          "explanation": "Method to remove and return the first item from the list"
         }
       ]
     },
     {
       "code": "        if len(seq) == len(pattern):",
-      "explanation": "This line checks if the length of the sequence is equal to the length of the pattern.",
+      "explanation": "This line checks if the current sequence has reached the desired length. If it has, it's a valid DNA sequence and should be added to the result list.",
       "tokens": [
         {
           "token": "        ",
-          "explanation": "Indentation for while loop body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "if",
-          "explanation": "Keyword to start an if statement"
+          "token": "if ",
+          "explanation": "Keyword to start a conditional statement"
         },
         {
-          "token": " len(seq)",
-          "explanation": "Function to get the length of the sequence"
-        },
-        {
-          "token": " == ",
-          "explanation": "Equality operator"
-        },
-        {
-          "token": "len(pattern)",
-          "explanation": "Function to get the length of the pattern"
+          "token": "len(seq) == len(pattern)",
+          "explanation": "Condition for the if statement"
         },
         {
           "token": ":",
           "explanation": "Start of if statement body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
       "code": "            result.append(seq)",
-      "explanation": "This line appends the sequence to the result list if the length of the sequence is equal to the length of the pattern.",
+      "explanation": "This line adds the current sequence to the result list because it's a valid DNA sequence.",
       "tokens": [
         {
           "token": "            ",
-          "explanation": "Indentation for if statement body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "result.append",
-          "explanation": "Method to add an item to the list"
-        },
-        {
-          "token": "(seq)",
-          "explanation": "The sequence being added to the list"
-        },
-        {
-          "token": "\n"
+          "token": "result.append(seq)",
+          "explanation": "Method to add an item to the end of the list"
         }
       ]
     },
     {
       "code": "        else:",
-      "explanation": "This line starts the else block of the if statement.",
+      "explanation": "This line starts the else block, which will be executed if the current sequence hasn't reached the desired length yet.",
       "tokens": [
         {
           "token": "        ",
-          "explanation": "Indentation for while loop body"
+          "explanation": "Indentation for code block"
         },
         {
           "token": "else",
@@ -3478,106 +3304,82 @@ print(temperature_potential([30, 35, 40]))
         {
           "token": ":",
           "explanation": "Start of else block body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
-      "code": "            if pattern[len(seq)] == 'N':",
-      "explanation": "This line checks if the character at the current position in the pattern is 'N'.",
+      "code": "            if pattern[len(seq)] == \"N\":",
+      "explanation": "This line checks if the character at the current position in the pattern is the wildcard 'N'. If it is, it needs to be replaced by each of the four DNA bases.",
       "tokens": [
         {
           "token": "            ",
-          "explanation": "Indentation for else block body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "if",
-          "explanation": "Keyword to start an if statement"
+          "token": "if ",
+          "explanation": "Keyword to start a conditional statement"
         },
         {
-          "token": " pattern[len(seq)]",
-          "explanation": "Accessing the character at the current position in the pattern"
-        },
-        {
-          "token": " == ",
-          "explanation": "Equality operator"
-        },
-        {
-          "token": "'N'",
-          "explanation": "The character 'N'"
+          "token": "pattern[len(seq)] == \"N\"",
+          "explanation": "Condition for the if statement"
         },
         {
           "token": ":",
           "explanation": "Start of if statement body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
       "code": "                for ch in dna_chars:",
-      "explanation": "This line starts a for loop that iterates over the DNA characters.",
+      "explanation": "This line starts a loop that will iterate over each of the four DNA bases.",
       "tokens": [
         {
           "token": "                ",
-          "explanation": "Indentation for if statement body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "for",
+          "token": "for ",
           "explanation": "Keyword to start a for loop"
         },
         {
-          "token": " ch",
+          "token": "ch ",
           "explanation": "Loop variable"
         },
         {
-          "token": " in ",
-          "explanation": "Keyword to specify the iterable"
+          "token": "in ",
+          "explanation": "Keyword to specify the collection to iterate over"
         },
         {
           "token": "dna_chars",
-          "explanation": "The iterable (list of DNA characters)"
+          "explanation": "List to iterate over"
         },
         {
           "token": ":",
           "explanation": "Start of for loop body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
-      "code": "                    queue.put(seq + ch)",
-      "explanation": "This line adds a new sequence to the queue by appending the current DNA character to the sequence.",
+      "code": "                    q.append(seq + ch)",
+      "explanation": "This line generates a new sequence by replacing the wildcard 'N' with the current DNA base, and adds it to the queue for further processing.",
       "tokens": [
         {
           "token": "                    ",
-          "explanation": "Indentation for for loop body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "queue.put",
-          "explanation": "Method to add an item to the queue"
-        },
-        {
-          "token": "(seq + ch)",
-          "explanation": "The new sequence being added to the queue"
-        },
-        {
-          "token": "\n"
+          "token": "q.append(seq + ch)",
+          "explanation": "Method to add an item to the end of the list"
         }
       ]
     },
     {
       "code": "            else:",
-      "explanation": "This line starts the else block of the if statement.",
+      "explanation": "This line starts the else block, which will be executed if the character at the current position in the pattern is not the wildcard 'N'.",
       "tokens": [
         {
           "token": "            ",
-          "explanation": "Indentation for else block body"
+          "explanation": "Indentation for code block"
         },
         {
           "token": "else",
@@ -3586,51 +3388,38 @@ print(temperature_potential([30, 35, 40]))
         {
           "token": ":",
           "explanation": "Start of else block body"
-        },
-        {
-          "token": "\n"
         }
       ]
     },
     {
-      "code": "                queue.put(seq + pattern[len(seq)])",
-      "explanation": "This line adds a new sequence to the queue by appending the character at the current position in the pattern to the sequence.",
+      "code": "                q.append(seq + pattern[len(seq)])",
+      "explanation": "This line generates a new sequence by adding the character at the current position in the pattern to the current sequence, and adds it to the queue for further processing.",
       "tokens": [
         {
           "token": "                ",
-          "explanation": "Indentation for else block body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "queue.put",
-          "explanation": "Method to add an item to the queue"
-        },
-        {
-          "token": "(seq + pattern[len(seq)])",
-          "explanation": "The new sequence being added to the queue"
-        },
-        {
-          "token": "\n"
+          "token": "q.append(seq + pattern[len(seq)])",
+          "explanation": "Method to add an item to the end of the list"
         }
       ]
     },
     {
       "code": "    return result",
-      "explanation": "This line returns the result list, which contains all the DNA sequences that match the pattern.",
+      "explanation": "This line returns the final list of DNA sequences.",
       "tokens": [
         {
           "token": "    ",
-          "explanation": "Indentation for function body"
+          "explanation": "Indentation for code block"
         },
         {
-          "token": "return",
-          "explanation": "Keyword to return a value from the function"
+          "token": "return ",
+          "explanation": "Keyword to return a value from a function"
         },
         {
-          "token": " result",
-          "explanation": "The value being returned"
-        },
-        {
-          "token": "\n"
+          "token": "result",
+          "explanation": "Variable to return"
         }
       ]
     }
@@ -3640,272 +3429,269 @@ print(temperature_potential([30, 35, 40]))
   "questions": [
     {
       "type": "Short Answer",
-      "question": "What is the purpose of the 'queue' in this code?",
-      "answer": "The queue is used to generate all possible DNA sequences.",
+      "question": "What does the 'while' loop do in this code?",
+      "answer": "It processes all sequences in the queue until the queue is empty.",
       "question-code-lines": [
-        "3",
+        "5"
       ],
-      "question-code-lines-explained": "queue = Queue() # Initializes an empty queue\nqueue.put('') # Adds an empty string to the queue\nwhile not queue.empty(): # While the queue is not empty\nseq = queue.get() # Get the first sequence in the queue\nif len(seq) == len(pattern): # If the sequence length equals the pattern length\nresult.append(seq) # Add the sequence to the result list\nelse: # If the sequence length is less than the pattern length\nif pattern[len(seq)] == 'N': # If the next character in the pattern is 'N'\nfor ch in dna_chars: # For each character in 'dna_chars'\nqueue.put(seq + ch) # Add a new sequence to the queue\nelse: # If the next character in the pattern is not 'N'\nqueue.put(seq + pattern[len(seq)]) # Add a new sequence to the queue"
+      "question-code-lines-explained": "while len(q) > 0: # This loop continues until the queue is empty."
     },
     {
       "type": "Multiple Choice",
-      "question": "What would happen if 'queue.put('')' was not included in the code?",
+      "question": "What happens when the length of the sequence equals the length of the pattern?",
       "answer": {
-        "correct-choice": "The while loop would never run, as the queue would be empty.",
-        "incorrect-choice-1": "The program would enter an infinite loop.",
-        "incorrect-choice-2": "The function would return an empty list.",
-        "incorrect-choice-3": "The function would return a list of all DNA characters."
+        "correct-choice": "The sequence is added to the result list.",
+        "incorrect-choice-1": "The sequence is discarded.",
+        "incorrect-choice-2": "The sequence is added to the queue.",
+        "incorrect-choice-3": "The sequence is ignored."
       },
       "question-code-lines": [
-        "4"
+        "6", "7"
       ],
-      "question-code-lines-explained": "queue.put('') # Adds an empty string to the queue, which is the starting point for generating the sequences"
+      "question-code-lines-explained": "if len(seq) == len(pattern): result.append(seq) # If the length of the sequence equals the length of the pattern, the sequence is added to the result list."
     },
     {
       "type": "Multiple Choice",
-      "question": "What is the purpose of the 'if' statement inside the 'while' loop?",
+      "question": "What does the 'N' placeholder represent in the pattern?",
       "answer": {
-        "correct-choice": "It checks if the current sequence length equals the pattern length.",
-        "incorrect-choice-1": "It checks if the queue is empty.",
-        "incorrect-choice-2": "It checks if the current sequence is a valid DNA sequence.",
-        "incorrect-choice-3": "It checks if the current sequence contains the pattern."
+        "correct-choice": "A wildcard that can be replaced by any DNA base.",
+        "incorrect-choice-1": "A specific DNA base.",
+        "incorrect-choice-2": "A null value.",
+        "incorrect-choice-3": "A placeholder for a space."
       },
       "question-code-lines": [
-        "7"
+        "10", 
       ],
-      "question-code-lines-explained": "if len(seq) == len(pattern): # Checks if the current sequence length equals the pattern length"
+      "question-code-lines-explained": "if pattern[len(seq)] == \"N\": for ch in dna_chars: q.append(seq + ch) # If the current character in the pattern is 'N', a new sequence is added to the queue for each possible DNA base."
     },
     {
       "type": "Short Answer",
-      "question": "What does 'seq + ch' do in this context?",
-      "answer": "It concatenates the current sequence with a new DNA character.",
+      "question": "What would happen if the queue was implemented as a stack?",
+      "answer": "The order of the generated sequences would change, but the final result would remain the same.",
       "question-code-lines": [
-        "11"
+       "12", 
       ],
-      "question-code-lines-explained": "queue.put(seq + ch) # Adds a new sequence to the queue by concatenating the current sequence with a new DNA character"
+      "question-code-lines-explained": "while len(q) > 0: seq = q.pop(0) ... q.append(seq + ch) ... q.append(seq + pattern[len(seq)]) # The queue is used to store intermediate sequences. If it was a stack, the order of processing these sequences would change."
     }
   ]
 },
 {
   "wrong-code": 
 `def dna_sequences(pattern: str) -> list[str]:
-    dna_chars = ['A', 'C', 'G', 'T']
-    queue = Queue()
-    queue.put('')
-    result = []
-    while queue.empty():
-        seq = queue.get()
-        if len(seq) == len(pattern):
-            result.append(seq)
-        else:
-            if pattern[len(seq)] == 'N':
-                for ch in dna_chars:
-                    queue.put(seq + ch)
-            else:
-                queue.put(seq + pattern[len(seq)])          
-    return result`,
+      dna_chars = ['A', 'C', 'G', 'T']
+      q = ['']
+      result = []
+      while len(q) > 0:
+          seq = q.pop(0)
+          if len(seq) == len(pattern):
+              result.append(seq)
+          else:
+              if pattern[len(seq)] == 'N':
+                  for ch in dna_chars:
+                      q.append(seq + ch)
+              else:
+                  q.append(seq + pattern[len(seq) + 1])
+      return result`,
   "issues":{
               "logical-issue-1": {
-                      "type": "Incorrect Loop Condition",
-                      "line": 6
-              },
-              "logical-issue-2": {
-                      "type": "Misuse of Data Structures",
-                      "line": 3
+                      "type": "Incorrect Index Usage",
+                      "line": 11
               }
           }
-},
-{
-  "subgoals": [
-    {
-      "title": "Function Definition",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should be the input to our function?",
-              "correct-choice": "A string pattern",
-              "incorrect-choice-1": "Two integers n1 and n2",
-              "incorrect-choice-2": "A list of integers",
-              "incorrect-choice-3": "A list of binary numbers"
-            }
-          ],
-          "code-lines-to-be-revealed": [1]
-        }
-      ]
-    },
-    {
-      "title": "Initialize DNA Characters",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What are the possible characters in a DNA sequence?",
-              "correct-choice": "'A', 'C', 'G', 'T'",
-              "incorrect-choice-1": "'A', 'B', 'C', 'D'",
-              "incorrect-choice-2": "'1', '2', '3', '4'",
-              "incorrect-choice-3": "'W', 'X', 'Y', 'Z'"
-            }
-          ],
-          "code-lines-to-be-revealed": [2]
-        }
-      ]
-    },
-    {
-      "title": "Initialize Queue",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What data structure should we use to generate the DNA sequences?",
-              "correct-choice": "Queue",
-              "incorrect-choice-1": "Stack",
-              "incorrect-choice-2": "List",
-              "incorrect-choice-3": "Dictionary"
-            }
-          ],
-          "code-lines-to-be-revealed": [3]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should be the initial element in the queue?",
-              "correct-choice": "An empty string",
-              "incorrect-choice-1": "The pattern",
-              "incorrect-choice-2": "A string of 'N's",
-              "incorrect-choice-3": "A string of 'A's"
-            }
-          ],
-          "code-lines-to-be-revealed": [4]
-        }
-      ]
-    },
-    {
-      "title": "Initialize Result List",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What data structure should we use to store the generated DNA sequences?",
-              "correct-choice": "List",
-              "incorrect-choice-1": "Queue",
-              "incorrect-choice-2": "Stack",
-              "incorrect-choice-3": "Dictionary"
-            }
-          ],
-          "code-lines-to-be-revealed": [5]
-        }
-      ]
-    },
-    {
-      "title": "Generate DNA Sequences",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "How long should we continue generating DNA sequences?",
-              "correct-choice": "Until the queue is empty",
-              "incorrect-choice-1": "Until we have generated a certain number of sequences",
-              "incorrect-choice-2": "Until the length of the sequence is equal to the length of the pattern",
-              "incorrect-choice-3": "Until the sequence matches the pattern"
-            }
-          ],
-          "code-lines-to-be-revealed": [6]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do with the sequence at the front of the queue?",
-              "correct-choice": "Remove it from the queue and process it",
-              "incorrect-choice-1": "Leave it in the queue and process it",
-              "incorrect-choice-2": "Remove it from the queue and ignore it",
-              "incorrect-choice-3": "Leave it in the queue and ignore it"
-            }
-          ],
-          "code-lines-to-be-revealed": [7]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "When should we add a sequence to the result list?",
-              "correct-choice": "When the length of the sequence is equal to the length of the pattern",
-              "incorrect-choice-1": "When the sequence matches the pattern",
-              "incorrect-choice-2": "When the queue is empty",
-              "incorrect-choice-3": "When we have generated a certain number of sequences"
-            }
-          ],
-          "code-lines-to-be-revealed": [8, 9]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if the current character in the pattern is 'N'?",
-              "correct-choice": "Add all possible DNA characters to the sequence",
-              "incorrect-choice-1": "Skip this character",
-              "incorrect-choice-2": "Stop generating sequences",
-              "incorrect-choice-3": "Add a random DNA character to the sequence"
-            }
-          ],
-          "code-lines-to-be-revealed": [10, 11]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do for each possible DNA character when the current character in the pattern is 'N'?",
-              "correct-choice": "Add it to the sequence and put the new sequence in the queue",
-              "incorrect-choice-1": "Add it to the sequence and ignore the new sequence",
-              "incorrect-choice-2": "Ignore it",
-              "incorrect-choice-3": "Add it to the sequence and add the new sequence to the result list"
-            }
-          ],
-          "code-lines-to-be-revealed": [12, 13]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do if the current character in the pattern is not 'N'?",
-              "correct-choice": "Add this character to the sequence",
-              "incorrect-choice-1": "Skip this character",
-              "incorrect-choice-2": "Stop generating sequences",
-              "incorrect-choice-3": "Add a random DNA character to the sequence"
-            }
-          ],
-          "code-lines-to-be-revealed": [14]
-        },
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should we do after adding the current character in the pattern to the sequence?",
-              "correct-choice": "Put the new sequence in the queue",
-              "incorrect-choice-1": "Ignore the new sequence",
-              "incorrect-choice-2": "Add the new sequence to the result list",
-              "incorrect-choice-3": "Put the new sequence at the front of the queue"
-            }
-          ],
-          "code-lines-to-be-revealed": [15]
-        }
-      ]
-    },
-    {
-      "title": "Return Result",
-      "sub-subgoal-items": [
-        {
-          "leading-questions": [
-            {
-              "mcq-question": "What should our function return?",
-              "correct-choice": "The list of generated DNA sequences",
-              "incorrect-choice-1": "The number of generated sequences",
-              "incorrect-choice-2": "The last generated sequence",
-              "incorrect-choice-3": "The first generated sequence"
-            }
-          ],
-          "code-lines-to-be-revealed": [16]
-        }
-      ]
-    }
-  ]
-},
-{},
+  },
+  {
+    "subgoals": [
+      {
+        "title": "Function Definition",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the input to the function?",
+                "correct-choice": "A string representing the DNA pattern",
+                "incorrect-choice-1": "A list of DNA sequences",
+                "incorrect-choice-2": "A list of DNA bases",
+                "incorrect-choice-3": "A dictionary of DNA bases"
+              }
+            ],
+            "code-lines-to-be-revealed": [1]
+          }
+        ]
+      },
+      {
+        "title": "Initialize Variables",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What are the possible DNA bases?",
+                "correct-choice": "A, C, G, T",
+                "incorrect-choice-1": "A, B, C, D",
+                "incorrect-choice-2": "A, C, G, N",
+                "incorrect-choice-3": "A, C, G, T, N"
+              }
+            ],
+            "code-lines-to-be-revealed": [2]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What data structure should be used to generate and explore all combinations of sequences?",
+                "correct-choice": "Queue",
+                "incorrect-choice-1": "Stack",
+                "incorrect-choice-2": "List",
+                "incorrect-choice-3": "Dictionary"
+              }
+            ],
+            "code-lines-to-be-revealed": [3]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be the initial state of the queue?",
+                "correct-choice": "An empty string",
+                "incorrect-choice-1": "The input pattern",
+                "incorrect-choice-2": "A list of DNA bases",
+                "incorrect-choice-3": "None"
+              },
+              {
+                "mcq-question": "What data structure should be used to store the result?",
+                "correct-choice": "List",
+                "incorrect-choice-1": "Queue",
+                "incorrect-choice-2": "Stack",
+                "incorrect-choice-3": "Dictionary"
+              }
+            ],
+            "code-lines-to-be-revealed": [4]
+          }
+        ]
+      },
+      {
+        "title": "Generate Sequences",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What condition should be checked to continue generating sequences?",
+                "correct-choice": "The queue is not empty",
+                "incorrect-choice-1": "The queue is empty",
+                "incorrect-choice-2": "The result list is not empty",
+                "incorrect-choice-3": "The result list is empty"
+              }
+            ],
+            "code-lines-to-be-revealed": [5]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "How should the next sequence be obtained from the queue?",
+                "correct-choice": "By removing the first element",
+                "incorrect-choice-1": "By removing the last element",
+                "incorrect-choice-2": "By removing a random element",
+                "incorrect-choice-3": "By removing the middle element"
+              }
+            ],
+            "code-lines-to-be-revealed": [6]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What condition should be checked to add a sequence to the result list?",
+                "correct-choice": "The length of the sequence equals the length of the pattern",
+                "incorrect-choice-1": "The length of the sequence is less than the length of the pattern",
+                "incorrect-choice-2": "The length of the sequence is greater than the length of the pattern",
+                "incorrect-choice-3": "The length of the sequence is not equal to the length of the pattern"
+              }
+            ],
+            "code-lines-to-be-revealed": [7]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be done if the length of the sequence equals the length of the pattern?",
+                "correct-choice": "The sequence should be added to the result list",
+                "incorrect-choice-1": "The sequence should be added to the queue",
+                "incorrect-choice-2": "The sequence should be ignored",
+                "incorrect-choice-3": "The sequence should be removed from the queue"
+              }
+            ],
+            "code-lines-to-be-revealed": [8]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be done if the current character in the pattern is a wildcard?",
+                "correct-choice": "Add a new sequence to the queue for each possible DNA base",
+                "incorrect-choice-1": "Add the wildcard to the current sequence",
+                "incorrect-choice-2": "Ignore the wildcard",
+                "incorrect-choice-3": "Add a new sequence to the result list for each possible DNA base"
+              }
+            ],
+            "code-lines-to-be-revealed": [9, 10]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be done for each possible DNA base if the current character in the pattern is a wildcard?",
+                "correct-choice": "Add a new sequence to the queue",
+                "incorrect-choice-1": "Add a new sequence to the result list",
+                "incorrect-choice-2": "Ignore the DNA base",
+                "incorrect-choice-3": "Add the DNA base to the current sequence"
+              }
+            ],
+            "code-lines-to-be-revealed": [11, 12]
+          },
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should be done if the current character in the pattern is not a wildcard?",
+                "correct-choice": "Add the current character to the current sequence and add the new sequence to the queue",
+                "incorrect-choice-1": "Add the current character to the current sequence and add the new sequence to the result list",
+                "incorrect-choice-2": "Ignore the current character",
+                "incorrect-choice-3": "Add a new sequence to the queue for each possible DNA base"
+              }
+            ],
+            "code-lines-to-be-revealed": [14]
+          }
+        ]
+      },
+      {
+        "title": "Return Result",
+        "sub-subgoal-items": [
+          {
+            "leading-questions": [
+              {
+                "mcq-question": "What should the function return?",
+                "correct-choice": "The list of generated DNA sequences",
+                "incorrect-choice-1": "The input pattern",
+                "incorrect-choice-2": "The queue",
+                "incorrect-choice-3": "The number of generated DNA sequences"
+              }
+            ],
+            "code-lines-to-be-revealed": [15]
+          }
+        ]
+      }
+    ]
+  },
+[
+  {
+      "step": 13,
+      "variable": "seq"
+  },
+  {
+      "step": 18,
+      "variable": "result"
+  },
+  {
+      "step": 46,
+      "variable": "q"
+  },
+  {
+      "step": 58,
+      "variable": "seq"
+  }
+],
 ),
 
 

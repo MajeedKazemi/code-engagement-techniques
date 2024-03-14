@@ -342,7 +342,8 @@ const CPU_LIMITER_CODE = [
 
 const TRACING_CODE = [
     `import sys`,
-    `import trace`,,
+    `import trace`,
+    `from queue import Queue`,
     `tracer = trace.Trace(
         ignoredirs=[sys.prefix, sys.exec_prefix],
         trace=1)`,
@@ -354,6 +355,7 @@ const TRACING_CODE = [
 const TRACK_VARIABLE = [
     `import sys`,
     `import io`,
+    `from queue import Queue`,
     `def localtrace(frame, why, arg):`,
     `   if why == 'call':`,
     `       return localtrace`,
@@ -363,7 +365,6 @@ const TRACK_VARIABLE = [
     `   return localtrace`,
     `sys.stdin = io.StringIO(''.join(inputs))`,
     `sys.settrace(localtrace)`,
-    `from queue import Queue`,
     `main()`,
     `sys.settrace(None)`
 ].join("\n")

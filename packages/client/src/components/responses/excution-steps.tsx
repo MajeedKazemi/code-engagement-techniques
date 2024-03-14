@@ -7,6 +7,7 @@ import { ChatLoader } from '../loader';
 import { highlightCode } from '../../utils/utils';
 import * as monaco from "monaco-editor";
 import IconsDoc from '../docs/icons-doc';
+import { task2Trace } from '../../utils/constants';
 
 
 
@@ -169,37 +170,37 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
 
 
     const generateQuestion = () => {
-        // try {
-        //     apiGenerateTracingQuestion(
-        //         context?.token,
-        //         backendCode,
-        //         excutionSteps ? JSON.stringify(excutionSteps) : ""
-        //     ).then(async (response) => {
-                                      
-        //         if (response.ok) {
-        //             const data = await response.json();
-        //             console.log("questions", data.response);
-        //             setQuestions(data.response);
-        //         }
-        //     })
-        // } catch (error: any) {
-        //     logError(error.toString());
-        // }
-
         try {
-            apiGetTracingSimulation(
+            apiGenerateTracingQuestion(
                 context?.token,
-                taskID,
+                backendCode,
+                excutionSteps ? JSON.stringify(excutionSteps) : ""
             ).then(async (response) => {
                                       
                 if (response.ok) {
                     const data = await response.json();
-                    setQuestions(data.tracePredict);
+                    console.log("questions", data.response);
+                    setQuestions(data.response);
                 }
             })
         } catch (error: any) {
             logError(error.toString());
         }
+
+        // try {
+        //     apiGetTracingSimulation(
+        //         context?.token,
+        //         taskID,
+        //     ).then(async (response) => {
+                                      
+        //         if (response.ok) {
+        //             const data = await response.json();
+        //             setQuestions(data.tracePredict);
+        //         }
+        //     })
+        // } catch (error: any) {
+        //     logError(error.toString());
+        // }
 
     };
 
@@ -243,7 +244,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                         const currOutput = data.out.split("\n");
                         var tempTrace: string[] = [];
                         currOutput.forEach((line: string) => {
-                            // console.log("line", line);
                             if (line.startsWith("main.py(")) {
                                 tempTrace.push(line);
                             }
@@ -275,6 +275,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                 //             line: data.err,
                 //         },
                 //     ]);
+                //     console.log("error");
                 // }
                 if (data.type === "close") {
                     setTraceId(traceId + 1);
@@ -399,75 +400,100 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
 
 
     useEffect(() => {
-        let fElements: f[][] = trackOutput.map(item => {
-            // console.log("item", item);
-            let parsedItem = JSON.parse(item.replace(/'/g, '"').replace(/\(/g, '[').replace(/\)/g, ']'));
-            return Object.keys(parsedItem).map(key => {
-                let value = parsedItem[key];
-                let valueType = "str";  // Default to str
+        if (taskID == "2"){
+            let fElements = task2Trace;
+            let objectArray = excutionSteps;
+
+            let minLength = Math.min(fElements.length, objectArray.length);
+
+            for(let i = 0; i < minLength; i++) {
+                objectArray[i].frame = fElements[i];
+            }
+
+            if(objectArray.length > fElements.length) {
+                let lastElement = fElements[fElements.length - 1];
             
-                if (typeof value === 'number') {
-                    // value is a number
-                    valueType = "int";
-                } else if (typeof value === 'boolean') {
-                    // value is a boolean
-                    valueType = "bool";
-                } else if (typeof value === 'string') {
-                    // Check first character to identify string type
-                    if (value.startsWith("{")) {
-                        valueType = "dict";
-                    } else if (value.startsWith("[")) {
-                        valueType = "list";
-                    } else if (value.startsWith("(")) {
-                        valueType = "tuple";
-                    }
+                for(let i = fElements.length; i < objectArray.length; i++) {
+                    objectArray[i].frame = lastElement;
                 }
-            
-                return {
-                    name: key,
-                    type: valueType,
-                    value: value
-                };
+            }
+
+            if(backendCode.length > 0){
+                // check if the current excutionstep requires input
+                let lineObjects = backendCode.split('\n');
+                if(!lineObjects[objectArray[objectArray.length-1].currLine-1].includes('input(') && 
+                objectArray.some(step => step.frame.length !== 0)){
+                    // we know the tracing is done, generate questions
+                    generateQuestion();
+                }
+            }
+
+            setExcutionSteps(objectArray);
+        }            
+        else{
+            let fElements: f[][] = trackOutput.map(item => {
+                // console.log("item", item);
+                let parsedItem = JSON.parse(item.replace(/'/g, '"').replace(/\(/g, '[').replace(/\)/g, ']'));
+                // console.log("parsedItem", parsedItem, item);
+                return Object.keys(parsedItem).map(key => {
+                    let value = parsedItem[key];
+                    let valueType = "str";  // Default to str
+                
+                    if (typeof value === 'number') {
+                        // value is a number
+                        valueType = "int";
+                    } else if (typeof value === 'boolean') {
+                        // value is a boolean
+                        valueType = "bool";
+                    } else if (typeof value === 'string') {
+                        // Check first character to identify string type
+                        if (value.startsWith("{")) {
+                            valueType = "dict";
+                        } else if (value.startsWith("[")) {
+                            valueType = "list";
+                        } else if (value.startsWith("(")) {
+                            valueType = "tuple";
+                        }
+                    }
+                
+                    return {
+                        name: key,
+                        type: valueType,
+                        value: value
+                    };
+                });
             });
-        });
+            let objectArray = excutionSteps;
 
-        let objectArray = excutionSteps;
+            let minLength = Math.min(fElements.length, objectArray.length);
 
-        let minLength = Math.min(fElements.length, objectArray.length);
-
-        for(let i = 0; i < minLength; i++) {
-            objectArray[i].frame = fElements[i];
-        }
-
-        if(objectArray.length > fElements.length) {
-            let lastElement = fElements[fElements.length - 1];
-        
-            for(let i = fElements.length; i < objectArray.length; i++) {
-                objectArray[i].frame = lastElement;
+            for(let i = 0; i < minLength; i++) {
+                objectArray[i].frame = fElements[i];
             }
-        }
 
-        if(backendCode.length > 0){
-            // check if the current excutionstep requires input
-            let lineObjects = backendCode.split('\n');
-            if(!lineObjects[objectArray[objectArray.length-1].currLine-1].includes('input(') && 
-            objectArray.some(step => step.frame.length !== 0)){
-                // we know the tracing is done, generate questions
-                generateQuestion();
+            if(objectArray.length > fElements.length) {
+                let lastElement = fElements[fElements.length - 1];
+            
+                for(let i = fElements.length; i < objectArray.length; i++) {
+                    objectArray[i].frame = lastElement;
+                }
             }
+
+            if(backendCode.length > 0){
+                // check if the current excutionstep requires input
+                let lineObjects = backendCode.split('\n');
+                if(!lineObjects[objectArray[objectArray.length-1].currLine-1].includes('input(') && 
+                objectArray.some(step => step.frame.length !== 0)){
+                    // we know the tracing is done, generate questions
+                    generateQuestion();
+                }
+            }
+
+            setExcutionSteps(objectArray);
         }
 
-        //also assign print outputs
-        //find the print statement lines
-        //iterate through the objectArray
-        // objectArray.forEach((step) => {
-        //     // Check if the current line is a print statement
-        //     let currCode = backendCode.split('\n')[step.currLine - 1];
-        //     if (currCode.includes('print(')) {
-        //         console.log(step.currLine, currCode);
-        //     }
-        // });
-        setExcutionSteps(objectArray);
+
+
     }, [trackOutput]);
 
     useEffect(() => {
