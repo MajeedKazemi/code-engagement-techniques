@@ -5379,6 +5379,13 @@ new ManualCodingTask(
 `def temperature_potential(temperatures: list[int]) -> list[int]:
 `,
 ),
+new ManualCodingTask(
+  "mc2",
+  "Write a function called `char_permutations` that receives a string `s` and an integer `n` as inputs and returns a list of all unique permutations of length `n` that can be formed with the characters in `s`. The function should use a queue to generate these permutations efficiently.",
+`def char_permutations(s: str, n: int) -> list[str]:
+`,
+),
+
 
 
     // new AuthoringTask(
