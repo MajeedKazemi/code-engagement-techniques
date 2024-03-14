@@ -98,7 +98,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
     };
 
     useEffect(() => {   
-
+        handleSocketReconnect();
     }, []);
 
     useEffect(() => {
