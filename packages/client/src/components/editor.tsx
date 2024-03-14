@@ -415,15 +415,16 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         >
                             {saved ? "Code Saved" : "Save Code"}
                         </button>
-                        {/* <button
+                        {editor && props.type == 'coding' && <button
                             className={`editor-button ${
-                                !completed ? "editing-btn-disabled" : "editing-btn"
+                                editor.getValue() == props.starterCode? "editing-btn-disabled" : "editing-btn"
                             }`}
                             onClick={setNextTask}
-                            disabled={!completed}
+                            disabled={editor.getValue() == props.starterCode}
                         >
-                            Next Task
-                        </button> */}
+                            Submit Code
+                        </button>
+                        }
                     </div>
                     <button
                         className={`editor-button`}
