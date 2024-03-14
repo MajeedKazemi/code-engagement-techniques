@@ -19,6 +19,7 @@ interface LineWithLeadSpaces {
     original: string;
     trimmed: string;
     leadSpaces: number;
+    currentTabs: number;
 }
 
 
@@ -81,6 +82,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
             original: line,
             trimmed: line.replace(/^\s+/,''),  // Strip leading whitespaces
             leadSpaces: line.search(/\S|$/),  // Counts leading whitespaces
+            currentTabs: Math.floor(line.search(/\S|$/) / 4)
           }));
     };
     
@@ -195,6 +197,10 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
             return;
         }
 
+        if (lines[currentLineIndex].leadSpaces > 0 &&  lines[currentLineIndex].currentTabs > 0 && e.key != 'Tab') {
+            return;
+        }
+
         if (e.key == 'Tab') {
             e.preventDefault();
             const currentChar = lines[currentLineIndex].original[userInput.length];
@@ -202,6 +208,11 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
 
             if(lines[currentLineIndex].leadSpaces > 0 && /^\s*$/.test(userInput) && !isCharacterFromAtoZ) { 
                 setUserInput(prevInput => prevInput + '    ');
+                
+                //update lines.
+                const temp = lines;
+                temp[currentLineIndex].currentTabs -= 1;
+                setLines(temp);
                 return;
             }
         }

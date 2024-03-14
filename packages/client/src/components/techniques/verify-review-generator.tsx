@@ -394,14 +394,15 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
         
         if (confirmed) {
           setIsOpen(false);
-          const overlayElement = document.querySelector('.overlay') as HTMLElement;
-          const editorElement = document.querySelector('.editor') as HTMLElement;
-          overlayElement!.style.display = 'none';
-          editorElement.style.zIndex = '1';
-          setGeneratedCode("");
-          setGeneratedExplanation("");
-          moveOn();
-          verifyCancelClicked = !verifyCancelClicked;
+          // const overlayElement = document.querySelector('.overlay') as HTMLElement;
+          // const editorElement = document.querySelector('.editor') as HTMLElement;
+          // overlayElement!.style.display = 'none';
+          // editorElement.style.zIndex = '1';
+          // setGeneratedCode("");
+          // setGeneratedExplanation("");
+          // moveOn();
+          // verifyCancelClicked = !verifyCancelClicked;
+          setIsOver(true);
         }
       };
 
@@ -449,9 +450,12 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                 </div>
                 <div className="modal-footer">
                 {canExit && !buttonClickOver &&
-                <button type="button" className={`btn btn-secondary`} onClick={() => setIsOver(true)}>
-                    I think I am done
-                </button>
+                <button type="button" className={`btn btn-secondary`} onClick={() => {
+                  setIsModalOpen(true);
+                  // setIsOver(true);
+              }}>
+                  I think I am done
+              </button> 
                 }
                 {buttonClickOver && 
                 <>
@@ -468,7 +472,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                     Next
-                  </button>
+                  </button> */}
                   {isModalOpen && (
                       <div className="modal-next-confirm">
                         <div className="modal-next-confirm-content">
@@ -479,7 +483,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                         </div>
                         </div>
                       </div>
-                  )} */}
+                  )}
                 </div>
               </div>
             )}

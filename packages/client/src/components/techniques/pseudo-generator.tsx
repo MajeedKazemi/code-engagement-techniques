@@ -557,14 +557,15 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         
         if (confirmed) {
           setIsOpen(false);
-          const overlayElement = document.querySelector('.overlay') as HTMLElement;
-          const editorElement = document.querySelector('.editor') as HTMLElement;
-          overlayElement!.style.display = 'none';
-          editorElement.style.zIndex = '1';
-          setGeneratedCode("");
-          setGeneratedExplanation("");
-          moveOn();
-          pseudoCancelClicked = !pseudoCancelClicked;
+        //   const overlayElement = document.querySelector('.overlay') as HTMLElement;
+        //   const editorElement = document.querySelector('.editor') as HTMLElement;
+        //   overlayElement!.style.display = 'none';
+        //   editorElement.style.zIndex = '1';
+        //   setGeneratedCode("");
+        //   setGeneratedExplanation("");
+        //   moveOn();
+        //   pseudoCancelClicked = !pseudoCancelClicked;
+            setIsOver(true);
         }
       };
 
@@ -927,7 +928,9 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
               </div>
               <div className="modal-footer">
                 {canExit && !buttonClickOver &&
-                <button type="button" className={`btn btn-secondary`} onClick={() => setIsOver(true)}>
+                <button type="button" className={`btn btn-secondary`} onClick={() => {
+                    setIsModalOpen(true);
+                }}>
                     I think I am done
                 </button>
                 }
@@ -943,7 +946,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 }
                 {/* <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                   Next
-                </button>
+                </button> */}
                 {isModalOpen && (
                       <div className="modal-next-confirm">
                         <div className="modal-next-confirm-content">
@@ -954,7 +957,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                         </div>
                         </div>
                       </div>
-                  )} */}
+                  )}
               </div>
             </div>
           )}

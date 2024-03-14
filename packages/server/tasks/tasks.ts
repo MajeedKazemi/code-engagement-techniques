@@ -1247,26 +1247,20 @@ print(calculate_span([95, 90, 85]))
 {
   "wrong-code": 
 `def calculate_span(prices: list[int]) -> list[int]:
-    stack = []
+    stack = [-1]
     span = [0] * len(prices)
     for i in range(len(prices)):
         while stack and prices[stack[-1]] >= prices[i]:
             stack.pop()
-        if not stack:
-            span[i] = i - 1
+            stack.pop()
+        if stack:
+            span[i] = i + 1
         else:
-            span[i] = i - stack[-1]
+            span[i] = i - stack[0]
         stack.append(i)
-    return span`,
+    return span[:-1]`,
   "issues":{
-              "logical-issue-1": {
-                      "type": "Incorrect Boolean Logic",
-                      "line": 5
-              },
-              "logical-issue-2": {
-                      "type": "Wrong Variable Assignments",
-                      "line": 7
-              }
+              
           }
 },
 {
@@ -2023,7 +2017,7 @@ print(longest_valid_brackets('()(()))))'))
   "wrong-code": 
 `def longest_valid_brackets(s: str) -> int:
     map = {'(': ')', '[': ']'}
-    stack = [-1]
+    stack = []
     max_length = 0
     for i, char in enumerate(s):
         if char in map:
@@ -2031,22 +2025,14 @@ print(longest_valid_brackets('()(()))))'))
         else:
             not_empty = len(stack) > 1
             last_is_open = stack[-1] != -1 and s[stack[-1]] in map
-            is_match = last_is_open and map[s[stack[-1]]] == char
-            if not_empty and is_match:
+            is_match = last_is_open and s[stack[-1]] == char
+            if not_empty or is_match:
                 stack.pop()
-                max_length = min(max_length, i - stack[-1])
+                max_length = max(max_length, stack[-1] - i)
             else:
-                stack[-1] = i
+                stack.append(i)     
     return max_length`,
   "issues":{
-              "logical-issue-1": {
-                      "type": "Incorrect function logic",
-                      "line": 13
-              },
-              "logical-issue-2": {
-                      "type": "Incorrect stack operation",
-                      "line": 16
-              }
           }
   },
   {
@@ -2810,25 +2796,18 @@ print(binary_numbers(1, 2))
 {
   "wrong-code": 
 `def binary_numbers(n1: int, n2: int) -> list[str]:
-    result = []
-    q = ['1']
-    for i in range(n1):
+    result = ['1']
+    q = ['0']
+    for i in range(n2):
         current = q.pop(0)
         current_int = int(current, 2)
-        if n1 <= current_int <= n2:
-            result.append(current)
-        q.append(current + '0')
+        if n1 <= current_int:
+            result.append(current_int)
         q.append(current + '1')
-    return result`,
+        q.append(current + '0')
+    return result
+`,
   "issues":{
-              "logical-issue-1": {
-                      "type": "Incorrect Loop Conditions",
-                      "line": 4
-              },
-              "logical-issue-2": {
-                      "type": "Misuse of Data Structures",
-                      "line": 5
-              }
           }
   },
   {
@@ -3571,25 +3550,24 @@ print(dna_sequences('ANT'))
 {
   "wrong-code": 
 `def dna_sequences(pattern: str) -> list[str]:
-    dna_chars = ['A', 'C', 'G', 'T']
-    q = ['']
+    dna_chars = ['A', 'C', 'G', 'X']
+    stack = []
     result = []
-    while len(q) > 0:
-        seq = q.pop(0)
-        if len(seq) == len(pattern):
-            result.append(seq)
+    while len(stack) >= 0:
+        seq = stack.pop()
+        if seq == len(pattern):
+            stack.append(seq)
         else:
-            if pattern[len(seq)] == 'N':
+            if pattern[len(stack) - 1] == 'N':
                 for ch in dna_chars:
-                    q.append(seq + ch)
+                    stack.append(seq + ch)
+                stack.pop()
             else:
-                q.append(seq + pattern[len(seq) + 1])
-    return result`,
+                result.append(seq + pattern[len(stack)])
+    result.pop()    
+    return pattern`,
   "issues":{
-              "logical-issue-1": {
-                      "type": "Incorrect Index Usage",
-                      "line": 11
-              }
+
           }
   },
   {
