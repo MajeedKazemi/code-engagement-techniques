@@ -175,6 +175,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [currentIssues, setCurrentIssues] = useState<any>([]);
     const [decorations, setDecorations] = useState<string[]>([]);
     const [studentEditor, setStudentEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const [canExit, setCanExit] = useState<boolean>(false);
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [loggedIO, setLoggedIO] = useState<any>([]);
@@ -749,9 +750,11 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                     if (data.hint1.length === 0) {
                         setCurrentIssues([]);
                         setButtonClickOver(true);
+                        setCanExit(false);
                     } else {
                         console.log(data.hint1);
                         setCurrentIssues(data.hint1);
+                        setCanExit(true);
                     }
                     setChecking(false);
                 }
@@ -908,6 +911,11 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 )}
               </div>
               <div className="modal-footer">
+                {canExit && 
+                <button type="button" className={`btn btn-secondary`} onClick={() => setIsOver(true)}>
+                    I think I am done
+                </button>
+                }
                 {buttonClickOver && 
                 <>
                 <div className='continue-next-task-message'>
