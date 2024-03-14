@@ -8,6 +8,7 @@ import { highlightCode } from '../../utils/utils';
 import * as monaco from "monaco-editor";
 import IconsDoc from '../docs/icons-doc';
 import { task2Trace } from '../../utils/constants';
+import { connectSocket } from '../../api/python-shell';
 
 
 
@@ -48,7 +49,7 @@ function deepCopy(arr: any[]): any[] {
 
 export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes, taskID }) => {
     const { context } = useContext(AuthContext);
-    const { socket } = useContext(SocketContext);
+    const { socket, setSocket } = useContext(SocketContext);
     const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [excutionSteps, setExcutionSteps] = useState<ExcutionSteps[]>([]);
@@ -79,12 +80,26 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
 
+
+
     // - step_event:
 	// 	- type: `“first” | “previous” | “next” | “last”`
     const [firstClickCounter, setFirstClickCounter] = useState<number>(0);
     const [prevClickCounter, setPrevClickCounter] = useState<number>(0);
     const [nextClickCounter, setNextClickCounter] = useState<number>(0);
     const [lastClickCounter, setLastClickCounter] = useState<number>(0);
+
+    const handleSocketReconnect = () => {
+        if (context?.token) {
+            setSocket(null);
+
+            setSocket(connectSocket(context?.token));
+        }
+    };
+
+    useEffect(() => {   
+
+    }, []);
 
     useEffect(() => {
         const editor = monaco.editor.create(
@@ -422,7 +437,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
                 // check if the current excutionstep requires input
                 let lineObjects = backendCode.split('\n');
                 if(!lineObjects[objectArray[objectArray.length-1].currLine-1].includes('input(') && 
-                objectArray.some(step => step.frame.length !== 0)){
+                objectArray.some(step => step?.frame.length !== 0)){
                     // we know the tracing is done, generate questions
                     generateQuestion();
                 }
@@ -545,9 +560,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({ code, backendCodes
         const currentQuestion = questions[index];
         if(currentQuestion){
             let currStep = currentQuestion.step;
-            let currFrame = excutionSteps[currStep+1].frame;
+            let currFrame = excutionSteps[currStep+1]?.frame;
             let currVariable = currentQuestion.variable;
-            let currValue = currFrame.find(item => item.name === currVariable)?.value;
+            let currValue = currFrame?.find(item => item.name === currVariable)?.value;
             if(typeof currValue != 'number'){
                 return JSON.stringify(currValue);
             }else{

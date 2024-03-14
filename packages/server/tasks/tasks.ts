@@ -1440,10 +1440,6 @@ print(calculate_span([95, 90, 85]))
   {
     "step": 18,
     "variable": "span"
-  },
-  {
-    "step": 20,
-    "variable": "stack"
   }
 ],
   ),
@@ -1992,7 +1988,7 @@ print(longest_valid_brackets('()(()))))'))
       "question": "What is the purpose of the 'is_match' variable in the function?",
       "answer": "It checks if the current character matches the last opening bracket in the stack.",
       "question-code-lines": [
-        "9"
+        "11"
       ],
       "question-code-lines-explained": "is_match = last_is_open and map[s[stack[-1]]] == char # This line checks if the current character matches the last opening bracket in the stack."
     },

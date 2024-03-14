@@ -493,7 +493,7 @@ const ExcutionGenerateCode: React.FC<ExcutionGenerateCodeProps> = ({ prompt, edi
                     </div>
                   )}
                   {(!waiting && counter >= 5) && (
-                  
+                    
                     <ExcutionSteps code={generatedCode} backendCodes={backendCodes} taskID={taskID}/>
                   )}
                 </div>
