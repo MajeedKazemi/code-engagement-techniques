@@ -1998,31 +1998,37 @@ print(longest_valid_brackets('()(()))))'))
     }
   ]
 },
+
 {
   "wrong-code": 
-`def calculate_span(prices: list[int]) -> list[int]:
-    stack = []
-    span = [0] * len(prices)
-    for i in range(len(prices)):
-        while stack and prices[stack[-1]] >= prices[i]:
-            stack.pop()
-        if not stack:
-            span[i] = i - 1
+`def longest_valid_brackets(s: str) -> int:
+    map = {'(': ')', '[': ']'}
+    stack = [-1]
+    max_length = 0
+    for i, char in enumerate(s):
+        if char in map:
+            stack.append(i)
         else:
-            span[i] = i - stack[-1]
-        stack.append(i)
-    return span`,
+            not_empty = len(stack) > 1
+            last_is_open = stack[-1] != -1 and s[stack[-1]] in map
+            is_match = last_is_open and map[s[stack[-1]]] == char
+            if not_empty and is_match:
+                stack.pop()
+                max_length = min(max_length, i - stack[-1])
+            else:
+                stack[-1] = i
+    return max_length`,
   "issues":{
               "logical-issue-1": {
-                      "type": "Incorrect Boolean Logic",
-                      "line": 5
+                      "type": "Incorrect function logic",
+                      "line": 13
               },
               "logical-issue-2": {
-                      "type": "Wrong Variable Assignments",
-                      "line": 7
+                      "type": "Incorrect stack operation",
+                      "line": 16
               }
           }
-},
+  },
 {
   "subgoals": [
     {
