@@ -197,9 +197,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
             return;
         }
 
-        if (lines[currentLineIndex].leadSpaces > 0 &&  lines[currentLineIndex].currentTabs > 0 && e.key != 'Tab') {
-            return;
-        }
+        // if (lines[currentLineIndex].leadSpaces > 0 &&  lines[currentLineIndex].currentTabs > 0 && e.key != 'Tab') {
+        //     return;
+        // }
 
         if (e.key == 'Tab') {
             e.preventDefault();
@@ -210,9 +210,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
                 setUserInput(prevInput => prevInput + '    ');
                 
                 //update lines.
-                const temp = lines;
-                temp[currentLineIndex].currentTabs -= 1;
-                setLines(temp);
+                // const temp = lines;
+                // temp[currentLineIndex].currentTabs -= 1;
+                // setLines(temp);
                 return;
             }
         }
