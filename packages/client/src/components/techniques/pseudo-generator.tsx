@@ -7,6 +7,7 @@ import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
 import BaselineGenerateCode from '../responses/baseline-chat';
 import IconsDoc from '../docs/icons-doc';
 import { GPTLoader } from '../loader';
+import { connectSocket } from '../../api/python-shell';
 
 export let pseudoCancelClicked = false;
 
@@ -162,7 +163,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [terminalInput, setTerminalInput] = useState<string>("");
     const [running, setRunning] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-    const { socket } = useContext(SocketContext);
     const [runId, setRunId] = useState(0);
     const [generatedCode, setGeneratedCode] = useState('');
     const [generatedExplanation, setGeneratedExplanation] = useState('');
@@ -179,6 +179,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [loggedIO, setLoggedIO] = useState<any>([]);
+    const { socket, setSocket } = useContext(SocketContext);
 
     // function responseToPseudo(response: any, code:string): PseudoCodeSubgoals[] {
     // }
@@ -717,6 +718,14 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     }, [isOver]);
 
+    const handleSocketReconnect = () => {
+        if (context?.token) {
+            setSocket(null);
+
+            setSocket(connectSocket(context?.token));
+        }
+    };
+
     const verifyPseudoCode = () => {   
         // - submit code event (finish pseudo-code)
 		// - code that was submitted {string} 
@@ -829,6 +838,12 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                 Console Input and Output
                             </div>
                             <button
+                                className={`editor-button`}
+                                onClick={handleSocketReconnect}
+                            >
+                                ReConnect
+                            </button>
+                            <button
                                 className={`editor-button ${
                                     running ? "stop-button" : "run-button"
                                 }`}
@@ -911,7 +926,7 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 )}
               </div>
               <div className="modal-footer">
-                {canExit && 
+                {canExit && !buttonClickOver &&
                 <button type="button" className={`btn btn-secondary`} onClick={() => setIsOver(true)}>
                     I think I am done
                 </button>

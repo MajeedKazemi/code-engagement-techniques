@@ -5,6 +5,7 @@ import { initLanguageClient, retryOpeningLanguageClient, stopLanguageClient } fr
 import IconsDoc from '../docs/icons-doc';
 import { HighlightedPart } from '../docs/highlight-code';
 import { apiGetIssueCodes, apiGetIssueHintLevel1, apiGetIssueHintLevel2, apiGetIssueHintLevel3, apiLogEvents, logError } from '../../api/api';
+import { connectSocket } from '../../api/python-shell';
 
 interface VerifyProps {
     code: string;
@@ -16,7 +17,6 @@ interface VerifyProps {
 export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions, taskID }) => {
 
     const { context } = useContext(AuthContext);
-    const { socket } = useContext(SocketContext);
 
     const [runId, setRunId] = useState(0);
 
@@ -39,9 +39,11 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     const [generatingHint, setGeneratingHint] = useState<boolean>(false);
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
     const [submitCurrentIssues, setSubmitCurrentIssues] = useState<any[]>([]);
+    const [canExit, setCanExit] = useState<boolean>(false);
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
     const [loggedIO, setLoggedIO] = useState<any>([]);
+    const { socket, setSocket } = useContext(SocketContext);
 
     useEffect(() => {
         if(currentIssues[status].length > 0){
@@ -328,6 +330,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             setIsCorrect(true);
                             setCurrentIssues(Array(5).fill([]));
                             setGeneratingHint(false);
+                            setCanExit(false);
                         } else {
                             // const currIssues = [...currentIssues];
                             // currIssues[1] = data.hint1;
@@ -342,7 +345,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             // currIssues[4] = [];
                             // setCurrentIssues(currIssues);
                             setSubmitCurrentIssues(data.hint1);
-
+                            setCanExit(true);
                             // - submit and check event
                             // - current state of code in editor {string}
                             // - lines that are incorrect: {array of strings/objects}
@@ -521,6 +524,14 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
         }
     };
 
+    const handleSocketReconnect = () => {
+        if (context?.token) {
+            setSocket(null);
+
+            setSocket(connectSocket(context?.token));
+        }
+    };
+
     // - high priority:
     // 	- get hint event
     //     - current state of code in editor {string}
@@ -540,6 +551,7 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
     return (
         <Fragment>
             {isCorrect && <span id="game-over" style={{opacity:0}}>Game Over</span>}
+            {canExit && <span id="can-exit" style={{opacity:0}}>Can Exit</span>}
             <div className="verify-review-container">
                 <div className = "verify-code-editor-container">
                     <div className="monaco-editor-container" ref={monacoEl}></div>
@@ -556,6 +568,12 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                             </Fragment>
                             Console Input and Output
                         </div>
+                        <button
+                                className={`editor-button`}
+                                onClick={handleSocketReconnect}
+                            >
+                                ReConnect
+                        </button>
                         <button
                             className={`editor-button ${
                                 running ? "stop-button" : "run-button"

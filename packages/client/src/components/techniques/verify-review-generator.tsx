@@ -59,6 +59,7 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
+    const [canExit, setCanExit] = useState<boolean>(false);
     
     const generateCode = () => {
         if (prompt.length === 0) {
@@ -371,6 +372,17 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (document.getElementById('can-exit')) {
+          setCanExit(true);
+          clearInterval(interval); 
+        }
+      }, 1000); 
+      return () => clearInterval(interval);
+  }, []);
+
+
 
     
     const closePopup = async () => {
@@ -436,6 +448,11 @@ const VerifyGenerateCode: React.FC<VerifyGenerateCodeProps> = ({ prompt, editor,
                   )}
                 </div>
                 <div className="modal-footer">
+                {canExit && !buttonClickOver &&
+                <button type="button" className={`btn btn-secondary`} onClick={() => setIsOver(true)}>
+                    I think I am done
+                </button>
+                }
                 {buttonClickOver && 
                 <>
                 <div className='continue-next-task-message'>

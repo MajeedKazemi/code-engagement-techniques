@@ -504,10 +504,10 @@ print(reverse_stack(['a', 'b', 'c', 'd', 'e']))
 {
   "wrong-code": 
 `def reverse_stack(items: list) -> list:
-      temp = []
-      while not items:
-          temp.append(items.pop())
-      return items`,
+    temp = []
+    while not items:
+        temp.append(items.pop())
+    return items`,
   
   "issues":{
               "logical-issue-1": {
@@ -3571,20 +3571,20 @@ print(dna_sequences('ANT'))
 {
   "wrong-code": 
 `def dna_sequences(pattern: str) -> list[str]:
-      dna_chars = ['A', 'C', 'G', 'T']
-      q = ['']
-      result = []
-      while len(q) > 0:
-          seq = q.pop(0)
-          if len(seq) == len(pattern):
-              result.append(seq)
-          else:
-              if pattern[len(seq)] == 'N':
-                  for ch in dna_chars:
-                      q.append(seq + ch)
-              else:
-                  q.append(seq + pattern[len(seq) + 1])
-      return result`,
+    dna_chars = ['A', 'C', 'G', 'T']
+    q = ['']
+    result = []
+    while len(q) > 0:
+        seq = q.pop(0)
+        if len(seq) == len(pattern):
+            result.append(seq)
+        else:
+            if pattern[len(seq)] == 'N':
+                for ch in dna_chars:
+                    q.append(seq + ch)
+            else:
+                q.append(seq + pattern[len(seq) + 1])
+    return result`,
   "issues":{
               "logical-issue-1": {
                       "type": "Incorrect Index Usage",
