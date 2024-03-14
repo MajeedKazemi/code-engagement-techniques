@@ -58,7 +58,7 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
             charToToken.push(tokenIndex);
 
 
-            if (tokenCharIndex == currTokens[tokenIndex].token.length - 1) {
+            if (tokenCharIndex == currTokens[tokenIndex]?.token.length - 1) {
                 tokenIndex++;
                 tokenCharIndex = 0;
             } else {
@@ -186,20 +186,25 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
 
 
     const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
-
         const value = e.key;
 
         if (e.key === 'Shift') {
             return;
         }
 
+        if (e.key === ' ') {
+            console.log('space');
+            e.preventDefault();
+        
+        }
+
         if (lines[currentLineIndex].original === userInput && e.key !== 'Enter') {
             return;
         }
 
-        // if (lines[currentLineIndex].leadSpaces > 0 &&  lines[currentLineIndex].currentTabs > 0 && e.key != 'Tab') {
-        //     return;
-        // }
+        if (lines[currentLineIndex].leadSpaces > 0 &&  lines[currentLineIndex].currentTabs > 0 && e.key != 'Tab') {
+            return;
+        }
 
         if (e.key == 'Tab') {
             e.preventDefault();
@@ -210,9 +215,9 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
                 setUserInput(prevInput => prevInput + '    ');
                 
                 //update lines.
-                // const temp = lines;
-                // temp[currentLineIndex].currentTabs -= 1;
-                // setLines(temp);
+                const temp = lines;
+                temp[currentLineIndex].currentTabs -= 1;
+                setLines(temp);
                 return;
             }
         }
