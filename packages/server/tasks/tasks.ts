@@ -1422,23 +1422,19 @@ print(calculate_span([95, 90, 85]))
 },
 [
   {
-    "step": 5,
+    "step": 3,
     "variable": "span"
   },
   {
-    "step": 9,
-    "variable": "stack"
-  },
-  {
-    "step": 14,
+    "step": 7,
     "variable": "span"
   },
   {
-    "step": 15,
+    "step": 13,
     "variable": "stack"
   },
   {
-    "step": 18,
+    "step": 17,
     "variable": "span"
   }
 ],
@@ -2276,31 +2272,31 @@ print(longest_valid_brackets('()(()))))'))
 [
   {
     "step": 5,
-    "variable": "stack",
+    "variable": "char",
   },
   {
     "step": 7,
-    "variable": "char",
-  },
-  {
-    "step": 12,
-    "variable": "char",
-  },
-  {
-    "step": 21,
     "variable": "stack",
   },
   {
-    "step": 24,
-    "variable": "map",
+    "step": 11,
+    "variable": "last_is_open",
   },
   {
-    "step": 31,
+    "step": 14,
     "variable": "stack",
   },
   {
-    "step": 39,
-    "variable": "map",
+    "step": 28,
+    "variable": "stack",
+  },
+  {
+    "step": 36,
+    "variable": "stack",
+  },
+  {
+    "step": 51,
+    "variable": "stack",
   }
 ],
   ),
@@ -3759,27 +3755,27 @@ print(dna_sequences('ANT'))
 },
 [
   {
-      "step": 13,
+      "step": 6,
       "variable": "seq"
   },
   {
-      "step": 18,
-      "variable": "result"
+      "step": 14,
+      "variable": "q"
   },
   {
       "step": 29,
       "variable": "q"
   },
   {
-      "step": 36,
-      "variable": "seq"
-  },
-  {
-      "step": 46,
+      "step": 34,
       "variable": "q"
   },
   {
-      "step": 58,
+      "step": 46,
+      "variable": "result"
+  },
+  {
+      "step": 56,
       "variable": "seq"
   }
 ],
