@@ -191,6 +191,10 @@ export const WriteOver: React.FC<WriteOverProps> = ({ text, tokens, taskID }) =>
             return;
         }
 
+        if (lines[currentLineIndex].original === userInput && e.key !== 'Enter') {
+            return;
+        }
+
         if (e.key == 'Tab') {
             e.preventDefault();
             const currentChar = lines[currentLineIndex].original[userInput.length];
