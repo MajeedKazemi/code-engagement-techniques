@@ -2983,7 +2983,7 @@ print(binary_numbers(1, 2))
       "variable": "current_int"
     },
     {
-      "step": 6,
+      "step": 9,
       "variable": "q"
     },
     {
@@ -2991,7 +2991,7 @@ print(binary_numbers(1, 2))
       "variable": "current_int"
     },
     {
-      "step": 18,
+      "step": 17,
       "variable": "q"
     }
   ]
@@ -3759,7 +3759,7 @@ print(dna_sequences('ANT'))
       "variable": "seq"
   },
   {
-      "step": 14,
+      "step": 15,
       "variable": "q"
   },
   {
