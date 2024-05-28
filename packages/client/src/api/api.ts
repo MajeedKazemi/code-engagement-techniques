@@ -254,7 +254,6 @@ export const apiGetGeneratedCodeCodex = (
         }),
     });
 
-
 export const apiGetTaskById = (
     token: string | null | undefined,
     taskId: string
@@ -268,11 +267,10 @@ export const apiGetTaskById = (
         },
     });
 
-
 export const apiGetGeneratedFeedbackCodex = (
     token: string | null | undefined,
     prompt: string,
-    tasks: string,
+    tasks: string
 ) =>
     fetch(env.API_URL + "/api/technique-baseline/generateFeedback", {
         method: "POST",
@@ -289,7 +287,7 @@ export const apiGetGeneratedFeedbackCodex = (
 
 export const apiGetExplanationPerLineCodex = (
     token: string | null | undefined,
-    code: string,
+    code: string
 ) =>
     fetch(env.API_URL + "/api/technique-writeover/generate", {
         method: "POST",
@@ -301,7 +299,7 @@ export const apiGetExplanationPerLineCodex = (
         body: JSON.stringify({
             code: code,
         }),
-});
+    });
 
 export const apiGetBaselineCodex = (
     token: string | null | undefined,
@@ -352,12 +350,11 @@ export const pseudoGetHintLevel1 = (
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(
-            { 
-                code: code, 
-                oneLineCode: oneLineCode, explaination: explaination 
-            }
-        ),
+        body: JSON.stringify({
+            code: code,
+            oneLineCode: oneLineCode,
+            explaination: explaination,
+        }),
     });
 
 export const apiGetPseudoVerifyCode = (
@@ -422,7 +419,7 @@ export const apiGetFeedbackByResponse = (
     line: string,
     question: string,
     answer: string,
-    response: string,
+    response: string
 ) =>
     fetch(env.API_URL + "/api/technique-explain/feedback", {
         method: "POST",
@@ -458,7 +455,6 @@ export const apiGetParsonsCodex = (
         }),
     });
 
-
 export const apiGetCodeToTokenCodex = (
     token: string | null | undefined,
     description: string,
@@ -476,7 +472,6 @@ export const apiGetCodeToTokenCodex = (
             context: context,
         }),
     });
-
 
 export const apiGetCodeToPseudoCodex = (
     token: string | null | undefined,
@@ -532,7 +527,6 @@ export const apiGetIssueHintLevel1 = (
         }),
     });
 
-
 export const apiGetIssueHintLevel2 = (
     token: string | null | undefined,
     code: string,
@@ -550,7 +544,6 @@ export const apiGetIssueHintLevel2 = (
             studentCode: studentCode,
         }),
     });
-
 
 export const apiGetIssueHintLevel3 = (
     token: string | null | undefined,
@@ -571,22 +564,22 @@ export const apiGetIssueHintLevel3 = (
     });
 
 export const apiGetLinesToRewrite = (
-        token: string | null | undefined,
-        code: string,
-        context: string
-    ) =>
-        fetch(env.API_URL + "/api/technique-tracing/linesToRewrite", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                code: code,
-                context: context,
-            }),
-        });
+    token: string | null | undefined,
+    code: string,
+    context: string
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/linesToRewrite", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            code: code,
+            context: context,
+        }),
+    });
 
 export const apiGenerateTracingQuestion = (
     token: string | null | undefined,
@@ -642,8 +635,6 @@ export const apiGetGenerateQuestionForSelfExplain = (
         }),
     });
 
-
-
 export const apiGenerateQuestionHint = (
     token: string | null | undefined,
     prevCode: string,
@@ -651,7 +642,7 @@ export const apiGenerateQuestionHint = (
     currentFrames: string,
     correct: string,
     target: string,
-    answer: string,
+    answer: string
 ) =>
     fetch(env.API_URL + "/api/technique-tracing/generateHint", {
         method: "POST",
@@ -687,6 +678,7 @@ export const apiLogEvents = (
             taskId,
             type,
             log,
+            time: new Date(),
         }),
     });
 
@@ -698,7 +690,7 @@ export const logError = (message: string) => {
 
 export const apiGetBaselineCodexSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithCode/", {
         method: "POST",
@@ -714,7 +706,7 @@ export const apiGetBaselineCodexSimulation = (
 
 export const apiGetBaselineExplainationCodexSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithExplaination/", {
         method: "POST",
@@ -730,7 +722,7 @@ export const apiGetBaselineExplainationCodexSimulation = (
 
 export const apiGetPseudoCodexSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithPseudo/", {
         method: "POST",
@@ -746,7 +738,7 @@ export const apiGetPseudoCodexSimulation = (
 
 export const apiGetWriteOverCodexSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithWriteOver/", {
         method: "POST",
@@ -762,7 +754,7 @@ export const apiGetWriteOverCodexSimulation = (
 
 export const apiGetSelfExplainQuestionsSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithSelfExplain/", {
         method: "POST",
@@ -778,7 +770,7 @@ export const apiGetSelfExplainQuestionsSimulation = (
 
 export const apiGetVerifyingReviewSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithVerifyReview/", {
         method: "POST",
@@ -794,7 +786,7 @@ export const apiGetVerifyingReviewSimulation = (
 
 export const apiGetLeadReviewSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithLeadReveal/", {
         method: "POST",
@@ -810,7 +802,7 @@ export const apiGetLeadReviewSimulation = (
 
 export const apiGetTracingSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithTracePredict/", {
         method: "POST",
@@ -822,11 +814,11 @@ export const apiGetTracingSimulation = (
         body: JSON.stringify({
             taskId: taskId,
         }),
-});
+    });
 
 export const apiGetTestCaseSimulation = (
     token: string | null | undefined,
-    taskId: string,
+    taskId: string
 ) =>
     fetch(env.API_URL + "/api/tasks/matchTaskWithCodeWithTest/", {
         method: "POST",
@@ -838,6 +830,4 @@ export const apiGetTestCaseSimulation = (
         body: JSON.stringify({
             taskId: taskId,
         }),
-});
-
-
+    });
