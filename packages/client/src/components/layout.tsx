@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { authRefresh } from "../api/api";
 import { AuthContext } from "../context";
 import { Loader } from "./loader";
-import { NavigationBar } from "./navigation";
 
 interface LayoutProps {
     children: React.ReactNode;

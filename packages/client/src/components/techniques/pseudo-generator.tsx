@@ -1,13 +1,26 @@
-import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetIssueHintLevel1, apiGetPseudoCodex, apiGetPseudoCodexSimulation, apiGetPseudoVerifyCode, apiLogEvents, logError } from '../../api/api';
-import * as monaco from 'monaco-editor';
-import { AuthContext, SocketContext } from '../../context';
-import { LogType, log } from '../../utils/logger';
-import { PseudoCodeHoverable } from '../responses/hoverable-pseudo';
-import BaselineGenerateCode from '../responses/baseline-chat';
-import IconsDoc from '../docs/icons-doc';
-import { GPTLoader } from '../loader';
-import { connectSocket } from '../../api/python-shell';
+import React, {
+    Fragment,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+import {
+    apiGetBaselineCodexSimulation,
+    apiGetBaselineExplainationCodexSimulation,
+    apiGetPseudoCodexSimulation,
+    apiGetIssueHintLevel1,
+    apiLogEvents,
+    logError,
+} from "../../api/api";
+import * as monaco from "monaco-editor";
+import { AuthContext, SocketContext } from "../../context";
+import { LogType, log } from "../../utils/logger";
+import { PseudoCodeHoverable } from "../responses/hoverable-pseudo";
+import BaselineGenerateCode from "../responses/baseline-chat";
+import IconsDoc from "../docs/icons-doc";
+import { GPTLoader } from "../loader";
+import { connectSocket } from "../../api/python-shell";
 
 export let pseudoCancelClicked = false;
 
@@ -41,9 +54,9 @@ function responseToPseudo(response: any): PseudoCodeSubgoals[] {
                     code: codeItem.line,
                     pseudo: codeItem["pseudo-code"],
                     syntax_hint: codeItem["syntax-hint"],
-                    explanation: codeItem.explanation
+                    explanation: codeItem.explanation,
                 };
-            })
+            }),
         };
     });
 }
@@ -146,13 +159,18 @@ function responseToPseudo(response: any): PseudoCodeSubgoals[] {
 //     }
 // ]
 
-const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
+const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({
+    prompt,
+    editor,
+    taskID,
+    moveOn,
+}) => {
     const pseudoRef = useRef<HTMLDivElement | null>(null);
     const editorRef = useRef<HTMLDivElement | null>(null);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
-    const [userInputCode, setUserInputCode] = useState('');
+    const [userInputCode, setUserInputCode] = useState("");
     const [checked, setChecked] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
     const [isOver, setIsOver] = useState(false);
@@ -164,9 +182,11 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [running, setRunning] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const [runId, setRunId] = useState(0);
-    const [generatedCode, setGeneratedCode] = useState('');
-    const [generatedExplanation, setGeneratedExplanation] = useState('');
-    const [generatedPseudo, setGeneratedPseudo] = useState<PseudoCodeSubgoals[]>([]);
+    const [generatedCode, setGeneratedCode] = useState("");
+    const [generatedExplanation, setGeneratedExplanation] = useState("");
+    const [generatedPseudo, setGeneratedPseudo] = useState<
+        PseudoCodeSubgoals[]
+    >([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [checking, setChecking] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
@@ -174,7 +194,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     const [attemptTime, setAttemptTime] = useState<number>(0);
     const [currentIssues, setCurrentIssues] = useState<any>([]);
     const [decorations, setDecorations] = useState<string[]>([]);
-    const [studentEditor, setStudentEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const [studentEditor, setStudentEditor] =
+        useState<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [canExit, setCanExit] = useState<boolean>(false);
 
     const [runCodeLog, setRunCodeLog] = useState<any>([]);
@@ -191,18 +212,18 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //         );
     //     } else {
     //         setWaiting(true);
-  
+
     //         const focusedPosition = editor?.getPosition();
     //         const userCode = editor?.getValue();
     //         let codeContext = "";
-  
+
     //         if (focusedPosition && userCode && checked) {
     //             codeContext = userCode
     //                 .split("\n")
     //                 .slice(0, focusedPosition.lineNumber + 1)
     //                 .join("\n");
     //         }
-  
+
     //         try {
     //             apiGetBaselineCodex(
     //                 context?.token,
@@ -210,12 +231,12 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                 userCode ? userCode : ""
     //             )
     //                 .then(async (response) => {
-  
+
     //                     if (response.ok && props.editor) {
     //                         const data = await response.json();
-  
+
     //                         let text = data.bundle.code;
-  
+
     //                         if (text.length > 0) {
     //                             setFeedback("");
     //                             log(
@@ -227,47 +248,47 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                                     userInput: prompt,
     //                                 }
     //                             );
-  
+
     //                             let insertLine = 0;
     //                             let insertColumn = 1;
-  
+
     //                             let curLineNumber = 0;
     //                             let curColumn = 0;
-  
+
     //                             let highlightStartLine = 0;
     //                             let highlightStartColumn = 0;
     //                             let highlightEndLine = 0;
     //                             let highlightEndColumn = 0;
-  
+
     //                             const curPos = editor.getPosition();
     //                             const curCodeLines = props.editor
     //                                 .getValue()
     //                                 .split("\n");
-  
+
     //                             if (curPos) {
     //                                 curLineNumber = curPos.lineNumber;
     //                                 curColumn = curPos.column;
     //                             }
-  
+
     //                             let curLineText =
     //                                 curCodeLines[curLineNumber - 1];
     //                             let nextLineText =
     //                                 curLineNumber < curCodeLines.length
     //                                     ? curCodeLines[curLineNumber]
     //                                     : null;
-  
+
     //                             if (curColumn === 1) {
     //                                 // at the beginning of a line
     //                                 if (curLineText !== "") {
     //                                     text += "\n";
     //                                     insertLine = curLineNumber;
     //                                     insertColumn = 1;
-  
+
     //                                     highlightStartLine = curLineNumber;
     //                                     highlightStartColumn = curColumn;
-  
+
     //                                     const textLines = text.split("\n");
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         textLines.length -
@@ -276,10 +297,10 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                                 } else {
     //                                     insertLine = curLineNumber;
     //                                     insertColumn = 1;
-  
+
     //                                     highlightStartLine = curLineNumber;
     //                                     highlightStartColumn = curColumn;
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         text.split("\n").length;
@@ -291,12 +312,12 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                                     text = "\n" + text;
     //                                     insertLine = curLineNumber;
     //                                     insertColumn = curLineText.length + 1;
-  
+
     //                                     const textLines = text.split("\n");
-  
+
     //                                     highlightStartLine = curLineNumber + 1;
     //                                     highlightStartColumn = 1;
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         text.split("\n").length -
@@ -307,10 +328,10 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                                 } else {
     //                                     insertLine = curLineNumber + 1;
     //                                     insertColumn = 1;
-  
+
     //                                     highlightStartLine = curLineNumber;
     //                                     highlightStartColumn = curColumn;
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         text.split("\n").length;
@@ -327,13 +348,13 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                                     text,
     //                                 )
     //                                     .then(async (response) => {
-                        
+
     //                                         if (response.ok) {
     //                                             const data = await response.json();
     //                                             setGeneratedPseudo(responseToPseudo(data.steps));
-                        
+
     //                                             setWaiting(false);
-    //                                         } 
+    //                                         }
     //                                     })
     //                                     .catch((error) => {
     //                                         setWaiting(false);
@@ -344,8 +365,8 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     //                                     console.log(error);
     //                                 }
     //                             }
-                                
-    //                         } 
+
+    //                         }
     //                     }
     //                 })
     //                 .catch((error) => {
@@ -363,35 +384,36 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
 
     useEffect(() => {
         let intervalId: number | null = null;
-    
+
         if (isTimerStarted) {
-          // Setup a timer that increments the counter every second
-          intervalId = window.setInterval(() => {
-            setCounter((prevCounter) => {
-              if (prevCounter === 4) { // Check if the counter is about to become 5
-                console.log("Timer has reached 5 seconds.");
-                
-                // Implement any additional logic here
-                if (intervalId !== null) {
-                  window.clearInterval(intervalId); // Clears the interval
-                }
-                setIsTimerStarted(false); // Optionally stops the timer
-    
-                return 5; // Update the state to reflect it reached 5
-              }
-              return prevCounter + 1; // Increment the counter
-            });
-          }, 1000); // Run this every 1000 milliseconds (1 second)
+            // Setup a timer that increments the counter every second
+            intervalId = window.setInterval(() => {
+                setCounter((prevCounter) => {
+                    if (prevCounter === 4) {
+                        // Check if the counter is about to become 5
+                        console.log("Timer has reached 5 seconds.");
+
+                        // Implement any additional logic here
+                        if (intervalId !== null) {
+                            window.clearInterval(intervalId); // Clears the interval
+                        }
+                        setIsTimerStarted(false); // Optionally stops the timer
+
+                        return 5; // Update the state to reflect it reached 5
+                    }
+                    return prevCounter + 1; // Increment the counter
+                });
+            }, 1000); // Run this every 1000 milliseconds (1 second)
         }
-    
+
         // Cleanup function
         return () => {
-          if (intervalId !== null) {
-            window.clearInterval(intervalId); 
-          }
+            if (intervalId !== null) {
+                window.clearInterval(intervalId);
+            }
         };
-      }, [isTimerStarted]);
-    
+    }, [isTimerStarted]);
+
     const generatePseudoCode = () => {
         if (prompt.length === 0) {
             setFeedback(
@@ -400,24 +422,20 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         } else {
             setWaiting(true);
             setIsTimerStarted(true);
-  
+
             const focusedPosition = editor?.getPosition();
             const userCode = editor?.getValue();
             let codeContext = "";
-  
+
             if (focusedPosition && userCode && checked) {
                 codeContext = userCode
                     .split("\n")
                     .slice(0, focusedPosition.lineNumber + 1)
                     .join("\n");
             }
-              try {
-                apiGetBaselineCodexSimulation(
-                    context?.token,
-                    taskID,
-                )
+            try {
+                apiGetBaselineCodexSimulation(context?.token, taskID)
                     .then(async (response) => {
-  
                         if (response.ok && editor) {
                             const data = await response.json();
                             let taskId = data.taskId;
@@ -429,38 +447,36 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                                 taskId
                             )
                                 .then(async (response) => {
-                
                                     if (response.ok && editor) {
                                         const data = await response.json();
-    
-                                        setGeneratedExplanation(data.explanation);
-                                        // setWaiting(false);                           
+
+                                        setGeneratedExplanation(
+                                            data.explanation
+                                        );
+                                        // setWaiting(false);
                                     }
                                 })
                                 .catch((error) => {
                                     editor?.updateOptions({ readOnly: false });
                                     // setWaiting(false);
                                     logError(error.toString());
-                                });  
-                                
-                                apiGetPseudoCodexSimulation(
-                                    context?.token,
-                                    taskId,
-                                )
-                                    .then(async (response) => {
-                
-                                        if (response.ok && editor) {
-                                            const data = await response.json();
-                                            setGeneratedPseudo(responseToPseudo(data.pseudo));
-                                            setWaiting(false);
-                                            
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        editor?.updateOptions({ readOnly: false });
+                                });
+
+                            apiGetPseudoCodexSimulation(context?.token, taskId)
+                                .then(async (response) => {
+                                    if (response.ok && editor) {
+                                        const data = await response.json();
+                                        setGeneratedPseudo(
+                                            responseToPseudo(data.pseudo)
+                                        );
                                         setWaiting(false);
-                                        logError(error.toString());
-                                    });
+                                    }
+                                })
+                                .catch((error) => {
+                                    editor?.updateOptions({ readOnly: false });
+                                    setWaiting(false);
+                                    logError(error.toString());
+                                });
                         }
                     })
                     .catch((error) => {
@@ -473,8 +489,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                 setWaiting(false);
                 logError(error.toString());
             }
-  
-            
         }
     };
 
@@ -547,35 +561,33 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     }, []);
 
-
     const closePopup = async () => {
         setIsModalOpen(true);
-      };
-    
-      const handleModalClick = (confirmed: boolean) => {
+    };
+
+    const handleModalClick = (confirmed: boolean) => {
         setIsModalOpen(false);
-        
+
         if (confirmed) {
-          setIsOpen(false);
-        //   const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        //   const editorElement = document.querySelector('.editor') as HTMLElement;
-        //   overlayElement!.style.display = 'none';
-        //   editorElement.style.zIndex = '1';
-        //   setGeneratedCode("");
-        //   setGeneratedExplanation("");
-        //   moveOn();
-        //   pseudoCancelClicked = !pseudoCancelClicked;
+            setIsOpen(false);
+            //   const overlayElement = document.querySelector('.overlay') as HTMLElement;
+            //   const editorElement = document.querySelector('.editor') as HTMLElement;
+            //   overlayElement!.style.display = 'none';
+            //   editorElement.style.zIndex = '1';
+            //   setGeneratedCode("");
+            //   setGeneratedExplanation("");
+            //   moveOn();
+            //   pseudoCancelClicked = !pseudoCancelClicked;
             setIsOver(true);
         }
-      };
+    };
 
     useEffect(() => {
-        if(generatedPseudo.length > 0) {
+        if (generatedPseudo.length > 0) {
             const editorContainer = editorRef.current;
 
             if (editorContainer) {
-            const editor = monaco.editor.create(editorContainer, 
-                {
+                const editor = monaco.editor.create(editorContainer, {
                     value: "",
                     language: "python",
                     automaticLayout: true,
@@ -584,28 +596,26 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
                     minimap: { enabled: false },
                     wordWrap: "on",
                     wrappingIndent: "indent",
-                    lineNumbers: 'on',
-                }
-            );
+                    lineNumbers: "on",
+                });
 
-            editorContainer.style.height = `40vh`;
+                editorContainer.style.height = `40vh`;
 
-            editor.onDidChangeModelContent(() => {
-                const updatedCode = editor.getValue();
-                setUserInputCode(updatedCode);
-            });
+                editor.onDidChangeModelContent(() => {
+                    const updatedCode = editor.getValue();
+                    setUserInputCode(updatedCode);
+                });
 
-            editor.layout();
-            editor.focus();
+                editor.layout();
+                editor.focus();
 
-            setStudentEditor(editor);
+                setStudentEditor(editor);
 
-            return () => {
-                editor.dispose();
-            };
+                return () => {
+                    editor.dispose();
+                };
             }
         }
-        
     }, [generatedPseudo]);
 
     const handleClickRun = () => {
@@ -619,7 +629,6 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
 
             setPseudoOutput([]);
             setRunning(true);
-
         } else {
             socket?.emit("python", {
                 type: "stop",
@@ -631,24 +640,25 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
             editor?.focus();
         }
 
-        setRunCodeLog([...runCodeLog, 
+        setRunCodeLog([
+            ...runCodeLog,
             {
                 type: "run code from pseudoCode",
                 "code-that-was-executed": editor?.getValue(),
                 "test-inputs-outputs": loggedIO,
-            }
+            },
         ]);
 
         apiLogEvents(
             context?.token,
             taskID,
             "run code from pseudoCode",
-            runCodeLog,
-          )
+            runCodeLog
+        )
             .then(() => {})
             .catch((error) => {
                 logError("sendLog: " + error.toString());
-        });
+            });
     };
 
     // useEffect(() => {
@@ -658,64 +668,68 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
     // }, [running]);
 
     useEffect(() => {
-        if(currentIssues.length > 0){
+        if (currentIssues.length > 0) {
             // currentIssues.forEach((issue) => {
             //     console.log(issue.line);
             // });
-            if (studentEditor && currentIssues.length > 0) {  
+            if (studentEditor && currentIssues.length > 0) {
                 // Remove existing decorations
                 studentEditor.deltaDecorations(decorations, []);
-                
+
                 // Map over the issues to create new decorations
-                const newDecorations = currentIssues.map((issue:any) => ({
-                  range: new monaco.Range(issue.line, 1, issue.line, 1),
-                  options: { 
-                    isWholeLine: true,
-                    className: 'myLineHighlight'
-                  }
+                const newDecorations = currentIssues.map((issue: any) => ({
+                    range: new monaco.Range(issue.line, 1, issue.line, 1),
+                    options: {
+                        isWholeLine: true,
+                        className: "myLineHighlight",
+                    },
                 }));
-            
+
                 // Add new decorations and save them in the state
                 const ids = studentEditor.deltaDecorations([], newDecorations);
                 setDecorations(ids);
             }
-        } 
+        }
     }, [currentIssues]);
 
     useEffect(() => {
-        if(currentIssues.length > 0){
+        if (currentIssues.length > 0) {
             // currentIssues.forEach((issue) => {
             //     console.log(issue.line);
             // });
-            if (studentEditor && currentIssues) {  
+            if (studentEditor && currentIssues) {
                 // Remove existing decorations
                 studentEditor.deltaDecorations(decorations, []);
-                
+
                 // Map over the issues to create new decorations
-                const newDecorations = currentIssues.map((issue:any) => ({
-                  range: new monaco.Range(issue.line, 1, issue.line, 1),
-                  options: { 
-                    isWholeLine: true,
-                    className: 'myLineHighlightReset'
-                  }
+                const newDecorations = currentIssues.map((issue: any) => ({
+                    range: new monaco.Range(issue.line, 1, issue.line, 1),
+                    options: {
+                        isWholeLine: true,
+                        className: "myLineHighlightReset",
+                    },
                 }));
-            
+
                 // Add new decorations and save them in the state
                 const ids = studentEditor.deltaDecorations([], newDecorations);
                 setDecorations(ids);
             }
-        } 
+        }
     }, [userInputCode]);
 
     useEffect(() => {
-        if(isOver){
+        if (isOver) {
             setIsOpen(false);
-            const overlayElement = document.querySelector('.overlay') as HTMLElement;
-            const editorElement = document.querySelector('.editor') as HTMLElement;
-            overlayElement!.style.display = 'none';
-            editorElement.style.zIndex = '1';
-            var outputDiv = document.querySelector('.output');
-            outputDiv!.innerHTML = '';
+            const overlayElement = document.querySelector(
+                ".overlay"
+            ) as HTMLElement;
+            const editorElement = document.querySelector(
+                ".editor"
+            ) as HTMLElement;
+            overlayElement!.style.display = "none";
+            editorElement.style.zIndex = "1";
+            var outputDiv = document.querySelector(".output");
+            outputDiv!.innerHTML = "";
         }
     }, [isOver]);
 
@@ -727,47 +741,43 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     };
 
-    const verifyPseudoCode = () => {   
+    const verifyPseudoCode = () => {
         // - submit code event (finish pseudo-code)
-		// - code that was submitted {string} 
+        // - code that was submitted {string}
         apiLogEvents(
             context?.token,
             taskID,
             "submit code event to check pseudo-code",
             {
-              type: "submit code event to check pseudo-code",
-              "attempt-time":attemptTime+1,
-              "code-that-was-submitted": userInputCode,
-              "solution-code": generatedCode,
-            },
-          )
+                type: "submit code event to check pseudo-code",
+                "attempt-time": attemptTime + 1,
+                "code-that-was-submitted": userInputCode,
+                "solution-code": generatedCode,
+            }
+        )
             .then(() => {})
             .catch((error) => {
                 logError("sendLog: " + error.toString());
-        });
+            });
         setChecking(true);
         setAttemptTime(attemptTime + 1);
         // pass to the LLM to check if the user written code compare to the generated code
         try {
-            apiGetIssueHintLevel1(
-                context?.token,
-                generatedCode,
-                userInputCode,
-            ).then(async (response) => {
-
-                if (response.ok && editor) {
-                    const data = await response.json();
-                    if (data.hint1.length === 0) {
-                        setCurrentIssues([]);
-                        setButtonClickOver(true);
-                        setCanExit(false);
-                    } else {
-                        console.log(data.hint1);
-                        setCurrentIssues(data.hint1);
-                        setCanExit(true);
+            apiGetIssueHintLevel1(context?.token, generatedCode, userInputCode)
+                .then(async (response) => {
+                    if (response.ok && editor) {
+                        const data = await response.json();
+                        if (data.hint1.length === 0) {
+                            setCurrentIssues([]);
+                            setButtonClickOver(true);
+                            setCanExit(false);
+                        } else {
+                            console.log(data.hint1);
+                            setCurrentIssues(data.hint1);
+                            setCanExit(true);
+                        }
+                        setChecking(false);
                     }
-                    setChecking(false);
-                }
                 })
                 .catch((error) => {
                     editor?.updateOptions({ readOnly: false });
@@ -781,190 +791,283 @@ const PseudoGenerateCode: React.FC<PseudoGenerateCodeProps> = ({ prompt, editor,
         }
     };
 
-
     return (
         <div>
-          {isOver && (
-              <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
-          )} 
-          {isOpen && !isOver && (
-            <div className="modal show" style={{ display: 'block' }}>
-              <div className="modal-header">
-                  <div className='spark-icon'><IconsDoc iconName="spark" /></div>
-                  AI Assistance:
-              </div>
-              <div className="modal-body">
-                {/* <p>
+            {isOver && (
+                <BaselineGenerateCode
+                    prompt={prompt}
+                    editor={editor}
+                    code={generatedCode}
+                    exp={generatedExplanation}
+                    taskID={taskID}
+                    moveOn={moveOn}
+                />
+            )}
+            {isOpen && !isOver && (
+                <div className="modal show" style={{ display: "block" }}>
+                    <div className="modal-header">
+                        <div className="spark-icon">
+                            <IconsDoc iconName="spark" />
+                        </div>
+                        AI Assistance:
+                    </div>
+                    <div className="modal-body">
+                        {/* <p>
                   <b>Prompts: </b> {prompt}
                 </p> */}
-                <div className="prompt-text"><span className='button-span'>Prompt:</span> {prompt}</div>
-                {/* parsons main div */}
-                {(waiting) && (
-                    <div className="gptLoader">
-                      <GPTLoader />
-                    </div>
-                )}
-                {(!waiting) && (
-                  <div className='pesudocode-container-div'>
-                    <div ref={pseudoRef} className="pesudo-code-reader">
-                        <PseudoCodeHoverable goals={generatedPseudo} wholeCode={generatedCode} taskID={taskID}/>
-                    </div>
-                    <div className='pesudocode-writer-container'>
-                        <div className='pseudocode-verify-button-container'>
-                            {/* <button className='btn btn-primary gpt-button' onClick={() => veirfyPseudoCode()}>Verify Code</button> */}
-                            <div>
-                                {buttonClickOver && <p className="pseudo-code-verified"><span>Correct</span>, you may exit to </p>}
+                        <div className="prompt-text">
+                            <span className="button-span">Prompt:</span>{" "}
+                            {prompt}
+                        </div>
+                        {/* parsons main div */}
+                        {waiting && (
+                            <div className="gptLoader">
+                                <GPTLoader />
                             </div>
-                            <button 
-                                className={`btn btn-primary gpt-button ${checking ? 'verifying-button' : ''} ${userInputCode.length === 0 ? 'disabled' : ''}`} 
-                                onClick={verifyPseudoCode}
-                                disabled={userInputCode.length === 0}
+                        )}
+                        {!waiting && (
+                            <div className="pesudocode-container-div">
+                                <div
+                                    ref={pseudoRef}
+                                    className="pesudo-code-reader"
                                 >
-                                {checking ? 'Verifying' : 'Verify Code'}
-                            </button>
-                        </div>
-                        <div ref={editorRef} className="monaco-code-writer">
-                        </div>
-                        <div className="editor-buttons-container">
-                            <div className="quick-editing-buttons-container">
-                                <Fragment>
-                                    {" "}
-                                    <div className="code-container-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
-                                    </svg>
-
-                                    </div>
-                                </Fragment>
-                                Console Input and Output
-                            </div>
-                            <button
-                                className={`editor-button`}
-                                onClick={handleSocketReconnect}
-                            >
-                                ReConnect
-                            </button>
-                            <button
-                                className={`editor-button ${
-                                    running ? "stop-button" : "run-button"
-                                }`}
-                                onClick={handleClickRun}
-                            >
-                                {" "}
-                                {!running ? (
-                                    <Fragment>
-                                        {" "}
-                                        <svg
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            color="currentColor"
-                                            stroke="none"
-                                            strokeWidth="0"
-                                            fill="currentColor"
-                                            className="play-icon"
+                                    <PseudoCodeHoverable
+                                        goals={generatedPseudo}
+                                        wholeCode={generatedCode}
+                                        taskID={taskID}
+                                    />
+                                </div>
+                                <div className="pesudocode-writer-container">
+                                    <div className="pseudocode-verify-button-container">
+                                        {/* <button className='btn btn-primary gpt-button' onClick={() => veirfyPseudoCode()}>Verify Code</button> */}
+                                        <div>
+                                            {buttonClickOver && (
+                                                <p className="pseudo-code-verified">
+                                                    <span>Correct</span>, you
+                                                    may exit to{" "}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <button
+                                            className={`btn btn-primary gpt-button ${
+                                                checking
+                                                    ? "verifying-button"
+                                                    : ""
+                                            } ${
+                                                userInputCode.length === 0
+                                                    ? "disabled"
+                                                    : ""
+                                            }`}
+                                            onClick={verifyPseudoCode}
+                                            disabled={
+                                                userInputCode.length === 0
+                                            }
                                         >
-                                            <path d="M20.2253 11.5642C20.5651 11.7554 20.5651 12.2446 20.2253 12.4358L5.74513 20.5809C5.41183 20.7683 5 20.5275 5 20.1451L5 3.85492C5 3.47251 5.41183 3.23165 5.74513 3.41914L20.2253 11.5642Z"></path>
-                                        </svg>
-                                        Run
-                                    </Fragment>
-                                ) : (
-                                    <Fragment>Stop</Fragment>
-                                )}
-                            </button>
-                        </div>
-                        <div className="output">
-                            {pseudooutput.map((i, index) => (
-                                <p
-                                    className={
-                                        i.type === "error" ? `console-output-error` : ""
-                                    }
-                                    key={"line-" + index}
-                                >
-                                    {i.line}
-                                </p>
-                            ))}
-                            {running && (
-                                <input
-                                    autoFocus
-                                    key={"input-" + pseudooutput.length.toString()}
-                                    className="terminal-input"
-                                    ref={inputRef}
-                                    onKeyUp={(e) => {
-                                        if (e.key === "Enter") {
-                                            socket?.emit("python", {
-                                                type: "stdin",
-                                                value: terminalInput,
-                                                from: socket.id,
-                                                userId: context?.user?.id,
-                                            });
+                                            {checking
+                                                ? "Verifying"
+                                                : "Verify Code"}
+                                        </button>
+                                    </div>
+                                    <div
+                                        ref={editorRef}
+                                        className="monaco-code-writer"
+                                    ></div>
+                                    <div className="editor-buttons-container">
+                                        <div className="quick-editing-buttons-container">
+                                            <Fragment>
+                                                {" "}
+                                                <div className="code-container-icon">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={1.5}
+                                                        stroke="white"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            </Fragment>
+                                            Console Input and Output
+                                        </div>
+                                        <button
+                                            className={`editor-button`}
+                                            onClick={handleSocketReconnect}
+                                        >
+                                            ReConnect
+                                        </button>
+                                        <button
+                                            className={`editor-button ${
+                                                running
+                                                    ? "stop-button"
+                                                    : "run-button"
+                                            }`}
+                                            onClick={handleClickRun}
+                                        >
+                                            {" "}
+                                            {!running ? (
+                                                <Fragment>
+                                                    {" "}
+                                                    <svg
+                                                        width="16"
+                                                        height="16"
+                                                        viewBox="0 0 24 24"
+                                                        color="currentColor"
+                                                        stroke="none"
+                                                        strokeWidth="0"
+                                                        fill="currentColor"
+                                                        className="play-icon"
+                                                    >
+                                                        <path d="M20.2253 11.5642C20.5651 11.7554 20.5651 12.2446 20.2253 12.4358L5.74513 20.5809C5.41183 20.7683 5 20.5275 5 20.1451L5 3.85492C5 3.47251 5.41183 3.23165 5.74513 3.41914L20.2253 11.5642Z"></path>
+                                                    </svg>
+                                                    Run
+                                                </Fragment>
+                                            ) : (
+                                                <Fragment>Stop</Fragment>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <div className="output">
+                                        {pseudooutput.map((i, index) => (
+                                            <p
+                                                className={
+                                                    i.type === "error"
+                                                        ? `console-output-error`
+                                                        : ""
+                                                }
+                                                key={"line-" + index}
+                                            >
+                                                {i.line}
+                                            </p>
+                                        ))}
+                                        {running && (
+                                            <input
+                                                autoFocus
+                                                key={
+                                                    "input-" +
+                                                    pseudooutput.length.toString()
+                                                }
+                                                className="terminal-input"
+                                                ref={inputRef}
+                                                onKeyUp={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        socket?.emit("python", {
+                                                            type: "stdin",
+                                                            value: terminalInput,
+                                                            from: socket.id,
+                                                            userId: context
+                                                                ?.user?.id,
+                                                        });
 
-                                            setPseudoOutput([
-                                                ...pseudooutput,
-                                                {
-                                                    type: "input",
-                                                    line: terminalInput,
-                                                },
-                                            ]);
-                                            setLoggedIO([
-                                                ...loggedIO,
-                                                {
-                                                    type: "input",
-                                                    line: terminalInput,
-                                                },
-                                            ]);
-                                            setTerminalInput("");
-                                        }
-                                    }}
-                                    onChange={(event) => {
-                                        setTerminalInput(event.target.value);
-                                    }}
-                                />
-                            )}
-                        </div>
+                                                        setPseudoOutput([
+                                                            ...pseudooutput,
+                                                            {
+                                                                type: "input",
+                                                                line: terminalInput,
+                                                            },
+                                                        ]);
+                                                        setLoggedIO([
+                                                            ...loggedIO,
+                                                            {
+                                                                type: "input",
+                                                                line: terminalInput,
+                                                            },
+                                                        ]);
+                                                        setTerminalInput("");
+                                                    }
+                                                }}
+                                                onChange={(event) => {
+                                                    setTerminalInput(
+                                                        event.target.value
+                                                    );
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                  </div>
-                )}
-              </div>
-              <div className="modal-footer">
-                {canExit && !buttonClickOver &&
-                <button type="button" className={`btn btn-secondary`} onClick={() => {
-                    setIsModalOpen(true);
-                }}>
-                    I think I am done
-                </button>
-                }
-                {buttonClickOver && 
-                <>
-                <div className='continue-next-task-message'>
-                Great job! Press <span className='button-span'> Return to Editor </span> to go back and test the AI-generated code!
-                </div>
-                <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                    Return to Editor
-                </button>
-                </>
-                }
-                {/* <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
+                    <div className="modal-footer">
+                        {canExit && !buttonClickOver && (
+                            <button
+                                type="button"
+                                className={`btn btn-secondary`}
+                                onClick={() => {
+                                    setIsModalOpen(true);
+                                }}
+                            >
+                                I think I am done
+                            </button>
+                        )}
+                        {buttonClickOver && (
+                            <>
+                                <div className="continue-next-task-message">
+                                    Great job! Press{" "}
+                                    <span className="button-span">
+                                        {" "}
+                                        Return to Editor{" "}
+                                    </span>{" "}
+                                    to go back and test the AI-generated code!
+                                </div>
+                                <button
+                                    disabled={!buttonClickOver}
+                                    type="button"
+                                    className={`btn btn-secondary ${
+                                        !buttonClickOver ? "disabled" : ""
+                                    }`}
+                                    onClick={() => setIsOver(true)}
+                                >
+                                    Return to Editor
+                                </button>
+                            </>
+                        )}
+                        {/* <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
                   Next
                 </button> */}
-                {isModalOpen && (
-                      <div className="modal-next-confirm">
-                        <div className="modal-next-confirm-content">
-                        <h3>Are you sure you want to go to the next task?</h3>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
-                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
-                        </div>
-                        </div>
-                      </div>
-                  )}
-              </div>
-            </div>
-          )}
+                        {isModalOpen && (
+                            <div className="modal-next-confirm">
+                                <div className="modal-next-confirm-content">
+                                    <h3>
+                                        Are you sure you want to go to the next
+                                        task?
+                                    </h3>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                handleModalClick(true)
+                                            }
+                                        >
+                                            Yes
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                handleModalClick(false)
+                                            }
+                                        >
+                                            No
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
-    )
-    
+    );
 };
-
 
 export default PseudoGenerateCode;

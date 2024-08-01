@@ -1,10 +1,14 @@
 import * as monaco from "monaco-editor";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
-import { highlightCode, highlightCodeBlock, highlightPsudo } from "../../utils/utils";
+import {
+    highlightCode,
+    highlightCodeBlock,
+    highlightPsudo,
+} from "../../utils/utils";
 import IconsDoc from "../docs/icons-doc";
 import { HighlightedPartWithoutTab } from "../docs/highlight-code";
-import { apiLogEvents, logError, pseudoGetHintLevel1 } from "../../api/api";
+import { apiLogEvents, logError } from "../../api/api";
 import { AuthContext } from "../../context";
 
 interface IProps {
@@ -36,23 +40,23 @@ export const HoverableExplainCode = (props: IProps) => {
     // }, [codeEl]);
 
     const revealCode = () => {
-        //get the code 
+        //get the code
         apiLogEvents(
             context?.token,
             props.taskID,
             "clicking see code hints event pseudocode",
             {
-              type: "clicking see code hints event pseudocode",
-              "current-state-of-code-in-editor": props.wholeCode,
-              "displayed-code-hint": props.code
-            },
-          )
+                type: "clicking see code hints event pseudocode",
+                "current-state-of-code-in-editor": props.wholeCode,
+                "displayed-code-hint": props.code,
+            }
+        )
             .then(() => {})
             .catch((error) => {
                 logError("sendLog: " + error.toString());
-        });
+            });
         setHintLevel(2);
-    }
+    };
 
     const getHintLevel1 = () => {
         // do something with explanation pass to the LLM
@@ -84,10 +88,10 @@ export const HoverableExplainCode = (props: IProps) => {
         //                     .catch((error) => {
         //                         logError("sendLog: " + error.toString());
         //                 });
-                
+
         //                 setHint1(data.level1Hint);
         //                 setHintLevel(1);
-                                  
+
         //             }
         //         })
         //         .catch((error) => {
@@ -100,14 +104,12 @@ export const HoverableExplainCode = (props: IProps) => {
         setHintLevel(1);
     };
 
-
     // - clicking see implementation hints event
-	// 	- current state of code in editor {string}
-	// 	- displayed implementation hint {string}
-	// - click see code hint event
-	// 	- current state of code in editor {string}
-	// 	- displayed code hint {string}
-
+    // 	- current state of code in editor {string}
+    // 	- displayed implementation hint {string}
+    // - click see code hint event
+    // 	- current state of code in editor {string}
+    // 	- displayed code hint {string}
 
     return (
         <div
@@ -118,64 +120,75 @@ export const HoverableExplainCode = (props: IProps) => {
             onMouseLeave={() => {
                 setHoveringHovered(false);
             }}
-        >   
+        >
             {/* <span className={"hoverable-code"}>
                 {highlightCodeBlock(props.content)}
             </span> */}
-            <span onMouseEnter={() => {
-                setHovering(true);
-            }}
-            onMouseLeave={() => {
-                setHovering(false);
-            }}
-            
-            className={"hoverable-code indent" + props.indent.toString() + ""} 
-            
-            dangerouslySetInnerHTML={{ __html: highlightPsudo(highlightCodeBlock(props.content))}} />
+            <span
+                onMouseEnter={() => {
+                    setHovering(true);
+                }}
+                onMouseLeave={() => {
+                    setHovering(false);
+                }}
+                className={
+                    "hoverable-code indent" + props.indent.toString() + ""
+                }
+                dangerouslySetInnerHTML={{
+                    __html: highlightPsudo(highlightCodeBlock(props.content)),
+                }}
+            />
             {(hovering || hoveringHovered) && props.explanation && (
-                <div 
-                className="hoverable-code-container-with-hint">
+                <div className="hoverable-code-container-with-hint">
                     <div
                         className="hoverable-code-line-explanation"
-                        dangerouslySetInnerHTML={{ __html: highlightPsudo(props.explanation) }}
+                        dangerouslySetInnerHTML={{
+                            __html: highlightPsudo(props.explanation),
+                        }}
                     ></div>
-                    {hintLevel == 0 && 
-                        <div className="hoverable-code-hint-level-1-button" onClick={getHintLevel1}>
-                            <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                    {hintLevel == 0 && (
+                        <div
+                            className="hoverable-code-hint-level-1-button"
+                            onClick={getHintLevel1}
+                        >
+                            <div className="hint-icon">
+                                <IconsDoc iconName="explaination" />
+                            </div>
                             see implementation hints &gt;
                         </div>
-                    }
-                    {hintLevel == 1 &&
+                    )}
+                    {hintLevel == 1 && (
                         <>
-                        <div 
-                            className="hoverable-code-hint-level-1"
-                            dangerouslySetInnerHTML={{
-                            __html: highlightPsudo(
-                                hint1,
-                            ),
-                            }}
-                        ></div>
-                        <div className="hoverable-code-hint-level-1-button" onClick={revealCode}>
-                            <div className="hint-icon"><IconsDoc iconName='explaination'/></div>
+                            <div
+                                className="hoverable-code-hint-level-1"
+                                dangerouslySetInnerHTML={{
+                                    __html: highlightPsudo(hint1),
+                                }}
+                            ></div>
+                            <div
+                                className="hoverable-code-hint-level-1-button"
+                                onClick={revealCode}
+                            >
+                                <div className="hint-icon">
+                                    <IconsDoc iconName="explaination" />
+                                </div>
                                 see code &gt;
-                        </div>
+                            </div>
                         </>
-                    }
-                    {hintLevel == 2 &&
+                    )}
+                    {hintLevel == 2 && (
                         <>
-                        <div 
-                            className="hoverable-code-hint-level-1"
-                            dangerouslySetInnerHTML={{
-                            __html: highlightPsudo(
-                                hint1,
-                            ),
-                            }}
-                        ></div>
-                        <div className="hoverable-code-hint-level-2">
-                            <HighlightedPartWithoutTab part={props.code} />
-                        </div>
+                            <div
+                                className="hoverable-code-hint-level-1"
+                                dangerouslySetInnerHTML={{
+                                    __html: highlightPsudo(hint1),
+                                }}
+                            ></div>
+                            <div className="hoverable-code-hint-level-2">
+                                <HighlightedPartWithoutTab part={props.code} />
+                            </div>
                         </>
-                    }
+                    )}
                 </div>
             )}
             {/* <div className="lightbulb">light</div> */}

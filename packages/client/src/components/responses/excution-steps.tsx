@@ -8,19 +8,10 @@ import React, {
 import { FaLongArrowAltRight, FaQuestionCircle } from "react-icons/fa";
 import { AuthContext, SocketContext } from "../../context";
 import ExcutionTimeline from "../excution-timeline";
-import {
-    apiGenerateQuestionHint,
-    apiGenerateTracingQuestion,
-    apiGetTracingSimulation,
-    apiLogEvents,
-    logError,
-} from "../../api/api";
-import { ChatLoader } from "../loader";
-import { highlightCode } from "../../utils/utils";
+import { apiGetTracingSimulation, apiLogEvents, logError } from "../../api/api";
 import * as monaco from "monaco-editor";
 import IconsDoc from "../docs/icons-doc";
 import { task2Trace } from "../../utils/constants";
-import { connectSocket } from "../../api/python-shell";
 
 interface ExcutionStepsProps {
     code: string;

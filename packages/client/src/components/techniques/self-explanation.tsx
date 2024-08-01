@@ -1,19 +1,20 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import robot from "../../assets/shining.png";
-import { XYCoord, useDrag, useDrop } from 'react-dnd';
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context";
-import { log, LogType } from "../../utils/logger";
 
-import { apiGetBaselineCodex, apiGetBaselineCodexSimulation, apiGetBaselineExplainationCodexSimulation, apiGetGenerateQuestionForSelfExplain, apiGetSelfExplainQuestionsSimulation, logError } from '../../api/api';
-import * as monaco from 'monaco-editor';
-import { highlightCode } from '../../utils/utils';
-import { SelfExplain } from '../responses/self-explain';
-import { GPTLoader } from '../loader';
-import BaselineGenerateCode from '../responses/baseline-chat';
-import IconsDoc from '../docs/icons-doc';
+import {
+    apiGetBaselineCodexSimulation,
+    apiGetBaselineExplainationCodexSimulation,
+    apiGetSelfExplainQuestionsSimulation,
+    logError,
+} from "../../api/api";
+import * as monaco from "monaco-editor";
+import { SelfExplain } from "../responses/self-explain";
+import { GPTLoader } from "../loader";
+import BaselineGenerateCode from "../responses/baseline-chat";
+import IconsDoc from "../docs/icons-doc";
 
 export let selfExplainCancelClicked = false;
-  
+
 interface SelfExplainGenerateCodeProps {
     prompt: string;
     editor: monaco.editor.IStandaloneCodeEditor | null;
@@ -21,76 +22,76 @@ interface SelfExplainGenerateCodeProps {
     moveOn: () => void;
 }
 
-
 interface MultipleChoiceQuestion {
-  correct: boolean;
-  text: string;
+    correct: boolean;
+    text: string;
 }
 
 interface SelfExplainQuestion {
-  type: string;
-  question: string;
-  answer?: string;
-  choices?: MultipleChoiceQuestion[];
-  lines: number[];
-  questionCodeLines: string;
-  questionCodeLinesExplained: string;
+    type: string;
+    question: string;
+    answer?: string;
+    choices?: MultipleChoiceQuestion[];
+    lines: number[];
+    questionCodeLines: string;
+    questionCodeLinesExplained: string;
 }
 
 function shuffleArray(array: any[]): any[] {
-  for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
-function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
-  return response.map((item: any) => {
+function responseToQuestion(
+    response: any,
+    code: string
+): SelfExplainQuestion[] {
+    return response.map((item: any) => {
+        // revealLines
+        const codeLines = code.split("\n");
+        const revealLines = item["question-code-lines"].map(Number);
+        const lines = revealLines
+            .map((index: number) => codeLines[index - 1])
+            .filter((line: string) => typeof line === "string")
+            .join("\n");
 
-      // revealLines
-      const codeLines = code.split('\n');
-      const revealLines = item["question-code-lines"].map(Number);
-      const lines = revealLines
-          .map((index: number) => codeLines[index-1])
-          .filter((line: string) => typeof line === 'string')
-          .join('\n');
+        if (item.type === "Multiple Choice") {
+            // randomize choices, save them in questionObject forml
+            var answer = item.answer;
+            const choices = shuffleArray([
+                { correct: true, text: answer["correct-choice"] },
+                { correct: false, text: answer["incorrect-choice-1"] },
+                { correct: false, text: answer["incorrect-choice-2"] },
+                { correct: false, text: answer["incorrect-choice-3"] },
+            ]);
 
-      if (item.type === 'Multiple Choice') {
-          // randomize choices, save them in questionObject forml
-          var answer = item.answer;
-          const choices = shuffleArray([
-            { correct: true, text: answer["correct-choice"] },
-            { correct: false, text: answer["incorrect-choice-1"] },
-            { correct: false, text: answer["incorrect-choice-2"] },
-            { correct: false, text: answer["incorrect-choice-3"] },
-          ]);
+            console.log(lines);
+            console.log(revealLines);
 
-          console.log(lines);
-          console.log(revealLines);
-
-          return {
-            type: item.type,
-            question: item.question,
-            questionCodeLines: lines,
-            lines: revealLines,
-            questionCodeLinesExplained: item["question-code-lines-explained"],
-            choices: choices as MultipleChoiceQuestion[],
-          };
-
-        }else{
-          return {
-            type: item.type,
-            question: item.question,
-            answer: item.answer,
-            lines: revealLines,
-            questionCodeLines: lines,
-            questionCodeLinesExplained: item["question-code-lines-explained"],
-        };
+            return {
+                type: item.type,
+                question: item.question,
+                questionCodeLines: lines,
+                lines: revealLines,
+                questionCodeLinesExplained:
+                    item["question-code-lines-explained"],
+                choices: choices as MultipleChoiceQuestion[],
+            };
+        } else {
+            return {
+                type: item.type,
+                question: item.question,
+                answer: item.answer,
+                lines: revealLines,
+                questionCodeLines: lines,
+                questionCodeLinesExplained:
+                    item["question-code-lines-explained"],
+            };
         }
-
-
-  });
+    });
 }
 
 // {
@@ -135,35 +136,40 @@ function responseToQuestion(response: any, code:string): SelfExplainQuestion[] {
 //       }
 //   ]
 // }
-  
 
-const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ prompt, editor, taskID, moveOn })  => {
+const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({
+    prompt,
+    editor,
+    taskID,
+    moveOn,
+}) => {
     const [isOpen, setIsOpen] = useState(true);
     const { context, setContext } = useContext(AuthContext);
     const [waiting, setWaiting] = useState(false);
     const [feedback, setFeedback] = useState<string>("");
     const [checked, setChecked] = useState(true);
-    const [generatedCode, setGeneratedCode] = useState('');
-    const [generatedExplanation, setGeneratedExplanation] = useState('');
-    const [generatedQuestions, setGeneratedQuestions] = useState<SelfExplainQuestion[]>([]);
+    const [generatedCode, setGeneratedCode] = useState("");
+    const [generatedExplanation, setGeneratedExplanation] = useState("");
+    const [generatedQuestions, setGeneratedQuestions] = useState<
+        SelfExplainQuestion[]
+    >([]);
     const [isOver, setIsOver] = useState(false);
     const [passed, setPassed] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
 
-
     useEffect(() => {
-      generateCode();
-      const interval = setInterval(() => {
-        if (document.getElementById('game-over')) {
-          // setIsOver(true);
-          setPassed(true);
-          clearInterval(interval); 
-        }
-      }, 1000); 
-      return () => clearInterval(interval);
-  }, []);
+        generateCode();
+        const interval = setInterval(() => {
+            if (document.getElementById("game-over")) {
+                // setIsOver(true);
+                setPassed(true);
+                clearInterval(interval);
+            }
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     const generateCode = () => {
         if (prompt.length === 0) {
@@ -185,12 +191,8 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                     .join("\n");
             }
             try {
-                apiGetBaselineCodexSimulation(
-                    context?.token,
-                    taskID,
-                )
+                apiGetBaselineCodexSimulation(context?.token, taskID)
                     .then(async (response) => {
-
                         if (response.ok && editor) {
                             const data = await response.json();
                             let taskId = data.taskId;
@@ -202,40 +204,45 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                                 taskId
                             )
                                 .then(async (response) => {
-                
                                     if (response.ok && editor) {
                                         const data = await response.json();
 
-                                        setGeneratedExplanation(data.explanation);
-                                        // setWaiting(false);                           
+                                        setGeneratedExplanation(
+                                            data.explanation
+                                        );
+                                        // setWaiting(false);
                                     }
                                 })
                                 .catch((error) => {
                                     editor?.updateOptions({ readOnly: false });
                                     // setWaiting(false);
                                     logError(error.toString());
-                                });  
-                                
-                                apiGetSelfExplainQuestionsSimulation(
-                                    context?.token,
-                                    taskId,
-                                )
-                                    .then(async (response) => {
-                
-                                        if (response.ok && editor) {
-                                            const data = await response.json();
-                                            // console.log(data.verifyReview);
-                                            console.log(data.selfExplainQuestions);
-                                            setGeneratedQuestions(responseToQuestion(data.selfExplainQuestions.questions, text));
-                                            setWaiting(false);
-                                            
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        editor?.updateOptions({ readOnly: false });
+                                });
+
+                            apiGetSelfExplainQuestionsSimulation(
+                                context?.token,
+                                taskId
+                            )
+                                .then(async (response) => {
+                                    if (response.ok && editor) {
+                                        const data = await response.json();
+                                        // console.log(data.verifyReview);
+                                        console.log(data.selfExplainQuestions);
+                                        setGeneratedQuestions(
+                                            responseToQuestion(
+                                                data.selfExplainQuestions
+                                                    .questions,
+                                                text
+                                            )
+                                        );
                                         setWaiting(false);
-                                        logError(error.toString());
-                                    });
+                                    }
+                                })
+                                .catch((error) => {
+                                    editor?.updateOptions({ readOnly: false });
+                                    setWaiting(false);
+                                    logError(error.toString());
+                                });
                         }
                     })
                     .catch((error) => {
@@ -248,8 +255,6 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                 setWaiting(false);
                 logError(error.toString());
             }
-
-            
         }
     };
 
@@ -260,18 +265,18 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //         );
     //     } else {
     //         setWaiting(true);
-  
+
     //         const focusedPosition = props.editor?.getPosition();
     //         const userCode = props.editor?.getValue();
     //         let codeContext = "";
-  
+
     //         if (focusedPosition && userCode && checked) {
     //             codeContext = userCode
     //                 .split("\n")
     //                 .slice(0, focusedPosition.lineNumber + 1)
     //                 .join("\n");
     //         }
-  
+
     //         try {
     //             apiGetBaselineCodex(
     //                 context?.token,
@@ -279,12 +284,12 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                 userCode ? userCode : ""
     //             )
     //                 .then(async (response) => {
-  
+
     //                     if (response.ok && props.editor) {
     //                         const data = await response.json();
-  
+
     //                         let text = data.bundle.code;
-  
+
     //                         if (text.length > 0) {
     //                             setFeedback("");
     //                             log(
@@ -296,47 +301,47 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                                     userInput: prompt,
     //                                 }
     //                             );
-  
+
     //                             let insertLine = 0;
     //                             let insertColumn = 1;
-  
+
     //                             let curLineNumber = 0;
     //                             let curColumn = 0;
-  
+
     //                             let highlightStartLine = 0;
     //                             let highlightStartColumn = 0;
     //                             let highlightEndLine = 0;
     //                             let highlightEndColumn = 0;
-  
+
     //                             const curPos = props.editor.getPosition();
     //                             const curCodeLines = props.editor
     //                                 .getValue()
     //                                 .split("\n");
-  
+
     //                             if (curPos) {
     //                                 curLineNumber = curPos.lineNumber;
     //                                 curColumn = curPos.column;
     //                             }
-  
+
     //                             let curLineText =
     //                                 curCodeLines[curLineNumber - 1];
     //                             let nextLineText =
     //                                 curLineNumber < curCodeLines.length
     //                                     ? curCodeLines[curLineNumber]
     //                                     : null;
-  
+
     //                             if (curColumn === 1) {
     //                                 // at the beginning of a line
     //                                 if (curLineText !== "") {
     //                                     text += "\n";
     //                                     insertLine = curLineNumber;
     //                                     insertColumn = 1;
-  
+
     //                                     highlightStartLine = curLineNumber;
     //                                     highlightStartColumn = curColumn;
-  
+
     //                                     const textLines = text.split("\n");
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         textLines.length -
@@ -345,10 +350,10 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                                 } else {
     //                                     insertLine = curLineNumber;
     //                                     insertColumn = 1;
-  
+
     //                                     highlightStartLine = curLineNumber;
     //                                     highlightStartColumn = curColumn;
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         text.split("\n").length;
@@ -360,12 +365,12 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                                     text = "\n" + text;
     //                                     insertLine = curLineNumber;
     //                                     insertColumn = curLineText.length + 1;
-  
+
     //                                     const textLines = text.split("\n");
-  
+
     //                                     highlightStartLine = curLineNumber + 1;
     //                                     highlightStartColumn = 1;
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         text.split("\n").length -
@@ -376,10 +381,10 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                                 } else {
     //                                     insertLine = curLineNumber + 1;
     //                                     insertColumn = 1;
-  
+
     //                                     highlightStartLine = curLineNumber;
     //                                     highlightStartColumn = curColumn;
-  
+
     //                                     highlightEndLine =
     //                                         curLineNumber +
     //                                         text.split("\n").length;
@@ -396,15 +401,15 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                                     prompt
     //                                 )
     //                                     .then(async (response) => {
-                        
+
     //                                         if (response.ok) {
     //                                             const data = await response.json();
-                                                
+
     //                                             setGeneratedQuestions(responseToQuestion(data.response.questions, text));
     //                                             console.log(data.response);
-                        
+
     //                                             setWaiting(false);
-    //                                             } 
+    //                                             }
     //                                     })
     //                                     .catch((error) => {
     //                                         setWaiting(false);
@@ -415,8 +420,8 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //                                     logError(error.toString());
     //                                 }
     //                             }
-                                
-    //                         } 
+
+    //                         }
     //                     }
     //                 })
     //                 .catch((error) => {
@@ -431,111 +436,145 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
     //         }
     //     }
     // };
-  
 
     const closePopup = async () => {
-      setIsModalOpen(true);
+        setIsModalOpen(true);
     };
-  
+
     const handleModalClick = (confirmed: boolean) => {
-      setIsModalOpen(false);
-      
-      if (confirmed) {
-        setIsOpen(false);
-        const overlayElement = document.querySelector('.overlay') as HTMLElement;
-        const editorElement = document.querySelector('.editor') as HTMLElement;
-        overlayElement!.style.display = 'none';
-        editorElement.style.zIndex = '1';
-        setGeneratedCode("");
-        setGeneratedExplanation("");
-        moveOn();
-        selfExplainCancelClicked = !selfExplainCancelClicked;
-      }
+        setIsModalOpen(false);
+
+        if (confirmed) {
+            setIsOpen(false);
+            const overlayElement = document.querySelector(
+                ".overlay"
+            ) as HTMLElement;
+            const editorElement = document.querySelector(
+                ".editor"
+            ) as HTMLElement;
+            overlayElement!.style.display = "none";
+            editorElement.style.zIndex = "1";
+            setGeneratedCode("");
+            setGeneratedExplanation("");
+            moveOn();
+            selfExplainCancelClicked = !selfExplainCancelClicked;
+        }
     };
 
     useEffect(() => {
-      if(isOver){
-          setIsOpen(false);
-          const overlayElement = document.querySelector('.overlay') as HTMLElement;
-          const editorElement = document.querySelector('.editor') as HTMLElement;
-          overlayElement!.style.display = 'none';
-          editorElement.style.zIndex = '1';
-          var outputDiv = document.querySelector('.output');
-          outputDiv!.innerHTML = '';
-      }
-  }, [isOver]);
+        if (isOver) {
+            setIsOpen(false);
+            const overlayElement = document.querySelector(
+                ".overlay"
+            ) as HTMLElement;
+            const editorElement = document.querySelector(
+                ".editor"
+            ) as HTMLElement;
+            overlayElement!.style.display = "none";
+            editorElement.style.zIndex = "1";
+            var outputDiv = document.querySelector(".output");
+            outputDiv!.innerHTML = "";
+        }
+    }, [isOver]);
 
-  useEffect(() => {
-    let intervalId: number | null = null;
+    useEffect(() => {
+        let intervalId: number | null = null;
 
-    if (isTimerStarted) {
-      // Setup a timer that increments the counter every second
-      intervalId = window.setInterval(() => {
-        setCounter((prevCounter) => {
-          if (prevCounter === 4) { // Check if the counter is about to become 5
-            console.log("Timer has reached 5 seconds.");
-            
-            // Implement any additional logic here
+        if (isTimerStarted) {
+            // Setup a timer that increments the counter every second
+            intervalId = window.setInterval(() => {
+                setCounter((prevCounter) => {
+                    if (prevCounter === 4) {
+                        // Check if the counter is about to become 5
+                        console.log("Timer has reached 5 seconds.");
+
+                        // Implement any additional logic here
+                        if (intervalId !== null) {
+                            window.clearInterval(intervalId); // Clears the interval
+                        }
+                        setIsTimerStarted(false); // Optionally stops the timer
+
+                        return 5; // Update the state to reflect it reached 5
+                    }
+                    return prevCounter + 1; // Increment the counter
+                });
+            }, 1000); // Run this every 1000 milliseconds (1 second)
+        }
+
+        // Cleanup function
+        return () => {
             if (intervalId !== null) {
-              window.clearInterval(intervalId); // Clears the interval
+                window.clearInterval(intervalId);
             }
-            setIsTimerStarted(false); // Optionally stops the timer
-
-            return 5; // Update the state to reflect it reached 5
-          }
-          return prevCounter + 1; // Increment the counter
-        });
-      }, 1000); // Run this every 1000 milliseconds (1 second)
-    }
-
-    // Cleanup function
-    return () => {
-      if (intervalId !== null) {
-        window.clearInterval(intervalId); 
-      }
-    };
-  }, [isTimerStarted]);
-
+        };
+    }, [isTimerStarted]);
 
     return (
-          <div>
+        <div>
             {isOver && (
-                <BaselineGenerateCode prompt={prompt} editor={editor} code={generatedCode} exp={generatedExplanation} taskID={taskID} moveOn={moveOn}/>
-            )} 
+                <BaselineGenerateCode
+                    prompt={prompt}
+                    editor={editor}
+                    code={generatedCode}
+                    exp={generatedExplanation}
+                    taskID={taskID}
+                    moveOn={moveOn}
+                />
+            )}
             {isOpen && !isOver && (
-              <div className="modal show" style={{ display: 'block' }}>
-                <div className="modal-header">
-                    <div className='spark-icon'><IconsDoc iconName="spark" /></div>
-                    AI Assistance:
-                </div>
-                <div className="modal-body">
-                  <div className="prompt-text"><span className='button-span'>Prompt:</span> {prompt}</div>
-                  {/* <p>
+                <div className="modal show" style={{ display: "block" }}>
+                    <div className="modal-header">
+                        <div className="spark-icon">
+                            <IconsDoc iconName="spark" />
+                        </div>
+                        AI Assistance:
+                    </div>
+                    <div className="modal-body">
+                        <div className="prompt-text">
+                            <span className="button-span">Prompt:</span>{" "}
+                            {prompt}
+                        </div>
+                        {/* <p>
                     <b>Prompts: </b> {prompt}
                   </p> */}
 
-                  {(waiting || counter < 5) && (
-                    <div className="gptLoader">
-                      <GPTLoader />
+                        {(waiting || counter < 5) && (
+                            <div className="gptLoader">
+                                <GPTLoader />
+                            </div>
+                        )}
+                        {!waiting && counter >= 5 && (
+                            <SelfExplain
+                                code={generatedCode}
+                                questions={generatedQuestions}
+                                taskID={taskID}
+                            />
+                        )}
                     </div>
-                  )}
-                  {(!waiting && counter >= 5) && (
-                  
-                    <SelfExplain code={generatedCode} questions={generatedQuestions} taskID={taskID}/>
-                  )}
-                </div>
-                <div className="modal-footer">
-                {passed && 
-                <>
-                <div className='continue-next-task-message'>
-                Great job! Press <span className='button-span'> Return to Editor </span> to go back and test the AI-generated code!
-                </div>
-                <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                    Return to Editor
-                </button>
-                </>
-                }
-                {/* <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
+                    <div className="modal-footer">
+                        {passed && (
+                            <>
+                                <div className="continue-next-task-message">
+                                    Great job! Press{" "}
+                                    <span className="button-span">
+                                        {" "}
+                                        Return to Editor{" "}
+                                    </span>{" "}
+                                    to go back and test the AI-generated code!
+                                </div>
+                                <button
+                                    disabled={!passed}
+                                    type="button"
+                                    className={`btn btn-secondary ${
+                                        !passed ? "disabled" : ""
+                                    }`}
+                                    onClick={() => setIsOver(true)}
+                                >
+                                    Return to Editor
+                                </button>
+                            </>
+                        )}
+                        {/* <button disabled={!passed} type="button" className={`btn btn-secondary ${!passed ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
                     Done
                     </button>
                   <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
@@ -552,12 +591,11 @@ const SelfExplainGenerateCode: React.FC<SelfExplainGenerateCodeProps> = ({ promp
                         </div>
                       </div>
                   )} */}
+                    </div>
                 </div>
-              </div>
             )}
-          </div>
-      )
-      
+        </div>
+    );
 };
 
 export default SelfExplainGenerateCode;
