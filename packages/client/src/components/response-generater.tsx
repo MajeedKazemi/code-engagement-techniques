@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as monaco from 'monaco-editor';
 import IconsDoc from './docs/icons-doc';
-import { apiGetBaselineCodex, apiGetGeneratedFeedbackCodex, apiGetTaskById, apiLogEvents, logError } from "../api/api";
+import {apiGetGeneratedFeedbackCodex, apiLogEvents, logError } from "../api/api";
 
 import { AuthContext } from "../context";
 import { LogType, log } from '../utils/logger';
@@ -10,12 +10,10 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { highlightCode } from '../utils/utils';
 import PseudoGenerateCode, { pseudoCancelClicked } from './techniques/pseudo-generator';
-import { apiGetAggregatedDataPerUserBaseline } from '../api/api-analysis';
-import HierachicalGenerateCode, { hierarchicalCancelClicked} from './techniques/hierarchical-generator';
-import TokenGenerateCode, { tokenCancelClicked } from './techniques/token-generator';
+
 import WriteOverGenerateCode, { writeOverCancelClicked } from './techniques/write-over-generator';
 import SelfExplainGenerateCode, { selfExplainCancelClicked } from './techniques/self-explanation';
-import ExcutionGenerateCode, { excutionCancelClicked } from './techniques/excution-generator';
+import TraceAndPredictGenerator, { excutionCancelClicked } from './techniques/trace-and-predict-generator';
 import VerifyGenerateCode, { verifyCancelClicked } from './techniques/verify-review-generator';
 import RevealGenerateCode, { revealCancelClicked } from './techniques/lead-reveal-generator';
 import { ChatLoader } from './loader';
@@ -163,7 +161,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ technique, editor, taskID,
       case "stepByStep":
         addOverlay();
         generatedCodeComponent =
-          <ExcutionGenerateCode prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
+          <TraceAndPredictGenerator prompt={userInput} editor={editor}  taskID={taskID} moveOn={moveOn}/>
         break;
       case "verify":
         addOverlay();
@@ -283,7 +281,7 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ technique, editor, taskID,
       } 
     };
     checkCancelClicked();
-  }, [baselineCancelClicked, pseudoCancelClicked, hierarchicalCancelClicked, tokenCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked, excutionCancelClicked, revealCancelClicked]);
+  }, [baselineCancelClicked, pseudoCancelClicked, parsonsCancelClicked, writeOverCancelClicked, selfExplainCancelClicked, verifyCancelClicked, excutionCancelClicked, revealCancelClicked]);
 
   // define the current technique
 

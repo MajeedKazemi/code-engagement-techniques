@@ -13,7 +13,6 @@ import {
     apiGetSavedUserCode,
     apiLogEvents,
     apiSaveUserCode,
-    apiUserNextTask,
     logError,
 } from "../api/api";
 import {
@@ -21,7 +20,7 @@ import {
     retryOpeningLanguageClient,
     stopLanguageClient,
 } from "../api/intellisense";
-import { Baseline } from "./response-generater";
+import { Baseline } from "./main-interface";
 import { AuthContext, SocketContext } from "../context";
 import { log, LogType, RunEventType } from "../utils/logger";
 import { connectSocket } from "../api/python-shell";
@@ -203,7 +202,6 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         return () => editor?.dispose();
     }, [monacoEl.current]);
 
-
     useEffect(() => {
         socket?.on("python", (data: any) => {
             if (data.type === "stdout") {
@@ -286,11 +284,11 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
 
     const handleModalClick = (confirmed: boolean) => {
         setIsModalOpen(false);
-        
+
         if (confirmed) {
-          setNextTask();
+            setNextTask();
         }
-      };
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -394,10 +392,23 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
 
     return (
         <Fragment>
-            <section className={`task-workspace ${props.type=='coding' ? 'coding-task-workspace' : ''}`}>
+            <section
+                className={`task-workspace ${
+                    props.type == "coding" ? "coding-task-workspace" : ""
+                }`}
+            >
                 <div className="overlay"></div>
-                <div className={`editor ${props.type=='coding' ? 'coding-task-workspace' : ''}`} ref={monacoEl}></div>
-                <div className={`editor-buttons-container ${props.type=='coding' ? 'coding-task-workspace' : ''}`}>
+                <div
+                    className={`editor ${
+                        props.type == "coding" ? "coding-task-workspace" : ""
+                    }`}
+                    ref={monacoEl}
+                ></div>
+                <div
+                    className={`editor-buttons-container ${
+                        props.type == "coding" ? "coding-task-workspace" : ""
+                    }`}
+                >
                     <div className="quick-editing-buttons-container">
                         <Fragment>
                             {" "}
@@ -428,16 +439,21 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         >
                             {saved ? "Code Saved" : "Save Code"}
                         </button>
-                        {editor && props.type == 'coding' && <button
-                            className={`editor-button ${
-                                editor.getValue() == props.starterCode? "editing-btn-disabled" : "editing-btn"
-                            }`}
-                            onClick={submitClicked}
-                            disabled={editor.getValue() == props.starterCode}
-                        >
-                            Submit Code
-                        </button>
-                        }
+                        {editor && props.type == "coding" && (
+                            <button
+                                className={`editor-button ${
+                                    editor.getValue() == props.starterCode
+                                        ? "editing-btn-disabled"
+                                        : "editing-btn"
+                                }`}
+                                onClick={submitClicked}
+                                disabled={
+                                    editor.getValue() == props.starterCode
+                                }
+                            >
+                                Submit Code
+                            </button>
+                        )}
                     </div>
                     <button
                         className={`editor-button`}
@@ -474,7 +490,11 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                         )}
                     </button>
                 </div>
-                <div className={`output ${props.type=='coding' ? 'coding-task-workspace' : ''}`}>
+                <div
+                    className={`output ${
+                        props.type == "coding" ? "coding-task-workspace" : ""
+                    }`}
+                >
                     {output.map((i, index) => (
                         <p
                             className={
@@ -534,18 +554,41 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     )}
                 </div>
             </section>
-            {!excution && props.type != 'coding' && <Baseline editor={editor} taskID={props.taskId} task={props.description} moveOn={setNextTask} technique={props.technique}/>}
+            {!excution && props.type != "coding" && (
+                <Baseline
+                    editor={editor}
+                    taskID={props.taskId}
+                    task={props.description}
+                    moveOn={setNextTask}
+                    technique={props.technique}
+                />
+            )}
             {isModalOpen && (
-                      <div className="modal-next-confirm">
-                        <div className="modal-next-confirm-content">
+                <div className="modal-next-confirm">
+                    <div className="modal-next-confirm-content">
                         <h3>Are you sure you want submit?</h3>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
-                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <button
+                                type="button"
+                                onClick={() => handleModalClick(true)}
+                            >
+                                Yes
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleModalClick(false)}
+                            >
+                                No
+                            </button>
                         </div>
-                        </div>
-                      </div>
-                  )} 
+                    </div>
+                </div>
+            )}
         </Fragment>
     );
 });

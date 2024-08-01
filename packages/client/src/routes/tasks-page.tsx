@@ -5,7 +5,6 @@ import { CodingTask } from "../components/coding-task";
 import { Layout } from "../components/layout";
 import { Loader } from "../components/loader";
 import { MultipleChoiceTask } from "../components/multiple-choice-task";
-import { ShortAnswerTask } from "../components/short-answer-task";
 import { WatchTutorialTask } from "../components/watch-video-task";
 import { AuthContext } from "../context";
 import { TaskType } from "../utils/constants";
@@ -50,7 +49,9 @@ export const TasksPage = () => {
                         }
                         onCompletion={setNextTask}
                         technique={
-                            context?.user?.editorType ? context.user.editorType : ""
+                            context?.user?.editorType
+                                ? context.user.editorType
+                                : ""
                         }
                         taskType={task.type}
                     ></CodingTask>

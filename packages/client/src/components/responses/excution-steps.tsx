@@ -9,19 +9,14 @@ import { FaLongArrowAltRight, FaQuestionCircle } from "react-icons/fa";
 import { AuthContext, SocketContext } from "../../context";
 import ExcutionTimeline from "../excution-timeline";
 import {
-    apiGenerateQuestionHint,
-    apiGenerateTracingQuestion,
-    apiGetTracingSimulation,
     apiGetFeedbackForDecomposition,
     apiLogEvents,
     logError,
 } from "../../api/api";
 import { ChatLoader } from "../loader";
-import { highlightCode } from "../../utils/utils";
 import * as monaco from "monaco-editor";
 import IconsDoc from "../docs/icons-doc";
 import { taskTrace, taskTrace2 } from "../../utils/constants";
-import { connectSocket } from "../../api/python-shell";
 import { taskQuestions, taskDecompositions } from "../../utils/stepDecomposition";
 import { taskSolutions } from "../../utils/stepSolution";
 

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useContext, Fragment } from 'react';
 import * as monaco from "monaco-editor";
 import { AuthContext, SocketContext } from '../../context';
-import { initLanguageClient, retryOpeningLanguageClient, stopLanguageClient } from '../../api/intellisense';
+import { initLanguageClient, retryOpeningLanguageClient } from '../../api/intellisense';
 import IconsDoc from '../docs/icons-doc';
 import { HighlightedPart } from '../docs/highlight-code';
-import { apiGetIssueCodes, apiGetIssueHintLevel1, apiGetIssueHintLevel2, apiGetIssueHintLevel3, apiLogEvents, logError } from '../../api/api';
+import { apiGetIssueHintLevel1, apiGetIssueHintLevel2, apiGetIssueHintLevel3, apiLogEvents, logError } from '../../api/api';
 import { connectSocket } from '../../api/python-shell';
 
 interface VerifyProps {

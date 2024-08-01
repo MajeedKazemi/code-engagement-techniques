@@ -1,11 +1,14 @@
-import { Fragment, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
-import { apiLogEvents, apiUserStartTask, apiUserSubmitTask, logError } from "../api/api";
+import {
+    apiLogEvents,
+    apiUserStartTask,
+    apiUserSubmitTask,
+    logError,
+} from "../api/api";
 import { AuthContext } from "../context";
 import { TaskType } from "../utils/constants";
 import { getLogObject } from "../utils/logger";
-import { convertTime } from "../utils/shared";
-import { Button } from "./button";
 import { Editor } from "./editor";
 
 interface CodingTaskProps {
@@ -198,7 +201,7 @@ export const CodingTask = (props: CodingTaskProps) => {
             <Editor
                 type={props.taskType}
                 ref={editorRef}
-                technique={props.technique? props.technique : "baseline"}
+                technique={props.technique ? props.technique : "baseline"}
                 taskId={props.taskId}
                 starterCode={props.starterCode ? props.starterCode : ""}
                 updateCode={setUserCode}

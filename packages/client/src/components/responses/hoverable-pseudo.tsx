@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { getIconSVG } from "../../utils/icons";
 import IconsDoc from "../docs/icons-doc";
 import { HoverableExplainCode } from "./hoverable-explain-code";
 import { AuthContext } from "../../context";
@@ -10,7 +9,6 @@ interface PseudoCodeProps {
     wholeCode: string;
     taskID: string;
 }
-
 
 interface PseudoCodeSubgoals {
     title: string;
@@ -25,7 +23,11 @@ interface PesudoInterface {
     explanation: string;
 }
 
-export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCode, taskID }) => {
+export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({
+    goals,
+    wholeCode,
+    taskID,
+}) => {
     const [isOpen, setIsOpen] = useState(Array(goals.length).fill(false));
     const { context, setContext } = useContext(AuthContext);
 
@@ -37,24 +39,23 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCod
         let temp = [...isOpen];
         temp[index] = !temp[index];
 
-
         apiLogEvents(
             context?.token,
             taskID,
             "pseudocode clicks to open close subgoal event",
             {
-              type: "pseudocode clicks to open close subgoal event",
+                type: "pseudocode clicks to open close subgoal event",
                 "subgoal-name": goals[index].title,
-                "action": temp[index] ? "open" : "close"
-            },
-          )
+                action: temp[index] ? "open" : "close",
+            }
+        )
             .then(() => {})
             .catch((error) => {
                 logError("sendLog: " + error.toString());
-        });
+            });
 
         setIsOpen(temp);
-    }
+    };
 
     return (
         <div className="hoverable-code-container">
@@ -62,18 +63,28 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCod
                 {goals.map((goal, index) => {
                     return (
                         <div key={index.toString()}>
-                            <div className="hoverable-code-header" onClick={() => handleClick(index)}>
-                                <div className={`expandable-button ${isOpen[index] ? 'minus' : ''}`}>
-                                    {
-                                        isOpen[index] ? 
-                                        <IconsDoc iconName="minus"/> 
-                                        : 
-                                        <IconsDoc iconName="plus"/>
-                                    }
+                            <div
+                                className="hoverable-code-header"
+                                onClick={() => handleClick(index)}
+                            >
+                                <div
+                                    className={`expandable-button ${
+                                        isOpen[index] ? "minus" : ""
+                                    }`}
+                                >
+                                    {isOpen[index] ? (
+                                        <IconsDoc iconName="minus" />
+                                    ) : (
+                                        <IconsDoc iconName="plus" />
+                                    )}
                                 </div>
                                 {goal.title}
                             </div>
-                            <div className={`hoverable-code-content-container ${isOpen[index] ? 'expand' : ''}`}>
+                            <div
+                                className={`hoverable-code-content-container ${
+                                    isOpen[index] ? "expand" : ""
+                                }`}
+                            >
                                 {goal.code.map((line, index) => {
                                     return (
                                         <HoverableExplainCode
@@ -81,7 +92,10 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCod
                                             content={line.pseudo || ""}
                                             explanation={line.explanation || ""}
                                             code={line.code || ""}
-                                            key={JSON.stringify(line) + index.toString()}
+                                            key={
+                                                JSON.stringify(line) +
+                                                index.toString()
+                                            }
                                             taskID={taskID}
                                             wholeCode={wholeCode}
                                             syntaxHint={line.syntax_hint || ""}
@@ -92,9 +106,8 @@ export const PseudoCodeHoverable: React.FC<PseudoCodeProps> = ({ goals, wholeCod
                         </div>
                     );
                 })}
-                <div className="hoverable-code-footer">
-                </div>
-                </div>
+                <div className="hoverable-code-footer"></div>
+            </div>
         </div>
     );
 };
