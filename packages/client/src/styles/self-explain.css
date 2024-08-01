@@ -17,6 +17,11 @@
     background-color: yellow;
 }
 
+.questionLineHighlightBlock {
+    background-color: rgba(93, 154, 219, 0.602);
+
+}
+
 .question-container {
     padding-top: 1rem;
     border-radius: 10px;

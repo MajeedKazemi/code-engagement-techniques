@@ -206,6 +206,8 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ technique, editor, taskID,
                     "attempt-number": unSatisfiedTime + 1,
                     id: taskID,
                   }];
+
+                  console.log("tempLog: ", tempLog);
                 
                   setGenerateButtonLog(tempLog);
 

@@ -12,6 +12,7 @@ import {
     apiGenerateQuestionHint,
     apiGenerateTracingQuestion,
     apiGetTracingSimulation,
+    apiGetFeedbackForDecomposition,
     apiLogEvents,
     logError,
 } from "../../api/api";
@@ -19,8 +20,10 @@ import { ChatLoader } from "../loader";
 import { highlightCode } from "../../utils/utils";
 import * as monaco from "monaco-editor";
 import IconsDoc from "../docs/icons-doc";
-import { task2Trace } from "../../utils/constants";
+import { taskTrace, taskTrace2 } from "../../utils/constants";
 import { connectSocket } from "../../api/python-shell";
+import { taskQuestions, taskDecompositions } from "../../utils/stepDecomposition";
+import { taskSolutions } from "../../utils/stepSolution";
 
 interface ExcutionStepsProps {
     code: string;
@@ -48,10 +51,18 @@ interface o {
     value: any;
 }
 
+// interface questionObject {
+//     step: number;
+//     variable: string;
+// }
+
 interface questionObject {
     step: number;
-    variable: string;
+    "question": string;
+    "begin-line": number;
+    "end-line": number;
 }
+
 
 function deepCopy(arr: any[]): any[] {
     return arr.map((item) => (Array.isArray(item) ? deepCopy(item) : item));
@@ -71,7 +82,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [traceOutput, setTraceOutput] = useState<string[][]>([]);
     const [trackOutput, setTrackOutput] = useState<string[]>([]);
     const [storedInput, setStoredInput] = useState<string[]>([]);
-    const [pesudoCode, setPesudoCode] = useState<string[][]>([]);
     const [backendCode, setBackendCode] = useState<string>("");
     const [traceId, setTraceId] = useState(0);
     const [tracing, setTracing] = useState(false);
@@ -101,6 +111,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [prevClickCounter, setPrevClickCounter] = useState<number>(0);
     const [nextClickCounter, setNextClickCounter] = useState<number>(0);
     const [lastClickCounter, setLastClickCounter] = useState<number>(0);
+
+    const [currFeedback, setCurrFeedback] = useState<string>("");
+    const [feedbackReady, setFeedbackReady] = useState<boolean>(true);
 
     const [variableSummaryOpen, setVariableSummaryOpen] =
         useState<boolean>(false);
@@ -150,16 +163,18 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             questions[currentQuestionIndex] &&
             questions[currentQuestionIndex].step == currentStep + 1
         ) {
-            let startLine = excutionSteps[currentStep + 1].currLine;
+            // let startLine = excutionSteps[currentStep + 1].currLine;
+            let startLine = questions[currentQuestionIndex]["begin-line"];
+            let endLine = questions[currentQuestionIndex]["end-line"];
 
             editor.deltaDecorations(
                 [],
                 [
                     {
-                        range: new monaco.Range(startLine, 1, startLine, 1),
+                        range: new monaco.Range(startLine, 1, endLine, 1),
                         options: {
                             isWholeLine: true,
-                            className: "questionLineDecoration",
+                            className: "questionLineHighlightBlock",
                         },
                     },
                 ]
@@ -182,7 +197,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     useEffect(() => {
         if (tracing) {
-            // console.log("traceOutput", traceOutput);
+            console.log("traceOutput", traceOutput);
             const traceOutputLength = traceOutput.reduce(
                 (acc, curr) => acc + curr.length,
                 0
@@ -235,17 +250,26 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         //     logError(error.toString());
         // }
 
-        try {
-            apiGetTracingSimulation(context?.token, taskID).then(
-                async (response) => {
-                    if (response.ok) {
-                        const data = await response.json();
-                        setQuestions(data.tracePredict);
-                    }
-                }
-            );
-        } catch (error: any) {
-            logError(error.toString());
+        // try {
+        //     apiGetTracingSimulation(context?.token, taskID).then(
+        //         async (response) => {
+        //             if (response.ok) {
+        //                 const data = await response.json();
+        //                 setQuestions(data.tracePredict);
+        //             }
+        //         }
+        //     );
+        // } catch (error: any) {
+        //     logError(error.toString());
+        // }
+
+        let currentTask = 0;
+        if (parseInt(taskID) > 0){
+            currentTask = parseInt(taskID);
+            setQuestions(taskQuestions[currentTask]);
+        } else {
+            setQuestions(taskQuestions[0]);
+        
         }
     };
 
@@ -268,13 +292,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         }
     }, [questions]);
 
-    useEffect(() => {
-        if (excutionSteps.length > 0) {
-            setCurrStep(excutionSteps[0]);
-        }
-
-        console.log("excution Steps", excutionSteps);
-    }, [excutionSteps]);
 
     useEffect(() => {
         if (tracing) {
@@ -363,6 +380,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         }
     }, [tracking]);
 
+
     const generateTrace = () => {
         if (!tracing) {
             socket?.emit("python", {
@@ -430,23 +448,46 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         if (backendCode.length > 0) {
             console.log("backendCode", backendCode);
             // console.log("backendCode", backendCode);
-            generateTrace();
+            // generateTrace();
+
+            // for python tracer simulation
+            // setTracing(true);
+            // console.log("tracing", tracing);
+            let currentTask = 0;
+            if (parseInt(taskID) > 0){
+                currentTask = parseInt(taskID);
+                setExcutionSteps(taskTrace[currentTask]);
+            } else {
+                setExcutionSteps(taskTrace[0]);
+            
+            }
         }
     }, [backendCode]);
 
+    // using simlation instead of real python shell code
+
     useEffect(() => {
-        if (storedInput.length == 0 && finishedTracing) {
-            generateTrack();
+        if (excutionSteps.length > 0) {
+            setCurrStep(excutionSteps[0]);
         }
-        if (storedInput.length > 0 && !tracing) {
-            // console.log("storedInput", storedInput);
-            generateTrack();
-        }
-    }, [storedInput, tracing, finishedTracing]);
+
+        console.log("excution Steps", excutionSteps);
+        generateQuestion();
+    }, [excutionSteps]);
+
+    // useEffect(() => {
+    //     if (storedInput.length == 0 && finishedTracing) {
+    //         generateTrack();
+    //     }
+    //     if (storedInput.length > 0 && !tracing) {
+    //         console.log("storedInput", storedInput);
+    //         generateTrack();
+    //     }
+    // }, [storedInput, tracing, finishedTracing]);
 
     useEffect(() => {
         if (taskID == "2") {
-            let fElements = task2Trace;
+            let fElements = taskTrace2;
             let objectArray = excutionSteps;
 
             let minLength = Math.min(fElements.length, objectArray.length);
@@ -595,12 +636,24 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const getCurrQuestionSolution = (index: number) => {
         const currentQuestion = questions[index];
         if (currentQuestion) {
-            let currStep = currentQuestion.step;
-            let currFrame = excutionSteps[currStep + 1]?.frame;
-            let currVariable = currentQuestion.variable;
-            let currValue = currFrame?.find(
-                (item) => item.name === currVariable
-            )?.value;
+            // let currStep = currentQuestion.step;
+            // let currFrame = excutionSteps[currStep + 1]?.frame;
+            // let currVariable = currentQuestion.question;
+            // let currValue = currFrame?.find(
+            //     (item) => item.name === currVariable
+            // )?.value;
+            
+            //get currValue base on index and taskID and taskSolutions
+            let currentTask = 0;
+            let currValue = null;
+            if (parseInt(taskID) > 0){
+                currentTask = parseInt(taskID);
+                currValue = taskSolutions[currentTask]["question-" + (index + 1)].value;
+            } else {
+                setQuestions(taskQuestions[0]);
+                currValue = taskSolutions[0]["question-" + (index + 1)].value;
+            }
+
             if (typeof currValue != "number") {
                 return JSON.stringify(currValue);
             } else {
@@ -612,6 +665,50 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     // useEffect(() => {
     //     console.log(firstClickCounter, prevClickCounter, nextClickCounter, lastClickCounter);
     // }, [firstClickCounter, prevClickCounter, nextClickCounter, lastClickCounter]);
+
+    const getCurrentFeedback = () => {
+        //codeBlock is the code block that the question is asking about, the content from begin-line to end-line
+        let codeBlock = "";
+        //get the codeBlock
+        let beginLine = questions[currentQuestionIndex]["begin-line"];
+        let endLine = questions[currentQuestionIndex]["end-line"];
+        let codeLines = code.split("\n");
+        for (let i = beginLine - 1; i < endLine; i++) {
+            codeBlock += codeLines[i] + "\n";
+        }
+        // console.log("codeBlock", codeBlock);
+
+        let currentFrame = excutionSteps[currentStep+1].frame;
+        let variableName = questions[currentQuestionIndex].question;
+        let userAnswer = inputValue;
+        let solution = solutions![currentQuestionIndex];
+
+        // console.log("currentFrame", currentFrame);
+        // console.log("variableName", variableName);
+        // console.log("userAnswer", userAnswer);
+        // console.log("solution", solution);
+        try {
+            apiGetFeedbackForDecomposition(
+                context?.token, 
+                codeBlock,
+                currentFrame,
+                variableName,
+                userAnswer,
+                solution
+            ).then(
+                async (response) => {
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCurrFeedback(data.feedback);
+                        setFeedbackReady(true);
+                        console.log("feedback", data.feedback);
+                    }
+                }
+            );
+        } catch (error: any) {
+            logError(error.toString());
+        }
+    };
 
     return (
         <div className="excution-generator">
@@ -676,7 +773,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         setNextClickCounter={setNextClickCounter}
                         setLastClickCounter={setLastClickCounter}
                         clickedButton={() => {
-                            setVariableSummaryOpen(false);
+                            // setVariableSummaryOpen(false);
                         }}
                     />
                 </div>
@@ -778,10 +875,16 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                 Given the current state of the
                                                 variables, what will be the
                                                 value of{" "}
-                                                <span>
-                                                    {questions[index].variable}
+                                                <span className="variable">
+                                                    {questions[index].question}
                                                 </span>{" "}
-                                                after the highlighted line is
+                                                after the highlighted code
+                                                 <span>
+                                                    {questions[index]["begin-line"]}
+                                                </span> to line 
+                                                 <span>
+                                                    {questions[index]["end-line"]}
+                                                </span> are
                                                 executed?{" "}
                                             </p>
                                             {/* {needHint && <p className="hint">Hint: {hintGenerating ? <ChatLoader/> : questionHint}</p>} */}
@@ -792,22 +895,29 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                 currentWrongAnswers[index].map(
                                                     (item) =>
                                                         item.length > 0 && (
-                                                            <div className="step-answered-container">
-                                                                <span className="wrong">
-                                                                    {item}
-                                                                </span>
-                                                                <p
-                                                                    style={{
-                                                                        color: "red",
-                                                                    }}
-                                                                >
-                                                                    Incorrect!
-                                                                </p>
-                                                                <p>
-                                                                    {" "}
-                                                                    Try Again
-                                                                </p>
-                                                            </div>
+                                                            <>
+                                                            {feedbackReady ? (
+                                                                <div className="step-answered-container">
+                                                                    <div className="step-answered-container-feedback">
+                                                                        <span className="wrong">
+                                                                            {item}
+                                                                        </span>
+                                                                        <p style={{ color: "red" }}>
+                                                                            Incorrect!
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className="feedback-from-step">
+                                                                        {currFeedback}
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="step-answered-container">
+                                                                    
+                                                                    Checking Solution
+                                                                    <ChatLoader/>
+                                                                </div>
+                                                            )}
+                                                        </>
                                                         )
                                                 )}
                                             {!showSolution![index] &&
@@ -838,7 +948,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     solutions![
                                                                         index
                                                                     ];
-
+                                                                
                                                                 // - answer question event:
                                                                 // - highlighted_line_of_code: {string}
                                                                 // - question_text: {string}
@@ -941,6 +1051,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         index +
                                                                             1
                                                                     );
+                                                                    setFeedbackReady(true);
                                                                     setInputValue(
                                                                         ""
                                                                     );
@@ -951,6 +1062,11 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                 ) {
                                                                     //set the current wrong answers
                                                                     //find the first empty string in the array
+
+                                                                    //set feedback
+                                                                    setFeedbackReady(false);
+                                                                    getCurrentFeedback();
+
                                                                     let temp =
                                                                         deepCopy(
                                                                             currentWrongAnswers
@@ -1020,6 +1136,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                             index +
                                                                                 1
                                                                         );
+                                                                        setFeedbackReady(true);
                                                                         setInputValue(
                                                                             ""
                                                                         );
@@ -1056,6 +1173,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         <button
                             className="open-variables-button"
                             onClick={() => {
+                                if (variableSummaryOpen) {
+                                    setVariableSummaryOpen(false);
+                                } else {
                                 setVariableSummaryOpen(true);
 
                                 try {
@@ -1082,9 +1202,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 } catch (error: any) {
                                     console.error(error);
                                 }
+                                }
                             }}
                         >
-                            Open Variables
+                            {!variableSummaryOpen? "Open Variables" : "Hide Variables"}
                         </button>
                     </div>
                     {variableSummaryOpen && (

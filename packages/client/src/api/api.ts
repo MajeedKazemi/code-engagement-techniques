@@ -840,4 +840,28 @@ export const apiGetTestCaseSimulation = (
         }),
 });
 
+export const apiGetFeedbackForDecomposition = (
+    token: string | null | undefined,
+    codeBlock: any,
+    currentFrames: any,
+    variableName: string,
+    userAnswer: string,
+    solution: string,
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/generateFeedback", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            codeBlock: codeBlock,
+            currentFrames: currentFrames,
+            variableName: variableName,
+            userAnswer: userAnswer,
+            solution: solution,
+        }),
+    });
+
 

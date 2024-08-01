@@ -122,6 +122,12 @@
     font-family: "Courier New", Courier, monospace;
 }
 
+.line-number {
+    background-color:#00538c;
+    color: #fff;
+    padding: 2px 2px !important;
+}
+
 
 
 mark {

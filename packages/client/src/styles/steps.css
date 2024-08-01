@@ -352,8 +352,15 @@
 
 .step-question-content .question span {
     background-color: rgba(168, 107, 225, 0.615);
-    padding: 5px;
+    padding: 4px;
     border-radius: 12px;
+}
+
+.question span.variable {
+    background-color: #00538c !important;
+    color: #fff;
+    padding: 5px;
+    font-weight: 700;
 }
 
 .question-input {
@@ -380,7 +387,25 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
+    padding-left: 20px;
+
+}
+
+.feedback-from-step {
+    overflow-x: scroll;
+    width: 70%;
+    overflow-y: scroll;
+    max-height: 100px;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 5px;
+    background-color: rgba(245, 205, 207, 255);
+}
+
+.step-answered-container-feedback {
+    padding-top: 10px;
+    width: 30%;
 }
 
 .step-answered-container .wrong {
@@ -393,6 +418,7 @@
     background-color: rgba(192, 228, 188, 255);
     padding: 5px;
     border-radius: 12px;
+    justify-content: space-evenly; 
 }
 
 .question-submission-button:disabled {

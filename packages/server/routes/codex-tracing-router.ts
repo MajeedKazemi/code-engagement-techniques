@@ -424,6 +424,67 @@ step: 18, variable: merged[end]`,
     }
 });
 
+tracingRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
+    const { codeBlock, currentFrames, variableName, userAnswer, solution } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (codeBlock !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content:
+                    `You are an AI assistant that helps users understand programming concepts. Below is the context for the variable at hand.\
+                    Current Frame:\
+                    This is the current state of the program just before the given code block is executed. It includes the values of all relevant variables.\
+                    {currentFrame}\
+                    Code Block to be executed:\
+                    This is the code block that will be executed. It is a snippet that will modify or affect one or more variables. Pay attention to what this code is meant to do.\
+                    {codeBlock}\
+                    User Answer:\
+                    This is the user's answer to what the value of the specified variable will be after the code block is executed. The user's answer is incorrect.\
+                    {userAnswer}\
+                    Correct Solution:\
+                    This is the actual correct value of the specified variable after the code block is executed.\
+                    {solution}\
+                    Variable Name to Track:\
+                    This is the name of the variable whose value is being tracked after the code block is executed.\
+                    {variableName}\
+                    Given this information, provide concise feedback (10-15 words) on why the userAnswer is incorrect and suggest how to find the correct solution. Keep the feedback specific and do not need to contain the redundent phrase like "the answer is incorrect", just explain the reason`,
+            },
+            
+        ];
+
+
+        messages.push({
+            role: "user",
+            content: `{currentFrame}: ${currentFrames}\n{codeBlock}: ${codeBlock}\n\n{variableName}: ${variableName}{userAnswer}: ${userAnswer}\n{solution}: ${solution}`,
+        });
+
+
+        const result = await openai.createChatCompletion({
+            model: "gpt-4o-mini",
+            messages,
+            temperature: 1,
+            max_tokens: 256,
+            user: userId,
+        });
+
+        if (result.data.choices && result.data.choices?.length > 0) {
+            const response = result.data.choices[0].message?.content;
+
+            if(response){
+                res.json({
+                    feedback: response,
+                    success: true,
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+            });
+        }
+    }
+});
+
 
 tracingRouter.post("/generateHint", verifyUser, async (req, res, next) => {
     const { prevCode, currCode, currentFrames, correct, target, answer } = req.body;
