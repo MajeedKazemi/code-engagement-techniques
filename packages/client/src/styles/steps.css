@@ -189,10 +189,12 @@
 
 .arrow {
     padding-left: 4px;
+    /* margin-top: 5px; */
 }
 
 .line {
-    height: 25px;
+    height: 33px;
+    margin-top: 2px;
 }
 
 .myCurrentLineDecoration {
@@ -384,28 +386,43 @@
 }
 
 .step-answered-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     /* justify-content: space-evenly; */
     padding-left: 20px;
 
 }
 
+.step-answered-container-correct {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 .feedback-from-step {
-    overflow-x: scroll;
-    width: 70%;
-    overflow-y: scroll;
+    /* overflow-x: auto; */
+    width: calc(100% - 20px);
+    overflow-y: auto;
     max-height: 100px;
     border-radius: 15px;
-    margin: 5px;
-    padding: 5px;
+    /* padding: 5px; */
+    margin-right: 10px;
+
     background-color: rgba(245, 205, 207, 255);
+}
+
+.feedback-from-step p {
+    padding: 5px;
 }
 
 .step-answered-container-feedback {
     padding-top: 10px;
-    width: 30%;
+    width: calc(100% - 20px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
 }
 
 .step-answered-container .wrong {
@@ -424,4 +441,34 @@
 .question-submission-button:disabled {
     background-color: #bbbdbf;
     cursor: not-allowed;
+}
+
+.trace-code-container {
+    width: 100%;
+    z-index: 99;
+    margin-left: 50px;
+}
+
+.trace-predict-tracker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content:space-between;
+    width: 100%;
+    height: 35px;
+}
+
+.trace-predict-tracker pre{
+    margin: 5px;
+    padding: 0;
+    font-size: 16px;
+}
+
+.trace-line-number {
+    margin-left: 30px;
+}
+
+.highlighted-trace-predict{
+    background-color: #0077ff52;
 }

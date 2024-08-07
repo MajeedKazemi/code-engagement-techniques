@@ -468,9 +468,53 @@ const getLastSubmissionFeedback = (
 };
 
 
-const checkSimilarity = (str1: string, str2: string) => {
-    return true;
-};
+const getOverall = (explanation: string): string => {
+    // Split the input string into lines
+    const lines = explanation.split('\n');
+    
+    // Find the line with [OVERALL-EXPLANATION] indicator
+    const overallExplanationLine = lines.findIndex(line => line.includes('[OVERALL-EXPLANATION]'));
+
+    // If the indicator is found, return everything after it
+    if (overallExplanationLine !== -1) {
+        return lines.slice(overallExplanationLine + 1).join('\n');
+    }
+
+    // If the indicator is not found, return an empty string
+    return '';
+}
+
+const getLineByLine = (input: string): string[] => {
+    // Split the input string into lines
+    const lines = input.split('\n');
+
+    // Find the line with [END] indicator
+    const endLine = lines.findIndex(line => line.includes('[END]'));
+
+    // Initialize an array to store the comments
+    const comments: string[] = [];
+
+    // Iterate over the lines until the [END] indicator
+    for (let i = 0; i < endLine; i++) {
+        const line = lines[i].trim();
+        
+        // Ignore empty lines
+        if (!line) {
+            continue;
+        }
+
+        const commentIndex = line.indexOf('###');
+        
+        // If a line contains '###', extract the comment
+        if (commentIndex !== -1) {
+            const comment = line.substring(commentIndex + 3).trim();
+            comments.push(comment);
+        }
+    }
+
+    return comments;
+}
+
 
 
 
@@ -507,7 +551,27 @@ tasksRouter.post("/matchTaskWithExplaination/", verifyUser, (req, res, next) => 
         if (task && task instanceof AuthoringTask) {
             
             res.send({ 
-                explanation: task.explaination
+                explanation: getOverall(task.explaination)
+            });
+            
+        }
+    } else {
+        res.statusCode = 500;
+        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
+    }
+});
+
+tasksRouter.post("/matchTaskWithLineByLine/", verifyUser, (req, res, next) => {
+    const userId = (req.user as IUser)._id;
+    const { taskId } = req.body;
+
+    if (userId !== undefined && taskId !== undefined) {
+        const task = getTaskFromTaskId(taskId);
+
+        if (task && task instanceof AuthoringTask) {
+            
+            res.send({ 
+                explanation: getLineByLine(task.explaination)
             });
             
         }
@@ -617,25 +681,6 @@ tasksRouter.post("/matchTaskWithLeadReveal/", verifyUser, (req, res, next) => {
     }
 });
 
-tasksRouter.post("/matchTaskWithTracePredict/", verifyUser, (req, res, next) => {
-    const userId = (req.user as IUser)._id;
-    const { taskId } = req.body;
-
-    if (userId !== undefined && taskId !== undefined) {
-        const task = getTaskFromTaskId(taskId);
-
-        if (task && task instanceof AuthoringTask) {
-            
-            res.send({ 
-                tracePredict: task.TracePredictQuestionJson
-            });
-            
-        }
-    } else {
-        res.statusCode = 500;
-        res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
-    }
-});
 
 tasksRouter.post("/matchTaskWithCodeWithTest/", verifyUser, (req, res, next) => {
     const userId = (req.user as IUser)._id;
@@ -647,7 +692,7 @@ tasksRouter.post("/matchTaskWithCodeWithTest/", verifyUser, (req, res, next) => 
         if (task && task instanceof AuthoringTask) {
             
             res.send({ 
-                code: task.CodeWithTestCases
+                code: task.baselineCode,
             });
             
         }
@@ -656,3 +701,4 @@ tasksRouter.post("/matchTaskWithCodeWithTest/", verifyUser, (req, res, next) => 
         res.send({ message: `missing userId: ${userId} or taskId: ${taskId}` });
     }
 });
+

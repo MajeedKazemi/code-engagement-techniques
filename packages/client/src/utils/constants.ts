@@ -38,13 +38,13 @@ export const task3Trace =
     {
         "step": 1,
         "currLine": 1,
-        "nextLine": 13,
+        "nextLine": 12,
         "printOutput": [],
         "frame": []
     },
     {
         "step": 2,
-        "currLine": 13,
+        "currLine": 12,
         "nextLine": 2,
         "printOutput": [],
         "frame": []

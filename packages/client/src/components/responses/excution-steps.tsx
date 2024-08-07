@@ -9,6 +9,7 @@ import { FaLongArrowAltRight, FaQuestionCircle } from "react-icons/fa";
 import { AuthContext, SocketContext } from "../../context";
 import ExcutionTimeline from "../excution-timeline";
 import {
+    apiGetBaselineLineByLineExplanationSimulation,
     apiGetFeedbackForDecomposition,
     apiLogEvents,
     logError,
@@ -18,7 +19,7 @@ import * as monaco from "monaco-editor";
 import IconsDoc from "../docs/icons-doc";
 import { taskTrace, taskTrace2 } from "../../utils/constants";
 import { taskQuestions, taskDecompositions } from "../../utils/stepDecomposition";
-import { taskSolutions } from "../../utils/stepSolution";
+import { highlightPsudo } from "../../utils/utils";
 
 interface ExcutionStepsProps {
     code: string;
@@ -46,11 +47,6 @@ interface o {
     value: any;
 }
 
-// interface questionObject {
-//     step: number;
-//     variable: string;
-// }
-
 interface questionObject {
     step: number;
     "question": string;
@@ -58,6 +54,12 @@ interface questionObject {
     "end-line": number;
 }
 
+interface LineWithLeadSpaces {
+    original: string;
+    trimmed: string;
+    leadSpaces: number;
+    currentTabs: number;
+}
 
 function deepCopy(arr: any[]): any[] {
     return arr.map((item) => (Array.isArray(item) ? deepCopy(item) : item));
@@ -99,6 +101,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [output, setOutput] = useState<
         Array<{ type: "error" | "output" | "input"; line: string }>
     >([]);
+    const [showCode, setShowCode] = useState<boolean>(false);
+    const [lines, setLines] = useState<LineWithLeadSpaces[]>([]);
+    const [colorizedText, setColorizedText] = useState<string[]>([]);
+    const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0);
 
     // - step_event:
     // 	- type: `“first” | “previous” | “next” | “last”`
@@ -106,24 +112,27 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [prevClickCounter, setPrevClickCounter] = useState<number>(0);
     const [nextClickCounter, setNextClickCounter] = useState<number>(0);
     const [lastClickCounter, setLastClickCounter] = useState<number>(0);
+    // const [taskSolutions, setTaskSolutions] = useState<any[]>([]);
 
-    const [currFeedback, setCurrFeedback] = useState<string>("");
-    const [feedbackReady, setFeedbackReady] = useState<boolean>(true);
+    const [currFeedback, setCurrFeedback] = useState<string[]>(["", "", "", ""]);
+    const [feedbackReady, setFeedbackReady] = useState<boolean[]>([true, true, true, true]);
+    const [hoveringHovered, setHoveringHovered] = useState<boolean[]>([]);
+    const [explaination, setExplanation] = useState<string[]>([]);
 
     const [variableSummaryOpen, setVariableSummaryOpen] =
         useState<boolean>(false);
 
-    // const handleSocketReconnect = () => {
-    //     if (context?.token) {
-    //         setSocket(null);
-
-    //         setSocket(connectSocket(context?.token));
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     handleSocketReconnect();
-    // }, []);
+    
+    const processLines = (): LineWithLeadSpaces[] => {
+        return code.split("\n")
+            .filter((line) => line.trim() !== "")
+            .map((line) => ({
+                original: line,
+                trimmed: line.replace(/^\s+/, ""), // Strip leading whitespaces
+                leadSpaces: line.search(/\S|$/), // Counts leading whitespaces
+                currentTabs: Math.floor(line.search(/\S|$/) / 4),
+            }));
+    };
 
     useEffect(() => {
         const editor = monaco.editor.create(readerRef.current!, {
@@ -162,6 +171,18 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             let startLine = questions[currentQuestionIndex]["begin-line"];
             let endLine = questions[currentQuestionIndex]["end-line"];
 
+            // in use, find the id by line+startLine to line+endLine
+            // add a class called "highlighted-trace-predict" to those id
+            for (let line = startLine; line <= endLine; line++) {
+                let elementId = `line-${line-1}`;
+                let element = document.getElementById(elementId);
+        
+                if (element) {
+                    element.classList.add("highlighted-trace-predict");
+                }
+            }
+
+            // not in use, this is for the previous editor
             editor.deltaDecorations(
                 [],
                 [
@@ -182,8 +203,31 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
         setEditor(editor);
 
+        async function getColorizedText(index: number) {
+            const colorized = await monaco.editor.colorize(
+                lines[index].original.replace(/\t/g, "    "),
+                "python",
+                {}
+            );
+            return colorized;
+        }
+
+        async function fetchAllColorizedText() {
+            const promises = lines.map((_, index) => getColorizedText(index));
+            const colorizedTextArray = await Promise.all(promises);
+            return colorizedTextArray;
+        }
+
+        if (lines && lines.length > 0) {
+            console.log(lines);
+            fetchAllColorizedText().then((colorizedTextArray) => {
+                setColorizedText(colorizedTextArray);
+            });
+            setShowCode(true);
+        }
+
         return () => editor?.dispose();
-    }, [currentQuestionIndex, currentStep]);
+    }, [lines, currentQuestionIndex, currentStep]);
 
     const extractLineNum = (line: string): number => {
         const match = line.match(/main.py\((\d+)\)/);
@@ -269,7 +313,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     };
 
     useEffect(() => {
-        if (questions.length > 0) {
+        if (questions.length > 0 && lines) {
+            // start by setting the question stop
             setQuestionStop(questions[0].step - 1);
             console.log("questions", questions);
             // setCurrentQuestionWrongAnswers(new Array(questions.length).fill([]));
@@ -278,14 +323,39 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             setCurrentWrongAnswers(
                 new Array(questions.length).fill(["", "", ""])
             );
+
+            // start by generating the solutions
             var solutions = new Array(questions.length).fill("");
             for (let i = 0; i < questions.length; i++) {
                 solutions[i] = getCurrQuestionSolution(i)!;
             }
             console.log("solutions", solutions);
             setSolutions(solutions);
+
+            setHoveringHovered(new Array(questions.length).fill(false));
+
+            // retrive the line by line explanation from the apiGetBaselineLineByLineExplanationSimulation
+            apiGetBaselineLineByLineExplanationSimulation(
+                context?.token,
+                taskID,
+            )
+                .then(async (response) => {
+                    if (response.ok && editor) {
+                        const data = await response.json();
+
+                        setExplanation(
+                            data.explanation
+                        );
+                    }
+                })
+                .catch((error) => {
+                    editor?.updateOptions({ readOnly: false });
+                    logError(error.toString());
+                });
+
+
         }
-    }, [questions]);
+    }, [questions, lines]);
 
 
     useEffect(() => {
@@ -437,7 +507,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     useEffect(() => {
         setBackendCode(code);
+        setLines(processLines());
     }, []);
+
 
     useEffect(() => {
         if (backendCode.length > 0) {
@@ -638,28 +710,58 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             //     (item) => item.name === currVariable
             // )?.value;
             
-            //get currValue base on index and taskID and taskSolutions
-            let currentTask = 0;
-            let currValue = null;
-            if (parseInt(taskID) > 0){
-                currentTask = parseInt(taskID);
-                currValue = taskSolutions[currentTask]["question-" + (index + 1)].value;
-            } else {
-                setQuestions(taskQuestions[0]);
-                currValue = taskSolutions[0]["question-" + (index + 1)].value;
-            }
+            var currValue = null;
+            //find the current question
+            const currStep = currentQuestion.step;
+            const currLine = currentQuestion["begin-line"];
+            const stopLine = currentQuestion["end-line"];
+            const variableOfInterest = currentQuestion.question;
 
-            if (typeof currValue != "number") {
-                return JSON.stringify(currValue);
+            // get the frame from [step] to end
+            var currentTask = parseInt(taskID);
+            const frames = taskTrace[currentTask].slice(currStep - 1);
+
+            // find the first frame that contains the stopLine in the code
+            const result = findFrameWithVariable(frames, currStep, stopLine, variableOfInterest);
+
+            //update currValue with the value after the block that can be found using "next-line"
+            if (result) {
+                const currValue = result.value;
+                if (result.type != "number") {
+                    return JSON.stringify(currValue);
+                } else {
+                    return currValue;
+                }
             } else {
-                return currValue;
+                return "";
             }
         }
     };
 
-    // useEffect(() => {
-    //     console.log(firstClickCounter, prevClickCounter, nextClickCounter, lastClickCounter);
-    // }, [firstClickCounter, prevClickCounter, nextClickCounter, lastClickCounter]);
+
+    function findFrameWithVariable(
+        taskTrace: any[],
+        step: number,
+        stopLine: number,
+        variableOfInterest: string
+    ): { value: any; type: string } | null {
+        const framesToCheck = taskTrace.slice(step - 1);
+    
+        for (const frame of framesToCheck) {
+            if (frame.nextLine === stopLine) {
+                // if frame.frame is not undefined
+                if(!frame.frame) {
+                    return null;
+                }
+                const variable = frame.frame.find((v: { name: string; }) => v.name === variableOfInterest);
+                if (variable) {
+                    return { value: variable.value, type: variable.type };
+                }
+            }
+        }
+    
+        return null; // return null if no frame or variable is found
+    }
 
     const getCurrentFeedback = () => {
         //codeBlock is the code block that the question is asking about, the content from begin-line to end-line
@@ -678,6 +780,12 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         let userAnswer = inputValue;
         let solution = solutions![currentQuestionIndex];
 
+        let numberOfAttempts = currentWrongAnswers![currentQuestionIndex].filter((item) => item.length > 0).length+1;
+        //previousResponse is the last response of the currentQuestionIndex
+        let previousResponse = currentWrongAnswers![currentQuestionIndex].filter((item) => item.length > 0).pop();
+
+        console.log(numberOfAttempts, previousResponse);
+
         // console.log("currentFrame", currentFrame);
         // console.log("variableName", variableName);
         // console.log("userAnswer", userAnswer);
@@ -689,13 +797,20 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 currentFrame,
                 variableName,
                 userAnswer,
-                solution
+                solution,
+                numberOfAttempts,
+                previousResponse || "",
             ).then(
                 async (response) => {
                     if (response.ok) {
                         const data = await response.json();
-                        setCurrFeedback(data.feedback);
-                        setFeedbackReady(true);
+                        let tempFeedback = deepCopy(currFeedback);
+                        tempFeedback[numberOfAttempts-1] = data.feedback;
+                        setCurrFeedback(tempFeedback);
+                        //feedback ready to be true at numberOfAttempts -1
+                        let temp = deepCopy(feedbackReady);
+                        temp[numberOfAttempts-1] = true;
+                        setFeedbackReady(temp);
                         console.log("feedback", data.feedback);
                     }
                 }
@@ -724,11 +839,65 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 </div>
                             ))}
                         </div>
+                        <div className="current-arrows-container">
+                            {code.split("\n").map((line, index) => (
+                                <div className="line">
+                                    <span className="trace-line-number">
+                                        {index+1}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                         <div
                             className="code-editor"
+                            style={{ display: "none" }}
                             id="code-editor"
                             ref={readerRef}
                         ></div>
+                        <div className="trace-code-container"
+                        >
+                            {code.split("\n").map((line, index) => (
+                            <div
+                                id={`line-${index}`}
+                                key={index}
+                                className="trace-predict-tracker"
+                            >
+                                <>
+                                    <pre
+                                        onMouseEnter={() => {
+                                            //deepCopy of hoveringHovered
+                                            let temp = deepCopy(hoveringHovered);
+                                            //change all to false
+                                            temp.fill(false);
+                                            //change the current index to true
+                                            temp[index] = true;
+                                            setHoveringHovered(temp);
+                                        }}
+                                        onMouseLeave={() => {
+                                            //deepCopy of hoveringHovered
+                                            let temp = deepCopy(hoveringHovered);
+                                            //change all to false
+                                            temp.fill(false);
+                                            setHoveringHovered(temp);
+                                        }}
+                                        dangerouslySetInnerHTML={{
+                                            __html: colorizedText[index],
+                                        }}
+                                    ></pre>
+                                    {hoveringHovered[index] && explaination && (
+                                    <div className="hoverable-code-container-with-hint">
+                                        <div
+                                            className="hoverable-code-line-explanation"
+                                            dangerouslySetInnerHTML={{
+                                                __html: highlightPsudo(explaination[index]),
+                                            }}
+                                        ></div>
+                                    </div>
+                                    )}
+                                </>
+                            </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -769,6 +938,14 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         setLastClickCounter={setLastClickCounter}
                         clickedButton={() => {
                             // setVariableSummaryOpen(false);
+                            for (let line = 0; line <= lines.length; line++) {
+                                let elementId = `line-${line}`;
+                                let element = document.getElementById(elementId);
+                        
+                                if (element) {
+                                    element.classList.remove("highlighted-trace-predict");
+                                }
+                            }
                         }}
                     />
                 </div>
@@ -865,7 +1042,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 (item, index) =>
                                     questions[index].step - 1 <=
                                         currentStep && (
-                                        <div className="steps-question-div">
+                                        <div className={`steps-question-div`} 
+                                        id={`question-number-${index}`}
+                                        >
                                             <p className="question">
                                                 Given the current state of the
                                                 variables, what will be the
@@ -888,12 +1067,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                 currentWrongAnswers[index]
                                                     .length > 0 &&
                                                 currentWrongAnswers[index].map(
-                                                    (item) =>
+                                                    (item, attamptNumber) =>
                                                         item.length > 0 && (
                                                             <>
-                                                            {feedbackReady ? (
+                                                            {feedbackReady[attamptNumber] ? (
                                                                 <div className="step-answered-container">
                                                                     <div className="step-answered-container-feedback">
+                                                                        You Answered:
                                                                         <span className="wrong">
                                                                             {item}
                                                                         </span>
@@ -902,7 +1082,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         </p>
                                                                     </div>
                                                                     <div className="feedback-from-step">
-                                                                        {currFeedback}
+                                                                        <p>
+                                                                        {currFeedback[attamptNumber]}
+                                                                        </p>
                                                                     </div>
                                                                 </div>
                                                             ) : (
@@ -1042,11 +1224,15 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     setIsOnStop(
                                                                         false
                                                                     );
+                                                                    setCurrentQuestionNumber(currentQuestionNumber + 1);
                                                                     updateQuestion(
                                                                         index +
                                                                             1
                                                                     );
-                                                                    setFeedbackReady(true);
+                                                                    let temp = deepCopy(feedbackReady);
+                                                                    temp[attemptNumber-1] = true;
+                                                                    setFeedbackReady(temp);
+                                                                    //update FeedbackReady 
                                                                     setInputValue(
                                                                         ""
                                                                     );
@@ -1059,7 +1245,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     //find the first empty string in the array
 
                                                                     //set feedback
-                                                                    setFeedbackReady(false);
+                                                                    let tempNum = deepCopy(feedbackReady);
+                                                                    tempNum[attemptNumber-1] = false;
+                                                                    setFeedbackReady(tempNum);
                                                                     getCurrentFeedback();
 
                                                                     let temp =
@@ -1127,11 +1315,14 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         setIsOnStop(
                                                                             false
                                                                         );
+                                                                        setCurrentQuestionNumber(currentQuestionNumber + 1);
                                                                         updateQuestion(
                                                                             index +
                                                                                 1
                                                                         );
-                                                                        setFeedbackReady(true);
+                                                                        let temp = deepCopy(feedbackReady);
+                                                                        temp[attemptNumber-1] = true;
+                                                                        setFeedbackReady(temp);
                                                                         setInputValue(
                                                                             ""
                                                                         );
@@ -1144,7 +1335,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     </div>
                                                 )}
                                             {showSolution![index] && (
-                                                <div className="step-answered-container">
+                                                <div className="step-answered-container step-answered-container-correct">
                                                     <p>Correct Answer: </p>
                                                     <span className="correct">
                                                         {solutions![index]}
@@ -1206,7 +1397,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     {variableSummaryOpen && (
                         <div className="frame">
                             {/* Your frame content goes here */}
-                            {currStep?.frame.map((item, index) => (
+                            {currStep?.frame && currStep?.frame.map((item, index) => (
                                 <>
                                     <div
                                         className={`frame-container ${item.type}`}

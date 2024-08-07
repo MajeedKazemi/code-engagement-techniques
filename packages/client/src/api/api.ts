@@ -293,6 +293,23 @@ export const apiGetBaselineExplainationCodexSimulation = (
         }),
     });
 
+
+export const apiGetBaselineLineByLineExplanationSimulation = (
+    token: string | null | undefined,
+    taskId: string
+) =>
+    fetch(env.API_URL + "/api/tasks/matchTaskWithLineByLine/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            taskId: taskId,
+        }),
+    });
+
 export const apiGetPseudoCodexSimulation = (
     token: string | null | undefined,
     taskId: string
@@ -412,6 +429,8 @@ export const apiGetFeedbackForDecomposition = (
     variableName: string,
     userAnswer: string,
     solution: string,
+    numberOfAttempts: number,
+    previousResponses: string,
 ) =>
     fetch(env.API_URL + "/api/technique-tracing/generateFeedback", {
         method: "POST",
@@ -426,6 +445,8 @@ export const apiGetFeedbackForDecomposition = (
             variableName: variableName,
             userAnswer: userAnswer,
             solution: solution,
+            numberOfAttempts: numberOfAttempts,
+            previousResponses: previousResponses,
         }),
     });
 

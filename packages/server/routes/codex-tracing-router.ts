@@ -425,7 +425,7 @@ step: 18, variable: merged[end]`,
 });
 
 tracingRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
-    const { codeBlock, currentFrames, variableName, userAnswer, solution } = req.body;
+    const { codeBlock, currentFrames, variableName, userAnswer, solution, numberOfAttempts, previousResponses } = req.body;
     const userId = (req.user as IUser)._id;
     if (codeBlock !== undefined) {
         let messages: Array<ChatCompletionRequestMessage> = [
@@ -448,7 +448,13 @@ tracingRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
                     Variable Name to Track:\
                     This is the name of the variable whose value is being tracked after the code block is executed.\
                     {variableName}\
-                    Given this information, provide concise feedback (10-15 words) on why the userAnswer is incorrect and suggest how to find the correct solution. Keep the feedback specific and do not need to contain the redundent phrase like "the answer is incorrect", just explain the reason`,
+                    Number of Incorrect Attempts:\
+                    This is the number of times the user has given an incorrect answer to this question.\
+                    {numberOfAttempts}\
+                    Previous Responses:\
+                    These are the responses of the user from previous attempts. You should consider these responses to provide better and more specific feedback.\
+                    {previousResponses}\
+                    Given this information and the number of attempts made by the user, provide <less than 20 words> feedback on why the userAnswer is incorrect and suggest how they can find the correct solution. The feedback should increase in engagement level according to the number of attempts, and should not focus too much on disparities in data types (e.g., string vs. integer).`,
             },
             
         ];
@@ -456,7 +462,7 @@ tracingRouter.post("/generateFeedback", verifyUser, async (req, res, next) => {
 
         messages.push({
             role: "user",
-            content: `{currentFrame}: ${currentFrames}\n{codeBlock}: ${codeBlock}\n\n{variableName}: ${variableName}{userAnswer}: ${userAnswer}\n{solution}: ${solution}`,
+            content: `{currentFrame}: ${currentFrames}\n{codeBlock}: ${codeBlock}\n\n{variableName}: ${variableName}{userAnswer}: ${userAnswer}\n{solution}: ${solution}\n{numberOfAttempts}: ${numberOfAttempts}\n{previousResponses}: ${previousResponses}`,
         });
 
 
