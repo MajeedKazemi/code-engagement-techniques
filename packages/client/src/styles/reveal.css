@@ -1,7 +1,7 @@
 .reveal-container{
     height: 100%;
-    overflow-y: scroll;
-    width: 55%;
+    overflow-y: auto;
+    width: 45%;
 }
 
 .reveal-question-container {
@@ -29,25 +29,36 @@
 
 .reveal-code-container {
     margin-top: 5px;
-    display: none;
+    display: block;
 }
 
 .reveal-question-container .highlighted-code-part{
-    font-size: 20px !important;
+    font-size: 16px !important;
     background-color: aliceblue !important;
     padding: 5px;
 }
 
 .reveal-code-container .highlighted-code-part{
-    font-size: 20px !important;
+    font-size: 16px !important;
 }
 
 .reveal-code-container.active {
-    display: block;
+    visibility: visible;
+}
+
+.reveal-code-container.inactive {
+    visibility: hidden;
 }
 
 .reveal-code-line-by-line-container {
-    width: 45%;
+    width: calc(55% - 10px);
+    margin-left: 10px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.bottom-margin {
+    height: 3rem;
 }
 
 .reveal-question-container.answered {
@@ -57,9 +68,26 @@
 
 .reveal-question-content {
     background-color: rgba(204,227,255,255);
-    padding: 5px;
+    padding: 2px !important;
     display: inline;
-    border-radius: 8px;
+    border-radius: 8px !important;
+}
+
+.reveal-lead-textbox {
+    width: 100%;
+}
+
+.reveal-submit {
+    width: 80px;
+    margin: 5px;
+}
+
+.reveal-short-answer-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    margin-top: 5px;
 }
 
 .reveal-select-container.disabled {
@@ -159,4 +187,45 @@
 
 .reveal-select-all.inactive{
     display:none;
+}
+
+.subgoal-title-display h1{
+    font-size: 16px;
+    background-color: #ECEBEB;
+    padding: 10px;
+    font-weight: normal;
+    display: inline-block;
+}
+
+.reveal-line-by-line-container-header{
+    padding: 0;
+    margin: 0;
+}
+
+.reveal-code-container .hoverable-code-container-with-hint{
+    position: absolute;
+    top: 0px;
+    width: 50%;
+    background-color: #89baffd9;
+    color: black;
+}
+
+.flex-box-for-line-by-line {
+    display: flex;
+    justify-content: flex-end;
+    /* margin-left: 5rem; */
+    position: relative;
+}
+
+.explanation-after-reveal {
+    background-color: aquamarine;
+    margin-top: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.reveal-hint-mcq-incorrect {
+    background-color: rgba(238, 142, 174);
+    margin-top: 10px;
+    padding: 5px;
 }

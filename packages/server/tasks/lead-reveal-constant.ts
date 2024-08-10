@@ -487,213 +487,464 @@ export const task2Decomposition = {
 }
 
 export const task3Decomposition = {
-    "subgoals": [
-      {
-        "title": "Define the function and initialize result list",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to define a function that generates binary numbers between two given integers.",
-            "short-answer-question": "What should the function signature look like?",
-            "mcq-question": "What should the function signature be?",
-            "correct-choice": "def binary_numbers(n1: int, n2: int) -> list[str]:",
-            "incorrect-choice-1": "def binary_numbers(n1, n2):",
-            "incorrect-choice-2": "def binary_numbers(n1: int, n2: int):",
-            "incorrect-choice-3": "def binary_numbers(n1: int, n2: int) -> list[int]:",
-            "code-line-to-be-revealed": 1,
-            "hint-if-incorrect": "Think about the function name, parameters, and return type.",
-            "explanation-after-correct-answer": "The function is named 'binary_numbers' and takes two integer parameters 'n1' and 'n2', returning a list of strings."
-          },
-          {
-            "context": "We need a list to store the resulting binary numbers.",
-            "short-answer-question": "What should we initialize to store the resulting binary numbers?",
-            "mcq-question": "What should we initialize to store the resulting binary numbers?",
-            "correct-choice": "An empty list",
-            "incorrect-choice-1": "A list with a single element",
-            "incorrect-choice-2": "A variable with None",
-            "incorrect-choice-3": "A dictionary",
-            "code-line-to-be-revealed": 2,
-            "hint-if-incorrect": "Think about the data structure that can hold multiple binary numbers.",
-            "explanation-after-correct-answer": "We initialize an empty list called 'result' to store the resulting binary numbers."
-          }
-        ]
-      },
-      {
-        "title": "Initialize the queue with the first binary number",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need a queue to generate binary numbers efficiently.",
-            "short-answer-question": "What should we initialize the queue with?",
-            "mcq-question": "What should we initialize the queue with?",
-            "correct-choice": "A list containing '1'",
-            "incorrect-choice-1": "An empty list",
-            "incorrect-choice-2": "A list containing '0'",
-            "incorrect-choice-3": "A list containing '1' and '0'",
-            "code-line-to-be-revealed": 3,
-            "hint-if-incorrect": "Consider the simplest non-zero binary number.",
-            "explanation-after-correct-answer": "We initialize the queue with a list containing the string '1' to start generating binary numbers."
-          }
-        ]
-      },
-      {
-        "title": "Iterate to generate binary numbers up to n2",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to generate binary numbers up to the value of n2.",
-            "short-answer-question": "How should we iterate to generate binary numbers up to n2?",
-            "mcq-question": "How should we iterate to generate binary numbers up to n2?",
-            "correct-choice": "Using a for loop",
-            "incorrect-choice-1": "Using a while loop",
-            "incorrect-choice-2": "Using a list comprehension",
-            "incorrect-choice-3": "Using recursion",
-            "code-line-to-be-revealed": 4,
-            "hint-if-incorrect": "Consider the most straightforward way to iterate a fixed number of times.",
-            "explanation-after-correct-answer": "We use a for loop to iterate up to n2, generating binary numbers."
-          }
-        ]
-      },
-      {
-        "title": "Pop the first element from the queue",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to process the first element in the queue.",
-            "short-answer-question": "How should we get the first element from the queue?",
-            "mcq-question": "How should we get the first element from the queue?",
-            "correct-choice": "Using pop(0)",
-            "incorrect-choice-1": "Using pop()",
-            "incorrect-choice-2": "Using remove()",
-            "incorrect-choice-3": "Using del",
-            "code-line-to-be-revealed": 5,
-            "hint-if-incorrect": "Consider the method that removes and returns the first element.",
-            "explanation-after-correct-answer": "We use pop(0) to remove and return the first element from the queue."
-          }
-        ]
-      },
-      {
-        "title": "Convert the binary string to an integer",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to convert the binary string to an integer to check its value.",
-            "short-answer-question": "How should we convert the binary string to an integer?",
-            "mcq-question": "How should we convert the binary string to an integer?",
-            "correct-choice": "Using int(current, 2)",
-            "incorrect-choice-1": "Using int(current)",
-            "incorrect-choice-2": "Using bin(current)",
-            "incorrect-choice-3": "Using str(current)",
-            "code-line-to-be-revealed": 6,
-            "hint-if-incorrect": "Consider the function that converts a binary string to an integer.",
-            "explanation-after-correct-answer": "We use int(current, 2) to convert the binary string to an integer."
-          }
-        ]
-      },
-      {
-        "title": "Check if the integer is within the range",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to check if the integer value is within the range [n1, n2].",
-            "short-answer-question": "What condition should we check to see if the integer is within the range?",
-            "mcq-question": "What condition should we check to see if the integer is within the range?",
-            "correct-choice": "If n1 <= current_int <= n2",
-            "incorrect-choice-1": "If current_int < n1",
-            "incorrect-choice-2": "If current_int > n2",
-            "incorrect-choice-3": "If n1 < current_int < n2",
-            "code-line-to-be-revealed": 7,
-            "hint-if-incorrect": "Consider the range [n1, n2] inclusive.",
-            "explanation-after-correct-answer": "We check if the integer value is within the range [n1, n2] inclusive."
-          }
-        ]
-      },
-      {
-        "title": "Append the binary string to the result list",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to add the binary string to the result list if it is within the range.",
-            "short-answer-question": "What should we do if the integer is within the range?",
-            "mcq-question": "What should we do if the integer is within the range?",
-            "correct-choice": "Append the binary string to the result list",
-            "incorrect-choice-1": "Ignore the binary string",
-            "incorrect-choice-2": "Replace the result list with the binary string",
-            "incorrect-choice-3": "Raise an error",
-            "code-line-to-be-revealed": 8,
-            "hint-if-incorrect": "Consider how to store valid binary strings.",
-            "explanation-after-correct-answer": "If the integer is within the range, we append the binary string to the result list."
-          }
-        ]
-      },
-      {
-        "title": "Generate the next binary numbers and add to the queue",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to generate the next binary numbers by appending '0' and '1' to the current binary string.",
-            "short-answer-question": "How should we generate the next binary numbers?",
-            "mcq-question": "How should we generate the next binary numbers?",
-            "correct-choice": "Append current + '0' and current + '1' to the queue",
-            "incorrect-choice-1": "Append current + '0' to the queue",
-            "incorrect-choice-2": "Append current + '1' to the queue",
-            "incorrect-choice-3": "Replace the queue with current + '0' and current + '1'",
-            "code-line-to-be-revealed": 9,
-            "hint-if-incorrect": "Consider how to generate the next binary numbers from the current binary string.",
-            "explanation-after-correct-answer": "We generate the next binary numbers by appending '0' and '1' to the current binary string and add them to the queue."
-          },
-          {
-            "context": "We need to add the next binary number ending with '1' to the queue.",
-            "short-answer-question": "What should we do to generate the next binary number ending with '1'?",
-            "mcq-question": "What should we do to generate the next binary number ending with '1'?",
-            "correct-choice": "Append current + '1' to the queue",
-            "incorrect-choice-1": "Append current + '0' to the queue",
-            "incorrect-choice-2": "Replace the queue with current + '1'",
-            "incorrect-choice-3": "Ignore the current binary string",
-            "code-line-to-be-revealed": 10,
-            "hint-if-incorrect": "Consider how to generate the next binary number ending with '1'.",
-            "explanation-after-correct-answer": "We generate the next binary number ending with '1' by appending '1' to the current binary string and add it to the queue."
-          }
-        ]
-      },
-      {
-        "title": "Return the result list",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to return the list of binary numbers after processing all intervals.",
-            "short-answer-question": "What should the function return after processing all intervals?",
-            "mcq-question": "What should the function return after processing all intervals?",
-            "correct-choice": "The result list",
-            "incorrect-choice-1": "The original list",
-            "incorrect-choice-2": "None",
-            "incorrect-choice-3": "A boolean value",
-            "code-line-to-be-revealed": 11,
-            "hint-if-incorrect": "Think about what the final output of the function should be.",
-            "explanation-after-correct-answer": "The function returns the result list, which contains all the binary numbers within the specified range."
-          }
-        ]
-      },
-      {
-        "title": "Test the function with an example",
-        "indent-level": 0,
-        "leading-questions": [
-          {
-            "context": "We need to test the function to ensure it works correctly.",
-            "short-answer-question": "How should we test the function?",
-            "mcq-question": "How should we test the function?",
-            "correct-choice": "By calling it with example inputs and printing the result",
-            "incorrect-choice-1": "By calling it without any inputs",
-            "incorrect-choice-2": "By printing the function definition",
-            "incorrect-choice-3": "By calling it with incorrect inputs",
-            "code-line-to-be-revealed": 12,
-            "hint-if-incorrect": "Consider how to verify the function's correctness.",
-            "explanation-after-correct-answer": "We test the function by calling it with example inputs and printing the result to verify its correctness."
-          }
-        ]
-      }
-    ]
-  }
+  "subgoals": [
+    {
+      "title": "Define the function and initialize result list",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that takes two integers as input.",
+          "short-answer-question": "What should be the name of the function and its parameters?",
+          "mcq-question": "What should be the name of the function and its parameters?",
+          "correct-choice": "binary_numbers(n1, n2)",
+          "incorrect-choice-1": "binary_range(start, end)",
+          "incorrect-choice-2": "generate_binary_numbers(a, b)",
+          "incorrect-choice-3": "binary_list(x, y)",
+          "short-answer-solution": "The function should be named binary_numbers and it should take two parameters: n1 and n2, both of which are integers.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the task description and the required inputs.",
+          "explanation-after-correct-answer": "The function is named binary_numbers and it takes two integer parameters, n1 and n2."
+        },
+        {
+          "context": "We have defined the function. Now, we need to initialize an empty list to store the result.",
+          "short-answer-question": "What should be the initial value of the result list?",
+          "mcq-question": "What should be the initial value of the result list?",
+          "correct-choice": "An empty list",
+          "incorrect-choice-1": "A list with one element",
+          "incorrect-choice-2": "A list with two elements",
+          "incorrect-choice-3": "A list with n1 and n2",
+          "short-answer-solution": "The result list should be initialized as an empty list because we will be appending binary numbers to it later.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Consider what the result list is supposed to store initially.",
+          "explanation-after-correct-answer": "The result list is initialized as an empty list to store the binary numbers that will be generated."
+        }
+      ]
+    },
+    {
+      "title": "Initialize the queue with the first binary number",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We have initialized the result list. Now, we need to initialize a queue to generate binary numbers.",
+          "short-answer-question": "What should be the initial value of the queue?",
+          "mcq-question": "What should be the initial value of the queue?",
+          "correct-choice": "A list with the string '1'",
+          "incorrect-choice-1": "An empty list",
+          "incorrect-choice-2": "A list with the string '0'",
+          "incorrect-choice-3": "A list with the integers 0 and 1",
+          "short-answer-solution": "The queue should be initialized with the string '1' because we start generating binary numbers from '1'.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Think about the first binary number that should be generated.",
+          "explanation-after-correct-answer": "The queue is initialized with the string '1' to start generating binary numbers from '1'."
+        }
+      ]
+    },
+    {
+      "title": "Iterate to generate binary numbers up to n2",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We have initialized the queue. Now, we need to iterate to generate binary numbers.",
+          "short-answer-question": "How many times should we iterate to generate binary numbers?",
+          "mcq-question": "How many times should we iterate to generate binary numbers?",
+          "correct-choice": "n2 times",
+          "incorrect-choice-1": "n1 times",
+          "incorrect-choice-2": "n2 - n1 times",
+          "incorrect-choice-3": "n1 + n2 times",
+          "short-answer-solution": "We should iterate n2 times because we need to generate binary numbers up to n2.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Consider the range of binary numbers we need to generate.",
+          "explanation-after-correct-answer": "We iterate n2 times to generate binary numbers up to n2."
+        }
+      ]
+    },
+    {
+      "title": "Pop the first element from the queue",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We are iterating to generate binary numbers. Now, we need to process the first element in the queue.",
+          "short-answer-question": "What operation should we perform on the queue to get the first element?",
+          "mcq-question": "What operation should we perform on the queue to get the first element?",
+          "correct-choice": "Pop the first element",
+          "incorrect-choice-1": "Append a new element",
+          "incorrect-choice-2": "Remove the last element",
+          "incorrect-choice-3": "Insert a new element at the beginning",
+          "short-answer-solution": "We should pop the first element from the queue to process it and generate new binary numbers.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Think about how to access the first element in a queue.",
+          "explanation-after-correct-answer": "We pop the first element from the queue to process it and generate new binary numbers."
+        }
+      ]
+    },
+    {
+      "title": "Convert the binary string to an integer",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We have popped the first element from the queue. Now, we need to convert it to an integer.",
+          "short-answer-question": "How do we convert a binary string to an integer in Python?",
+          "mcq-question": "How do we convert a binary string to an integer in Python?",
+          "correct-choice": "Using int() with base 2",
+          "incorrect-choice-1": "Using float()",
+          "incorrect-choice-2": "Using str()",
+          "incorrect-choice-3": "Using bin()",
+          "short-answer-solution": "We use the int() function with base 2 to convert a binary string to an integer in Python.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Consider the function that converts strings to integers with a specified base.",
+          "explanation-after-correct-answer": "We use the int() function with base 2 to convert the binary string to an integer."
+        }
+      ]
+    },
+    {
+      "title": "Check if the integer is within the range",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We have converted the binary string to an integer. Now, we need to check if it is within the range [n1, n2].",
+          "short-answer-question": "What condition should we check to see if the integer is within the range?",
+          "mcq-question": "What condition should we check to see if the integer is within the range?",
+          "correct-choice": "n1 <= current_int <= n2",
+          "incorrect-choice-1": "n1 < current_int < n2",
+          "incorrect-choice-2": "n1 >= current_int >= n2",
+          "incorrect-choice-3": "n1 == current_int == n2",
+          "short-answer-solution": "We should check if n1 <= current_int <= n2 to see if the integer is within the range.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Consider the range [n1, n2] and how to check if a number is within it.",
+          "explanation-after-correct-answer": "We check if n1 <= current_int <= n2 to see if the integer is within the specified range."
+        }
+      ]
+    },
+    {
+      "title": "Append the binary string to the result list",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We have checked if the integer is within the range. Now, we need to append the binary string to the result list if it is within the range.",
+          "short-answer-question": "What should we do if the integer is within the range?",
+          "mcq-question": "What should we do if the integer is within the range?",
+          "correct-choice": "Append the binary string to the result list",
+          "incorrect-choice-1": "Remove the binary string from the queue",
+          "incorrect-choice-2": "Convert the binary string to a float",
+          "incorrect-choice-3": "Ignore the binary string",
+          "short-answer-solution": "If the integer is within the range, we should append the binary string to the result list.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 8,
+          "hint-if-incorrect": "Consider what we need to do with valid binary numbers.",
+          "explanation-after-correct-answer": "We append the binary string to the result list if the integer is within the specified range."
+        }
+      ]
+    },
+    {
+      "title": "Generate new binary numbers and add to the queue",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We have appended the binary string to the result list if it is within the range. Now, we need to generate new binary numbers.",
+          "short-answer-question": "How do we generate new binary numbers from the current binary string?",
+          "mcq-question": "How do we generate new binary numbers from the current binary string?",
+          "correct-choice": "Append '0' and '1' to the current string",
+          "incorrect-choice-1": "Prepend '0' and '1' to the current string",
+          "incorrect-choice-2": "Replace '0' with '1' in the current string",
+          "incorrect-choice-3": "Remove the last character from the current string",
+          "short-answer-solution": "We generate new binary numbers by appending '0' and '1' to the current binary string.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 9,
+          "hint-if-incorrect": "Consider how binary numbers are generated from a given binary string.",
+          "explanation-after-correct-answer": "We generate new binary numbers by appending '0' and '1' to the current binary string."
+        },
+        {
+          "context": "We have generated a new binary number by appending '0' to the current string. Now, we need to generate another binary number.",
+          "short-answer-question": "What should we append to the current string to generate another binary number?",
+          "mcq-question": "What should we append to the current string to generate another binary number?",
+          "correct-choice": "Append '1' to the current string",
+          "incorrect-choice-1": "Append '2' to the current string",
+          "incorrect-choice-2": "Append '0' to the current string",
+          "incorrect-choice-3": "Append '11' to the current string",
+          "short-answer-solution": "We should append '1' to the current string to generate another binary number.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 10,
+          "hint-if-incorrect": "Consider the next binary number after appending '0'.",
+          "explanation-after-correct-answer": "We append '1' to the current string to generate another binary number."
+        }
+      ]
+    },
+    {
+      "title": "Return the result list",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We have generated all the required binary numbers and stored them in the result list. Now, we need to return the result list.",
+          "short-answer-question": "What should the function return?",
+          "mcq-question": "What should the function return?",
+          "correct-choice": "The result list",
+          "incorrect-choice-1": "The queue",
+          "incorrect-choice-2": "The last binary number",
+          "incorrect-choice-3": "The input parameters",
+          "short-answer-solution": "The function should return the result list containing all the binary numbers within the specified range.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 11,
+          "hint-if-incorrect": "Consider what we have been storing the binary numbers in.",
+          "explanation-after-correct-answer": "The function returns the result list containing all the binary numbers within the specified range."
+        }
+      ]
+    },
+    {
+      "title": "Test the function with sample input",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We have defined the function. Now, we need to test it with sample input.",
+          "short-answer-question": "What sample input should we use to test the function?",
+          "mcq-question": "What sample input should we use to test the function?",
+          "correct-choice": "binary_numbers(2, 5)",
+          "incorrect-choice-1": "binary_numbers(1, 3)",
+          "incorrect-choice-2": "binary_numbers(0, 4)",
+          "incorrect-choice-3": "binary_numbers(3, 6)",
+          "short-answer-solution": "An example input we could use to test the function is by passing any two integers that fall within the valid range expected by the function.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 12,
+          "hint-if-incorrect": "Consider a simple way to see the output of the function.",
+          "explanation-after-correct-answer": "We call the function with example inputs and print the result to verify its correctness."
+        }
+      ]
+    }
+  ]
+};
+
+// export const task3Decomposition = {
+//   "subgoals": [
+//     {
+//       "title": "Define the function and its parameters",
+//       "indent-level": 0,
+//       "leading-questions": [
+//         {
+//           "context": "We need to define a function that takes two integers as input.",
+//           "short-answer-question": "Why is it important to specify the parameter types in the function definition?",
+//           "mcq-question": "What should the function return?",
+//           "correct-choice": "A list of binary strings",
+//           "incorrect-choice-1": "A single binary string",
+//           "incorrect-choice-2": "A list of integers",
+//           "incorrect-choice-3": "A single integer",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 1,
+//           "hint-if-incorrect": "Think about the task description and what the function is supposed to generate.",
+//           "explanation-after-correct-answer": "The function definition specifies that it takes two integers and returns a list of binary strings, which aligns with the task requirements."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Initialize the result list",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "After defining the function, we need to initialize an empty list to store the results.",
+//           "short-answer-question": "Why do we need an empty list at the beginning of the function?",
+//           "mcq-question": "What is the purpose of the result list?",
+//           "correct-choice": "To store the binary numbers",
+//           "incorrect-choice-1": "To store the input numbers",
+//           "incorrect-choice-2": "To store intermediate calculations",
+//           "incorrect-choice-3": "To store error messages",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 2,
+//           "hint-if-incorrect": "Think about where we will store the binary numbers that fall within the given range.",
+//           "explanation-after-correct-answer": "The result list is initialized to store the binary numbers that fall within the range specified by n1 and n2."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Initialize the queue with the first binary number",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "We need to use a queue to generate binary numbers efficiently.",
+//           "short-answer-question": "Why do we start the queue with the string '1'?",
+//           "mcq-question": "What is the initial value of the queue?",
+//           "correct-choice": "['1']",
+//           "incorrect-choice-1": "['0']",
+//           "incorrect-choice-2": "['10']",
+//           "incorrect-choice-3": "['11']",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 3,
+//           "hint-if-incorrect": "Consider the smallest binary number greater than zero.",
+//           "explanation-after-correct-answer": "The queue is initialized with the string '1' because it is the smallest binary number greater than zero."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Iterate to generate binary numbers",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "We need to iterate to generate binary numbers up to n2.",
+//           "short-answer-question": "Why do we use a loop to generate binary numbers?",
+//           "mcq-question": "How many times should the loop run?",
+//           "correct-choice": "n2 times",
+//           "incorrect-choice-1": "n1 times",
+//           "incorrect-choice-2": "n2 - n1 times",
+//           "incorrect-choice-3": "n2 + n1 times",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 4,
+//           "hint-if-incorrect": "Think about the range of binary numbers we need to generate.",
+//           "explanation-after-correct-answer": "The loop runs n2 times to ensure we generate enough binary numbers to cover the range from n1 to n2."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Pop the first element from the queue",
+//       "indent-level": 2,
+//       "leading-questions": [
+//         {
+//           "context": "Within the loop, we need to process the first element in the queue.",
+//           "short-answer-question": "Why do we pop the first element from the queue?",
+//           "mcq-question": "What operation is used to remove the first element from the queue?",
+//           "correct-choice": "pop(0)",
+//           "incorrect-choice-1": "pop()",
+//           "incorrect-choice-2": "remove(0)",
+//           "incorrect-choice-3": "del q[0]",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 5,
+//           "hint-if-incorrect": "Consider how queues typically operate (FIFO).",
+//           "explanation-after-correct-answer": "We use pop(0) to remove the first element from the queue, following the FIFO (First In, First Out) principle."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Convert the binary string to an integer",
+//       "indent-level": 2,
+//       "leading-questions": [
+//         {
+//           "context": "After popping the first element, we need to convert it from a binary string to an integer.",
+//           "short-answer-question": "Why do we need to convert the binary string to an integer?",
+//           "mcq-question": "Which function converts a binary string to an integer?",
+//           "correct-choice": "int(current, 2)",
+//           "incorrect-choice-1": "int(current)",
+//           "incorrect-choice-2": "bin(current)",
+//           "incorrect-choice-3": "str(current, 2)",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 6,
+//           "hint-if-incorrect": "Consider how to specify the base of the number system.",
+//           "explanation-after-correct-answer": "We use int(current, 2) to convert the binary string to an integer, specifying base 2."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Check if the integer is within the range",
+//       "indent-level": 2,
+//       "leading-questions": [
+//         {
+//           "context": "We need to check if the converted integer falls within the specified range.",
+//           "short-answer-question": "Why is it important to check if the integer is within the range?",
+//           "mcq-question": "What condition checks if the integer is within the range?",
+//           "correct-choice": "n1 <= current_int <= n2",
+//           "incorrect-choice-1": "n1 < current_int < n2",
+//           "incorrect-choice-2": "n1 <= current_int < n2",
+//           "incorrect-choice-3": "n1 < current_int <= n2",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 7,
+//           "hint-if-incorrect": "Consider the inclusive nature of the range.",
+//           "explanation-after-correct-answer": "The condition n1 <= current_int <= n2 checks if the integer falls within the inclusive range specified by n1 and n2."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Append the binary string to the result list",
+//       "indent-level": 3,
+//       "leading-questions": [
+//         {
+//           "context": "If the integer is within the range, we need to add the binary string to the result list.",
+//           "short-answer-question": "Why do we append the binary string to the result list?",
+//           "mcq-question": "Which method is used to add an element to a list?",
+//           "correct-choice": "append()",
+//           "incorrect-choice-1": "add()",
+//           "incorrect-choice-2": "insert()",
+//           "incorrect-choice-3": "extend()",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 8,
+//           "hint-if-incorrect": "Think about the method used to add a single element to a list.",
+//           "explanation-after-correct-answer": "We use the append() method to add the binary string to the result list if the integer is within the specified range."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Generate the next binary numbers",
+//       "indent-level": 3,
+//       "leading-questions": [
+//         {
+//           "context": "We need to generate the next binary numbers by appending '0' and '1' to the current binary string.",
+//           "short-answer-question": "Why do we append '0' and '1' to the current binary string?",
+//           "mcq-question": "What are the next binary numbers generated from the current binary string?",
+//           "correct-choice": "current + '0' and current + '1'",
+//           "incorrect-choice-1": "current + '1' and current + '0'",
+//           "incorrect-choice-2": "current + '1' and current + '2'",
+//           "incorrect-choice-3": "current + '0' and current + '2'",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 9,
+//           "hint-if-incorrect": "Consider how binary numbers are generated.",
+//           "explanation-after-correct-answer": "We append '0' and '1' to the current binary string to generate the next binary numbers."
+//         },
+//         {
+//           "context": "We need to add the newly generated binary numbers to the queue.",
+//           "short-answer-question": "Why do we add the newly generated binary numbers to the queue?",
+//           "mcq-question": "Which method is used to add elements to the queue?",
+//           "correct-choice": "append()",
+//           "incorrect-choice-1": "add()",
+//           "incorrect-choice-2": "insert()",
+//           "incorrect-choice-3": "extend()",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 10,
+//           "hint-if-incorrect": "Think about the method used to add elements to a list.",
+//           "explanation-after-correct-answer": "We use the append() method to add the newly generated binary numbers to the queue for further processing."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Return the result list",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "After generating all the binary numbers within the range, we need to return the result list.",
+//           "short-answer-question": "Why do we return the result list at the end of the function?",
+//           "mcq-question": "What should the function return?",
+//           "correct-choice": "The result list",
+//           "incorrect-choice-1": "The queue",
+//           "incorrect-choice-2": "The last binary number",
+//           "incorrect-choice-3": "The range of numbers",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 11,
+//           "hint-if-incorrect": "Think about what the function is supposed to output.",
+//           "explanation-after-correct-answer": "The function returns the result list, which contains all the binary numbers within the specified range."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Test the function with sample inputs",
+//       "indent-level": 0,
+//       "leading-questions": [
+//         {
+//           "context": "We need to test the function to ensure it works correctly.",
+//           "short-answer-question": "Why is it important to test the function with sample inputs?",
+//           "mcq-question": "What are the sample inputs used to test the function?",
+//           "correct-choice": "2 and 5",
+//           "incorrect-choice-1": "1 and 5",
+//           "incorrect-choice-2": "2 and 6",
+//           "incorrect-choice-3": "1 and 6",
+//           "selected-question": "both",
+//           "code-line-to-be-revealed": 12,
+//           "hint-if-incorrect": "Consider the sample inputs provided in the task description.",
+//           "explanation-after-correct-answer": "We test the function with sample inputs 2 and 5 to ensure it generates the correct binary numbers within the specified range."
+//         }
+//       ]
+//     }
+//   ]
+// }
 
 export const task4Decomposition = {
     "subgoals": [

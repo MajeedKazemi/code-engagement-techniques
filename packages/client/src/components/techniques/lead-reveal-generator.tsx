@@ -29,8 +29,19 @@ interface QuestionObject {
 
 interface QuestionInterface {
     title: string;
-    question: string;
+    indent: number;
+    questions: SubQuestions[];
+}
+
+interface SubQuestions {
+    context: string;
+    selectedQuestion: string;
+    shortQuestion: string;
+    mcqQuestion: string;
+    hintForMCQ: string;
+    explanation: string;
     choices: QuestionObject[];
+    explanationSolution: string;
     revealLine: string;
 }
 
@@ -45,31 +56,50 @@ function shuffleArray(array: any[]): any[] {
 function responseToQuestion(response: any, code: string): QuestionInterface[] {
     return response.subgoals.map((item: any) => {
         // question details:
-        const questionDetails =
-            item["sub-subgoal-items"][0]["leading-questions"][0];
-        const questionLines =
-            item["sub-subgoal-items"][0]["code-lines-to-be-revealed"];
-        // randomize choices, save them in questionObject format
-        const choices = shuffleArray([
-            { correct: true, text: questionDetails["correct-choice"] },
-            { correct: false, text: questionDetails["incorrect-choice-1"] },
-            { correct: false, text: questionDetails["incorrect-choice-2"] },
-            { correct: false, text: questionDetails["incorrect-choice-3"] },
-        ]);
+        let questionsInSubgoals = [];
+        const indentLevel = item["indent-level"];
 
-        // revealLines
-        const codeLines = code.split("\n");
-        const revealLines = Array.isArray(questionLines) ? questionLines : [];
-        const lines = revealLines
-            .map((index: number) => codeLines[index - 1])
-            .filter((line: string) => typeof line === "string")
-            .join("\n");
+        for (let i = 0; i < item["leading-questions"].length; i++) {
+            const questionDetails =
+            item["leading-questions"][i];
+            const questionLines = questionDetails["code-line-to-be-revealed"];
+            // randomize choices, save them in questionObject format
+            const choices = shuffleArray([
+                { correct: true, text: questionDetails["correct-choice"] },
+                { correct: false, text: questionDetails["incorrect-choice-1"] },
+                { correct: false, text: questionDetails["incorrect-choice-2"] },
+                { correct: false, text: questionDetails["incorrect-choice-3"] },
+            ]);
+
+            // revealLines
+            const codeLines = code.split("\n");
+            const revealLines = Array.isArray(questionLines) ? questionLines :[questionLines];
+            const lines = revealLines
+                .map((index: number) => codeLines[index - 1])
+                .filter((line: string) => typeof line === "string")
+                .join("\n");
+
+            
+            questionsInSubgoals.push(
+                {
+                    context: questionDetails.context,
+                    selectedQuestion: questionDetails["selected-question"],
+                    shortQuestion: questionDetails["short-answer-question"],
+                    mcqQuestion: questionDetails["mcq-question"],
+                    hintForMCQ: questionDetails["hint-if-incorrect"],
+                    explanation: questionDetails["explanation-after-correct-answer"],
+                    choices: choices,
+                    revealLine: lines,
+                    explanationSolution: questionDetails["short-answer-solution"],
+                }
+            );
+        }
+
 
         return {
             title: item.title,
-            question: questionDetails["mcq-question"],
-            choices: choices,
-            revealLine: lines,
+            indent: indentLevel,
+            questions: questionsInSubgoals,
         };
     });
 }

@@ -173,5 +173,65 @@ you are helping novice programmers learn about coding. Look at the provided Pyth
 });
 
 function parseResponse(response: string): any {
+    // console.log(response);
     return JSON.parse(response);
 }
+
+
+revealRouter.post("/feedbackFromRevealShortAnswer", verifyUser, async (req, res, next) => {
+  const { line, studentSolution, aiGeneratedSolution, question } = req.body;
+  const userId = (req.user as IUser)._id;
+  if (studentSolution !== undefined) {
+      let messages: Array<ChatCompletionRequestMessage> = [
+          {
+              role: "system",
+              content: `You will be given details about a specific line of code before it is revealed. The goal of this exercise is to challenge the user to think critically and deeply without revealing the answer. 
+
+              Input: 
+              - [line]: The specific line of code in question.
+              - [student-solution]: The student's proposed solution to the problem or question posed by the line of code.
+              - [ai-generated-solution]: The AI-generated solution to the same problem or question.
+              - [question]: The question associated with the line of code intended to stimulate critical thinking.
+
+              Task: 
+
+              By comparing the logic of the student solution and the AI-generated solution, return the following JSON object:
+
+              {
+                "correct": "<either 'yes' or 'no'>",
+                "feedback": "<15-25 words of explanations and hints that guide users to the AI-generated solution. Be detailed and concise.>"
+              }
+
+              Your evaluation should focus on whether the student's solution correctly addresses the question and matches the AI-generated solution in terms of logic and correctness. Provide constructive feedback to guide users toward improving their understanding, ideally steering them towards the AI-generated solution if their answer is`,
+            }
+      ];
+
+      messages.push({
+        role: "user",
+        content: `[line]: ${line}\n[student-solution]: ${studentSolution}\n[ai-generated-solution]: ${aiGeneratedSolution}\n[question]: ${question}`,
+    });
+
+    const result = await openai.createChatCompletion({
+        model: "gpt-4o-mini",
+        messages,
+        temperature: 0.25,
+        max_tokens: 256,
+        user: userId,
+    });
+
+    if (result.data.choices && result.data.choices?.length > 0) {
+        const response = result.data.choices[0].message?.content;
+
+        if(response){
+            res.json({
+                response: parseResponse(response),
+                success: true,
+            });
+        }
+    } else {
+        res.json({
+            success: false,
+        });
+    }
+}
+});

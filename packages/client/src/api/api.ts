@@ -220,6 +220,7 @@ export const apiGetIssueHintLevel3 = (
     token: string | null | undefined,
     code: string,
     studentCode: string
+
 ) =>
     fetch(env.API_URL + "/api/technique-verify/generateHintLevel3", {
         method: "POST",
@@ -233,6 +234,29 @@ export const apiGetIssueHintLevel3 = (
             studentCode: studentCode,
         }),
     });
+
+export const apiGetFeedbackFromRevealShortAnswer = (
+    token: string | null | undefined,
+    line: string,
+    studentSolution: string,
+    aiGeneratedSolution: string,
+    question: string,
+) =>
+    fetch(env.API_URL + "/api/technique-reveal/feedbackFromRevealShortAnswer", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            line: line,
+            studentSolution: studentSolution,
+            aiGeneratedSolution: aiGeneratedSolution,
+            question: question,
+        }),
+    });
+
 
 export const apiLogEvents = (
     token: string | null | undefined,
