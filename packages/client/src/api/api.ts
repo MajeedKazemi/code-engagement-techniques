@@ -257,6 +257,27 @@ export const apiGetFeedbackFromRevealShortAnswer = (
         }),
     });
 
+export const apiGetFeedbackFromTracePredictShortAnswer = (
+    token: string | null | undefined,
+    studentSolution: string,
+    aiGeneratedSolution: string,
+    question: string,
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/feedbackFromTracingShortAnswer", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            studentSolution: studentSolution,
+            aiGeneratedSolution: aiGeneratedSolution,
+            question: question,
+        }),
+    });
+
+
 
 export const apiLogEvents = (
     token: string | null | undefined,

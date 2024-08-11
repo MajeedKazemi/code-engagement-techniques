@@ -11,6 +11,8 @@ import ExcutionTimeline from "../excution-timeline";
 import {
     apiGetBaselineLineByLineExplanationSimulation,
     apiGetFeedbackForDecomposition,
+    apiGetFeedbackFromRevealShortAnswer,
+    apiGetFeedbackFromTracePredictShortAnswer,
     apiLogEvents,
     logError,
 } from "../../api/api";
@@ -52,6 +54,8 @@ interface questionObject {
     "question": string;
     "begin-line": number;
     "end-line": number;
+    explanation: string;
+    aiGeneratedSolution: string;
 }
 
 interface LineWithLeadSpaces {
@@ -105,6 +109,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [lines, setLines] = useState<LineWithLeadSpaces[]>([]);
     const [colorizedText, setColorizedText] = useState<string[]>([]);
     const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0);
+    const [userResponse, setUserResponse] = useState<string[]>([]);
+    const textareaRefs = useRef<HTMLTextAreaElement>(null);
 
     // - step_event:
     // 	- type: `“first” | “previous” | “next” | “last”`
@@ -112,12 +118,18 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [prevClickCounter, setPrevClickCounter] = useState<number>(0);
     const [nextClickCounter, setNextClickCounter] = useState<number>(0);
     const [lastClickCounter, setLastClickCounter] = useState<number>(0);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     // const [taskSolutions, setTaskSolutions] = useState<any[]>([]);
 
     const [currFeedback, setCurrFeedback] = useState<string[]>(["", "", "", ""]);
     const [feedbackReady, setFeedbackReady] = useState<boolean[]>([true, true, true, true]);
     const [hoveringHovered, setHoveringHovered] = useState<boolean[]>([]);
     const [explaination, setExplanation] = useState<string[]>([]);
+
+    const [explanationFeedbackReady, setExplanationFeedbackReady] = useState<boolean[]>([]);
+    const [explanationFeedback, setExplanationFeedback] = useState<string[]>([]);
+    const [explanationQuestionCorrect, setExplanationQuestionCorrect] = useState<boolean[]>([]);
+    const [attempted, setAttempted] = useState<boolean[]>([false, false, false, false]);
 
     const [variableSummaryOpen, setVariableSummaryOpen] =
         useState<boolean>(false);
@@ -320,15 +332,20 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             // setCurrentQuestionWrongAnswers(new Array(questions.length).fill([]));
             setCurrentQuestionIndex(0);
             setShowSolution(new Array(questions.length).fill(false));
+            setUserResponse(new Array(questions.length).fill(""));
             setCurrentWrongAnswers(
                 new Array(questions.length).fill(["", "", ""])
             );
+            setExplanationFeedback(new Array(questions.length).fill(""));
+            setExplanationQuestionCorrect(new Array(questions.length).fill(false));
 
             // start by generating the solutions
             var solutions = new Array(questions.length).fill("");
             for (let i = 0; i < questions.length; i++) {
                 solutions[i] = getCurrQuestionSolution(i)!;
             }
+
+            setExplanationFeedbackReady(new Array(questions.length).fill(false));
             console.log("solutions", solutions);
             setSolutions(solutions);
 
@@ -745,17 +762,27 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         stopLine: number,
         variableOfInterest: string
     ): { value: any; type: string } | null {
-        const framesToCheck = taskTrace.slice(step - 1);
     
-        for (const frame of framesToCheck) {
-            if (frame.nextLine === stopLine) {
+        for (let i = 0; i < taskTrace.length; i++) {
+            const frame = taskTrace[i];
+            if (frame.currLine === stopLine) {
                 // if frame.frame is not undefined
                 if(!frame.frame) {
                     return null;
                 }
-                const variable = frame.frame.find((v: { name: string; }) => v.name === variableOfInterest);
-                if (variable) {
-                    return { value: variable.value, type: variable.type };
+                //get frame's index
+                if (i+1 < taskTrace.length) {
+                    const targetFrame = taskTrace[i+1];
+                    const variable = targetFrame.frame.find((v: { name: string; }) => v.name === variableOfInterest);
+                    if (variable) {
+                        return { value: variable.value, type: variable.type };
+                    }
+                }
+                else{
+                    const variable = frame.frame.find((v: { name: string; }) => v.name === variableOfInterest);
+                    if (variable) {
+                        return { value: variable.value, type: variable.type };
+                    }
                 }
             }
         }
@@ -820,6 +847,234 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         }
     };
 
+    interface FollowUpProps {
+        question: questionObject;
+        index: number;
+    }
+
+    const handleUserInput = (index: number, event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        const { value } = event.target;
+        const cursorPosition = event.target.selectionStart; // Get the cursor position
+
+        setUserResponse((prevState) => {
+            const newUserResponse = [...prevState];
+            newUserResponse[index] = value;
+            return newUserResponse;
+        });
+
+        // Wait until the state is updated and then set the cursor position
+        setTimeout(() => {
+            const textarea = textareaRefs.current;
+            if (textarea) {
+                textarea.selectionStart = cursorPosition;
+                textarea.selectionEnd = cursorPosition;
+            }
+        }, 0);
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter") {
+            const target = event.target as HTMLTextAreaElement;
+            target.value += "\n";
+            target.style.height = `${target.scrollHeight}px`;
+        }
+    };
+
+    const getShortExplanationFeedback = (index: number) => {
+        let attemptNumber = attempted.findIndex((attempt) => !attempt);
+        if(attempted.slice(0, -1).every(value => value === true)) {
+            setAttempted([true, true, true, true]);
+            setExplanationQuestionCorrect(
+                (prev) => {
+                    let temp = deepCopy(prev);
+                    temp[index] = true;
+                    return temp;
+                }
+            );
+    
+            setIsOnStop(
+                false
+            );
+            setCurrentQuestionNumber(currentQuestionNumber + 1);
+            updateQuestion(
+                index +
+                    1
+            );
+            setInputValue(
+                ""
+            );
+            setAttempted([false, false, false, false]);
+            return;
+        }
+        else {
+            setButtonDisabled(true);
+            //find the first occurence of false and send to true
+            setAttempted(
+                (prev) => {
+                    let temp = deepCopy(prev);
+                    temp[attemptNumber] = true;
+                    return temp;
+                }
+            )
+            setExplanationFeedbackReady(
+                (prev) => {
+                    let temp = deepCopy(prev);
+                    temp[index] = false;
+                    return temp;
+                }
+            );
+            try {
+                apiGetFeedbackFromTracePredictShortAnswer(
+                    context?.token,
+                    userResponse[index],
+                    questions[index].aiGeneratedSolution,
+                    questions[index].explanation,
+                )
+                    .then(async (response) => {
+                        if (response.ok) {
+                            setButtonDisabled(false);
+                            const data = await response.json();
+                            console.log(data.response);
+
+                            if(data.response.correct == "yes"){
+                                setButtonDisabled(false);
+                                setExplanationQuestionCorrect(
+                                    (prev) => {
+                                        let temp = deepCopy(prev);
+                                        temp[index] = true;
+                                        return temp;
+                                    }
+                                );
+                        
+                                setIsOnStop(
+                                    false
+                                );
+                                setCurrentQuestionNumber(currentQuestionNumber + 1);
+                                updateQuestion(
+                                    index +
+                                        1
+                                );
+                                setInputValue(
+                                    ""
+                                );
+                                setAttempted([false, false, false, false]);
+                            }else {
+                                setButtonDisabled(false);
+                                setExplanationFeedbackReady(
+                                    (prev) => {
+                                        let temp = deepCopy(prev);
+                                        temp[index] = true;
+                                        return temp;
+                                    }
+                                );
+                                setExplanationFeedback(
+                                    (prev) => {
+                                        let temp = deepCopy(prev);
+                                        temp[index] = data.response.feedback;
+                                        return temp;
+                                    }
+                                );
+                                setExplanationQuestionCorrect(
+                                    (prev) => {
+                                        let temp = deepCopy(prev);
+                                        temp[index] = false;
+                                        return temp;
+                                    }
+                                );
+                                setUserResponse(
+                                    (prev) => {
+                                        let temp = deepCopy(prev);
+                                        temp[index] = "";
+                                        return temp;
+                                    }
+                                );
+                            }
+                        }
+
+                        })
+                        .catch((error) => {
+                            setButtonDisabled(false);
+                            logError(error.toString());
+                        });
+                } catch (error: any) {
+                    setButtonDisabled(false);
+                    logError(error.toString());
+                }
+            }
+        
+    };
+
+    useEffect(() => {
+        if (textareaRefs.current) {
+            textareaRefs.current.focus();
+        }
+    }, [userResponse]);
+
+    const FollowUpQuestion = ({ question, index }: FollowUpProps) => {
+        return (
+            <div className="follow-up-question">
+                <div className="follow-up-header">
+                    <p>Follow Up</p>
+                </div>
+                <div className="follow-up-question-text">
+                    {question.explanation}
+                </div>
+                {explanationFeedback[index] != "" && explanationFeedbackReady[index] && !explanationQuestionCorrect[index] && !attempted.every(attempt => attempt) &&
+                    <div className="follow-up-question-feedback">
+                        {explanationFeedback[index]}
+                    </div>
+                }
+                {!explanationQuestionCorrect[index] && !buttonDisabled &&
+                <div className="follow-up-question-input">
+                    <textarea
+                        className="self-explain-textbox baseline-input"
+                        id="userInput"
+                        ref={textareaRefs}
+                        value={userResponse[index]}
+                        onChange={(e) => handleUserInput(index, e)}
+                        onKeyDown={handleKeyDown}
+                        rows={2}
+                    />
+                    <button
+                        className="gpt-button"
+                        onClick={() => {
+                            getShortExplanationFeedback(index);
+                        }}
+                        disabled={
+                            !userResponse[
+                                index
+                            ].trim() ||
+                            buttonDisabled
+                        }
+                    >
+                        Submit
+                    </button>
+                </div>
+                }
+                {!explanationFeedbackReady[index] && !attempted.every(attempt => attempt) && !attempted.every(value => value === false) &&
+                    <div className="step-answered-container">
+                        Checking Solution
+                    <ChatLoader/>
+                    </div>
+                }
+                {
+                    (explanationQuestionCorrect[index] || attempted.every(attempt => attempt)) &&
+                    <>
+                    <div className="follow-up-question-feedback correct">
+                        <strong>You Answered</strong> {userResponse[index]}
+                    </div>
+                    <div className="follow-up-question-feedback correct">
+                        <strong>Explanation:</strong> {question.aiGeneratedSolution}
+                    </div>
+                    </>
+
+                }
+                
+            </div>
+        );
+    }
+
+
     return (
         <div className="excution-generator">
             <div className="step-by-step-read-container">
@@ -847,6 +1102,21 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                     </span>
                                 </div>
                             ))}
+                            <div className="line">
+                                <span className="trace-line-number">
+                                    {code.split("\n").length+1}
+                                </span>
+                            </div>
+                            <div className="line">
+                                <span className="trace-line-number">
+                                    {code.split("\n").length+2}
+                                </span>
+                            </div>
+                            <div className="line">
+                                <span className="trace-line-number">
+                                    {code.split("\n").length+3}
+                                </span>
+                            </div>
                         </div>
                         <div
                             className="code-editor"
@@ -897,6 +1167,18 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 </>
                             </div>
                             ))}
+                            <div
+                                id={`line-${code.split("\n").length+1}`}
+                                className="trace-predict-tracker"
+                            ></div>
+                            <div
+                                id={`line-${code.split("\n").length+2}`}
+                                className="trace-predict-tracker"
+                            ></div>
+                            <div
+                                id={`line-${code.split("\n").length+3}`}
+                                className="trace-predict-tracker"
+                            ></div>
                         </div>
                     </div>
                 </div>
@@ -1221,21 +1503,11 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                             return temp;
                                                                         }
                                                                     );
-                                                                    setIsOnStop(
-                                                                        false
-                                                                    );
-                                                                    setCurrentQuestionNumber(currentQuestionNumber + 1);
-                                                                    updateQuestion(
-                                                                        index +
-                                                                            1
-                                                                    );
                                                                     let temp = deepCopy(feedbackReady);
                                                                     temp[attemptNumber-1] = true;
-                                                                    setFeedbackReady(temp);
-                                                                    //update FeedbackReady 
-                                                                    setInputValue(
-                                                                        ""
-                                                                    );
+                                                                    setFeedbackReady(temp);    
+                                                                    
+                                                                    
                                                                 } else if (
                                                                     currentWrongAnswers &&
                                                                     index ==
@@ -1311,21 +1583,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                                     true;
                                                                                 return temp;
                                                                             }
-                                                                        );
-                                                                        setIsOnStop(
-                                                                            false
-                                                                        );
-                                                                        setCurrentQuestionNumber(currentQuestionNumber + 1);
-                                                                        updateQuestion(
-                                                                            index +
-                                                                                1
-                                                                        );
+                                                                        );    
                                                                         let temp = deepCopy(feedbackReady);
                                                                         temp[attemptNumber-1] = true;
-                                                                        setFeedbackReady(temp);
-                                                                        setInputValue(
-                                                                            ""
-                                                                        );
+                                                                        setFeedbackReady(temp);                       
                                                                     }
                                                                 }
                                                             }}
@@ -1335,12 +1596,15 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     </div>
                                                 )}
                                             {showSolution![index] && (
+                                                <>
                                                 <div className="step-answered-container step-answered-container-correct">
                                                     <p>Correct Answer: </p>
                                                     <span className="correct">
                                                         {solutions![index]}
                                                     </span>
                                                 </div>
+                                                <FollowUpQuestion question={item} index={index} />
+                                                </>
                                             )}
                                         </div>
                                     )

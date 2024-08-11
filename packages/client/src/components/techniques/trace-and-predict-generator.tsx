@@ -13,6 +13,7 @@ import { ExcutionSteps } from "../responses/excution-steps";
 import BaselineGenerateCode from "../responses/baseline-chat";
 import IconsDoc from "../docs/icons-doc";
 import { GPTLoader } from "../loader";
+import { highlightPsudo } from "../../utils/utils";
 
 export let excutionCancelClicked = false;
 
@@ -496,6 +497,17 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
                         <div className="prompt-text">
                             <span className="button-span">Prompt:</span>{" "}
                             {prompt}
+                        </div>
+                        <div className="overall-explanation-container">
+                            {generatedExplanation && (
+                                <div className="overall-explanation">
+                                    <b>Explanation:</b> 
+                                    <div dangerouslySetInnerHTML={{
+                                        __html: highlightPsudo(generatedExplanation, "code-highlight"),
+                                    }}>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         {/* <p>
                     <b>Prompts: </b> {prompt}

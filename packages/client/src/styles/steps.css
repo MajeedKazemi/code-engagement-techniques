@@ -472,3 +472,70 @@
 .highlighted-trace-predict{
     background-color: #0077ff52;
 }
+
+.additional-line-div {
+    height: 70px;
+}
+
+.overall-explanation {
+    background-color: rgba(220, 230, 255, 255);;
+    height: 100px;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.follow-up-question {
+    background-color: rgba(220, 230, 255, 255);
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+.follow-up-question p{
+    margin-left: 20px;
+    padding: 0px;
+    font-weight: bold;
+}
+
+.follow-up-header {
+    border: 1px solid black;
+    border-left: none;
+    border-right: none;
+}
+
+.follow-up-question-text {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.follow-up-question-input {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.follow-up-question-input .gpt-button {
+    font-size: 13px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 35px;
+    width: 20%;
+}
+
+.follow-up-question-feedback {
+    background-color: rgba(245, 205, 207, 255);
+    margin: 20px;
+    padding: 10px;
+    border-radius: 12px;
+    overflow-y: auto;
+    max-height: 100px;
+}
+
+.follow-up-question-feedback.correct{
+    background-color: rgba(192, 228, 188, 255);
+}

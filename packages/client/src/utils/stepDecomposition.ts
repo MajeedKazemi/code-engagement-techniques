@@ -65,31 +65,39 @@ const taskDecomp3 = {
 }
 
 const taskQuestion3: questionObject[] = [
-        {
-            "step": 7,
-            "question": "result",
-            "begin-line": 7,
-            "end-line": 8
-        },
-        {
-            "step": 9,
-            "question": "q",
-            "begin-line": 9,
-            "end-line": 10
-        },
-        {
-            "step": 12,
-            "question": "current_int",
-            "begin-line": 5,
-            "end-line": 6
-        },
-        {
-            "step": 14,
-            "question": "result",
-            "begin-line": 7,
-            "end-line": 8
-        }
-    ];
+      {
+        "step": 7,
+        "question": "result",
+        "begin-line": 7,
+        "end-line": 8,
+        "explanation": "How does the code between lines 7 and 8 modify the 'result' variable, and why is this modification important for the overall logic?",
+        "aiGeneratedSolution": "The code updates 'result' by adding the current integer to it, which is crucial for accumulating the sum of integers."
+      },
+      {
+        "step": 9,
+        "question": "q",
+        "begin-line": 9,
+        "end-line": 10,
+        "explanation": "What changes occur to the 'q' variable between lines 9 and 10, and how do these changes affect the subsequent code execution?",
+        "aiGeneratedSolution": "The code modifies 'q' by appending a new element, impacting the loop's behavior by altering the queue's state."
+      },
+      {
+        "step": 12,
+        "question": "current_int",
+        "begin-line": 5,
+        "end-line": 6,
+        "explanation": "How is 'current_int' determined in lines 5 and 6, and why is its value critical for the loop's logic?",
+        "aiGeneratedSolution": "'current_int' is set to the next integer from the queue, driving the loop's progression by providing the next value to process."
+      },
+      {
+        "step": 14,
+        "question": "result",
+        "begin-line": 7,
+        "end-line": 8,
+        "explanation": "How does the code between lines 7 and 8 modify the 'result' variable, and why is this modification important for the overall logic?",
+        "aiGeneratedSolution": "The code updates 'result' by adding the current integer to it, which is crucial for accumulating the sum of integers."
+      }
+    ]
 
 const taskQuestion0 = {};
 const taskQuestion1 = {};
@@ -105,6 +113,8 @@ interface questionObject {
     "question": string;
     "begin-line": number;
     "end-line": number;
+    explanation: string;
+    aiGeneratedSolution: string;
 }[]
 
 
