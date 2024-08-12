@@ -7,7 +7,20 @@ import { Loader } from "../components/loader";
 import { MultipleChoiceTask } from "../components/multiple-choice-task";
 import { WatchTutorialTask } from "../components/watch-video-task";
 import { AuthContext } from "../context";
-import { TaskType } from "../utils/constants";
+import { EditorType, TaskType } from "../utils/constants";
+
+const mapCharToEditorType = (char: string): EditorType => {
+    switch (char) {
+        case 'A':
+            return EditorType.baseline;
+        case 'B':
+            return EditorType.stepByStep;
+        case 'C':
+            return EditorType.leadReveal;
+        default:
+            return EditorType.baseline;
+    }
+};
 
 export const TasksPage = () => {
     const { context } = useContext(AuthContext);
@@ -29,10 +42,64 @@ export const TasksPage = () => {
             });
     };
 
+    const getCurrentEditorType = (id: number|string, types: any): EditorType => {
+        //id might be string int
+        let numericId: number = 0;
+
+        if (typeof id === "number") {
+            numericId = id;
+        } else if (typeof id === "string") {
+            numericId = parseInt(id, 10);
+            if (isNaN(numericId)) {
+                return EditorType.baseline; // Default value when id cannot be converted to a number
+            }
+        }
+
+        if (numericId < 1 || numericId > 6) {
+            return EditorType.baseline; // Default value for invalid ids
+        }
+        const position = Math.floor((numericId - 1) / 2);
+        const typeChar = types.type.charAt(position);
+        // console.log("position", position);
+        // console.log("typeChar", typeChar);
+
+        return mapCharToEditorType(typeChar);
+    };
+    
+
     const getTaskComponent = () => {
         switch (task.type) {
             case TaskType.Authoring:
+                return (
+                    <CodingTask
+                        key={task.id}
+                        taskId={task.id}
+                        output={task.output}
+                        solution={task.solution}
+                        description={task.description}
+                        timeLimit={task.timeLimit}
+                        starterCode={
+                            task.type === TaskType.Authoring
+                                ? ""
+                                : task.starterCode
+                        }
+                        onCompletion={setNextTask}
+                        technique={
+                            getCurrentEditorType(task.id, context?.user?.editorType ? context.user.editorType : "ABC")
+                        }
+                        taskType={task.type}
+                    ></CodingTask>
+                );
             case TaskType.Modifying:
+            case TaskType.MultipleChoice:
+                return <MultipleChoiceTask
+                    key={task.id}
+                    id={task.id}
+                    description={task.description}
+                    choices={task.choices}
+                    onCompletion={setNextTask}
+                    taskType={task.type}
+                ></MultipleChoiceTask>;
             case TaskType.Coding:
                 return (
                     <CodingTask
@@ -49,9 +116,7 @@ export const TasksPage = () => {
                         }
                         onCompletion={setNextTask}
                         technique={
-                            context?.user?.editorType
-                                ? context.user.editorType
-                                : ""
+                            getCurrentEditorType(task.id, context?.user?.editorType ? context.user.editorType : "ABC")
                         }
                         taskType={task.type}
                     ></CodingTask>

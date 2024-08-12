@@ -189,24 +189,24 @@ export class ModifyingTask extends Task {
 
 export class MultipleChoiceTask extends Task {
     choices: string[];
-    answer: number;
-    topic: TaskTopic;
-    stage: TaskStage;
+    // answer: number;
+    // topic: TaskTopic;
+    // stage: TaskStage;
 
     constructor(
         id: string,
         description: string,
         choices: string[],
-        answer: number,
-        topic: TaskTopic,
-        stage: TaskStage
+        // answer: number,
+        // topic: TaskTopic,
+        // stage: TaskStage
     ) {
         super(id, description, TaskType.MultipleChoice);
 
         this.choices = choices;
-        this.answer = answer;
-        this.topic = topic;
-        this.stage = stage;
+        // this.answer = answer;
+        // this.topic = topic;
+        // this.stage = stage;
     }
 }
 
@@ -497,6 +497,12 @@ export const CodingTasks = [
 },
 warmupDecomposition,
 ),
+
+  new MultipleChoiceTask(
+    "warmupRating",
+    "Rate your experience",
+    ["1", "2", "3", "4", "5"]
+  ),
 
   new AuthoringTask(
     "1",
@@ -1099,6 +1105,12 @@ warmupDecomposition,
 task1Decomposition,
   ),
 
+  new MultipleChoiceTask(
+    "1Rating",
+    "Rate your experience",
+    ["1", "2", "3", "4", "5"]
+  ),
+
   new AuthoringTask(
     "2",
     "Write a function called longest_valid_brackets that takes a string consisting of only opening ( and closing ) parenthesis, and returns the length of the longest valid parenthesis substring. A sequence is considered valid if every opening bracket has a corresponding closing bracket in the correct order without any mismatches. The function should use a stack to calculate the longest valid parenthesis substring.",
@@ -1641,6 +1653,12 @@ task1Decomposition,
 task2Decomposition,
   ),
 
+  new MultipleChoiceTask(
+    "2Rating",
+    "Rate your experience",
+    ["1", "2", "3", "4", "5"]
+  ),
+
 
 new AuthoringTask(
   "3",
@@ -2108,6 +2126,12 @@ new AuthoringTask(
           }
   },
   task3Decomposition,
+),
+
+new MultipleChoiceTask(
+  "3Rating",
+  "Rate your experience",
+  ["1", "2", "3", "4", "5"]
 ),
 
 new AuthoringTask(
@@ -2632,6 +2656,12 @@ new AuthoringTask(
           }
   },
   task4Decomposition,
+),
+
+new MultipleChoiceTask(
+  "4Rating",
+  "Rate your experience",
+  ["1", "2", "3", "4", "5"]
 ),
 
 // coding tasks for evaluations

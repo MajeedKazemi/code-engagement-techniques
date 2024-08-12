@@ -18,14 +18,7 @@ export interface IUser extends mongoose.Document {
     age: number;
     grade: number;
     editorType:
-        | "baseline"
-        | "pseudo"
-        | "parsons"
-        | "writeover"
-        | "selfexplain"
-        | "stepByStep"
-        | "verify"
-        | "leadReveal";
+        "ABC" | "ACB" | "BAC" | "BCA" | "CAB" | "CBA";
     gender: "male" | "female" | "other";
     ethnicity: string;
     codingExperience: Array<string>;
@@ -76,18 +69,17 @@ const UserSchema = new Schema({
         default: 0,
     },
     editorType: {
-        type: String,
-        enum: [
-            "baseline",
-            "pseudo",
-            "parsons",
-            "writeover",
-            "selfexplain",
-            "stepByStep",
-            "verify",
-            "leadReveal",
-        ],
-        default: "baseline",
+        type: {
+            type: String,
+            enum: [
+                "ABC",
+                "ACB",
+                "BAC",
+                "BCA",
+                "CAB",
+            ],
+            default: "ABC",
+        },
     },
     gender: {
         type: String,

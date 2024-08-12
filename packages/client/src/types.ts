@@ -7,7 +7,7 @@ export interface IUser {
     age: number;
     grade: number;
     // editorType: "copilot" | "intellisense";
-    editorType: "baseline" | "pseudo" | "parsons" | "writeover" | "selfexplain" | "stepByStep" | "verify" | "leadReveal";
+    editorType: "ABC" | "ACB" | "BAC" | "BCA" | "CAB" | "CBA";
     gender: "male" | "female" | "other";
     ethnicity: string;
     codingExperience: Array<string>;
