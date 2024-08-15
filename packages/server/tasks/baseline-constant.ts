@@ -1,72 +1,99 @@
-export const warmupCode = 
-`def reverse_stack(items: list) -> list:
-    temp = []
-    while items:
-        temp.append(items.pop())
-    return temp`
-
-export const warmupExplanation =
-`This code defines a function called \`reverse_stack\` that takes a list of items as input and returns a new list with the items in reverse order.
-
-First, it creates an empty list called \`temp\`.
-
-Then, it enters a loop that continues as long as there are items in the input list. In each iteration of the loop, it removes the last item from the input list using the \`pop\` method and adds it to \`temp\` using the \`append\` method. The \`pop\` method removes the last item from a list and returns it. The \`append\` method adds an item to the end of a list.
-
-Because the \`pop\` method removes items from the end of the list and the \`append\` method adds items to the end of a list, the effect of the loop is to reverse the order of the items.
-
-Finally, it returns the \`temp\` list, which now contains the items in reverse order.`
-
 export const task1Code =
-`def calculate_span(prices: list[int]) -> list[int]:
-    stack = []
-    span = [0] * len(prices)
-    for i in range(len(prices)):
-        while stack and prices[stack[-1]] <= prices[i]:
-            stack.pop()
-        if not stack:
-            span[i] = i + 1
+`def dna_sequences(pattern: str) -> list[str]:
+    dna_chars = ['A', 'C', 'G', 'T']
+    q = ['']
+    result = []
+    while len(q) > 0:
+        seq = q.pop(0)
+        if len(seq) == len(pattern):
+            result.append(seq)
         else:
-            span[i] = i - stack[-1]
-        stack.append(i)
-    return span`
+            if pattern[len(seq)] == '*':
+                for ch in dna_chars:
+                    q.append(seq + ch)
+            else:
+                q.append(seq + pattern[len(seq)])
+    return result
+dna_sequences('A*T') # Output: ['AAT', 'ACT', 'AGT', 'ATT']`
 
 export const task1Explanation = 
-`def calculate_span(prices: list[int]) -> list[int]: ### Define a function named \`calculate_span\` that takes a list of integers \`prices\` as input and returns a list of integers.
-    n = len(prices) ### Calculate the length of the input list \`prices\` and store it in the variable \`n\`.
-    span = [0] * n ### Initialize a list \`span\` of length \`n\` with all elements set to 0. This will store the span values for each day.
-    stack = [] ### Initialize an empty list \`stack\` which will be used to keep track of indices of the stock prices.
-
-    for i in range(n): ### Start a loop that iterates over each index \`i\` from 0 to n-1.
-        while stack and prices[stack[-1]] <= prices[i]: ### While the stack is not empty and the price at the index on top of the stack is less than or equal to the current price.
-            stack.pop() ### Remove the index from the top of the stack because it does not contribute to the span of the current price.
-
-        if not stack: ### If the stack is empty after the above loop, it means there are no previous prices greater than the current price.
-            span[i] = i + 1 ### Set the span for the current day to \`i + 1\` because all previous prices are less than the current price.
-        else: ### If the stack is not empty, it means there is a previous price greater than the current price.
-            span[i] = i - stack[-1] ### Set the span for the current day to the difference between the current index \`i\` and the index of the last higher price.
-
-        stack.append(i) ### Add the current index \`i\` to the stack.
-
-    return span ### Return the list \`span\` containing the span values for each day.
+`def dna_sequences(pattern: str) -> list[str]: ### Define a function named \`dna_sequences\` that takes a string \`pattern\` as input and returns a list of strings.
+    dna_chars = ['A', 'C', 'G', 'T'] ### Initialize a list \`dna_chars\` containing the characters 'A', 'C', 'G', and 'T', which represent the possible DNA bases.
+    q = [''] ### Initialize a list \`q\` with an empty string. This list will be used as a queue to generate sequences.
+    result = [] ### Initialize an empty list \`result\` to store the final DNA sequences that match the pattern.
+    while len(q) > 0: ### Start a while loop that continues as long as there are elements in the queue \`q\`.
+        seq = q.pop(0) ### Remove and return the first element from the queue \`q\`, and assign it to the variable \`seq\`.
+        if len(seq) == len(pattern): ### Check if the length of the current sequence \`seq\` is equal to the length of the pattern.
+            result.append(seq) ### If the lengths are equal, append the current sequence \`seq\` to the \`result\` list.
+        else: ### If the lengths are not equal, continue to the next steps.
+            if pattern[len(seq)] == '*': ### Check if the current character in the pattern (at the position equal to the length of \`seq\`) is a wildcard '*'.
+                for ch in dna_chars: ### If it is a wildcard, iterate over each character in \`dna_chars\`.
+                    q.append(seq + ch) ### Append the current sequence \`seq\` concatenated with the character \`ch\` to the queue \`q\`.
+            else: ### If the current character in the pattern is not a wildcard.
+                q.append(seq + pattern[len(seq)]) ### Append the current sequence \`seq\` concatenated with the current character in the pattern to the queue \`q\`.
+    return result ### After the while loop ends, return the \`result\` list containing all the generated DNA sequences.
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`calculate_span\` that calculates the stock span for each day given a list of daily stock prices. The stock span for a day is the number of consecutive days leading up to and including that day for which the stock price is not less than the price on those days.
+The provided code defines a function \`dna_sequences\` that generates all possible DNA sequences matching a given pattern. The pattern may contain specific DNA bases ('A', 'C', 'G', 'T') and wildcards ('*') that can be replaced by any of the four DNA bases.
 
-The function starts by determining the length of the input list \`prices\` and initializing a list \`span\` of the same length with all elements set to 0. It also initializes an empty list \`stack\` to keep track of indices of the stock prices.
+The function uses a breadth-first search (BFS) approach to generate the sequences. It initializes a queue with an empty string and iteratively builds sequences by appending characters according to the pattern. If the current character in the pattern is a wildcard, the function appends all possible DNA bases to the current sequence and adds them to the queue. If the character is a specific base, it appends that base to the current sequence and adds it to the queue.
 
-The function then iterates over each index \`i\` in the list \`prices\`. For each index, it uses a while loop to remove indices from the stack as long as the price at the index on top of the stack is less than or equal to the current price. This ensures that only indices of prices greater than the current price remain in the stack.
-
-If the stack is empty after the while loop, it means there are no previous prices greater than the current price, so the span for the current day is set to \`i + 1\`. If the stack is not empty, it means there is a previous price greater than the current price, so the span for the current day is set to the difference between the current index \`i\` and the index of the last higher price.
-
-Finally, the current index \`i\` is added to the stack, and after the loop completes, the function returns the list \`span\` containing the span values for each day. This approach ensures that the span for each day is calculated efficiently using a stack to keep track of relevant indices.`
+The process continues until the queue is empty, and all sequences of the same length as the pattern are collected in the \`result\` list, which is then returned.`
 
 export const task2Code =
+`def generate_parentheses(n: int, m: int) -> list[str]:
+    q = [("", 0, 0, 0, 0)]
+    result = []
+    while q:
+        s, opens, closes, max_d, cur_d = q.pop(0)
+        if len(s) == 2 * n:
+            result.append(s)
+            continue
+        else:
+            if opens < n:
+                new_max_d = max(max_d, cur_d + 1)
+                q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1))
+            if closes < opens and max_d <= m:
+                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1))
+    return result
+generate_parentheses(2, 2) # Output: ['(())', '()()']`
+
+export const task2Explanation =
+`def generate_parentheses(n: int, m: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`m\`, and returns a list of strings.
+    q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a tuple containing an empty string and four zeros. The tuple represents the current string, the number of open parentheses, the number of close parentheses, the maximum depth, and the current depth.
+    result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
+    while q: ### Start a while loop that continues as long as the queue \`q\` is not empty.
+        s, opens, closes, max_d, cur_d = q.pop(0) ### Dequeue the first element from \`q\` and unpack it into variables \`s\`, \`opens\`, \`closes\`, \`max_d\`, and \`cur_d\`.
+        if len(s) == 2 * n: ### Check if the length of the current string \`s\` is equal to \`2 * n\`. If true, it means a valid combination is formed.
+            result.append(s) ### Append the valid combination \`s\` to the \`result\` list.
+            continue ### Continue to the next iteration of the while loop.
+        else: ### If the length of \`s\` is not equal to \`2 * n\`, proceed to the next steps.
+            if opens < n: ### Check if the number of open parentheses \`opens\` is less than \`n\`.
+                new_max_d = max(max_d, cur_d + 1) ### Calculate the new maximum depth \`new_max_d\` by taking the maximum of the current maximum depth \`max_d\` and \`cur_d + 1\`.
+                q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1)) ### Enqueue a new tuple with an additional open parenthesis, incremented \`opens\`, and updated depths.
+            if closes < opens and max_d <= m: ### Check if the number of close parentheses \`closes\` is less than \`opens\` and the maximum depth \`max_d\` is less than or equal to \`m\`.
+                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1)) ### Enqueue a new tuple with an additional close parenthesis, incremented \`closes\`, and updated current depth.
+    return result ### Return the list \`result\` containing all valid combinations of parentheses.
+generate_parentheses(2, 2) ### Call the function \`generate_parentheses\` with \`n=2\` and \`m=2\` to generate all valid combinations of parentheses with these constraints. The output will be: ['(())', '()()']
+[END]
+
+[OVERALL-EXPLANATION]
+The provided code defines a function \`generate_parentheses\` that generates all valid combinations of \`n\` pairs of parentheses, ensuring that the maximum depth of nested parentheses does not exceed \`m\`. The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses.
+
+The function initializes a queue \`q\` with a tuple representing an empty string and initial values for open and close parentheses counts, maximum depth, and current depth. It also initializes an empty list \`result\` to store the valid combinations.
+
+The while loop continues as long as the queue is not empty. In each iteration, the function dequeues the first element and checks if the length of the current string is equal to \`2 * n\`. If true, it appends the string to the result list. Otherwise, it explores adding an open parenthesis if the number of open parentheses is less than \`n\`, and a close parenthesis if the number of close parentheses is less than the number of open parentheses and the maximum depth is within the allowed limit.
+
+By using BFS, the function ensures that all valid combinations are generated and stored in the result list, which is then returned. The function call \`generate_parentheses(2, 2)\` demonstrates the use case, generating the output \`['(())', '()()']\`.`
+
+export const task3Code =
 `def longest_valid_brackets(s: str) -> int:
-    map = {'(': ')', '[': ']'}
+    map = {'(': ')', '[': ']', '{': '}'}
     stack = [-1]
     max_length = 0
-    for i, char in enumerate(s):
+    for i in range(len(s)):
+        char = s[i]
         if char in map:
             stack.append(i)
         else:
@@ -78,97 +105,277 @@ export const task2Code =
                 max_length = max(max_length, i - stack[-1])
             else:
                 stack[-1] = i
-    return max_length`
+    return max_length
+print(longest_valid_brackets("(()"))  # Output: 2`
 
-export const task2Explanation =
-`
-This code defines a function called \`longest_valid_brackets\` that takes a string of parentheses as input and returns the length of the longest valid parentheses substring. 
-
-First, it creates a dictionary called \`map\` that maps opening parentheses to their corresponding closing parentheses. 
-
-Then, it initializes a list called \`stack\` with \`-1\` and a variable called \`max_length\` with \`0\`. The \`stack\` is used to keep track of the indices of the opening parentheses, and \`max_length\` is used to keep track of the maximum length of valid parentheses substring found so far.
-
-Next, it iterates over the string. For each character, if it's an opening parenthesis, it adds its index to the \`stack\`. If it's a closing parenthesis, it checks if the \`stack\` is not empty and the last element in the \`stack\` is an opening parenthesis that matches the current closing parenthesis. If both conditions are true, it removes the last element from the \`stack\` and updates \`max_length\` to be the maximum of \`max_length\` and the difference between the current index and the last element in the \`stack\`. If either condition is false, it updates the last element in the \`stack\` to be the current index.
-
-Finally, it returns \`max_length\`.
-
-This function uses a stack to keep track of the indices of the opening parentheses, and for each closing parenthesis, it tries to match it with the last opening parenthesis in the stack. If they match, it removes the last opening parenthesis from the stack and updates the maximum length of valid parentheses substring. If they don't match, it updates the last element in the stack to be the current index. This way, it ensures that every opening parenthesis has a corresponding closing parenthesis in the correct order without any mismatches.`
-
-export const task3Code =
-`def binary_numbers(n1: int, n2: int) -> list[str]:
-    result = []
-    q = ['1']
-    for i in range(n2):
-        current = q.pop(0)
-        current_int = int(current, 2)
-        if n1 <= current_int <= n2:
-            result.append(current)
-        q.append(current + '0')
-        q.append(current + '1')
-    return result
-print(binary_numbers(2, 5))`
 
 export const task3Explanation =
-`def binary_numbers(n1: int, n2: int) -> list[str]: ### Define a function named \`binary_numbers\` that takes two integers \`n1\` and \`n2\` as input and returns a list of strings.
-    result = [] ### Initialize an empty list \`result\` to store the binary numbers as strings.
-    queue = ["1"] ### Initialize a queue with the first binary number "1".
-
-    while queue: ### Start a loop that continues as long as the queue is not empty.
-        current = queue.pop(0) ### Remove and get the first element from the queue.
-        num = int(current, 2) ### Convert the binary string \`current\` to an integer \`num\`.
-
-        if num > n2: ### If the integer \`num\` is greater than \`n2\`, break the loop as we have generated all required binary numbers.
-            break
-
-        if num >= n1: ### If the integer \`num\` is between \`n1\` and \`n2\` (inclusive), add the binary string \`current\` to the result list.
-            result.append(current)
-
-        queue.append(current + "0") ### Append the next binary number by adding "0" to the current binary string.
-        queue.append(current + "1") ### Append the next binary number by adding "1" to the current binary string.
-
-    return result ### Return the list \`result\` containing the binary numbers as strings.
-print(binary_numbers(2, 5)) ### This will print the binary numbers between 2 and 5, which are ['10', '11', '100', '101'].
+`def longest_valid_brackets(s: str) -> int: ### Defines a function named \`longest_valid_brackets\` that takes a string \`s\` as input and returns an integer. The function aims to find the length of the longest valid substring of brackets.
+    map = {'(': ')', '[': ']', '{': '}'} ### Creates a dictionary \`map\` that maps opening brackets to their corresponding closing brackets. This helps in checking if a closing bracket matches the last opened bracket.
+    stack = [-1] ### Initializes a stack with a single element \`-1\`. This helps in calculating the length of valid substrings by providing a base index.
+    max_length = 0 ### Initializes \`max_length\` to 0. This variable will store the length of the longest valid substring found.
+    for i in range(len(s)): ### Starts a loop that iterates over each character in the string \`s\` using its index \`i\`.
+        char = s[i] ### Retrieves the character at index \`i\` from the string \`s\`.
+        if char in map: ### Checks if the character is an opening bracket by looking it up in the \`map\` dictionary.
+            stack.append(i) ### If it is an opening bracket, appends its index to the \`stack\`.
+        else: ### If the character is not an opening bracket, it must be a closing bracket.
+            not_empty = len(stack) > 1 ### Checks if the stack has more than one element, indicating there is an opening bracket to match.
+            last_is_open = stack[-1] != -1 and s[stack[-1]] in map ### Checks if the last element in the stack is an opening bracket.
+            is_match = last_is_open and map[s[stack[-1]]] == char ### Checks if the last opening bracket in the stack matches the current closing bracket.
+            if not_empty and is_match: ### If the stack is not empty and the brackets match:
+                stack.pop() ### Removes the last opening bracket from the stack.
+                max_length = max(max_length, i - stack[-1]) ### Updates \`max_length\` with the maximum value between the current \`max_length\` and the length of the valid substring.
+            else: ### If the stack is empty or the brackets do not match:
+                stack[-1] = i ### Updates the last element in the stack to the current index \`i\`.
+    return max_length ### Returns the length of the longest valid substring found.
+longest_valid_brackets("(()") ### Calls the function \`longest_valid_brackets\` with the input string "(()" and expects the output to be 2.
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`binary_numbers\` that generates all binary numbers between two given integers \`n1\` and \`n2\` and returns them as a list of strings. The function uses a queue to generate these binary numbers efficiently.
+The provided code defines a function \`longest_valid_brackets\` that calculates the length of the longest valid substring of brackets in a given string. The function uses a stack-based approach to keep track of the indices of opening brackets and to validate closing brackets.
 
-The function starts by initializing an empty list \`result\` to store the binary numbers as strings. It also initializes a queue with the first binary number "1".
+The function starts by defining a dictionary \`map\` to match opening brackets with their corresponding closing brackets. It also initializes a stack with a single element \`-1\` to help in calculating the lengths of valid substrings and sets \`max_length\` to 0 to store the maximum length found.
 
-The function then enters a loop that continues as long as the queue is not empty. In each iteration of the loop, it removes and gets the first element from the queue, which is a binary string. This binary string is then converted to an integer.
+The function iterates over each character in the input string using a for loop. For each character, it checks if it is an opening bracket by looking it up in the \`map\` dictionary. If it is, the index of the character is pushed onto the stack.
 
-If the integer is greater than \`n2\`, the loop breaks because all required binary numbers have been generated. If the integer is between \`n1\` and \`n2\` (inclusive), the binary string is added to the result list.
+If the character is a closing bracket, the function checks if the stack has more than one element and if the last element in the stack is an opening bracket that matches the current closing bracket. If both conditions are met, the last opening bracket is popped from the stack, and the length of the valid substring is calculated and compared with \`max_length\` to update it if necessary.
 
-The function then appends the next binary numbers by adding "0" and "1" to the current binary string and adding these new binary strings to the queue. This ensures that all binary numbers are generated in increasing order.
+If the stack is empty or the brackets do not match, the current index is pushed onto the stack to serve as a new base for future calculations.
 
-Finally, the function returns the list \`result\` containing the binary numbers as strings. This approach ensures that the binary numbers are generated efficiently using a queue.`
+Finally, the function returns the length of the longest valid substring found.
+
+The function is then called with the input string "(()", and it correctly returns 2, indicating that the longest valid substring of brackets is "()", which has a length of 2.`
 
 export const task4Code =
-`def dna_sequences(pattern: str) -> list[str]:
-    dna_chars = ["A", "C", "G", "T"]
-    q = [""]
-    result = []
-    while len(q) > 0:
-        seq = q.pop(0)
-        if len(seq) == len(pattern):
-            result.append(seq)
+`def decode_string(s: str) -> str:
+    stack = []
+    current_string = ""
+    current_num = 0
+    for char in s:
+        if char.isdigit():
+            current_num = current_num * 10 + int(char)
+        elif char == '[':
+            stack.append((current_string, current_num))
+            current_string = ""
+            current_num = 0
+        elif char == ']':
+            last_string, num = stack.pop()
+            current_string = last_string + num * current_string
         else:
-            if pattern[len(seq)] == "N":
-                for ch in dna_chars:
-                    q.append(seq + ch)
-            else:
-                q.append(seq + pattern[len(seq)])
-    return result`
+            current_string += char
+    return current_string
+decode_string('3[a]2[bc]') # Output: 'aaabcbc'`
 
 export const task4Explanation =
-`This code defines a function called \`dna_sequences\` that takes a DNA pattern as input and returns a list of all possible DNA sequences that can be generated by replacing the 'N' in the pattern with each of the four DNA bases ('A', 'C', 'G', 'T').
+`def decode_string(s: str) -> str: ### Defines a function named \`decode_string\` that takes a single argument \`s\` of type string and returns a string.
+    stack = [] ### Initializes an empty list \`stack\` to keep track of previous strings and numbers.
+    current_string = "" ### Initializes an empty string \`current_string\` to build the current decoded string.
+    current_num = 0 ### Initializes \`current_num\` to 0 to build the current number.
+    for char in s: ### Starts a for loop to iterate over each character \`char\` in the input string \`s\`.
+        if char.isdigit(): ### Checks if the current character \`char\` is a digit.
+            current_num = current_num * 10 + int(char) ### Updates \`current_num\` by multiplying it by 10 and adding the integer value of \`char\`.
+        elif char == '[': ### Checks if the current character \`char\` is an opening bracket '['.
+            stack.append((current_string, current_num)) ### Pushes a tuple of \`current_string\` and \`current_num\` onto the stack.
+            current_string = "" ### Resets \`current_string\` to an empty string.
+            current_num = 0 ### Resets \`current_num\` to 0.
+        elif char == ']': ### Checks if the current character \`char\` is a closing bracket ']'.
+            last_string, num = stack.pop() ### Pops the last tuple from the stack into \`last_string\` and \`num\`.
+            current_string = last_string + num * current_string ### Updates \`current_string\` by concatenating \`last_string\` and \`num\` repetitions of \`current_string\`.
+        else: ### If the current character \`char\` is neither a digit nor a bracket.
+            current_string += char ### Appends \`char\` to \`current_string\`.
+    return current_string ### Returns the fully decoded string \`current_string\`.
+decode_string('3[a]2[bc]') ### Calls the \`decode_string\` function with the input '3[a]2[bc]' and expects the output 'aaabcbc'.
+[END]
 
-First, it initializes a list \`dna_chars\` with the four DNA bases, an empty queue \`q\` with an empty string, and an empty list \`result\` to store the generated DNA sequences.
+[OVERALL-EXPLANATION]
+The provided code defines a function \`decode_string\` that decodes a specially encoded string. The encoding format is such that a number followed by square brackets indicates that the string inside the brackets should be repeated that many times. For example, '3[a]' means 'aaa'.
 
-Then, it enters a loop that continues until the queue is empty. In each iteration, it removes the first sequence from the queue. If the length of this sequence is equal to the length of the pattern, it means that the sequence is complete, so it adds it to the \`result\` list.
+The function uses a stack to keep track of the current string and the number of repetitions when it encounters an opening bracket '['. When it encounters a closing bracket ']', it pops the last string and number from the stack and constructs the new string by repeating the current string the specified number of times and appending it to the last string.
 
-Otherwise, it checks the character in the pattern at the position corresponding to the length of the current sequence. If this character is 'N', it means that it can be replaced by any DNA base, so it adds four new sequences to the queue, each obtained by appending one of the DNA bases to the current sequence. If the character is not 'N', it means that it is a specific DNA base, so it adds a new sequence to the queue obtained by appending this base to the current sequence.
+The function iterates over each character in the input string. If the character is a digit, it updates the current number. If it is an opening bracket, it pushes the current string and number onto the stack and resets them. If it is a closing bracket, it pops from the stack and constructs the new string. If it is a regular character, it appends it to the current string.
 
-Finally, it returns the \`result\` list.
+Finally, the function returns the fully decoded string. The example call \`decode_string('3[a]2[bc]')\` demonstrates the function's usage, which outputs 'aaabcbc'.`
 
-The queue is used to generate the DNA sequences efficiently. Instead of generating all possible sequences and then filtering out those that match the pattern, it generates and checks each sequence one by one. This way, it doesn't generate more sequences than necessary.`
+export const task5Code = `def first_char_k_times(s: str, k: int) -> str:
+    dq = []
+    char_count = {}
+    for char in s:
+        dq.append(char)
+        char_count[char] = char_count.get(char, 0) + 1
+        while dq and char_count[dq[0]] != k:
+            dq.pop(0)
+        if dq and char_count[dq[0]] == k:
+            return dq[0]
+    return ''
+first_char_k_times("aabbccddeeff", 2) # Output: a`
+
+export const task5Explanation = 
+`def first_char_k_times(s: str, k: int) -> str: ### Defines a function named \`first_char_k_times\` that takes a string \`s\` and an integer \`k\` as input and returns a string.
+    dq = [] ### Initializes an empty list \`dq\` which will be used as a queue to keep track of characters in the order they appear.
+    char_count = {} ### Initializes an empty dictionary \`char_count\` to keep track of the count of each character in the string.
+    for char in s: ### Starts a for loop to iterate over each character in the string \`s\`.
+        dq.append(char) ### Appends the current character to the end of the queue \`dq\`.
+        char_count[char] = char_count.get(char, 0) + 1 ### Updates the count of the current character in the \`char_count\` dictionary. If the character is not already in the dictionary, it initializes its count to 0 before adding 1.
+        while dq and char_count[dq[0]] != k: ### Starts a while loop that continues as long as \`dq\` is not empty and the count of the character at the front of the queue is not equal to \`k\`.
+            dq.pop(0) ### Removes the character at the front of the queue \`dq\`.
+        if dq and char_count[dq[0]] == k: ### Checks if \`dq\` is not empty and the count of the character at the front of the queue is equal to \`k\`.
+            return dq[0] ### Returns the character at the front of the queue, which is the first character to appear \`k\` times in the string.
+    return '' ### Returns an empty string if no character appears \`k\` times in the string.
+first_char_k_times("aabbccddeeff", 2) ### Calls the function \`first_char_k_times\` with the string "aabbccddeeff" and the integer 2, and prints the result, which is 'a'.
+[END]
+
+[OVERALL-EXPLANATION]
+The function \`first_char_k_times\` is designed to find the first character in a given string \`s\` that appears exactly \`k\` times. It uses a queue (\`dq\`) to keep track of the order in which characters appear and a dictionary (\`char_count\`) to count the occurrences of each character.
+
+The function iterates over each character in the string. For each character, it appends it to the queue and updates its count in the dictionary. It then checks the front of the queue to see if the character there has appeared \`k\` times. If not, it removes characters from the front of the queue until it finds one that has appeared \`k\` times or the queue becomes empty. If it finds such a character, it returns it immediately. If no character appears \`k\` times by the end of the string, the function returns an empty string.
+
+In the provided use case, the function is called with the string "aabbccddeeff" and the integer 2. The function will return 'a' because 'a' is the first character in the string to appear exactly 2 times.`
+
+export const task6Code = 
+`def sliding_window_maximum(nums: list[int], k: int) -> list[int]:
+    dq = []
+    result = []
+    for i, n in enumerate(nums):
+        if dq and dq[0] < i - k + 1:
+            dq.pop(0)
+        while dq and nums[dq[-1]] < n:
+            dq.pop()
+        dq.append(i)
+        if i >= k - 1:
+            result.append(nums[dq[0]])
+    return result
+sliding_window_maximum([1, 3, -1, -3, 5, 3, 6, 7], 3)`
+
+export const task6Explanation = 
+`def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
+    dq = [] ### Initialize an empty list \`dq\` which will be used as a deque (double-ended queue) to store indices of elements in \`nums\`. This helps in efficiently finding the maximum in the current window.
+    result = [] ### Initialize an empty list \`result\` to store the maximum values of each sliding window.
+    for i, n in enumerate(nums): ### Start a for loop to iterate over the list \`nums\` with both index \`i\` and value \`n\`.
+        if dq and dq[0] < i - k + 1: ### Check if the deque is not empty and the index at the front of the deque is out of the current window's range. If so, remove it from the deque.
+            dq.pop(0) ### Remove the index at the front of the deque because it is out of the current window's range.
+        while dq and nums[dq[-1]] < n: ### Check if the deque is not empty and the value at the index at the back of the deque is less than the current value \`n\`. If so, remove it from the deque.
+            dq.pop() ### Remove the index at the back of the deque because its corresponding value is less than the current value \`n\`.
+        dq.append(i) ### Append the current index \`i\` to the deque.
+        if i >= k - 1: ### Check if the current index \`i\` is greater than or equal to \`k - 1\`, which means the first window of size \`k\` is complete.
+            result.append(nums[dq[0]]) ### Append the value at the index at the front of the deque to the result list, as it is the maximum value in the current window.
+    return result ### Return the result list containing the maximum values of each sliding window.
+sliding_window_maximum([1,3,-1,-3,5,3,6,7], 3) ### Call the function \`sliding_window_maximum\` with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`. The expected output is \`[3, 3, 5, 5, 6, 7]\`.
+
+[END]
+
+[OVERALL-EXPLANATION]
+The provided code defines a function \`sliding_window_maximum\` that calculates the maximum value in each sliding window of size \`k\` in a given list of integers \`nums\`. The function uses a deque (double-ended queue) to efficiently keep track of the indices of elements in the current window. 
+
+The function initializes two empty lists: \`dq\` for the deque and \`result\` for storing the maximum values. It then iterates over the list \`nums\` using a for loop. During each iteration, the function performs the following steps:
+Removes indices from the front of the deque if they are out of the current window's range.
+Removes indices from the back of the deque if their corresponding values are less than the current value \`n\`.
+Appends the current index \`i\` to the deque.
+Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.
+
+Finally, the function returns the result list containing the maximum values of each sliding window. The function is called with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`, and it returns the expected output \`[3, 3, 5, 5, 6, 7]\`.`
+
+
+export const tech1WarmupExplanation = 
+`def reverse_list_with_stack(input_list: list) -> list: ### Define a function named \`reverse_list_with_stack\` that takes a list \`input_lis\` as input. The function aims to reverse the list using a stack-based approach.
+    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
+    stack = input_list[:] ### Create a copy of \`input_list\` and assign it to \`stack\`. This copy will be used as a stack to reverse the elements.
+    while stack: ### Start a while loop that continues as long as \`stack\` is not empty.
+        reversed_list.append(stack.pop()) ### Remove the last element from \`stack\` using the \`pop\` method and append it to \`reversed_list\`. This effectively reverses the order of elements.
+    return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
+reverse_list_with_stack([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_stack\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
+[END]
+
+[OVERALL-EXPLANATION]
+The provided code defines a function \`reverse_list_with_stack\` that reverses a given list \`input_list\` using a stack-based approach. The function initializes two lists: \`reversed_list\` to store the reversed elements and \`stack\` as a copy of \`input_list\` to be used as a stack.
+
+The function then enters a while loop that continues as long as \`stack\` is not empty. During each iteration of the loop, the function removes the last element from \`stack\` using the \`pop\` method and appends it to \`reversed_list\`. This process effectively reverses the order of elements.
+
+Finally, the function returns the \`reversed_list\`, which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
+
+export const tech2WarmupCode = 
+`def reverse_list_with_queue(input_list):
+    reversed_list = []
+    queue = input_list[:]
+    while queue:
+        reversed_list.insert(0, queue.pop(0))
+    return reversed_list
+reverse_list_with_queue([1, 2, 3, 4, 5])`
+
+export const tech2WarmupExplanation = 
+`def reverse_list_with_queue(input_list): ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
+    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
+    queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
+    while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
+        reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
+    return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
+reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_queue\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
+[END]
+
+[OVERALL-EXPLANATION]
+The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
+
+The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
+
+Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
+
+export const tech3WarmupCode = 
+`def is_palindrome(s: str) -> bool:
+    dq = list(s)
+    while len(dq) > 1:
+        if dq.pop(0) != dq.pop():
+            return False 
+    return True
+is_palindrome("racecar")`
+
+export const tech3WarmupExplanation = 
+`def is_palindrome(s: str) -> bool: ### Define a function named \`is_palindrome\` that takes a string \`s\` as input and returns a boolean value indicating whether the string is a palindrome. A palindrome is a string that reads the same forward and backward.
+    dq = list(s) ### Convert the input string \`s\` into a list of characters and store it in the variable \`dq\`. This list will be used as a deque (double-ended queue) to facilitate efficient removal of characters from both ends.
+    while len(dq) > 1: ### Start a while loop that continues as long as the length of the deque \`dq\` is greater than 1. This ensures that there are at least two characters to compare.
+        if dq.pop(0) != dq.pop(): ### Remove and return the first character from the deque using \`pop(0)\` and the last character using \`pop()\`. Compare these two characters. If they are not equal, the string is not a palindrome.
+            return False ### If the characters are not equal, return \`False\` immediately, indicating that the string is not a palindrome.
+    return True ### If the loop completes without finding any unequal characters, return \`True\`, indicating that the string is a palindrome.
+is_palindrome("racecar") ### Call the function \`is_palindrome\` with the string \`"racecar"\`. The expected output is \`True\` because "racecar" is a palindrome.
+[END]
+
+[OVERALL-EXPLANATION]
+The provided code defines a function \`is_palindrome\` that checks whether a given string \`s\` is a palindrome. A palindrome is a string that reads the same forward and backward. The function uses a deque (double-ended queue) to efficiently compare characters from both ends of the string.
+
+The function starts by converting the input string \`s\` into a list of characters and storing it in the variable \`dq\`. This list acts as a deque, allowing efficient removal of characters from both the front and the back.
+
+The function then enters a while loop that continues as long as the length of the deque \`dq\` is greater than 1. During each iteration of the loop, the function removes and compares the first and last characters of the deque. If these characters are not equal, the function immediately returns \`False\`, indicating that the string is not a palindrome.
+
+If the loop completes without finding any unequal characters, the function returns \`True\`, indicating that the string is a palindrome.
+
+The function is called with the string \`"racecar"\`, and it returns \`True\` because "racecar" is a palindrome.`
+
+export const tech1WarmupCode = 
+`def reverse_list_with_stack(input_list: list) -> list:
+    reversed_list = []
+    stack = input_list[:]
+    while stack:
+        reversed_list.append(stack.pop())
+    return reversed_list
+reverse_list_with_stack([1, 2, 3, 4, 5])`
+
+// export const tech1WarmupCode = 
+// `def longest_valid_brackets(s: str) -> int:
+//     map = {'(': ')', '[': ']', '{': '}'}
+//     stack = [-1]
+//     max_length = 0
+//     for i in range(len(s)):
+//         char = s[i]
+//         if char in map:
+//             stack.append(i)
+//         else:
+//             not_empty = len(stack) > 1
+//             last_is_open = stack[-1] != -1 and s[stack[-1]] in map
+//             is_match = last_is_open and map[s[stack[-1]]] == char
+//             if not_empty and is_match:
+//                 stack.pop()
+//                 max_length = max(max_length, i - stack[-1])
+//             else:
+//                 stack[-1] = i
+//     return max_length
+// print(longest_valid_brackets("(()"))  # Output: 2`
+
+

@@ -59,10 +59,11 @@ export function initPythonShell(server: http.Server) {
                         });
 
                         const code = `${importStatements.join('\n')}\ndef main():\n${otherCode.map((line: string) => '    ' + line).join('\n')}\n${TRACING_CODE}`;
-                        // console.log(code);
+                        console.log(code);
                         try {
                             fs.writeFileSync("main.py", code);
                         } catch (err) {
+                            console.log("Error", err);
                             console.error("fs: ", err);
                         }
 
@@ -80,6 +81,7 @@ export function initPythonShell(server: http.Server) {
                         );
 
                         pyshell.on("error", (err: any) => {
+                            console.log("Error", err);
                             console.error("error: ", err);
                         });
 
@@ -90,6 +92,7 @@ export function initPythonShell(server: http.Server) {
                         });
 
                         pyshell.on("pythonError", (err: any) => {
+                            console.log("Error", err);
                             let error = "";
 
                             if (err.traceback && err.traceback !== "") {

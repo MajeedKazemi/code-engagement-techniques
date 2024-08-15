@@ -19,7 +19,7 @@ import {
 import { ChatLoader } from "../loader";
 import * as monaco from "monaco-editor";
 import IconsDoc from "../docs/icons-doc";
-import { taskTrace, taskTrace2 } from "../../utils/constants";
+import { taskTrace } from "../../utils/constants";
 import { taskQuestions, taskDecompositions } from "../../utils/stepDecomposition";
 import { highlightPsudo } from "../../utils/utils";
 
@@ -570,40 +570,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     // }, [storedInput, tracing, finishedTracing]);
 
     useEffect(() => {
-        if (taskID == "2") {
-            let fElements = taskTrace2;
-            let objectArray = excutionSteps;
-
-            let minLength = Math.min(fElements.length, objectArray.length);
-
-            for (let i = 0; i < minLength; i++) {
-                objectArray[i].frame = fElements[i];
-            }
-
-            if (objectArray.length > fElements.length) {
-                let lastElement = fElements[fElements.length - 1];
-
-                for (let i = fElements.length; i < objectArray.length; i++) {
-                    objectArray[i].frame = lastElement;
-                }
-            }
-
-            if (backendCode.length > 0) {
-                // check if the current excutionstep requires input
-                let lineObjects = backendCode.split("\n");
-                if (
-                    !lineObjects[
-                        objectArray[objectArray.length - 1].currLine - 1
-                    ].includes("input(") &&
-                    objectArray.some((step) => step?.frame.length !== 0)
-                ) {
-                    // we know the tracing is done, generate questions
-                    generateQuestion();
-                }
-            }
-
-            setExcutionSteps(objectArray);
-        } else {
             let fElements: f[][] = trackOutput.map((item) => {
                 // console.log("item", item);
                 let parsedItem = JSON.parse(
@@ -672,7 +638,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             }
 
             setExcutionSteps(objectArray);
-        }
     }, [trackOutput]);
 
     useEffect(() => {

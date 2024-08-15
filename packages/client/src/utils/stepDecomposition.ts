@@ -126,7 +126,7 @@ export const taskQuestions: TaskQuestions = {
     // 0: taskQuestion0,
     // 1: taskQuestion1,
     // 2: taskQuestion2,
-    3: taskQuestion3,
+    1: taskQuestion3,
     // 4: taskQuestion4
 };
 
@@ -134,6 +134,6 @@ export const taskDecompositions: TaskDecompositions = {
     // 0: taskDecomp0,
     // 1: taskDecomp1,
     // 2: taskDecomp2,
-    3: taskDecomp3,
+    1: taskDecomp3,
     // 4: taskDecomp4
 };

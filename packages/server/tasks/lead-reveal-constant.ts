@@ -1,1139 +1,763 @@
-export const warmupDecomposition = {
-    "subgoals": [
-      {
-        "title": "Function Definition",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the input parameter type for our function?",
-                "correct-choice": "List",
-                "incorrect-choice-1": "Integer",
-                "incorrect-choice-2": "String",
-                "incorrect-choice-3": "Dictionary"
-              },
-              {
-                "mcq-question": "What should be the return type of our function?",
-                "correct-choice": "List",
-                "incorrect-choice-1": "Integer",
-                "incorrect-choice-2": "String",
-                "incorrect-choice-3": "None"
-              }
-            ],
-            "code-lines-to-be-revealed": [1]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Temporary Stack",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What data structure should we use to temporarily store the items?",
-                "correct-choice": "List",
-                "incorrect-choice-1": "Tuple",
-                "incorrect-choice-2": "Dictionary",
-                "incorrect-choice-3": "Set"
-              }
-            ],
-            "code-lines-to-be-revealed": [2]
-          }
-        ]
-      },
-      {
-        "title": "Reverse Items",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What operation should we use to remove the last item from the list?",
-                "correct-choice": "pop",
-                "incorrect-choice-1": "remove",
-                "incorrect-choice-2": "del",
-                "incorrect-choice-3": "clear"
-              },
-              {
-                "mcq-question": "How should we add the popped item to the temporary list?",
-                "correct-choice": "append",
-                "incorrect-choice-1": "insert",
-                "incorrect-choice-2": "extend",
-                "incorrect-choice-3": "add"
-              }
-            ],
-            "code-lines-to-be-revealed": [3]
-          }
-        ]
-      },
-      {
-        "title": "Return Reversed List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should we return at the end of the function?",
-                "correct-choice": "The temporary list",
-                "incorrect-choice-1": "The original list",
-                "incorrect-choice-2": "The length of the temporary list",
-                "incorrect-choice-3": "None"
-              }
-            ],
-            "code-lines-to-be-revealed": [4]
-          }
-        ]
-      }
-    ]
-  };
-
-export const task1Decomposition = {
-    "subgoals": [
-      {
-        "title": "Function Definition",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What is the appropriate data type for the input of the function?",
-                "correct-choice": "List of integers",
-                "incorrect-choice-1": "List of strings",
-                "incorrect-choice-2": "Integer",
-                "incorrect-choice-3": "String"
-              }
-            ],
-            "code-lines-to-be-revealed": [1]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Stack",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What data structure is suitable for storing the indices of the days?",
-                "correct-choice": "Stack (List)",
-                "incorrect-choice-1": "Queue",
-                "incorrect-choice-2": "Dictionary",
-                "incorrect-choice-3": "Set"
-              }
-            ],
-            "code-lines-to-be-revealed": [2]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Span List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the initial value of the span for each day?",
-                "correct-choice": "0",
-                "incorrect-choice-1": "1",
-                "incorrect-choice-2": "The price of the stock on that day",
-                "incorrect-choice-3": "The index of the day"
-              }
-            ],
-            "code-lines-to-be-revealed": [3]
-          }
-        ]
-      },
-      {
-        "title": "Iterate Over Prices",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How many times should we iterate over the prices?",
-                "correct-choice": "The number of days (length of prices)",
-                "incorrect-choice-1": "The number of days minus 1",
-                "incorrect-choice-2": "The maximum price",
-                "incorrect-choice-3": "The minimum price"
-              }
-            ],
-            "code-lines-to-be-revealed": [4]
-          }
-        ]
-      },
-      {
-        "title": "Remove Lower Prices",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "When should we remove a day from the stack?",
-                "correct-choice": "When the price on that day is less than or equal to the current price",
-                "incorrect-choice-1": "When the price on that day is greater than the current price",
-                "incorrect-choice-2": "When the price on that day is equal to the current price",
-                "incorrect-choice-3": "When the price on that day is less than the current price"
-              }
-            ],
-            "code-lines-to-be-revealed": [5, 6]
-          }
-        ]
-      },
-      {
-        "title": "Calculate Span When Stack is Empty",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the span on a day when the stack is empty?",
-                "correct-choice": "The index of the day plus 1",
-                "incorrect-choice-1": "The index of the day",
-                "incorrect-choice-2": "0",
-                "incorrect-choice-3": "The price of the stock on that day"
-              }
-            ],
-            "code-lines-to-be-revealed": [7, 8]
-          }
-        ]
-      },
-      {
-        "title": "Calculate Span When Stack is Not Empty",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the span on a day when the stack is not empty?",
-                "correct-choice": "The difference between the index of the day and the index of the top day in the stack",
-                "incorrect-choice-1": "The sum of the index of the day and the index of the top day in the stack",
-                "incorrect-choice-2": "The index of the day",
-                "incorrect-choice-3": "The index of the top day in the stack"
-              }
-            ],
-            "code-lines-to-be-revealed": [9, 10]
-          }
-        ]
-      },
-      {
-        "title": "Append Current Day to Stack",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should we append to the stack after calculating the span for a day?",
-                "correct-choice": "The index of the day",
-                "incorrect-choice-1": "The price of the stock on that day",
-                "incorrect-choice-2": "The span of the day",
-                "incorrect-choice-3": "The index of the day plus 1"
-              }
-            ],
-            "code-lines-to-be-revealed": [11]
-          }
-        ]
-      },
-      {
-        "title": "Return Span List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should the function return?",
-                "correct-choice": "The list of spans",
-                "incorrect-choice-1": "The list of prices",
-                "incorrect-choice-2": "The stack",
-                "incorrect-choice-3": "The length of the list of spans"
-              }
-            ],
-            "code-lines-to-be-revealed": [12]
-          }
-        ]
-      }
-    ]
-  }
+export const task1Decomposition = {}
 
 export const task2Decomposition = {
-    "subgoals": [
-      {
-        "title": "Function Definition",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What is the appropriate data type for the input of the function?",
-                "correct-choice": "String",
-                "incorrect-choice-1": "List of strings",
-                "incorrect-choice-2": "Integer",
-                "incorrect-choice-3": "List of integers"
-              }
-            ],
-            "code-lines-to-be-revealed": [1]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Map",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What data structure is suitable for mapping open brackets to their corresponding close brackets?",
-                "correct-choice": "Dictionary",
-                "incorrect-choice-1": "List",
-                "incorrect-choice-2": "Set",
-                "incorrect-choice-3": "Tuple"
-              }
-            ],
-            "code-lines-to-be-revealed": [2]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Stack",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the initial value of the stack?",
-                "correct-choice": "[-1]",
-                "incorrect-choice-1": "[0]",
-                "incorrect-choice-2": "[]",
-                "incorrect-choice-3": "[1]"
-              }
-            ],
-            "code-lines-to-be-revealed": [3]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Max Length",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the initial value of the max length?",
-                "correct-choice": "0",
-                "incorrect-choice-1": "1",
-                "incorrect-choice-2": "-1",
-                "incorrect-choice-3": "The length of the string"
-              }
-            ],
-            "code-lines-to-be-revealed": [4]
-          }
-        ]
-      },
-      {
-        "title": "Iterate Over Characters",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How many times should we iterate over the characters?",
-                "correct-choice": "The length of the string",
-                "incorrect-choice-1": "The length of the string minus 1",
-                "incorrect-choice-2": "The length of the string plus 1",
-                "incorrect-choice-3": "Twice the length of the string"
-              }
-            ],
-            "code-lines-to-be-revealed": [5]
-          }
-        ]
-      },
-      {
-        "title": "Check If Character Is Open Bracket",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How can we check if a character is an open bracket?",
-                "correct-choice": "If the character is in the map",
-                "incorrect-choice-1": "If the character is not in the map",
-                "incorrect-choice-2": "If the character is equal to '(' or '['",
-                "incorrect-choice-3": "If the character is equal to ')' or ']'"
-              }
-            ],
-            "code-lines-to-be-revealed": [6]
-          }
-        ]
-      },
-      {
-        "title": "Append Index to Stack",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should we append to the stack if a character is an open bracket?",
-                "correct-choice": "The index of the character",
-                "incorrect-choice-1": "The character itself",
-                "incorrect-choice-2": "The corresponding close bracket",
-                "incorrect-choice-3": "The index of the character plus 1"
-              }
-            ],
-            "code-lines-to-be-revealed": [7]
-          }
-        ]
-      },
-      {
-        "title": "Check If Stack Is Not Empty",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How can we check if the stack is not empty?",
-                "correct-choice": "If the length of the stack is greater than 1",
-                "incorrect-choice-1": "If the length of the stack is less than 1",
-                "incorrect-choice-2": "If the length of the stack is equal to 1",
-                "incorrect-choice-3": "If the length of the stack is equal to 0"
-              }
-            ],
-            "code-lines-to-be-revealed": [8, 9]
-          }
-        ]
-      },
-      {
-        "title": "Check If Last Character Is Open Bracket",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How can we check if the last character in the stack is an open bracket?",
-                "correct-choice": "If the last character in the stack is in the map",
-                "incorrect-choice-1": "If the last character in the stack is not in the map",
-                "incorrect-choice-2": "If the last character in the stack is equal to '(' or '['",
-                "incorrect-choice-3": "If the last character in the stack is equal to ')' or ']'"
-              }
-            ],
-            "code-lines-to-be-revealed": [10]
-          }
-        ]
-      },
-      {
-        "title": "Check If Character Matches Last Open Bracket",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How can we check if a character matches the last open bracket in the stack?",
-                "correct-choice": "If the character is equal to the value of the last open bracket in the map",
-                "incorrect-choice-1": "If the character is not equal to the value of the last open bracket in the map",
-                "incorrect-choice-2": "If the character is equal to the last open bracket",
-                "incorrect-choice-3": "If the character is not equal to the last open bracket"
-              }
-            ],
-            "code-lines-to-be-revealed": [11, 12]
-          }
-        ]
-      },
-      {
-        "title": "Remove Last Open Bracket",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should we do if a character matches the last open bracket in the stack?",
-                "correct-choice": "Remove the last open bracket from the stack",
-                "incorrect-choice-1": "Append the character to the stack",
-                "incorrect-choice-2": "Remove the character from the string",
-                "incorrect-choice-3": "Append the index of the character to the stack"
-              }
-            ],
-            "code-lines-to-be-revealed": [13]
-          }
-        ]
-      },
-      {
-        "title": "Update Max Length",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "How can we update the max length?",
-                "correct-choice": "Set it to the maximum of the current max length and the difference between the current index and the last index in the stack",
-                "incorrect-choice-1": "Set it to the minimum of the current max length and the difference between the current index and the last index in the stack",
-                "incorrect-choice-2": "Set it to the current index minus the last index in the stack",
-                "incorrect-choice-3": "Set it to the current index plus the last index in the stack"
-              }
-            ],
-            "code-lines-to-be-revealed": [14]
-          }
-        ]
-      },
-      {
-        "title": "Update Last Index",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should we do if a character does not match the last open bracket in the stack or the stack is empty?",
-                "correct-choice": "Set the last index in the stack to the current index",
-                "incorrect-choice-1": "Append the current index to the stack",
-                "incorrect-choice-2": "Remove the last index from the stack",
-                "incorrect-choice-3": "Set the last index in the stack to the current index plus 1"
-              }
-            ],
-            "code-lines-to-be-revealed": [15, 16]
-          }
-        ]
-      },
-      {
-        "title": "Return Max Length",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should the function return?",
-                "correct-choice": "The max length",
-                "incorrect-choice-1": "The string",
-                "incorrect-choice-2": "The stack",
-                "incorrect-choice-3": "The map"
-              }
-            ],
-            "code-lines-to-be-revealed": [17]
-          }
-        ]
-      }
-    ]
-}
-
-export const task3Decomposition = {
   "subgoals": [
     {
-      "title": "Define the function and initialize result list",
+      "title": "Define the function with appropriate parameters",
       "indent-level": 0,
       "leading-questions": [
         {
-          "context": "We need to define a function that takes two integers as input.",
-          "short-answer-question": "What should be the name of the function and its parameters?",
-          "mcq-question": "What should be the name of the function and its parameters?",
-          "correct-choice": "binary_numbers(n1, n2)",
-          "incorrect-choice-1": "binary_range(start, end)",
-          "incorrect-choice-2": "generate_binary_numbers(a, b)",
-          "incorrect-choice-3": "binary_list(x, y)",
-          "short-answer-solution": "The function should be named binary_numbers and it should take two parameters: n1 and n2, both of which are integers.",
-          "selected-question": "short",
+          "context": "We need to define a function that generates well-formed parentheses combinations.",
+          "short-answer-question": "What parameters should the function take to generate parentheses combinations?",
+          "mcq-question": "What parameters should the function take to generate parentheses combinations?",
+          "correct-choice": "n and m",
+          "incorrect-choice-1": "n and k",
+          "incorrect-choice-2": "m and k",
+          "incorrect-choice-3": "n and p",
+          "short-answer-solution": "The function should take two parameters: n (number of pairs of parentheses) and m (maximum nesting level).",
+          "selected-question": "mcq",
           "code-line-to-be-revealed": 1,
-          "hint-if-incorrect": "Think about the task description and the required inputs.",
-          "explanation-after-correct-answer": "The function is named binary_numbers and it takes two integer parameters, n1 and n2."
-        },
+          "hint-if-incorrect": "Think about the requirements: number of pairs and maximum nesting level.",
+          "explanation-after-correct-answer": "The function is defined with parameters n and m to generate combinations of well-formed parentheses with constraints on nesting."
+        }
+      ]
+    },
+    {
+      "title": "Initialize the queue and result list",
+      "indent-level": 1,
+      "leading-questions": [
         {
-          "context": "We have defined the function. Now, we need to initialize an empty list to store the result.",
-          "short-answer-question": "What should be the initial value of the result list?",
-          "mcq-question": "What should be the initial value of the result list?",
-          "correct-choice": "An empty list",
-          "incorrect-choice-1": "A list with one element",
-          "incorrect-choice-2": "A list with two elements",
-          "incorrect-choice-3": "A list with n1 and n2",
-          "short-answer-solution": "The result list should be initialized as an empty list because we will be appending binary numbers to it later.",
+          "context": "We need to initialize the queue and result list to start generating combinations.",
+          "short-answer-question": "What should be the initial state of the queue?",
+          "mcq-question": "What should be the initial state of the queue?",
+          "correct-choice": "An empty string with counters set to 0",
+          "incorrect-choice-1": "A string with one open parenthesis",
+          "incorrect-choice-2": "A string with one close parenthesis",
+          "incorrect-choice-3": "A string with n open parentheses",
+          "short-answer-solution": "The initial state of the queue should be an empty string with counters for open, close, max depth, and current depth all set to 0.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 2,
-          "hint-if-incorrect": "Consider what the result list is supposed to store initially.",
-          "explanation-after-correct-answer": "The result list is initialized as an empty list to store the binary numbers that will be generated."
-        }
-      ]
-    },
-    {
-      "title": "Initialize the queue with the first binary number",
-      "indent-level": 1,
-      "leading-questions": [
-        {
-          "context": "We have initialized the result list. Now, we need to initialize a queue to generate binary numbers.",
-          "short-answer-question": "What should be the initial value of the queue?",
-          "mcq-question": "What should be the initial value of the queue?",
-          "correct-choice": "A list with the string '1'",
-          "incorrect-choice-1": "An empty list",
-          "incorrect-choice-2": "A list with the string '0'",
-          "incorrect-choice-3": "A list with the integers 0 and 1",
-          "short-answer-solution": "The queue should be initialized with the string '1' because we start generating binary numbers from '1'.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 3,
-          "hint-if-incorrect": "Think about the first binary number that should be generated.",
-          "explanation-after-correct-answer": "The queue is initialized with the string '1' to start generating binary numbers from '1'."
-        }
-      ]
-    },
-    {
-      "title": "Iterate to generate binary numbers up to n2",
-      "indent-level": 1,
-      "leading-questions": [
-        {
-          "context": "We have initialized the queue. Now, we need to iterate to generate binary numbers.",
-          "short-answer-question": "How many times should we iterate to generate binary numbers?",
-          "mcq-question": "How many times should we iterate to generate binary numbers?",
-          "correct-choice": "n2 times",
-          "incorrect-choice-1": "n1 times",
-          "incorrect-choice-2": "n2 - n1 times",
-          "incorrect-choice-3": "n1 + n2 times",
-          "short-answer-solution": "We should iterate n2 times because we need to generate binary numbers up to n2.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 4,
-          "hint-if-incorrect": "Consider the range of binary numbers we need to generate.",
-          "explanation-after-correct-answer": "We iterate n2 times to generate binary numbers up to n2."
-        }
-      ]
-    },
-    {
-      "title": "Pop the first element from the queue",
-      "indent-level": 2,
-      "leading-questions": [
-        {
-          "context": "We are iterating to generate binary numbers. Now, we need to process the first element in the queue.",
-          "short-answer-question": "What operation should we perform on the queue to get the first element?",
-          "mcq-question": "What operation should we perform on the queue to get the first element?",
-          "correct-choice": "Pop the first element",
-          "incorrect-choice-1": "Append a new element",
-          "incorrect-choice-2": "Remove the last element",
-          "incorrect-choice-3": "Insert a new element at the beginning",
-          "short-answer-solution": "We should pop the first element from the queue to process it and generate new binary numbers.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 5,
-          "hint-if-incorrect": "Think about how to access the first element in a queue.",
-          "explanation-after-correct-answer": "We pop the first element from the queue to process it and generate new binary numbers."
-        }
-      ]
-    },
-    {
-      "title": "Convert the binary string to an integer",
-      "indent-level": 2,
-      "leading-questions": [
-        {
-          "context": "We have popped the first element from the queue. Now, we need to convert it to an integer.",
-          "short-answer-question": "How do we convert a binary string to an integer in Python?",
-          "mcq-question": "How do we convert a binary string to an integer in Python?",
-          "correct-choice": "Using int() with base 2",
-          "incorrect-choice-1": "Using float()",
-          "incorrect-choice-2": "Using str()",
-          "incorrect-choice-3": "Using bin()",
-          "short-answer-solution": "We use the int() function with base 2 to convert a binary string to an integer in Python.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 6,
-          "hint-if-incorrect": "Consider the function that converts strings to integers with a specified base.",
-          "explanation-after-correct-answer": "We use the int() function with base 2 to convert the binary string to an integer."
-        }
-      ]
-    },
-    {
-      "title": "Check if the integer is within the range",
-      "indent-level": 2,
-      "leading-questions": [
-        {
-          "context": "We have converted the binary string to an integer. Now, we need to check if it is within the range [n1, n2].",
-          "short-answer-question": "What condition should we check to see if the integer is within the range?",
-          "mcq-question": "What condition should we check to see if the integer is within the range?",
-          "correct-choice": "n1 <= current_int <= n2",
-          "incorrect-choice-1": "n1 < current_int < n2",
-          "incorrect-choice-2": "n1 >= current_int >= n2",
-          "incorrect-choice-3": "n1 == current_int == n2",
-          "short-answer-solution": "We should check if n1 <= current_int <= n2 to see if the integer is within the range.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 7,
-          "hint-if-incorrect": "Consider the range [n1, n2] and how to check if a number is within it.",
-          "explanation-after-correct-answer": "We check if n1 <= current_int <= n2 to see if the integer is within the specified range."
-        }
-      ]
-    },
-    {
-      "title": "Append the binary string to the result list",
-      "indent-level": 3,
-      "leading-questions": [
-        {
-          "context": "We have checked if the integer is within the range. Now, we need to append the binary string to the result list if it is within the range.",
-          "short-answer-question": "What should we do if the integer is within the range?",
-          "mcq-question": "What should we do if the integer is within the range?",
-          "correct-choice": "Append the binary string to the result list",
-          "incorrect-choice-1": "Remove the binary string from the queue",
-          "incorrect-choice-2": "Convert the binary string to a float",
-          "incorrect-choice-3": "Ignore the binary string",
-          "short-answer-solution": "If the integer is within the range, we should append the binary string to the result list.",
-          "selected-question": "short",
-          "code-line-to-be-revealed": 8,
-          "hint-if-incorrect": "Consider what we need to do with valid binary numbers.",
-          "explanation-after-correct-answer": "We append the binary string to the result list if the integer is within the specified range."
-        }
-      ]
-    },
-    {
-      "title": "Generate new binary numbers and add to the queue",
-      "indent-level": 3,
-      "leading-questions": [
-        {
-          "context": "We have appended the binary string to the result list if it is within the range. Now, we need to generate new binary numbers.",
-          "short-answer-question": "How do we generate new binary numbers from the current binary string?",
-          "mcq-question": "How do we generate new binary numbers from the current binary string?",
-          "correct-choice": "Append '0' and '1' to the current string",
-          "incorrect-choice-1": "Prepend '0' and '1' to the current string",
-          "incorrect-choice-2": "Replace '0' with '1' in the current string",
-          "incorrect-choice-3": "Remove the last character from the current string",
-          "short-answer-solution": "We generate new binary numbers by appending '0' and '1' to the current binary string.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 9,
-          "hint-if-incorrect": "Consider how binary numbers are generated from a given binary string.",
-          "explanation-after-correct-answer": "We generate new binary numbers by appending '0' and '1' to the current binary string."
+          "hint-if-incorrect": "Consider the starting point for generating combinations.",
+          "explanation-after-correct-answer": "The queue is initialized with an empty string and counters for open, close, max depth, and current depth all set to 0."
         },
         {
-          "context": "We have generated a new binary number by appending '0' to the current string. Now, we need to generate another binary number.",
-          "short-answer-question": "What should we append to the current string to generate another binary number?",
-          "mcq-question": "What should we append to the current string to generate another binary number?",
-          "correct-choice": "Append '1' to the current string",
-          "incorrect-choice-1": "Append '2' to the current string",
-          "incorrect-choice-2": "Append '0' to the current string",
-          "incorrect-choice-3": "Append '11' to the current string",
-          "short-answer-solution": "We should append '1' to the current string to generate another binary number.",
+          "context": "We need to initialize the result list to store the final combinations.",
+          "short-answer-question": "What should be the initial state of the result list?",
+          "mcq-question": "What should be the initial state of the result list?",
+          "correct-choice": "An empty list",
+          "incorrect-choice-1": "A list with one empty string",
+          "incorrect-choice-2": "A list with one open parenthesis",
+          "incorrect-choice-3": "A list with n open parentheses",
+          "short-answer-solution": "The initial state of the result list should be an empty list to store the final combinations.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Consider where the final combinations will be stored.",
+          "explanation-after-correct-answer": "The result list is initialized as an empty list to store the final combinations of well-formed parentheses."
+        }
+      ]
+    },
+    {
+      "title": "Process the queue until it's empty",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to process the queue to generate combinations until it's empty.",
+          "short-answer-question": "What loop structure should be used to process the queue?",
+          "mcq-question": "What loop structure should be used to process the queue?",
+          "correct-choice": "A while loop",
+          "incorrect-choice-1": "A for loop",
+          "incorrect-choice-2": "A do-while loop",
+          "incorrect-choice-3": "A recursive function",
+          "short-answer-solution": "A while loop should be used to process the queue until it's empty.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Consider a loop that continues until a condition is met.",
+          "explanation-after-correct-answer": "A while loop is used to process the queue until it's empty, ensuring all combinations are generated."
+        }
+      ]
+    },
+    {
+      "title": "Pop an element from the queue",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to pop an element from the queue to process it.",
+          "short-answer-question": "What method should be used to pop an element from the queue?",
+          "mcq-question": "What method should be used to pop an element from the queue?",
+          "correct-choice": "pop(0)",
+          "incorrect-choice-1": "pop()",
+          "incorrect-choice-2": "remove()",
+          "incorrect-choice-3": "del()",
+          "short-answer-solution": "The pop(0) method should be used to pop the first element from the queue.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Consider the method that removes the first element.",
+          "explanation-after-correct-answer": "The pop(0) method is used to remove and return the first element from the queue for processing."
+        }
+      ]
+    },
+    {
+      "title": "Check if the current string length equals 2*n",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to check if the current string length equals 2*n to determine if it's a complete combination.",
+          "short-answer-question": "What condition should be checked to determine if the string is complete?",
+          "mcq-question": "What condition should be checked to determine if the string is complete?",
+          "correct-choice": "len(s) == 2 * n",
+          "incorrect-choice-1": "len(s) == n",
+          "incorrect-choice-2": "len(s) == m",
+          "incorrect-choice-3": "len(s) == n + m",
+          "short-answer-solution": "The condition len(s) == 2 * n should be checked to determine if the string is a complete combination.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Consider the total number of parentheses in a complete combination.",
+          "explanation-after-correct-answer": "The condition len(s) == 2 * n checks if the current string has the correct number of parentheses to be a complete combination."
+        }
+      ]
+    },
+    {
+      "title": "Add the complete combination to the result list",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We need to add the complete combination to the result list.",
+          "short-answer-question": "What should be done with the complete combination?",
+          "mcq-question": "What should be done with the complete combination?",
+          "correct-choice": "Add it to the result list",
+          "incorrect-choice-1": "Print it",
+          "incorrect-choice-2": "Discard it",
+          "incorrect-choice-3": "Store it in a temporary variable",
+          "short-answer-solution": "The complete combination should be added to the result list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Consider where the final combinations are stored.",
+          "explanation-after-correct-answer": "The complete combination is added to the result list to store it for the final output."
+        }
+      ]
+    },
+    {
+      "title": "Continue to the next iteration if the string is complete",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We need to continue to the next iteration if the string is complete.",
+          "short-answer-question": "What should be done after adding the complete combination to the result list?",
+          "mcq-question": "What should be done after adding the complete combination to the result list?",
+          "correct-choice": "Continue to the next iteration",
+          "incorrect-choice-1": "Break the loop",
+          "incorrect-choice-2": "Return the result list",
+          "incorrect-choice-3": "Restart the loop",
+          "short-answer-solution": "After adding the complete combination to the result list, we should continue to the next iteration.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 8,
+          "hint-if-incorrect": "Consider what to do after processing a complete combination.",
+          "explanation-after-correct-answer": "The continue statement is used to skip the remaining code in the current iteration and move to the next iteration."
+        }
+      ]
+    },
+    {
+      "title": "Handle the case where the string is not complete",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to handle the case where the string is not complete.",
+          "short-answer-question": "What should be done if the string is not complete?",
+          "mcq-question": "What should be done if the string is not complete?",
+          "correct-choice": "Generate new combinations",
+          "incorrect-choice-1": "Discard the string",
+          "incorrect-choice-2": "Print the string",
+          "incorrect-choice-3": "Store it in a temporary variable",
+          "short-answer-solution": "If the string is not complete, we should generate new combinations by adding open or close parentheses.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 9,
+          "hint-if-incorrect": "Consider what to do with incomplete combinations.",
+          "explanation-after-correct-answer": "If the string is not complete, we need to generate new combinations by adding open or close parentheses."
+        }
+      ]
+    },
+    {
+      "title": "Check if more open parentheses can be added",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We need to check if more open parentheses can be added to the current string.",
+          "short-answer-question": "What condition should be checked to add more open parentheses?",
+          "mcq-question": "What condition should be checked to add more open parentheses?",
+          "correct-choice": "opens < n",
+          "incorrect-choice-1": "opens < m",
+          "incorrect-choice-2": "opens < 2 * n",
+          "incorrect-choice-3": "opens < closes",
+          "short-answer-solution": "The condition opens < n should be checked to determine if more open parentheses can be added.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 10,
-          "hint-if-incorrect": "Consider the next binary number after appending '0'.",
-          "explanation-after-correct-answer": "We append '1' to the current string to generate another binary number."
+          "hint-if-incorrect": "Consider the maximum number of open parentheses allowed.",
+          "explanation-after-correct-answer": "The condition opens < n checks if the number of open parentheses is less than the maximum allowed, allowing us to add more."
         }
       ]
     },
     {
-      "title": "Return the result list",
-      "indent-level": 0,
+      "title": "Calculate the new maximum depth",
+      "indent-level": 4,
       "leading-questions": [
         {
-          "context": "We have generated all the required binary numbers and stored them in the result list. Now, we need to return the result list.",
-          "short-answer-question": "What should the function return?",
-          "mcq-question": "What should the function return?",
-          "correct-choice": "The result list",
-          "incorrect-choice-1": "The queue",
-          "incorrect-choice-2": "The last binary number",
-          "incorrect-choice-3": "The input parameters",
-          "short-answer-solution": "The function should return the result list containing all the binary numbers within the specified range.",
+          "context": "We need to calculate the new maximum depth if an open parenthesis is added.",
+          "short-answer-question": "How should the new maximum depth be calculated?",
+          "mcq-question": "How should the new maximum depth be calculated?",
+          "correct-choice": "max(max_d, cur_d + 1)",
+          "incorrect-choice-1": "max(max_d, cur_d)",
+          "incorrect-choice-2": "max(max_d + 1, cur_d)",
+          "incorrect-choice-3": "max(max_d, cur_d - 1)",
+          "short-answer-solution": "The new maximum depth should be calculated as max(max_d, cur_d + 1) to account for the added open parenthesis.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 11,
-          "hint-if-incorrect": "Consider what we have been storing the binary numbers in.",
-          "explanation-after-correct-answer": "The function returns the result list containing all the binary numbers within the specified range."
+          "hint-if-incorrect": "Consider how the depth changes when an open parenthesis is added.",
+          "explanation-after-correct-answer": "The new maximum depth is calculated as max(max_d, cur_d + 1) to account for the added open parenthesis, ensuring the depth is updated correctly."
         }
       ]
     },
     {
-      "title": "Test the function with sample input",
-      "indent-level": 0,
+      "title": "Add a new state with an open parenthesis to the queue",
+      "indent-level": 4,
       "leading-questions": [
         {
-          "context": "We have defined the function. Now, we need to test it with sample input.",
-          "short-answer-question": "What sample input should we use to test the function?",
-          "mcq-question": "What sample input should we use to test the function?",
-          "correct-choice": "binary_numbers(2, 5)",
-          "incorrect-choice-1": "binary_numbers(1, 3)",
-          "incorrect-choice-2": "binary_numbers(0, 4)",
-          "incorrect-choice-3": "binary_numbers(3, 6)",
-          "short-answer-solution": "An example input we could use to test the function is by passing any two integers that fall within the valid range expected by the function.",
-          "selected-question": "short",
+          "context": "We need to add a new state with an open parenthesis to the queue.",
+          "short-answer-question": "What should be added to the queue when an open parenthesis is added?",
+          "mcq-question": "What should be added to the queue when an open parenthesis is added?",
+          "correct-choice": "New state with updated counters",
+          "incorrect-choice-1": "New state with only the string updated",
+          "incorrect-choice-2": "New state with only the counters updated",
+          "incorrect-choice-3": "New state with the same counters",
+          "short-answer-solution": "A new state with the updated string and counters should be added to the queue when an open parenthesis is added.",
+          "selected-question": "mcq",
           "code-line-to-be-revealed": 12,
-          "hint-if-incorrect": "Consider a simple way to see the output of the function.",
-          "explanation-after-correct-answer": "We call the function with example inputs and print the result to verify its correctness."
+          "hint-if-incorrect": "Consider what needs to be updated when adding an open parenthesis.",
+          "explanation-after-correct-answer": "A new state with the updated string and counters is added to the queue when an open parenthesis is added, allowing further combinations to be generated."
+        }
+      ]
+    },
+    {
+      "title": "Check if more close parentheses can be added",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We need to check if more close parentheses can be added to the current string.",
+          "short-answer-question": "What conditions should be checked to add more close parentheses?",
+          "mcq-question": "What conditions should be checked to add more close parentheses?",
+          "correct-choice": "closes < opens and max_d <= m",
+          "incorrect-choice-1": "closes < n and max_d <= m",
+          "incorrect-choice-2": "closes < opens and max_d < m",
+          "incorrect-choice-3": "closes < n and max_d < m",
+          "short-answer-solution": "The conditions closes < opens and max_d <= m should be checked to determine if more close parentheses can be added.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 13,
+          "hint-if-incorrect": "Consider the conditions for adding a close parenthesis.",
+          "explanation-after-correct-answer": "The conditions closes < opens and max_d <= m ensure that more close parentheses can be added without violating the constraints."
+        }
+      ]
+    },
+    {
+      "title": "Add a new state with a close parenthesis to the queue",
+      "indent-level": 4,
+      "leading-questions": [
+        {
+          "context": "We need to add a new state with a close parenthesis to the queue.",
+          "short-answer-question": "What should be added to the queue when a close parenthesis is added?",
+          "mcq-question": "What should be added to the queue when a close parenthesis is added?",
+          "correct-choice": "New state with updated counters",
+          "incorrect-choice-1": "New state with only the string updated",
+          "incorrect-choice-2": "New state with only the counters updated",
+          "incorrect-choice-3": "New state with the same counters",
+          "short-answer-solution": "A new state with the updated string and counters should be added to the queue when a close parenthesis is added.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 14,
+          "hint-if-incorrect": "Consider what needs to be updated when adding a close parenthesis.",
+          "explanation-after-correct-answer": "A new state with the updated string and counters is added to the queue when a close parenthesis is added, allowing further combinations to be generated."
+        }
+      ]
+    },
+    {
+      "title": "Return the result list with all combinations",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to return the result list containing all the generated combinations.",
+          "short-answer-question": "What should be returned at the end of the function?",
+          "mcq-question": "What should be returned at the end of the function?",
+          "correct-choice": "The result list",
+          "incorrect-choice-1": "The queue",
+          "incorrect-choice-2": "The last state",
+          "incorrect-choice-3": "The initial state",
+          "short-answer-solution": "The result list containing all the generated combinations should be returned at the end of the function.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 15,
+          "hint-if-incorrect": "Consider where the final combinations are stored.",
+          "explanation-after-correct-answer": "The result list containing all the generated combinations is returned at the end of the function, providing the final output."
+        }
+      ]
+    },
+    {
+      "title": "Test the function with an example",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to test the function with an example to verify its correctness.",
+          "short-answer-question": "What example can be used to test the function?",
+          "mcq-question": "What example can be used to test the function?",
+          "correct-choice": "generate_parentheses(2, 2)",
+          "incorrect-choice-1": "generate_parentheses(3, 3)",
+          "incorrect-choice-2": "generate_parentheses(1, 1)",
+          "incorrect-choice-3": "generate_parentheses(2, 1)",
+          "short-answer-solution": "The example generate_parentheses(2, 2) can be used to test the function and verify its correctness.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 16,
+          "hint-if-incorrect": "Consider a simple example with small values for n and m.",
+          "explanation-after-correct-answer": "The example generate_parentheses(2, 2) is used to test the function and verify its correctness, ensuring it generates the expected output."
         }
       ]
     }
   ]
-};
+}
 
-// export const task3Decomposition = {
-//   "subgoals": [
-//     {
-//       "title": "Define the function and its parameters",
-//       "indent-level": 0,
-//       "leading-questions": [
-//         {
-//           "context": "We need to define a function that takes two integers as input.",
-//           "short-answer-question": "Why is it important to specify the parameter types in the function definition?",
-//           "mcq-question": "What should the function return?",
-//           "correct-choice": "A list of binary strings",
-//           "incorrect-choice-1": "A single binary string",
-//           "incorrect-choice-2": "A list of integers",
-//           "incorrect-choice-3": "A single integer",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 1,
-//           "hint-if-incorrect": "Think about the task description and what the function is supposed to generate.",
-//           "explanation-after-correct-answer": "The function definition specifies that it takes two integers and returns a list of binary strings, which aligns with the task requirements."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Initialize the result list",
-//       "indent-level": 1,
-//       "leading-questions": [
-//         {
-//           "context": "After defining the function, we need to initialize an empty list to store the results.",
-//           "short-answer-question": "Why do we need an empty list at the beginning of the function?",
-//           "mcq-question": "What is the purpose of the result list?",
-//           "correct-choice": "To store the binary numbers",
-//           "incorrect-choice-1": "To store the input numbers",
-//           "incorrect-choice-2": "To store intermediate calculations",
-//           "incorrect-choice-3": "To store error messages",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 2,
-//           "hint-if-incorrect": "Think about where we will store the binary numbers that fall within the given range.",
-//           "explanation-after-correct-answer": "The result list is initialized to store the binary numbers that fall within the range specified by n1 and n2."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Initialize the queue with the first binary number",
-//       "indent-level": 1,
-//       "leading-questions": [
-//         {
-//           "context": "We need to use a queue to generate binary numbers efficiently.",
-//           "short-answer-question": "Why do we start the queue with the string '1'?",
-//           "mcq-question": "What is the initial value of the queue?",
-//           "correct-choice": "['1']",
-//           "incorrect-choice-1": "['0']",
-//           "incorrect-choice-2": "['10']",
-//           "incorrect-choice-3": "['11']",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 3,
-//           "hint-if-incorrect": "Consider the smallest binary number greater than zero.",
-//           "explanation-after-correct-answer": "The queue is initialized with the string '1' because it is the smallest binary number greater than zero."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Iterate to generate binary numbers",
-//       "indent-level": 1,
-//       "leading-questions": [
-//         {
-//           "context": "We need to iterate to generate binary numbers up to n2.",
-//           "short-answer-question": "Why do we use a loop to generate binary numbers?",
-//           "mcq-question": "How many times should the loop run?",
-//           "correct-choice": "n2 times",
-//           "incorrect-choice-1": "n1 times",
-//           "incorrect-choice-2": "n2 - n1 times",
-//           "incorrect-choice-3": "n2 + n1 times",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 4,
-//           "hint-if-incorrect": "Think about the range of binary numbers we need to generate.",
-//           "explanation-after-correct-answer": "The loop runs n2 times to ensure we generate enough binary numbers to cover the range from n1 to n2."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Pop the first element from the queue",
-//       "indent-level": 2,
-//       "leading-questions": [
-//         {
-//           "context": "Within the loop, we need to process the first element in the queue.",
-//           "short-answer-question": "Why do we pop the first element from the queue?",
-//           "mcq-question": "What operation is used to remove the first element from the queue?",
-//           "correct-choice": "pop(0)",
-//           "incorrect-choice-1": "pop()",
-//           "incorrect-choice-2": "remove(0)",
-//           "incorrect-choice-3": "del q[0]",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 5,
-//           "hint-if-incorrect": "Consider how queues typically operate (FIFO).",
-//           "explanation-after-correct-answer": "We use pop(0) to remove the first element from the queue, following the FIFO (First In, First Out) principle."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Convert the binary string to an integer",
-//       "indent-level": 2,
-//       "leading-questions": [
-//         {
-//           "context": "After popping the first element, we need to convert it from a binary string to an integer.",
-//           "short-answer-question": "Why do we need to convert the binary string to an integer?",
-//           "mcq-question": "Which function converts a binary string to an integer?",
-//           "correct-choice": "int(current, 2)",
-//           "incorrect-choice-1": "int(current)",
-//           "incorrect-choice-2": "bin(current)",
-//           "incorrect-choice-3": "str(current, 2)",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 6,
-//           "hint-if-incorrect": "Consider how to specify the base of the number system.",
-//           "explanation-after-correct-answer": "We use int(current, 2) to convert the binary string to an integer, specifying base 2."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Check if the integer is within the range",
-//       "indent-level": 2,
-//       "leading-questions": [
-//         {
-//           "context": "We need to check if the converted integer falls within the specified range.",
-//           "short-answer-question": "Why is it important to check if the integer is within the range?",
-//           "mcq-question": "What condition checks if the integer is within the range?",
-//           "correct-choice": "n1 <= current_int <= n2",
-//           "incorrect-choice-1": "n1 < current_int < n2",
-//           "incorrect-choice-2": "n1 <= current_int < n2",
-//           "incorrect-choice-3": "n1 < current_int <= n2",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 7,
-//           "hint-if-incorrect": "Consider the inclusive nature of the range.",
-//           "explanation-after-correct-answer": "The condition n1 <= current_int <= n2 checks if the integer falls within the inclusive range specified by n1 and n2."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Append the binary string to the result list",
-//       "indent-level": 3,
-//       "leading-questions": [
-//         {
-//           "context": "If the integer is within the range, we need to add the binary string to the result list.",
-//           "short-answer-question": "Why do we append the binary string to the result list?",
-//           "mcq-question": "Which method is used to add an element to a list?",
-//           "correct-choice": "append()",
-//           "incorrect-choice-1": "add()",
-//           "incorrect-choice-2": "insert()",
-//           "incorrect-choice-3": "extend()",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 8,
-//           "hint-if-incorrect": "Think about the method used to add a single element to a list.",
-//           "explanation-after-correct-answer": "We use the append() method to add the binary string to the result list if the integer is within the specified range."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Generate the next binary numbers",
-//       "indent-level": 3,
-//       "leading-questions": [
-//         {
-//           "context": "We need to generate the next binary numbers by appending '0' and '1' to the current binary string.",
-//           "short-answer-question": "Why do we append '0' and '1' to the current binary string?",
-//           "mcq-question": "What are the next binary numbers generated from the current binary string?",
-//           "correct-choice": "current + '0' and current + '1'",
-//           "incorrect-choice-1": "current + '1' and current + '0'",
-//           "incorrect-choice-2": "current + '1' and current + '2'",
-//           "incorrect-choice-3": "current + '0' and current + '2'",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 9,
-//           "hint-if-incorrect": "Consider how binary numbers are generated.",
-//           "explanation-after-correct-answer": "We append '0' and '1' to the current binary string to generate the next binary numbers."
-//         },
-//         {
-//           "context": "We need to add the newly generated binary numbers to the queue.",
-//           "short-answer-question": "Why do we add the newly generated binary numbers to the queue?",
-//           "mcq-question": "Which method is used to add elements to the queue?",
-//           "correct-choice": "append()",
-//           "incorrect-choice-1": "add()",
-//           "incorrect-choice-2": "insert()",
-//           "incorrect-choice-3": "extend()",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 10,
-//           "hint-if-incorrect": "Think about the method used to add elements to a list.",
-//           "explanation-after-correct-answer": "We use the append() method to add the newly generated binary numbers to the queue for further processing."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Return the result list",
-//       "indent-level": 1,
-//       "leading-questions": [
-//         {
-//           "context": "After generating all the binary numbers within the range, we need to return the result list.",
-//           "short-answer-question": "Why do we return the result list at the end of the function?",
-//           "mcq-question": "What should the function return?",
-//           "correct-choice": "The result list",
-//           "incorrect-choice-1": "The queue",
-//           "incorrect-choice-2": "The last binary number",
-//           "incorrect-choice-3": "The range of numbers",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 11,
-//           "hint-if-incorrect": "Think about what the function is supposed to output.",
-//           "explanation-after-correct-answer": "The function returns the result list, which contains all the binary numbers within the specified range."
-//         }
-//       ]
-//     },
-//     {
-//       "title": "Test the function with sample inputs",
-//       "indent-level": 0,
-//       "leading-questions": [
-//         {
-//           "context": "We need to test the function to ensure it works correctly.",
-//           "short-answer-question": "Why is it important to test the function with sample inputs?",
-//           "mcq-question": "What are the sample inputs used to test the function?",
-//           "correct-choice": "2 and 5",
-//           "incorrect-choice-1": "1 and 5",
-//           "incorrect-choice-2": "2 and 6",
-//           "incorrect-choice-3": "1 and 6",
-//           "selected-question": "both",
-//           "code-line-to-be-revealed": 12,
-//           "hint-if-incorrect": "Consider the sample inputs provided in the task description.",
-//           "explanation-after-correct-answer": "We test the function with sample inputs 2 and 5 to ensure it generates the correct binary numbers within the specified range."
-//         }
-//       ]
-//     }
-//   ]
-// }
+export const task3Decomposition = {}
 
-export const task4Decomposition = {
-    "subgoals": [
-      {
-        "title": "Function Definition",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What is the appropriate data type for the input of the function?",
-                "correct-choice": "String",
-                "incorrect-choice-1": "List of strings",
-                "incorrect-choice-2": "Integer",
-                "incorrect-choice-3": "List of integers"
-              }
-            ],
-            "code-lines-to-be-revealed": [1]
-          }
-        ]
-      },
-      {
-        "title": "Initialize DNA Characters",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What are the possible characters in a DNA sequence?",
-                "correct-choice": "A, C, G, T",
-                "incorrect-choice-1": "A, B, C, D",
-                "incorrect-choice-2": "1, 2, 3, 4",
-                "incorrect-choice-3": "N, S, E, W"
-              }
-            ],
-            "code-lines-to-be-revealed": [2]
-          }
-        ]
-      },
-      {
-        "title": "Initialize Queue and Result List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the initial value of the queue and the result list?",
-                "correct-choice": "Empty list",
-                "incorrect-choice-1": "List containing the input pattern",
-                "incorrect-choice-2": "List containing the DNA characters",
-                "incorrect-choice-3": "None"
-              }
-            ],
-            "code-lines-to-be-revealed": [3, 4]
-          }
-        ]
-      },
-      {
-        "title": "Iterate Over Queue",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "When should we stop iterating over the queue?",
-                "correct-choice": "When the queue is empty",
-                "incorrect-choice-1": "When the queue is full",
-                "incorrect-choice-2": "When the queue contains the input pattern",
-                "incorrect-choice-3": "When the queue contains all DNA sequences"
-              }
-            ],
-            "code-lines-to-be-revealed": [5]
-          }
-        ]
-      },
-      {
-        "title": "Remove Sequence from Queue",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "Which sequence should we remove from the queue?",
-                "correct-choice": "The first sequence",
-                "incorrect-choice-1": "The last sequence",
-                "incorrect-choice-2": "The sequence that matches the input pattern",
-                "incorrect-choice-3": "The sequence that contains all DNA characters"
-              }
-            ],
-            "code-lines-to-be-revealed": [6]
-          }
-        ]
-      },
-      {
-        "title": "Check Length of Sequence",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should be the length of a sequence before we add it to the result list?",
-                "correct-choice": "The length of the input pattern",
-                "incorrect-choice-1": "The length of the input pattern plus 1",
-                "incorrect-choice-2": "The length of the input pattern minus 1",
-                "incorrect-choice-3": "The length of the DNA characters"
-              }
-            ],
-            "code-lines-to-be-revealed": [7]
-          }
-        ]
-      },
-      {
-        "title": "Add Sequence to Result List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "When should we add a sequence to the result list?",
-                "correct-choice": "When the length of the sequence is equal to the length of the input pattern",
-                "incorrect-choice-1": "When the length of the sequence is less than the length of the input pattern",
-                "incorrect-choice-2": "When the length of the sequence is greater than the length of the input pattern",
-                "incorrect-choice-3": "When the sequence contains all DNA characters"
-              }
-            ],
-            "code-lines-to-be-revealed": [8]
-          }
-        ]
-      },
-      {
-        "title": "Check Character in Pattern",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "Which character in the input pattern should we check?",
-                "correct-choice": "The character at the position equal to the length of the sequence",
-                "incorrect-choice-1": "The first character",
-                "incorrect-choice-2": "The last character",
-                "incorrect-choice-3": "The character at the position equal to the length of the sequence plus 1"
-              }
-            ],
-            "code-lines-to-be-revealed": [9, 10]
-          }
-        ]
-      },
-      {
-        "title": "Append All DNA Characters to Sequence",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "When should we append all DNA characters to the sequence?",
-                "correct-choice": "When the character in the input pattern is 'N'",
-                "incorrect-choice-1": "When the character in the input pattern is a DNA character",
-                "incorrect-choice-2": "When the sequence is empty",
-                "incorrect-choice-3": "When the sequence contains all DNA characters"
-              }
-            ],
-            "code-lines-to-be-revealed": [11, 12]
-          }
-        ]
-      },
-      {
-        "title": "Append Character in Pattern to Sequence",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "When should we append the character in the input pattern to the sequence?",
-                "correct-choice": "When the character in the input pattern is a DNA character",
-                "incorrect-choice-1": "When the character in the input pattern is 'N'",
-                "incorrect-choice-2": "When the sequence is empty",
-                "incorrect-choice-3": "When the sequence contains all DNA characters"
-              }
-            ],
-            "code-lines-to-be-revealed": [13, 14]
-          }
-        ]
-      },
-      {
-        "title": "Return Result List",
-        "sub-subgoal-items": [
-          {
-            "leading-questions": [
-              {
-                "mcq-question": "What should the function return?",
-                "correct-choice": "The list of DNA sequences",
-                "incorrect-choice-1": "The input pattern",
-                "incorrect-choice-2": "The queue",
-                "incorrect-choice-3": "The length of the result list"
-              }
-            ],
-            "code-lines-to-be-revealed": [15]
-          }
-        ]
-      }
-    ]
+export const task4Decomposition = {}
+
+export const task5Decomposition = {}
+
+export const task6Decomposition = {}
+
+export const tech1WarmupDecomposition = {
+  "subgoals": [
+    {
+      "title": "Define the function and its parameters",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that will reverse a list using a stack.",
+          "short-answer-question": "What should be the input and output types for this function?",
+          "mcq-question": "What type should the input parameter be?",
+          "correct-choice": "A list",
+          "incorrect-choice-1": "A string",
+          "incorrect-choice-2": "An integer",
+          "incorrect-choice-3": "A dictionary",
+          "short-answer-solution": "The input should be a list, and the output should also be a list. This is because we are reversing the elements of a list.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the data structure that holds multiple elements.",
+          "explanation-after-correct-answer": "The function is defined to take a list as input and return a list. This is appropriate for reversing a list."
+        }
+      ]
+    },
+    {
+      "title": "Initialize an empty list for the reversed result",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need a place to store the reversed elements.",
+          "short-answer-question": "What data structure should we use to store the reversed elements?",
+          "mcq-question": "What data structure is suitable for storing the reversed elements?",
+          "correct-choice": "A list",
+          "incorrect-choice-1": "A set",
+          "incorrect-choice-2": "A dictionary",
+          "incorrect-choice-3": "A tuple",
+          "short-answer-solution": "We should use a list to store the reversed elements because lists are ordered and allow for appending elements.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Consider a data structure that maintains order and allows appending.",
+          "explanation-after-correct-answer": "An empty list named 'reversed_list' is initialized to store the elements in reverse order."
+        }
+      ]
+    },
+    {
+      "title": "Create a copy of the input list to use as a stack",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to use a stack to reverse the list.",
+          "short-answer-question": "How can we create a copy of the input list to use as a stack?",
+          "mcq-question": "What method can be used to create a copy of the input list?",
+          "correct-choice": "Using slicing (input_list[:])",
+          "incorrect-choice-1": "Using the copy() method",
+          "incorrect-choice-2": "Using the deepcopy() method",
+          "incorrect-choice-3": "Using the list() constructor",
+          "short-answer-solution": "We can create a copy of the input list using slicing (input_list[:]). This allows us to manipulate the copy without affecting the original list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Think about a method that creates a shallow copy of the list.",
+          "explanation-after-correct-answer": "A copy of the input list is created using slicing and assigned to the variable 'stack'. This allows us to manipulate the stack without affecting the original list."
+        }
+      ]
+    },
+    {
+      "title": "Iterate while the stack is not empty",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to process each element in the stack until it is empty.",
+          "short-answer-question": "What condition should we check to continue processing elements from the stack?",
+          "mcq-question": "What condition should be used to keep iterating?",
+          "correct-choice": "while stack:",
+          "incorrect-choice-1": "while input_list:",
+          "incorrect-choice-2": "while reversed_list:",
+          "incorrect-choice-3": "while True:",
+          "short-answer-solution": "We should use 'while stack:' to keep iterating as long as there are elements in the stack.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Consider the condition that checks if the stack is not empty.",
+          "explanation-after-correct-answer": "The while loop continues to iterate as long as there are elements in the stack."
+        }
+      ]
+    },
+    {
+      "title": "Pop elements from the stack and append to the reversed list",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to move elements from the stack to the reversed list.",
+          "short-answer-question": "What operation should we perform to remove the top element from the stack?",
+          "mcq-question": "Which method removes the last element from a list?",
+          "correct-choice": "pop()",
+          "incorrect-choice-1": "remove()",
+          "incorrect-choice-2": "delete()",
+          "incorrect-choice-3": "discard()",
+          "short-answer-solution": "We should use the pop() method to remove the last element from the stack and append it to the reversed list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Think about the method that removes and returns the last element of a list.",
+          "explanation-after-correct-answer": "The pop() method removes the last element from the stack and appends it to the reversed list."
+        }
+      ]
+    },
+    {
+      "title": "Return the reversed list",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to return the final reversed list.",
+          "short-answer-question": "What should the function return after processing all elements?",
+          "mcq-question": "What should be returned by the function?",
+          "correct-choice": "The reversed list",
+          "incorrect-choice-1": "The original list",
+          "incorrect-choice-2": "The stack",
+          "incorrect-choice-3": "None",
+          "short-answer-solution": "The function should return the reversed list after all elements have been processed.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Consider what the final output of the function should be.",
+          "explanation-after-correct-answer": "The function returns the reversed list, which contains the elements in reverse order."
+        }
+      ]
+    },
+    {
+      "title": "Call the function with a sample list",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to test the function with a sample input list.",
+          "short-answer-question": "What should be the sample input list to test the function?",
+          "mcq-question": "What is a suitable sample input list to test the function?",
+          "correct-choice": "[1, 2, 3, 4, 5]",
+          "incorrect-choice-1": "[5, 4, 3, 2, 1]",
+          "incorrect-choice-2": "[1, 3, 5, 7, 9]",
+          "incorrect-choice-3": "[2, 4, 6, 8, 10]",
+          "short-answer-solution": "A suitable sample input list to test the function is [1, 2, 3, 4, 5]. This will help verify if the function correctly reverses the list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Consider a simple, ordered list to test the function.",
+          "explanation-after-correct-answer": "The function is called with the sample input list [1, 2, 3, 4, 5] to test if it correctly reverses the list."
+        }
+      ]
+    }
+  ]
+}
+
+export const tech2WarmupDecomposition = {
+  "subgoals": [
+    {
+      "title": "Define the function and its input parameter",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that will reverse a list using a queue-like approach.",
+          "short-answer-question": "What type of data should the function's input parameter be?",
+          "mcq-question": "What type of data should the function's input parameter be?",
+          "correct-choice": "A list",
+          "incorrect-choice-1": "A string",
+          "incorrect-choice-2": "An integer",
+          "incorrect-choice-3": "A dictionary",
+          "short-answer-solution": "The function's input parameter should be a list because we are required to reverse a list using a queue-like approach.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the data structure that can be reversed.",
+          "explanation-after-correct-answer": "The function is defined to take a list as its input parameter, which will be reversed using a queue-like approach."
+        }
+      ]
+    },
+    {
+      "title": "Initialize an empty list to store the reversed elements",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need a place to store the reversed elements of the input list.",
+          "short-answer-question": "What data structure should we use to store the reversed elements?",
+          "mcq-question": "What data structure should we use to store the reversed elements?",
+          "correct-choice": "A list",
+          "incorrect-choice-1": "A set",
+          "incorrect-choice-2": "A dictionary",
+          "incorrect-choice-3": "A tuple",
+          "short-answer-solution": "We should use a list to store the reversed elements because lists are ordered and allow for easy insertion of elements.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Consider a data structure that maintains order and allows for easy insertion.",
+          "explanation-after-correct-answer": "An empty list named 'reversed_list' is initialized to store the elements in reverse order."
+        }
+      ]
+    },
+    {
+      "title": "Create a copy of the input list to use as a queue",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to create a queue-like structure from the input list.",
+          "short-answer-question": "How can we create a copy of the input list?",
+          "mcq-question": "How can we create a copy of the input list?",
+          "correct-choice": "Using slicing (input_list[:])",
+          "incorrect-choice-1": "Using the copy() method",
+          "incorrect-choice-2": "Using the deepcopy() function",
+          "incorrect-choice-3": "Using a for loop",
+          "short-answer-solution": "We can create a copy of the input list using slicing (input_list[:]), which creates a shallow copy of the list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Think about a method that creates a shallow copy of a list.",
+          "explanation-after-correct-answer": "A copy of the input list is created using slicing and assigned to the variable 'queue'."
+        }
+      ]
+    },
+    {
+      "title": "Loop through the queue until it is empty",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to process each element in the queue until it is empty.",
+          "short-answer-question": "What kind of loop should we use to process each element in the queue?",
+          "mcq-question": "What kind of loop should we use to process each element in the queue?",
+          "correct-choice": "A while loop",
+          "incorrect-choice-1": "A for loop",
+          "incorrect-choice-2": "A do-while loop",
+          "incorrect-choice-3": "A foreach loop",
+          "short-answer-solution": "We should use a while loop because it allows us to continue processing elements until the queue is empty.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Consider a loop that continues until a condition is no longer true.",
+          "explanation-after-correct-answer": "A while loop is used to process each element in the queue until it is empty."
+        }
+      ]
+    },
+    {
+      "title": "Insert elements from the queue into the reversed list",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to insert elements from the queue into the reversed list in reverse order.",
+          "short-answer-question": "How can we insert elements at the beginning of a list?",
+          "mcq-question": "How can we insert elements at the beginning of a list?",
+          "correct-choice": "Using the insert() method with index 0",
+          "incorrect-choice-1": "Using the append() method",
+          "incorrect-choice-2": "Using the extend() method",
+          "incorrect-choice-3": "Using the add() method",
+          "short-answer-solution": "We can insert elements at the beginning of a list using the insert() method with index 0.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Think about a method that allows inserting elements at a specific position in a list.",
+          "explanation-after-correct-answer": "The insert() method with index 0 is used to insert elements from the queue into the reversed list in reverse order."
+        }
+      ]
+    },
+    {
+      "title": "Return the reversed list",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to return the final reversed list after processing all elements.",
+          "short-answer-question": "What should the function return after processing all elements?",
+          "mcq-question": "What should the function return after processing all elements?",
+          "correct-choice": "The reversed list",
+          "incorrect-choice-1": "The original list",
+          "incorrect-choice-2": "The queue",
+          "incorrect-choice-3": "None",
+          "short-answer-solution": "The function should return the reversed list after processing all elements.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Consider what the final output of the function should be.",
+          "explanation-after-correct-answer": "The function returns the reversed list after processing all elements from the queue."
+        }
+      ]
+    },
+    {
+      "title": "Call the function with a sample input",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to test the function by calling it with a sample input list.",
+          "short-answer-question": "What should be the sample input list to test the function?",
+          "mcq-question": "What should be the sample input list to test the function?",
+          "correct-choice": "[1, 2, 3, 4, 5]",
+          "incorrect-choice-1": "[5, 4, 3, 2, 1]",
+          "incorrect-choice-2": "[1, 2, 3]",
+          "incorrect-choice-3": "[1, 3, 5, 7, 9]",
+          "short-answer-solution": "The sample input list to test the function should be [1, 2, 3, 4, 5] to verify if the function correctly reverses it.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Consider a list that can be easily verified when reversed.",
+          "explanation-after-correct-answer": "The function is called with the sample input list [1, 2, 3, 4, 5] to test if it correctly reverses the list."
+        }
+      ]
+    }
+  ]
+}
+
+export const tech3WarmupDecomposition = {
+  "subgoals": [
+    {
+      "title": "Define the function and its input",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that checks if a string is a palindrome.",
+          "short-answer-question": "What type of input should the function accept?",
+          "mcq-question": "What type of input should the function accept?",
+          "correct-choice": "A string",
+          "incorrect-choice-1": "An integer",
+          "incorrect-choice-2": "A list",
+          "incorrect-choice-3": "A boolean",
+          "short-answer-solution": "The function should accept a string as input because we need to check if the sequence of characters reads the same backward as forward.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the type of data that can be read forward and backward.",
+          "explanation-after-correct-answer": "The function is defined to accept a string input, which is necessary for checking if the sequence of characters is a palindrome."
+        }
+      ]
+    },
+    {
+      "title": "Convert the string to a list",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "The function has been defined to accept a string input.",
+          "short-answer-question": "Why do we need to convert the string to a list?",
+          "mcq-question": "Why do we need to convert the string to a list?",
+          "correct-choice": "To easily access and remove characters",
+          "incorrect-choice-1": "To sort the characters",
+          "incorrect-choice-2": "To count the characters",
+          "incorrect-choice-3": "To reverse the string",
+          "short-answer-solution": "Converting the string to a list allows us to easily access and remove characters from both ends, which is necessary for checking if the string is a palindrome.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Think about operations that are easier to perform on lists than on strings.",
+          "explanation-after-correct-answer": "The string is converted to a list to facilitate easy access and removal of characters from both ends."
+        }
+      ]
+    },
+    {
+      "title": "Set up a loop to check characters",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "The string has been converted to a list for easier manipulation.",
+          "short-answer-question": "What condition should the loop check for?",
+          "mcq-question": "What condition should the loop check for?",
+          "correct-choice": "Length of the list is greater than 1",
+          "incorrect-choice-1": "List is not empty",
+          "incorrect-choice-2": "Length of the list is greater than 0",
+          "incorrect-choice-3": "List contains only letters",
+          "short-answer-solution": "The loop should continue as long as the length of the list is greater than 1, because we need to compare characters from both ends until we reach the middle.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Consider when we should stop comparing characters from both ends.",
+          "explanation-after-correct-answer": "The loop continues as long as the length of the list is greater than 1, allowing us to compare characters from both ends."
+        }
+      ]
+    },
+    {
+      "title": "Compare characters from both ends",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "The loop is set up to run while the length of the list is greater than 1.",
+          "short-answer-question": "What should we do if the characters from both ends do not match?",
+          "mcq-question": "What should we do if the characters from both ends do not match?",
+          "correct-choice": "Return False",
+          "incorrect-choice-1": "Continue the loop",
+          "incorrect-choice-2": "Remove the characters and continue",
+          "incorrect-choice-3": "Return True",
+          "short-answer-solution": "If the characters from both ends do not match, we should return False because the string is not a palindrome.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Think about the definition of a palindrome.",
+          "explanation-after-correct-answer": "If the characters from both ends do not match, the function returns False, indicating the string is not a palindrome."
+        }
+      ]
+    },
+    {
+      "title": "Return True if all characters match",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "The function returns False if any characters from both ends do not match.",
+          "short-answer-question": "What should the function return if all characters match?",
+          "mcq-question": "What should the function return if all characters match?",
+          "correct-choice": "Return True",
+          "incorrect-choice-1": "Return False",
+          "incorrect-choice-2": "Return the original string",
+          "incorrect-choice-3": "Return the reversed string",
+          "short-answer-solution": "If all characters match, the function should return True, indicating the string is a palindrome.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Consider the definition of a palindrome.",
+          "explanation-after-correct-answer": "If all characters match, the function returns True, indicating the string is a palindrome."
+        }
+      ]
+    },
+    {
+      "title": "Return True if loop completes",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "The function has checked all character pairs and found no mismatches.",
+          "short-answer-question": "What should the function return if the loop completes without finding mismatches?",
+          "mcq-question": "What should the function return if the loop completes without finding mismatches?",
+          "correct-choice": "Return True",
+          "incorrect-choice-1": "Return False",
+          "incorrect-choice-2": "Return the original string",
+          "incorrect-choice-3": "Return the reversed string",
+          "short-answer-solution": "If the loop completes without finding mismatches, the function should return True, indicating the string is a palindrome.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Consider what it means if no mismatches were found.",
+          "explanation-after-correct-answer": "If the loop completes without finding mismatches, the function returns True, indicating the string is a palindrome."
+        }
+      ]
+    },
+    {
+      "title": "Test the function with an example",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "The function has been fully defined to check if a string is a palindrome.",
+          "short-answer-question": "How can we test the function with an example?",
+          "mcq-question": "How can we test the function with an example?",
+          "correct-choice": "Call the function with a string argument",
+          "incorrect-choice-1": "Print the function definition",
+          "incorrect-choice-2": "Return the function",
+          "incorrect-choice-3": "Convert the string to a list",
+          "short-answer-solution": "We can test the function by calling it with a string argument, such as 'racecar', to see if it correctly identifies it as a palindrome.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Think about how functions are typically tested.",
+          "explanation-after-correct-answer": "The function is tested by calling it with the string 'racecar' to check if it correctly identifies it as a palindrome."
+        }
+      ]
+    }
+  ]
 }

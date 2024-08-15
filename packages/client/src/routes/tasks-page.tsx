@@ -55,11 +55,11 @@ export const TasksPage = () => {
             }
         }
 
-        if (numericId < 1 || numericId > 6) {
+        if (numericId < 1 || numericId > 9) {
             return EditorType.baseline; // Default value for invalid ids
         }
-        const position = Math.floor((numericId - 1) / 2);
-        const typeChar = types.type.charAt(position);
+        const position = Math.floor((numericId - 1) / 3);
+        const typeChar = types.charAt(position);
         // console.log("position", position);
         // console.log("typeChar", typeChar);
 

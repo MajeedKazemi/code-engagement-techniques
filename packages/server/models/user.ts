@@ -69,7 +69,6 @@ const UserSchema = new Schema({
         default: 0,
     },
     editorType: {
-        type: {
             type: String,
             enum: [
                 "ABC",
@@ -79,7 +78,6 @@ const UserSchema = new Schema({
                 "CAB",
             ],
             default: "ABC",
-        },
     },
     gender: {
         type: String,
