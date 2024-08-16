@@ -41,6 +41,20 @@
     border-top-right-radius: 20px;
     font-size: 1.2rem;
     height: 3rem;
+    justify-content: space-between;
+  }
+
+  .icon-div {
+    display: flex;
+    align-items: center;
+  }
+
+  .warning {
+    border-radius: 25px;
+    background-color: #f06c77;
+    padding: 10px;
+    color: black;
+    font-size: 15px;
   }
 
 .div-droppable {

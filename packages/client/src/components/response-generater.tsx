@@ -56,6 +56,17 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ technique, editor, taskID,
 
   useEffect(() => {
     console.log("taskID: ", taskID);
+    apiLogEvents(
+      context?.token,
+      taskID,
+      "Timestamp when the task started",
+      Date.now(),
+    )
+      .then(() => {})
+      .catch((error) => {
+          logError("sendLog: "
+          + error.toString());
+    });
   },[]);
 
   useEffect(() => {
@@ -177,6 +188,19 @@ const Baseline: React.FC<BaselineGeneratorProps> = ({ technique, editor, taskID,
         generatedCodeComponent =  <BaselineGenerateCode prompt={userInput} editor={editor} code={""} exp={""} taskID={taskID} moveOn={moveOn}/>;
         break;
     }
+    //timestamp when the get the prompt to generate the code for the task
+    apiLogEvents(
+      context?.token,
+      taskID,
+      "Timestamp when the prompt start to generate the code for the task",
+      Date.now(),
+    )
+      .then(() => {})
+      .catch((error) => {
+          logError("sendLog: "
+          + error.toString());
+      });
+
     setGeneratedCodeComponent(generatedCodeComponent);
   };
 

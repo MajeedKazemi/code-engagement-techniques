@@ -28,6 +28,7 @@ import { AuthContext, SocketContext } from "./context";
 // import { GraderPage } from "./routes/grader-page";
 import { HomePage } from "./routes/home-page";
 import { TasksPage } from "./routes/tasks-page";
+import { useBeforeUnload } from "./utils/reload";
 
 const rootEl = document.getElementById("root");
 if (!rootEl) throw new Error("[index.html] missing root element");
@@ -92,6 +93,8 @@ function App() {
         () => ({ socket: socket, setSocket: setSocket }),
         [socket]
     ) as any;
+
+    useBeforeUnload("Are you sure you want to leave?");
 
     return (
         <SocketContext.Provider value={socketVal}>

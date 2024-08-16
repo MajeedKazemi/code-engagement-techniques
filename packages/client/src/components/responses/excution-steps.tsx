@@ -20,7 +20,7 @@ import { ChatLoader } from "../loader";
 import * as monaco from "monaco-editor";
 import IconsDoc from "../docs/icons-doc";
 import { taskTrace } from "../../utils/constants";
-import { taskQuestions, taskDecompositions } from "../../utils/stepDecomposition";
+import { taskQuestions } from "../../utils/stepDecomposition";
 import { highlightPsudo } from "../../utils/utils";
 
 interface ExcutionStepsProps {

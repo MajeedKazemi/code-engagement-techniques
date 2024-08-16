@@ -357,25 +357,5 @@ export const tech1WarmupCode =
     return reversed_list
 reverse_list_with_stack([1, 2, 3, 4, 5])`
 
-// export const tech1WarmupCode = 
-// `def longest_valid_brackets(s: str) -> int:
-//     map = {'(': ')', '[': ']', '{': '}'}
-//     stack = [-1]
-//     max_length = 0
-//     for i in range(len(s)):
-//         char = s[i]
-//         if char in map:
-//             stack.append(i)
-//         else:
-//             not_empty = len(stack) > 1
-//             last_is_open = stack[-1] != -1 and s[stack[-1]] in map
-//             is_match = last_is_open and map[s[stack[-1]]] == char
-//             if not_empty and is_match:
-//                 stack.pop()
-//                 max_length = max(max_length, i - stack[-1])
-//             else:
-//                 stack[-1] = i
-//     return max_length
-// print(longest_valid_brackets("(()"))  # Output: 2`
 
 

@@ -6,6 +6,7 @@ import {
     apiGetBaselineCodexSimulation,
     apiGetBaselineExplainationCodexSimulation,
     apiGetLeadReviewSimulation,
+    apiLogEvents,
 } from "../../api/api";
 import * as monaco from "monaco-editor";
 import RevealQuestionComponent from "../responses/reveal-question-container";
@@ -123,6 +124,8 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
+    const [timeoutValue, setTimeoutValue] = useState<number>(13);
+    const [showTimeout, setShowTimeout] = useState<boolean>(false);
 
     useEffect(() => {
         let intervalId: number | null = null;
@@ -416,6 +419,18 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
             if (document.getElementById("game-over")) {
                 // setIsOver(true);
                 setButtonClickOver(true);
+                //this is when they get out of the technique
+                apiLogEvents(
+                    context?.token,
+                    taskID,
+                    "Timestamp when the prompt get out of the technique",
+                    Date.now(),
+                  )
+                    .then(() => {})
+                    .catch((error) => {
+                        logError("sendLog: "
+                        + error.toString());
+                });
                 clearInterval(interval);
             }
         }, 1000);
@@ -462,6 +477,22 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
         }
     }, [isOver]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+          setTimeoutValue((prevTimeout) => {
+            const newTimeout = prevTimeout - 1;
+            if (newTimeout < 3) {
+              setShowTimeout(true);
+            }
+            return newTimeout;
+          });
+        }, 60000); // 60000 milliseconds = 1 minute
+    
+        return () => {
+          clearInterval(interval);
+        };
+      }, []);
+
     return (
         <div>
             {isOver && (
@@ -477,10 +508,16 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
             {isOpen && !isOver && (
                 <div className="modal show" style={{ display: "block" }}>
                     <div className="modal-header">
+                        <div className="icon-div">
                         <div className="spark-icon">
                             <IconsDoc iconName="spark" />
                         </div>
                         AI Assistance:
+                        </div>
+                        {showTimeout && <div className="warning">
+                            You have <strong>{timeoutValue}</strong> mins left!
+                        </div>
+                        }
                     </div>
                     <div className="modal-body">
                         <div className="prompt-text">

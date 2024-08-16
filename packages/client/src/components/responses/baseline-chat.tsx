@@ -79,6 +79,19 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
         setGeneratedCode("");
         setGeneratedExplanation("");
         baselineCancelClicked = !baselineCancelClicked;
+
+        //this is when they finish submit the task
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "Timestamp when the prompt finished the task and submit",
+            Date.now(),
+          )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: "
+                + error.toString());
+        });
         moveOn();
     };
 
