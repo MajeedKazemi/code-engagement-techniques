@@ -591,7 +591,7 @@ function RevealQuestionComponent({
                 }`}
                 key={`rq${index}`}
             >
-                <h1>{question.context}</h1>
+                {/* <h1>{question.context}</h1> */}
                 {
                     question.shortQuestion && !reachedMax[index] && (
                         <div className="reveal-question-content-container">

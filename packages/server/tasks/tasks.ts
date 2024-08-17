@@ -1,5 +1,5 @@
-import { task1Code, task1Explanation, task2Code, task2Explanation, task3Code, task3Explanation, task4Code, task4Explanation, task5Code, task6Code, task5Explanation, task6Explanation, tech1WarmupCode, tech1WarmupExplanation, tech2WarmupCode, tech2WarmupExplanation, tech3WarmupCode, tech3WarmupExplanation } from "./baseline-constant";
-import { task1Decomposition, task2Decomposition, task3Decomposition, task4Decomposition, task5Decomposition, task6Decomposition, tech1WarmupDecomposition, tech2WarmupDecomposition, tech3WarmupDecomposition } from "./lead-reveal-constant";
+import { task1Code, task1Explanation, task2Code, task2Explanation, task3Code, task3Explanation, tech1WarmupCode, tech1WarmupExplanation, tech2WarmupCode, tech2WarmupExplanation, tech3WarmupCode, tech3WarmupExplanation } from "./baseline-constant";
+import {task1Decomposition, task2Decomposition, task3Decomposition, tech1WarmupDecomposition, tech2WarmupDecomposition, tech3WarmupDecomposition } from "./lead-reveal-constant";
 
 export enum TaskType {
     Authoring = "authoring",
@@ -222,7 +222,7 @@ export const CodingTasks = [
 
   new AuthoringTask(
     "1",
-    "Resverse list using Stack",
+    "Write a function reverse_list_with_queue(input_list: list) -> list that uses a Queue to reverse the provided list and return it.",
     tech1WarmupCode,
     tech1WarmupExplanation,
     tech1WarmupDecomposition,
@@ -238,28 +238,14 @@ export const CodingTasks = [
   ),
 
   new MultipleChoiceTask(
-    "1Rating",
-    "Rate your experience",
-    ["1", "2", "3", "4", "5"]
-  ),
-
-  new AuthoringTask(
-    "3",
-    "Write a function `generate_parentheses(n: int, m: int) -> list[str]` that generates all combinations of well-formed parentheses for `n` pairs of parentheses, but it should only include combinations where no more than `m` pairs are nested within each other. Use a queue to efficiently solve this task. Note that `n` is the pairs of parentheses.",
-    task2Code,
-    task2Explanation,
-    task2Decomposition,
-  ),
-
-  new MultipleChoiceTask(
     "2Rating",
     "Rate your experience",
     ["1", "2", "3", "4", "5"]
   ),
 
   new AuthoringTask(
-    "4",
-    "Reverse List Using Queue",
+    "3",
+    "Write a function reverse_list_with_stack(input_list: list) -> list that uses a Queue to reverse the provided list and return it.",
     tech2WarmupCode,
     tech2WarmupExplanation,
     tech2WarmupDecomposition,
@@ -267,25 +253,11 @@ export const CodingTasks = [
   
 
 new AuthoringTask(
-  "5",
+  "4",
   "Write a function longest_valid_brackets(s: str) -> int that takes a string consisting of only opening '(' and closing ')' parenthesis, and returns the length of the longest valid parenthesis substring. A sequence is considered valid if every opening bracket has a corresponding closing bracket in the correct order without any mismatches. The function should use a stack to calculate the longest valid parenthesis substring.",
-  task3Code,
-  task3Explanation,
-  task3Decomposition,
-),
-
-new MultipleChoiceTask(
-  "3Rating",
-  "Rate your experience",
-  ["1", "2", "3", "4", "5"]
-),
-
-new AuthoringTask(
-  "6",
-  "Write a function decode_string(s: str) -> str that decodes an encoded string where patterns of the form k[encoded_string] are expanded k times. Your solution should use a Stack to enable decoding nested strings like '2[3[a]b]'.",
-  task4Code,
-  task4Explanation,
-  task4Decomposition,
+  task2Code,
+  task2Explanation,
+  task2Decomposition,
 ),
 
 new MultipleChoiceTask(
@@ -294,34 +266,21 @@ new MultipleChoiceTask(
   ["1", "2", "3", "4", "5"]
 ),
 
+
 new AuthoringTask(
-  "7",
-  "Check Is Palindrome",
+  "5",
+  "Write a function is_palindrome to check if check if the input string s is palindrome",
   tech3WarmupCode,
   tech3WarmupExplanation,
   tech3WarmupDecomposition,
 ),
 
 new AuthoringTask(
-  "8",
-  "Write a function called first_char_k_times(s: str, k: int) -> str that finds the first character in the input string s that appears at least k times. For efficiency, your solution should use a double-ended queue.",
-  task5Code,
-  task5Explanation,
-  task5Decomposition,
-),
-
-new MultipleChoiceTask(
-  "5Rating",
-  "Rate your experience",
-  ["1", "2", "3", "4", "5"]
-),
-
-new AuthoringTask(
-  "9",
+  "6",
   "Given an array of integers nums and an integer k, find the maximum value in each sliding window of size k. If we didn't want to use the built-in max method",
-  task6Code,
-  task6Explanation,
-  task6Decomposition,
+  task3Code,
+  task3Explanation,
+  task3Decomposition,
 ),
 
 new MultipleChoiceTask(

@@ -350,79 +350,148 @@ const taskDecomp6 = {
 }
 
 
+const warmupQuestion2: questionObject[] = [
+        {
+            "step": 5,
+            "question": "stack",
+            "begin-line": 3,
+            "end-line": 4,
+            "explanation": "How does the initialization and subsequent use of 'stack' in lines 3-4 affect the logic of the while loop?",
+            "aiGeneratedSolution": "The 'stack' is initialized as a copy of 'input_list'. It is then used in the while loop to pop elements until empty, reversing the list."
+        },
+        {
+            "step": 7,
+            "question": "reversed_list",
+            "begin-line": 4,
+            "end-line": 5,
+            "explanation": "How does the 'reversed_list' change within the while loop in lines 4-5?",
+            "aiGeneratedSolution": "In each iteration of the while loop, the last element of 'stack' is popped and appended to 'reversed_list', gradually building the reversed list."
+        },
+        {
+            "step": 11,
+            "question": "stack",
+            "begin-line": 4,
+            "end-line": 5,
+            "explanation": "What happens to 'stack' during each iteration of the while loop in lines 4-5?",
+            "aiGeneratedSolution": "During each iteration, 'stack' has its last element removed (popped), reducing its size until it becomes empty, which ends the loop."
+        },
+        {
+            "step": 15,
+            "question": "reversed_list",
+            "begin-line": 4,
+            "end-line": 5,
+            "explanation": "What is the final state of 'reversed_list' after the while loop completes in lines 4-5?",
+            "aiGeneratedSolution": "After the while loop completes, 'reversed_list' contains all the elements of 'input_list' in reverse order."
+        }
+    ];
+
 const warmupQuestion1: questionObject[] = [
     {
-        "step": 6,
-        "question": "q",
-        "begin-line": 5,
-        "end-line": 6,
-        "explanation": "How does the initialization of the queue 'q' with an empty string and the while loop condition impact the generation of DNA sequences?",
-        "aiGeneratedSolution": "The queue 'q' starts with an empty string, and the while loop continues until 'q' is empty, ensuring all possible sequences are generated."
+      "step": 5,
+      "question": "queue",
+      "begin-line": 3,
+      "end-line": 4,
+      "explanation": "How does the initialization and the while loop condition affect the state of the 'queue' variable?",
+      "aiGeneratedSolution": "The 'queue' is initialized as a copy of 'input_list'. The while loop continues until 'queue' is empty, progressively removing elements."
     },
     {
-        "step": 14,
-        "question": "q",
-        "begin-line": 11,
-        "end-line": 12,
-        "explanation": "What is the role of appending new sequences to 'q' when the current character in 'pattern' is a wildcard '*'?",
-        "aiGeneratedSolution": "Appending sequences with each DNA character when encountering '*' ensures all possible combinations are explored."
+      "step": 7,
+      "question": "reversed_list",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "How does the insertion operation within the while loop affect the 'reversed_list' variable?",
+      "aiGeneratedSolution": "Each iteration inserts the first element of 'queue' at the beginning of 'reversed_list', effectively reversing the order of elements."
     },
     {
-        "step": 26,
-        "question": "q",
-        "begin-line": 7,
-        "end-line": 10,
-        "explanation": "How does the code handle the case when the current character in 'pattern' is not a wildcard '*'?",
-        "aiGeneratedSolution": "The code appends the current character to 'seq' and adds it to 'q', ensuring the sequence follows the given pattern."
+      "step": 11,
+      "question": "queue",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "What changes occur to the 'queue' variable during each iteration of the while loop?",
+      "aiGeneratedSolution": "In each iteration, the first element of 'queue' is removed using 'pop(0)', reducing the size of 'queue' until it becomes empty."
     },
     {
-        "step": 48,
-        "question": "result",
-        "begin-line": 7,
-        "end-line": 8,
-        "explanation": "What happens when a sequence reaches the same length as the 'pattern'?",
-        "aiGeneratedSolution": "When a sequence matches the pattern's length, it is added to 'result', collecting all valid DNA sequences."
+      "step": 15,
+      "question": "reversed_list",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "How does the final state of 'reversed_list' reflect the operations performed in the while loop?",
+      "aiGeneratedSolution": "The final 'reversed_list' contains all elements of 'input_list' in reverse order, achieved by inserting elements at the beginning in each loop iteration."
     }
-];
-const warmupQuestion2: questionObject[] = [];
-const warmupQuestion3: questionObject[] = [];
+  ];
+
+const warmupQuestion3: questionObject[] = [
+    {
+      "step": 4,
+      "question": "dq",
+      "begin-line": 3,
+      "end-line": 3,
+      "explanation": "How does the length of 'dq' change during each iteration of the while loop, and why is this significant for checking if the string is a palindrome?",
+      "aiGeneratedSolution": "The length of 'dq' decreases by 2 each iteration, removing one character from the front and one from the back, ensuring symmetry is checked."
+    },
+    {
+      "step": 6,
+      "question": "dq",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "What happens to 'dq' when the characters at the front and back do not match, and how does this affect the function's return value?",
+      "aiGeneratedSolution": "If characters don't match, 'dq' is immediately returned as False, indicating the string is not a palindrome."
+    },
+    {
+      "step": 8,
+      "question": "dq",
+      "begin-line": 3,
+      "end-line": 3,
+      "explanation": "Why is it important to check the length of 'dq' in the while loop condition, and how does this contribute to the function's logic?",
+      "aiGeneratedSolution": "Checking 'dq's length ensures the loop runs only while there are characters to compare, crucial for validating the palindrome property."
+    },
+    {
+      "step": 10,
+      "question": "dq",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "How does the comparison of characters at the front and back of 'dq' ensure the string is a palindrome?",
+      "aiGeneratedSolution": "Comparing front and back characters ensures symmetry. If all pairs match, the string is a palindrome; otherwise, it is not."
+    }
+  ]
+;
+
+// const taskQuestion1: questionObject[] = [
+//     {
+//         "step": 6,
+//         "question": "q",
+//         "begin-line": 5,
+//         "end-line": 6,
+//         "explanation": "How does the initialization of the queue 'q' with an empty string and the while loop condition impact the generation of DNA sequences?",
+//         "aiGeneratedSolution": "The queue 'q' starts with an empty string, and the while loop continues until 'q' is empty, ensuring all possible sequences are generated."
+//     },
+//     {
+//         "step": 14,
+//         "question": "q",
+//         "begin-line": 11,
+//         "end-line": 12,
+//         "explanation": "What is the role of appending new sequences to 'q' when the current character in 'pattern' is a wildcard '*'?",
+//         "aiGeneratedSolution": "Appending sequences with each DNA character when encountering '*' ensures all possible combinations are explored."
+//     },
+//     {
+//         "step": 26,
+//         "question": "q",
+//         "begin-line": 7,
+//         "end-line": 10,
+//         "explanation": "How does the code handle the case when the current character in 'pattern' is not a wildcard '*'?",
+//         "aiGeneratedSolution": "The code appends the current character to 'seq' and adds it to 'q', ensuring the sequence follows the given pattern."
+//     },
+//     {
+//         "step": 48,
+//         "question": "result",
+//         "begin-line": 7,
+//         "end-line": 8,
+//         "explanation": "What happens when a sequence reaches the same length as the 'pattern'?",
+//         "aiGeneratedSolution": "When a sequence matches the pattern's length, it is added to 'result', collecting all valid DNA sequences."
+//     }
+// ];
 
 const taskQuestion1: questionObject[] = [
-    {
-        "step": 6,
-        "question": "q",
-        "begin-line": 5,
-        "end-line": 6,
-        "explanation": "How does the initialization of the queue 'q' with an empty string and the while loop condition impact the generation of DNA sequences?",
-        "aiGeneratedSolution": "The queue 'q' starts with an empty string, and the while loop continues until 'q' is empty, ensuring all possible sequences are generated."
-    },
-    {
-        "step": 14,
-        "question": "q",
-        "begin-line": 11,
-        "end-line": 12,
-        "explanation": "What is the role of appending new sequences to 'q' when the current character in 'pattern' is a wildcard '*'?",
-        "aiGeneratedSolution": "Appending sequences with each DNA character when encountering '*' ensures all possible combinations are explored."
-    },
-    {
-        "step": 26,
-        "question": "q",
-        "begin-line": 7,
-        "end-line": 10,
-        "explanation": "How does the code handle the case when the current character in 'pattern' is not a wildcard '*'?",
-        "aiGeneratedSolution": "The code appends the current character to 'seq' and adds it to 'q', ensuring the sequence follows the given pattern."
-    },
-    {
-        "step": 48,
-        "question": "result",
-        "begin-line": 7,
-        "end-line": 8,
-        "explanation": "What happens when a sequence reaches the same length as the 'pattern'?",
-        "aiGeneratedSolution": "When a sequence matches the pattern's length, it is added to 'result', collecting all valid DNA sequences."
-    }
-];
-
-const taskQuestion2: questionObject[] = [
     {
         "step": 4,
         "question": "q",
@@ -458,7 +527,7 @@ const taskQuestion2: questionObject[] = [
 ]
 ;
 
-const taskQuestion3: questionObject[] = [
+const taskQuestion2: questionObject[] = [
         {
             "step": 9,
             "question": "stack",
@@ -493,77 +562,77 @@ const taskQuestion3: questionObject[] = [
         }
     ]
 
-const taskQuestion4: questionObject[] = [
-    {
-        "step": 9,
-        "question": "current_num",
-        "begin-line": 6,
-        "end-line": 7,
-        "explanation": "How does the code update the value of current_num when encountering a digit in the string?",
-        "aiGeneratedSolution": "The code multiplies current_num by 10 and adds the integer value of the digit, allowing it to handle multi-digit numbers."
-    },
-    {
-        "step": 13,
-        "question": "stack",
-        "begin-line": 8,
-        "end-line": 11,
-        "explanation": "What happens to the stack when the code encounters an opening bracket '['?",
-        "aiGeneratedSolution": "The current_string and current_num are pushed onto the stack, and both are reset to handle the new substring."
-    },
-    {
-        "step": 25,
-        "question": "current_string",
-        "begin-line": 12,
-        "end-line": 14,
-        "explanation": "How is current_string updated when the code encounters a closing bracket ']'?",
-        "aiGeneratedSolution": "The code pops the last string and number from the stack, then appends the repeated current_string to the last string."
-    },
-    {
-        "step": 51,
-        "question": "current_string",
-        "begin-line": 5,
-        "end-line": 17,
-        "explanation": "How does the code build the final decoded string in current_string?",
-        "aiGeneratedSolution": "The code iterates through the input string, updating current_string by appending characters or expanding substrings based on the stack's stored values."
-    }
-];
+// const taskQuestion4: questionObject[] = [
+//     {
+//         "step": 9,
+//         "question": "current_num",
+//         "begin-line": 6,
+//         "end-line": 7,
+//         "explanation": "How does the code update the value of current_num when encountering a digit in the string?",
+//         "aiGeneratedSolution": "The code multiplies current_num by 10 and adds the integer value of the digit, allowing it to handle multi-digit numbers."
+//     },
+//     {
+//         "step": 13,
+//         "question": "stack",
+//         "begin-line": 8,
+//         "end-line": 11,
+//         "explanation": "What happens to the stack when the code encounters an opening bracket '['?",
+//         "aiGeneratedSolution": "The current_string and current_num are pushed onto the stack, and both are reset to handle the new substring."
+//     },
+//     {
+//         "step": 25,
+//         "question": "current_string",
+//         "begin-line": 12,
+//         "end-line": 14,
+//         "explanation": "How is current_string updated when the code encounters a closing bracket ']'?",
+//         "aiGeneratedSolution": "The code pops the last string and number from the stack, then appends the repeated current_string to the last string."
+//     },
+//     {
+//         "step": 51,
+//         "question": "current_string",
+//         "begin-line": 5,
+//         "end-line": 17,
+//         "explanation": "How does the code build the final decoded string in current_string?",
+//         "aiGeneratedSolution": "The code iterates through the input string, updating current_string by appending characters or expanding substrings based on the stack's stored values."
+//     }
+// ];
 
-const taskQuestion5: questionObject[] = [
-    {
-        "step": 7,
-        "question": "dq",
-        "begin-line": 4,
-        "end-line": 6,
-        "explanation": "How does the deque (dq) change as characters are appended and the character count is updated?",
-        "aiGeneratedSolution": "The deque (dq) accumulates characters from the string, and characters are appended to it as they are processed."
-    },
-    {
-        "step": 8,
-        "question": "char_count",
-        "begin-line": 4,
-        "end-line": 6,
-        "explanation": "How does the char_count dictionary update as characters are processed?",
-        "aiGeneratedSolution": "The char_count dictionary increments the count for each character as it is encountered in the string."
-    },
-    {
-        "step": 10,
-        "question": "dq",
-        "begin-line": 7,
-        "end-line": 8,
-        "explanation": "What happens to the deque (dq) when the character count of the first element does not equal k?",
-        "aiGeneratedSolution": "The deque (dq) removes elements from the front until the character count of the first element equals k."
-    },
-    {
-        "step": 15,
-        "question": "char_count",
-        "begin-line": 4,
-        "end-line": 6,
-        "explanation": "How does the char_count dictionary help in determining when to return a character?",
-        "aiGeneratedSolution": "The char_count dictionary helps identify when a character has appeared k times, triggering the return of that character."
-    }
-];
+// const taskQuestion5: questionObject[] = [
+//     {
+//         "step": 7,
+//         "question": "dq",
+//         "begin-line": 4,
+//         "end-line": 6,
+//         "explanation": "How does the deque (dq) change as characters are appended and the character count is updated?",
+//         "aiGeneratedSolution": "The deque (dq) accumulates characters from the string, and characters are appended to it as they are processed."
+//     },
+//     {
+//         "step": 8,
+//         "question": "char_count",
+//         "begin-line": 4,
+//         "end-line": 6,
+//         "explanation": "How does the char_count dictionary update as characters are processed?",
+//         "aiGeneratedSolution": "The char_count dictionary increments the count for each character as it is encountered in the string."
+//     },
+//     {
+//         "step": 10,
+//         "question": "dq",
+//         "begin-line": 7,
+//         "end-line": 8,
+//         "explanation": "What happens to the deque (dq) when the character count of the first element does not equal k?",
+//         "aiGeneratedSolution": "The deque (dq) removes elements from the front until the character count of the first element equals k."
+//     },
+//     {
+//         "step": 15,
+//         "question": "char_count",
+//         "begin-line": 4,
+//         "end-line": 6,
+//         "explanation": "How does the char_count dictionary help in determining when to return a character?",
+//         "aiGeneratedSolution": "The char_count dictionary helps identify when a character has appeared k times, triggering the return of that character."
+//     }
+// ];
 
-const taskQuestion6: questionObject[] = [
+const taskQuestion3: questionObject[] = [
     {
         "step": 9,
         "question": "dq",
@@ -620,11 +689,8 @@ type TaskQuestions = {
 export const taskQuestions: TaskQuestions = {
     1: warmupQuestion1,
     2: taskQuestion1,
-    3: taskQuestion2,
-    4: warmupQuestion2,
-    5: taskQuestion3,
-    6: taskQuestion4,
-    7: warmupQuestion3,
-    8: taskQuestion5,
-    9: taskQuestion6,
+    3: warmupQuestion2,
+    4: taskQuestion2,
+    5: warmupQuestion3,
+    6: taskQuestion3,
 };

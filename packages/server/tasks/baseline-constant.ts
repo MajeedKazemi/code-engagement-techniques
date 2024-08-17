@@ -1,47 +1,4 @@
 export const task1Code =
-`def dna_sequences(pattern: str) -> list[str]:
-    dna_chars = ['A', 'C', 'G', 'T']
-    q = ['']
-    result = []
-    while len(q) > 0:
-        seq = q.pop(0)
-        if len(seq) == len(pattern):
-            result.append(seq)
-        else:
-            if pattern[len(seq)] == '*':
-                for ch in dna_chars:
-                    q.append(seq + ch)
-            else:
-                q.append(seq + pattern[len(seq)])
-    return result
-dna_sequences('A*T') # Output: ['AAT', 'ACT', 'AGT', 'ATT']`
-
-export const task1Explanation = 
-`def dna_sequences(pattern: str) -> list[str]: ### Define a function named \`dna_sequences\` that takes a string \`pattern\` as input and returns a list of strings.
-    dna_chars = ['A', 'C', 'G', 'T'] ### Initialize a list \`dna_chars\` containing the characters 'A', 'C', 'G', and 'T', which represent the possible DNA bases.
-    q = [''] ### Initialize a list \`q\` with an empty string. This list will be used as a queue to generate sequences.
-    result = [] ### Initialize an empty list \`result\` to store the final DNA sequences that match the pattern.
-    while len(q) > 0: ### Start a while loop that continues as long as there are elements in the queue \`q\`.
-        seq = q.pop(0) ### Remove and return the first element from the queue \`q\`, and assign it to the variable \`seq\`.
-        if len(seq) == len(pattern): ### Check if the length of the current sequence \`seq\` is equal to the length of the pattern.
-            result.append(seq) ### If the lengths are equal, append the current sequence \`seq\` to the \`result\` list.
-        else: ### If the lengths are not equal, continue to the next steps.
-            if pattern[len(seq)] == '*': ### Check if the current character in the pattern (at the position equal to the length of \`seq\`) is a wildcard '*'.
-                for ch in dna_chars: ### If it is a wildcard, iterate over each character in \`dna_chars\`.
-                    q.append(seq + ch) ### Append the current sequence \`seq\` concatenated with the character \`ch\` to the queue \`q\`.
-            else: ### If the current character in the pattern is not a wildcard.
-                q.append(seq + pattern[len(seq)]) ### Append the current sequence \`seq\` concatenated with the current character in the pattern to the queue \`q\`.
-    return result ### After the while loop ends, return the \`result\` list containing all the generated DNA sequences.
-[END]
-
-[OVERALL-EXPLANATION]
-The provided code defines a function \`dna_sequences\` that generates all possible DNA sequences matching a given pattern. The pattern may contain specific DNA bases ('A', 'C', 'G', 'T') and wildcards ('*') that can be replaced by any of the four DNA bases.
-
-The function uses a breadth-first search (BFS) approach to generate the sequences. It initializes a queue with an empty string and iteratively builds sequences by appending characters according to the pattern. If the current character in the pattern is a wildcard, the function appends all possible DNA bases to the current sequence and adds them to the queue. If the character is a specific base, it appends that base to the current sequence and adds it to the queue.
-
-The process continues until the queue is empty, and all sequences of the same length as the pattern are collected in the \`result\` list, which is then returned.`
-
-export const task2Code =
 `def generate_parentheses(n: int, m: int) -> list[str]:
     q = [("", 0, 0, 0, 0)]
     result = []
@@ -59,7 +16,7 @@ export const task2Code =
     return result
 generate_parentheses(2, 2) # Output: ['(())', '()()']`
 
-export const task2Explanation =
+export const task1Explanation =
 `def generate_parentheses(n: int, m: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`m\`, and returns a list of strings.
     q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a tuple containing an empty string and four zeros. The tuple represents the current string, the number of open parentheses, the number of close parentheses, the maximum depth, and the current depth.
     result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
@@ -87,7 +44,7 @@ The while loop continues as long as the queue is not empty. In each iteration, t
 
 By using BFS, the function ensures that all valid combinations are generated and stored in the result list, which is then returned. The function call \`generate_parentheses(2, 2)\` demonstrates the use case, generating the output \`['(())', '()()']\`.`
 
-export const task3Code =
+export const task2Code =
 `def longest_valid_brackets(s: str) -> int:
     map = {'(': ')', '[': ']', '{': '}'}
     stack = [-1]
@@ -109,7 +66,7 @@ export const task3Code =
 print(longest_valid_brackets("(()"))  # Output: 2`
 
 
-export const task3Explanation =
+export const task2Explanation =
 `def longest_valid_brackets(s: str) -> int: ### Defines a function named \`longest_valid_brackets\` that takes a string \`s\` as input and returns an integer. The function aims to find the length of the longest valid substring of brackets.
     map = {'(': ')', '[': ']', '{': '}'} ### Creates a dictionary \`map\` that maps opening brackets to their corresponding closing brackets. This helps in checking if a closing bracket matches the last opened bracket.
     stack = [-1] ### Initializes a stack with a single element \`-1\`. This helps in calculating the length of valid substrings by providing a base index.
@@ -146,92 +103,8 @@ Finally, the function returns the length of the longest valid substring found.
 
 The function is then called with the input string "(()", and it correctly returns 2, indicating that the longest valid substring of brackets is "()", which has a length of 2.`
 
-export const task4Code =
-`def decode_string(s: str) -> str:
-    stack = []
-    current_string = ""
-    current_num = 0
-    for char in s:
-        if char.isdigit():
-            current_num = current_num * 10 + int(char)
-        elif char == '[':
-            stack.append((current_string, current_num))
-            current_string = ""
-            current_num = 0
-        elif char == ']':
-            last_string, num = stack.pop()
-            current_string = last_string + num * current_string
-        else:
-            current_string += char
-    return current_string
-decode_string('3[a]2[bc]') # Output: 'aaabcbc'`
 
-export const task4Explanation =
-`def decode_string(s: str) -> str: ### Defines a function named \`decode_string\` that takes a single argument \`s\` of type string and returns a string.
-    stack = [] ### Initializes an empty list \`stack\` to keep track of previous strings and numbers.
-    current_string = "" ### Initializes an empty string \`current_string\` to build the current decoded string.
-    current_num = 0 ### Initializes \`current_num\` to 0 to build the current number.
-    for char in s: ### Starts a for loop to iterate over each character \`char\` in the input string \`s\`.
-        if char.isdigit(): ### Checks if the current character \`char\` is a digit.
-            current_num = current_num * 10 + int(char) ### Updates \`current_num\` by multiplying it by 10 and adding the integer value of \`char\`.
-        elif char == '[': ### Checks if the current character \`char\` is an opening bracket '['.
-            stack.append((current_string, current_num)) ### Pushes a tuple of \`current_string\` and \`current_num\` onto the stack.
-            current_string = "" ### Resets \`current_string\` to an empty string.
-            current_num = 0 ### Resets \`current_num\` to 0.
-        elif char == ']': ### Checks if the current character \`char\` is a closing bracket ']'.
-            last_string, num = stack.pop() ### Pops the last tuple from the stack into \`last_string\` and \`num\`.
-            current_string = last_string + num * current_string ### Updates \`current_string\` by concatenating \`last_string\` and \`num\` repetitions of \`current_string\`.
-        else: ### If the current character \`char\` is neither a digit nor a bracket.
-            current_string += char ### Appends \`char\` to \`current_string\`.
-    return current_string ### Returns the fully decoded string \`current_string\`.
-decode_string('3[a]2[bc]') ### Calls the \`decode_string\` function with the input '3[a]2[bc]' and expects the output 'aaabcbc'.
-[END]
-
-[OVERALL-EXPLANATION]
-The provided code defines a function \`decode_string\` that decodes a specially encoded string. The encoding format is such that a number followed by square brackets indicates that the string inside the brackets should be repeated that many times. For example, '3[a]' means 'aaa'.
-
-The function uses a stack to keep track of the current string and the number of repetitions when it encounters an opening bracket '['. When it encounters a closing bracket ']', it pops the last string and number from the stack and constructs the new string by repeating the current string the specified number of times and appending it to the last string.
-
-The function iterates over each character in the input string. If the character is a digit, it updates the current number. If it is an opening bracket, it pushes the current string and number onto the stack and resets them. If it is a closing bracket, it pops from the stack and constructs the new string. If it is a regular character, it appends it to the current string.
-
-Finally, the function returns the fully decoded string. The example call \`decode_string('3[a]2[bc]')\` demonstrates the function's usage, which outputs 'aaabcbc'.`
-
-export const task5Code = `def first_char_k_times(s: str, k: int) -> str:
-    dq = []
-    char_count = {}
-    for char in s:
-        dq.append(char)
-        char_count[char] = char_count.get(char, 0) + 1
-        while dq and char_count[dq[0]] != k:
-            dq.pop(0)
-        if dq and char_count[dq[0]] == k:
-            return dq[0]
-    return ''
-first_char_k_times("aabbccddeeff", 2) # Output: a`
-
-export const task5Explanation = 
-`def first_char_k_times(s: str, k: int) -> str: ### Defines a function named \`first_char_k_times\` that takes a string \`s\` and an integer \`k\` as input and returns a string.
-    dq = [] ### Initializes an empty list \`dq\` which will be used as a queue to keep track of characters in the order they appear.
-    char_count = {} ### Initializes an empty dictionary \`char_count\` to keep track of the count of each character in the string.
-    for char in s: ### Starts a for loop to iterate over each character in the string \`s\`.
-        dq.append(char) ### Appends the current character to the end of the queue \`dq\`.
-        char_count[char] = char_count.get(char, 0) + 1 ### Updates the count of the current character in the \`char_count\` dictionary. If the character is not already in the dictionary, it initializes its count to 0 before adding 1.
-        while dq and char_count[dq[0]] != k: ### Starts a while loop that continues as long as \`dq\` is not empty and the count of the character at the front of the queue is not equal to \`k\`.
-            dq.pop(0) ### Removes the character at the front of the queue \`dq\`.
-        if dq and char_count[dq[0]] == k: ### Checks if \`dq\` is not empty and the count of the character at the front of the queue is equal to \`k\`.
-            return dq[0] ### Returns the character at the front of the queue, which is the first character to appear \`k\` times in the string.
-    return '' ### Returns an empty string if no character appears \`k\` times in the string.
-first_char_k_times("aabbccddeeff", 2) ### Calls the function \`first_char_k_times\` with the string "aabbccddeeff" and the integer 2, and prints the result, which is 'a'.
-[END]
-
-[OVERALL-EXPLANATION]
-The function \`first_char_k_times\` is designed to find the first character in a given string \`s\` that appears exactly \`k\` times. It uses a queue (\`dq\`) to keep track of the order in which characters appear and a dictionary (\`char_count\`) to count the occurrences of each character.
-
-The function iterates over each character in the string. For each character, it appends it to the queue and updates its count in the dictionary. It then checks the front of the queue to see if the character there has appeared \`k\` times. If not, it removes characters from the front of the queue until it finds one that has appeared \`k\` times or the queue becomes empty. If it finds such a character, it returns it immediately. If no character appears \`k\` times by the end of the string, the function returns an empty string.
-
-In the provided use case, the function is called with the string "aabbccddeeff" and the integer 2. The function will return 'a' because 'a' is the first character in the string to appear exactly 2 times.`
-
-export const task6Code = 
+export const task3Code = 
 `def sliding_window_maximum(nums: list[int], k: int) -> list[int]:
     dq = []
     result = []
@@ -246,7 +119,7 @@ export const task6Code =
     return result
 sliding_window_maximum([1, 3, -1, -3, 5, 3, 6, 7], 3)`
 
-export const task6Explanation = 
+export const task3Explanation = 
 `def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
     dq = [] ### Initialize an empty list \`dq\` which will be used as a deque (double-ended queue) to store indices of elements in \`nums\`. This helps in efficiently finding the maximum in the current window.
     result = [] ### Initialize an empty list \`result\` to store the maximum values of each sliding window.
@@ -275,7 +148,7 @@ Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends 
 Finally, the function returns the result list containing the maximum values of each sliding window. The function is called with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`, and it returns the expected output \`[3, 3, 5, 5, 6, 7]\`.`
 
 
-export const tech1WarmupExplanation = 
+export const tech2WarmupExplanation = 
 `def reverse_list_with_stack(input_list: list) -> list: ### Define a function named \`reverse_list_with_stack\` that takes a list \`input_lis\` as input. The function aims to reverse the list using a stack-based approach.
     reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
     stack = input_list[:] ### Create a copy of \`input_list\` and assign it to \`stack\`. This copy will be used as a stack to reverse the elements.
@@ -292,7 +165,7 @@ The function then enters a while loop that continues as long as \`stack\` is not
 
 Finally, the function returns the \`reversed_list\`, which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
 
-export const tech2WarmupCode = 
+export const tech1WarmupCode = 
 `def reverse_list_with_queue(input_list):
     reversed_list = []
     queue = input_list[:]
@@ -301,7 +174,7 @@ export const tech2WarmupCode =
     return reversed_list
 reverse_list_with_queue([1, 2, 3, 4, 5])`
 
-export const tech2WarmupExplanation = 
+export const tech1WarmupExplanation = 
 `def reverse_list_with_queue(input_list): ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
     reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
     queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
@@ -348,7 +221,7 @@ If the loop completes without finding any unequal characters, the function retur
 
 The function is called with the string \`"racecar"\`, and it returns \`True\` because "racecar" is a palindrome.`
 
-export const tech1WarmupCode = 
+export const tech2WarmupCode = 
 `def reverse_list_with_stack(input_list: list) -> list:
     reversed_list = []
     stack = input_list[:]
@@ -358,4 +231,133 @@ export const tech1WarmupCode =
 reverse_list_with_stack([1, 2, 3, 4, 5])`
 
 
+
+
+// export const task4Code =
+// `def decode_string(s: str) -> str:
+//     stack = []
+//     current_string = ""
+//     current_num = 0
+//     for char in s:
+//         if char.isdigit():
+//             current_num = current_num * 10 + int(char)
+//         elif char == '[':
+//             stack.append((current_string, current_num))
+//             current_string = ""
+//             current_num = 0
+//         elif char == ']':
+//             last_string, num = stack.pop()
+//             current_string = last_string + num * current_string
+//         else:
+//             current_string += char
+//     return current_string
+// decode_string('3[a]2[bc]') # Output: 'aaabcbc'`
+
+// export const task4Explanation =
+// `def decode_string(s: str) -> str: ### Defines a function named \`decode_string\` that takes a single argument \`s\` of type string and returns a string.
+//     stack = [] ### Initializes an empty list \`stack\` to keep track of previous strings and numbers.
+//     current_string = "" ### Initializes an empty string \`current_string\` to build the current decoded string.
+//     current_num = 0 ### Initializes \`current_num\` to 0 to build the current number.
+//     for char in s: ### Starts a for loop to iterate over each character \`char\` in the input string \`s\`.
+//         if char.isdigit(): ### Checks if the current character \`char\` is a digit.
+//             current_num = current_num * 10 + int(char) ### Updates \`current_num\` by multiplying it by 10 and adding the integer value of \`char\`.
+//         elif char == '[': ### Checks if the current character \`char\` is an opening bracket '['.
+//             stack.append((current_string, current_num)) ### Pushes a tuple of \`current_string\` and \`current_num\` onto the stack.
+//             current_string = "" ### Resets \`current_string\` to an empty string.
+//             current_num = 0 ### Resets \`current_num\` to 0.
+//         elif char == ']': ### Checks if the current character \`char\` is a closing bracket ']'.
+//             last_string, num = stack.pop() ### Pops the last tuple from the stack into \`last_string\` and \`num\`.
+//             current_string = last_string + num * current_string ### Updates \`current_string\` by concatenating \`last_string\` and \`num\` repetitions of \`current_string\`.
+//         else: ### If the current character \`char\` is neither a digit nor a bracket.
+//             current_string += char ### Appends \`char\` to \`current_string\`.
+//     return current_string ### Returns the fully decoded string \`current_string\`.
+// decode_string('3[a]2[bc]') ### Calls the \`decode_string\` function with the input '3[a]2[bc]' and expects the output 'aaabcbc'.
+// [END]
+
+// [OVERALL-EXPLANATION]
+// The provided code defines a function \`decode_string\` that decodes a specially encoded string. The encoding format is such that a number followed by square brackets indicates that the string inside the brackets should be repeated that many times. For example, '3[a]' means 'aaa'.
+
+// The function uses a stack to keep track of the current string and the number of repetitions when it encounters an opening bracket '['. When it encounters a closing bracket ']', it pops the last string and number from the stack and constructs the new string by repeating the current string the specified number of times and appending it to the last string.
+
+// The function iterates over each character in the input string. If the character is a digit, it updates the current number. If it is an opening bracket, it pushes the current string and number onto the stack and resets them. If it is a closing bracket, it pops from the stack and constructs the new string. If it is a regular character, it appends it to the current string.
+
+// Finally, the function returns the fully decoded string. The example call \`decode_string('3[a]2[bc]')\` demonstrates the function's usage, which outputs 'aaabcbc'.`
+
+// export const task5Code = `def first_char_k_times(s: str, k: int) -> str:
+//     dq = []
+//     char_count = {}
+//     for char in s:
+//         dq.append(char)
+//         char_count[char] = char_count.get(char, 0) + 1
+//         while dq and char_count[dq[0]] != k:
+//             dq.pop(0)
+//         if dq and char_count[dq[0]] == k:
+//             return dq[0]
+//     return ''
+// first_char_k_times("aabbccddeeff", 2) # Output: a`
+
+// export const task5Explanation = 
+// `def first_char_k_times(s: str, k: int) -> str: ### Defines a function named \`first_char_k_times\` that takes a string \`s\` and an integer \`k\` as input and returns a string.
+//     dq = [] ### Initializes an empty list \`dq\` which will be used as a queue to keep track of characters in the order they appear.
+//     char_count = {} ### Initializes an empty dictionary \`char_count\` to keep track of the count of each character in the string.
+//     for char in s: ### Starts a for loop to iterate over each character in the string \`s\`.
+//         dq.append(char) ### Appends the current character to the end of the queue \`dq\`.
+//         char_count[char] = char_count.get(char, 0) + 1 ### Updates the count of the current character in the \`char_count\` dictionary. If the character is not already in the dictionary, it initializes its count to 0 before adding 1.
+//         while dq and char_count[dq[0]] != k: ### Starts a while loop that continues as long as \`dq\` is not empty and the count of the character at the front of the queue is not equal to \`k\`.
+//             dq.pop(0) ### Removes the character at the front of the queue \`dq\`.
+//         if dq and char_count[dq[0]] == k: ### Checks if \`dq\` is not empty and the count of the character at the front of the queue is equal to \`k\`.
+//             return dq[0] ### Returns the character at the front of the queue, which is the first character to appear \`k\` times in the string.
+//     return '' ### Returns an empty string if no character appears \`k\` times in the string.
+// first_char_k_times("aabbccddeeff", 2) ### Calls the function \`first_char_k_times\` with the string "aabbccddeeff" and the integer 2, and prints the result, which is 'a'.
+// [END]
+
+// [OVERALL-EXPLANATION]
+// The function \`first_char_k_times\` is designed to find the first character in a given string \`s\` that appears exactly \`k\` times. It uses a queue (\`dq\`) to keep track of the order in which characters appear and a dictionary (\`char_count\`) to count the occurrences of each character.
+
+// The function iterates over each character in the string. For each character, it appends it to the queue and updates its count in the dictionary. It then checks the front of the queue to see if the character there has appeared \`k\` times. If not, it removes characters from the front of the queue until it finds one that has appeared \`k\` times or the queue becomes empty. If it finds such a character, it returns it immediately. If no character appears \`k\` times by the end of the string, the function returns an empty string.
+
+// In the provided use case, the function is called with the string "aabbccddeeff" and the integer 2. The function will return 'a' because 'a' is the first character in the string to appear exactly 2 times.`
+
+// export const task1Code =
+// `def dna_sequences(pattern: str) -> list[str]:
+//     dna_chars = ['A', 'C', 'G', 'T']
+//     q = ['']
+//     result = []
+//     while len(q) > 0:
+//         seq = q.pop(0)
+//         if len(seq) == len(pattern):
+//             result.append(seq)
+//         else:
+//             if pattern[len(seq)] == '*':
+//                 for ch in dna_chars:
+//                     q.append(seq + ch)
+//             else:
+//                 q.append(seq + pattern[len(seq)])
+//     return result
+// dna_sequences('A*T') # Output: ['AAT', 'ACT', 'AGT', 'ATT']`
+
+// export const task1Explanation = 
+// `def dna_sequences(pattern: str) -> list[str]: ### Define a function named \`dna_sequences\` that takes a string \`pattern\` as input and returns a list of strings.
+//     dna_chars = ['A', 'C', 'G', 'T'] ### Initialize a list \`dna_chars\` containing the characters 'A', 'C', 'G', and 'T', which represent the possible DNA bases.
+//     q = [''] ### Initialize a list \`q\` with an empty string. This list will be used as a queue to generate sequences.
+//     result = [] ### Initialize an empty list \`result\` to store the final DNA sequences that match the pattern.
+//     while len(q) > 0: ### Start a while loop that continues as long as there are elements in the queue \`q\`.
+//         seq = q.pop(0) ### Remove and return the first element from the queue \`q\`, and assign it to the variable \`seq\`.
+//         if len(seq) == len(pattern): ### Check if the length of the current sequence \`seq\` is equal to the length of the pattern.
+//             result.append(seq) ### If the lengths are equal, append the current sequence \`seq\` to the \`result\` list.
+//         else: ### If the lengths are not equal, continue to the next steps.
+//             if pattern[len(seq)] == '*': ### Check if the current character in the pattern (at the position equal to the length of \`seq\`) is a wildcard '*'.
+//                 for ch in dna_chars: ### If it is a wildcard, iterate over each character in \`dna_chars\`.
+//                     q.append(seq + ch) ### Append the current sequence \`seq\` concatenated with the character \`ch\` to the queue \`q\`.
+//             else: ### If the current character in the pattern is not a wildcard.
+//                 q.append(seq + pattern[len(seq)]) ### Append the current sequence \`seq\` concatenated with the current character in the pattern to the queue \`q\`.
+//     return result ### After the while loop ends, return the \`result\` list containing all the generated DNA sequences.
+// [END]
+
+// [OVERALL-EXPLANATION]
+// The provided code defines a function \`dna_sequences\` that generates all possible DNA sequences matching a given pattern. The pattern may contain specific DNA bases ('A', 'C', 'G', 'T') and wildcards ('*') that can be replaced by any of the four DNA bases.
+
+// The function uses a breadth-first search (BFS) approach to generate the sequences. It initializes a queue with an empty string and iteratively builds sequences by appending characters according to the pattern. If the current character in the pattern is a wildcard, the function appends all possible DNA bases to the current sequence and adds them to the queue. If the character is a specific base, it appends that base to the current sequence and adds it to the queue.
+
+// The process continues until the queue is empty, and all sequences of the same length as the pattern are collected in the \`result\` list, which is then returned.`
 

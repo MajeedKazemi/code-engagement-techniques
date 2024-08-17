@@ -1,6 +1,4 @@
-export const task1Decomposition = {}
-
-export const task2Decomposition = {
+export const task1Decomposition = {
   "subgoals": [
     {
       "title": "Define the function with appropriate parameters",
@@ -58,7 +56,7 @@ export const task2Decomposition = {
     },
     {
       "title": "Process the queue until it's empty",
-      "indent-level": 1,
+      "indent-level": 2,
       "leading-questions": [
         {
           "context": "We need to process the queue to generate combinations until it's empty.",
@@ -69,17 +67,11 @@ export const task2Decomposition = {
           "incorrect-choice-2": "A do-while loop",
           "incorrect-choice-3": "A recursive function",
           "short-answer-solution": "A while loop should be used to process the queue until it's empty.",
-          "selected-question": "mcq",
+          "selected-question": "short",
           "code-line-to-be-revealed": 4,
           "hint-if-incorrect": "Consider a loop that continues until a condition is met.",
           "explanation-after-correct-answer": "A while loop is used to process the queue until it's empty, ensuring all combinations are generated."
-        }
-      ]
-    },
-    {
-      "title": "Pop an element from the queue",
-      "indent-level": 2,
-      "leading-questions": [
+        },
         {
           "context": "We need to pop an element from the queue to process it.",
           "short-answer-question": "What method should be used to pop an element from the queue?",
@@ -97,11 +89,11 @@ export const task2Decomposition = {
       ]
     },
     {
-      "title": "Check if the current string length equals 2*n",
+      "title": "Check the length of the current string",
       "indent-level": 2,
       "leading-questions": [
         {
-          "context": "We need to check if the current string length equals 2*n to determine if it's a complete combination.",
+          "context": "We need to check if the current string length to determine if it's a complete combination.",
           "short-answer-question": "What condition should be checked to determine if the string is complete?",
           "mcq-question": "What condition should be checked to determine if the string is complete?",
           "correct-choice": "len(s) == 2 * n",
@@ -113,13 +105,7 @@ export const task2Decomposition = {
           "code-line-to-be-revealed": 6,
           "hint-if-incorrect": "Consider the total number of parentheses in a complete combination.",
           "explanation-after-correct-answer": "The condition len(s) == 2 * n checks if the current string has the correct number of parentheses to be a complete combination."
-        }
-      ]
-    },
-    {
-      "title": "Add the complete combination to the result list",
-      "indent-level": 3,
-      "leading-questions": [
+        },
         {
           "context": "We need to add the complete combination to the result list.",
           "short-answer-question": "What should be done with the complete combination?",
@@ -133,13 +119,7 @@ export const task2Decomposition = {
           "code-line-to-be-revealed": 7,
           "hint-if-incorrect": "Consider where the final combinations are stored.",
           "explanation-after-correct-answer": "The complete combination is added to the result list to store it for the final output."
-        }
-      ]
-    },
-    {
-      "title": "Continue to the next iteration if the string is complete",
-      "indent-level": 3,
-      "leading-questions": [
+        },
         {
           "context": "We need to continue to the next iteration if the string is complete.",
           "short-answer-question": "What should be done after adding the complete combination to the result list?",
@@ -149,17 +129,11 @@ export const task2Decomposition = {
           "incorrect-choice-2": "Return the result list",
           "incorrect-choice-3": "Restart the loop",
           "short-answer-solution": "After adding the complete combination to the result list, we should continue to the next iteration.",
-          "selected-question": "mcq",
+          "selected-question": "short",
           "code-line-to-be-revealed": 8,
           "hint-if-incorrect": "Consider what to do after processing a complete combination.",
           "explanation-after-correct-answer": "The continue statement is used to skip the remaining code in the current iteration and move to the next iteration."
-        }
-      ]
-    },
-    {
-      "title": "Handle the case where the string is not complete",
-      "indent-level": 2,
-      "leading-questions": [
+        },
         {
           "context": "We need to handle the case where the string is not complete.",
           "short-answer-question": "What should be done if the string is not complete?",
@@ -193,13 +167,7 @@ export const task2Decomposition = {
           "code-line-to-be-revealed": 10,
           "hint-if-incorrect": "Consider the maximum number of open parentheses allowed.",
           "explanation-after-correct-answer": "The condition opens < n checks if the number of open parentheses is less than the maximum allowed, allowing us to add more."
-        }
-      ]
-    },
-    {
-      "title": "Calculate the new maximum depth",
-      "indent-level": 4,
-      "leading-questions": [
+        },
         {
           "context": "We need to calculate the new maximum depth if an open parenthesis is added.",
           "short-answer-question": "How should the new maximum depth be calculated?",
@@ -213,13 +181,7 @@ export const task2Decomposition = {
           "code-line-to-be-revealed": 11,
           "hint-if-incorrect": "Consider how the depth changes when an open parenthesis is added.",
           "explanation-after-correct-answer": "The new maximum depth is calculated as max(max_d, cur_d + 1) to account for the added open parenthesis, ensuring the depth is updated correctly."
-        }
-      ]
-    },
-    {
-      "title": "Add a new state with an open parenthesis to the queue",
-      "indent-level": 4,
-      "leading-questions": [
+        },
         {
           "context": "We need to add a new state with an open parenthesis to the queue.",
           "short-answer-question": "What should be added to the queue when an open parenthesis is added?",
@@ -229,7 +191,7 @@ export const task2Decomposition = {
           "incorrect-choice-2": "New state with only the counters updated",
           "incorrect-choice-3": "New state with the same counters",
           "short-answer-solution": "A new state with the updated string and counters should be added to the queue when an open parenthesis is added.",
-          "selected-question": "mcq",
+          "selected-question": "short",
           "code-line-to-be-revealed": 12,
           "hint-if-incorrect": "Consider what needs to be updated when adding an open parenthesis.",
           "explanation-after-correct-answer": "A new state with the updated string and counters is added to the queue when an open parenthesis is added, allowing further combinations to be generated."
@@ -253,13 +215,7 @@ export const task2Decomposition = {
           "code-line-to-be-revealed": 13,
           "hint-if-incorrect": "Consider the conditions for adding a close parenthesis.",
           "explanation-after-correct-answer": "The conditions closes < opens and max_d <= m ensure that more close parentheses can be added without violating the constraints."
-        }
-      ]
-    },
-    {
-      "title": "Add a new state with a close parenthesis to the queue",
-      "indent-level": 4,
-      "leading-questions": [
+        },
         {
           "context": "We need to add a new state with a close parenthesis to the queue.",
           "short-answer-question": "What should be added to the queue when a close parenthesis is added?",
@@ -308,26 +264,567 @@ export const task2Decomposition = {
           "incorrect-choice-1": "generate_parentheses(3, 3)",
           "incorrect-choice-2": "generate_parentheses(1, 1)",
           "incorrect-choice-3": "generate_parentheses(2, 1)",
-          "short-answer-solution": "The example generate_parentheses(2, 2) can be used to test the function and verify its correctness.",
-          "selected-question": "mcq",
+          "short-answer-solution": "Write any example would be fine, as long as the function takes in 2 integer values",
+          "selected-question": "short",
           "code-line-to-be-revealed": 16,
           "hint-if-incorrect": "Consider a simple example with small values for n and m.",
-          "explanation-after-correct-answer": "The example generate_parentheses(2, 2) is used to test the function and verify its correctness, ensuring it generates the expected output."
+          "explanation-after-correct-answer": "One simple example is generate_parentheses(2, 2) can be used to test the function and verify its correctness, ensuring it generates the expected output."
         }
       ]
     }
   ]
 }
 
-export const task3Decomposition = {}
+export const task2Decomposition = {
+  "subgoals": [
+    {
+      "title": "Define the function and initialize variables",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that takes a string as input.",
+          "short-answer-question": "What should be the input type and return type of the function?",
+          "mcq-question": "What should be the input type and return type of the function?",
+          "correct-choice": "Input: str, Return: int",
+          "incorrect-choice-1": "Input: list, Return: int",
+          "incorrect-choice-2": "Input: str, Return: str",
+          "incorrect-choice-3": "Input: int, Return: str",
+          "short-answer-solution": "The function should take a string as input and return an integer representing the length of the longest valid parenthesis substring.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the type of data the function will process and what it needs to return.",
+          "explanation-after-correct-answer": "The function definition specifies that it takes a string and returns an integer.",
+        },
+        {
+          "context": "We need to map opening brackets to their corresponding closing brackets.",
+          "short-answer-question": "Why do we need a map of opening to closing brackets?",
+          "mcq-question": "Why do we need a map of opening to closing brackets?",
+          "correct-choice": "To check for matching pairs",
+          "incorrect-choice-1": "To count the brackets",
+          "incorrect-choice-2": "To store indices of brackets",
+          "incorrect-choice-3": "To sort the brackets",
+          "short-answer-solution": "A map helps in checking if an opening bracket has a corresponding closing bracket, ensuring valid pairs.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Consider how you would verify if a closing bracket matches an opening bracket.",
+          "explanation-after-correct-answer": "The map helps in checking if an opening bracket has a corresponding closing bracket, ensuring valid pairs.",
+        },
+        {
+          "context": "We need to initialize a stack to keep track of indices.",
+          "short-answer-question": "Why do we initialize the stack with -1?",
+          "mcq-question": "Why do we initialize the stack with -1?",
+          "correct-choice": "To handle the base case for valid substrings",
+          "incorrect-choice-1": "To mark the end of the string",
+          "incorrect-choice-2": "To store the length of the string",
+          "incorrect-choice-3": "To indicate an invalid index",
+          "short-answer-solution": "Initializing the stack with -1 helps in calculating the length of valid substrings from the beginning of the string.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Think about how you would calculate the length of a valid substring starting from the beginning.",
+          "explanation-after-correct-answer": "Initializing the stack with -1 helps in calculating the length of valid substrings from the beginning of the string.",
+        },
+        {
+          "context": "We need to keep track of the maximum length of valid substrings.",
+          "short-answer-question": "What initial value should max_length have?",
+          "mcq-question": "What initial value should max_length have?",
+          "correct-choice": "0",
+          "incorrect-choice-1": "1",
+          "incorrect-choice-2": "len(s)",
+          "incorrect-choice-3": "-1",
+          "short-answer-solution": "The initial value of max_length should be 0 because we haven't found any valid substrings yet.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Consider the initial state before any valid substrings are found.",
+          "explanation-after-correct-answer": "The initial value of max_length should be 0 because we haven't found any valid substrings yet.",
+        }
+      ]
+    },
+    {
+      "title": "Iterate through the string and process each character",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to iterate through each character in the string.",
+          "short-answer-question": "What loop structure should we use to iterate through the string?",
+          "mcq-question": "What loop structure should be more efficient to use to iterate through the string?",
+          "correct-choice": "for loop",
+          "incorrect-choice-1": "while loop",
+          "incorrect-choice-2": "do-while loop",
+          "incorrect-choice-3": "foreach loop",
+          "short-answer-solution": "A for loop is suitable for iterating through each character in the string by index.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Consider the most common loop structure for iterating through a sequence by index.",
+          "explanation-after-correct-answer": "A for loop is suitable for iterating through each character in the string by index.",
+        },
+        {
+          "context": "We need to get the current character in the string.",
+          "short-answer-question": "How do we access the current character in the string?",
+          "mcq-question": "How do we access the current character in the string?",
+          "correct-choice": "s[i]",
+          "incorrect-choice-1": "s.charAt(i)",
+          "incorrect-choice-2": "s[i:i+1]",
+          "incorrect-choice-3": "s.get(i)",
+          "short-answer-solution": "We access the current character in the string using s[i], where i is the index.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Think about how you would access an element in a list by index.",
+          "explanation-after-correct-answer": "We access the current character in the string using s[i], where i is the index.",
+        }
+      ]
+    },
+    {
+      "title": "Process opening and closing brackets",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to check if the current character is an opening bracket.",
+          "short-answer-question": "How do we check if the current character is an opening bracket?",
+          "mcq-question": "How do we check if the current character is an opening bracket?",
+          "correct-choice": "char in map",
+          "incorrect-choice-1": "char == '('",
+          "incorrect-choice-2": "char.is_opening()",
+          "incorrect-choice-3": "char in '({['",
+          "short-answer-solution": "We check if the current character is an opening bracket by checking if it is in the map.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Consider how you would check if a character is in a dictionary.",
+          "explanation-after-correct-answer": "We check if the current character is an opening bracket by checking if it is in the map.",
+        },
+        {
+          "context": "We need to handle the case where the current character is an opening bracket.",
+          "short-answer-question": "What should we do if the current character is an opening bracket?",
+          "mcq-question": "What should we do if the current character is an opening bracket?",
+          "correct-choice": "Push its index onto the stack",
+          "incorrect-choice-1": "Push the character onto the stack",
+          "incorrect-choice-2": "Increment max_length",
+          "incorrect-choice-3": "Pop the stack",
+          "short-answer-solution": "If the current character is an opening bracket, we push its index onto the stack to keep track of it.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 8,
+          "hint-if-incorrect": "Think about how you would keep track of the position of opening brackets.",
+          "explanation-after-correct-answer": "If the current character is an opening bracket, we push its index onto the stack to keep track of it.",
+        },
+      ]
+    },
+    {
+      "title": "Process closing brackets and update max_length",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "else",
+          "short-answer-question": "What is the other possibility of the current character?",
+          "mcq-question": "What is the other possibility of the current character?",
+          "correct-choice": "Closing bracket",
+          "incorrect-choice-1": "Opening bracket",
+          "incorrect-choice-2": "Alphanumeric character",
+          "incorrect-choice-3": "Special character",
+          "short-answer-solution": "The other possibility of the current character is a closing bracket.",
+          "code-line-to-be-revealed": 9,
+          "selected-question": "short",
+          "hint-if-incorrect": "Consider what the character could be if it's not an opening bracket.",
+          "explanation-after-correct-answer": "The other possibility of the current character is a closing bracket.",
+        },
+        {
+          "context": "We need to handle the case where the current character is a closing bracket.",
+          "short-answer-question": "What should we check before processing a closing bracket?",
+          "mcq-question": "What should we check before processing a closing bracket?",
+          "correct-choice": "If the stack is not empty",
+          "incorrect-choice-1": "If the stack is empty",
+          "incorrect-choice-2": "If max_length is zero",
+          "incorrect-choice-3": "If the character is in the map",
+          "short-answer-solution": "Before processing a closing bracket, we should check if the stack is not empty to ensure there is an opening bracket to match.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 10,
+          "hint-if-incorrect": "Consider what needs to be true for a closing bracket to have a matching opening bracket.",
+          "explanation-after-correct-answer": "Before processing a closing bracket, we should check if the stack is not empty to ensure there is an opening bracket to match.",
+        },
+        {
+          "context": "We need to check if the last item in the stack is an opening bracket.",
+          "short-answer-question": "How do we check if the last item in the stack is an opening bracket?",
+          "mcq-question": "How do we check if the last item in the stack is an opening bracket?",
+          "correct-choice": "s[stack[-1]] in map",
+          "incorrect-choice-1": "stack[-1] in map",
+          "incorrect-choice-2": "s[stack[-1]] == '('",
+          "incorrect-choice-3": "stack[-1] == '('",
+          "short-answer-solution": "We check if the last item in the stack is an opening bracket by checking if s[stack[-1]] is in the map.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 11,
+          "hint-if-incorrect": "Consider how you would access the last item in the stack and check if it is an opening bracket.",
+          "explanation-after-correct-answer": "We check if the last item in the stack is an opening bracket by checking if s[stack[-1]] is in the map.",
+        },
+        {
+          "context": "We need to check if the current closing bracket matches the last opening bracket.",
+          "short-answer-question": "How do we check if the current closing bracket matches the last opening bracket?",
+          "mcq-question": "How do we check if the current closing bracket matches the last opening bracket?",
+          "correct-choice": "map[s[stack[-1]]] == char",
+          "incorrect-choice-1": "map[stack[-1]] == char",
+          "incorrect-choice-2": "s[stack[-1]] == char",
+          "incorrect-choice-3": "map[char] == s[stack[-1]]",
+          "short-answer-solution": "We check if the current closing bracket matches the last opening bracket by comparing map[s[stack[-1]]] with char.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 12,
+          "hint-if-incorrect": "Consider how you would use the map to check if the brackets match.",
+          "explanation-after-correct-answer": "We check if the current closing bracket matches the last opening bracket by comparing map[s[stack[-1]]] with char.",
+        },
+      ]
+    },
+    {
+      "title": "Consider the value of not_empty and is_match",
+      "indent-level": 3,
+      "leading-questions": [
+        {
+          "context": "We need to consider the value of not empty and is_match",
+          "short-answer-question": "What would happen if not empty and is_match are both true?",
+          "mcq-question": "What would happen if not empty and is_match are both true?",
+          "correct-choice": "Pop the stack and update max_length",
+          "incorrect-choice-1": "Push the closing bracket onto the stack",
+          "incorrect-choice-2": "Increment max_length",
+          "incorrect-choice-3": "Reset the stack",
+          "short-answer-solution": "If not empty and is_match are both true, we pop the stack and update max_length.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 13,
+          "hint-if-incorrect": "Think about how you would handle a matching pair of brackets.",
+          "explanation-after-correct-answer": "If not empty and is_match are both true, we pop the stack and update max_length.",
+        },
+        {
+          "context": "We need to handle the case where the current closing bracket matches the last opening bracket.",
+          "short-answer-question": "What should we do if the current closing bracket matches the last opening bracket?",
+          "mcq-question": "What should we do if the current closing bracket matches the last opening bracket?",
+          "correct-choice": "Pop the stack and update max_length",
+          "incorrect-choice-1": "Push the closing bracket onto the stack",
+          "incorrect-choice-2": "Increment max_length",
+          "incorrect-choice-3": "Reset the stack",
+          "short-answer-solution": "If the current closing bracket matches the last opening bracket, we pop the stack and update max_length.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 14,
+          "hint-if-incorrect": "Think about how you would handle a matching pair of brackets.",
+          "explanation-after-correct-answer": "If the current closing bracket matches the last opening bracket, we pop the stack and update max_length.",
+        },
+        {
+          "context": "We need to update the maximum length of valid substrings.",
+          "short-answer-question": "How do we update the maximum length of valid substrings?",
+          "mcq-question": "How do we update the maximum length of valid substrings?",
+          "correct-choice": "max_length = max(max_length, i - stack[-1])",
+          "incorrect-choice-1": "max_length += 1",
+          "incorrect-choice-2": "max_length = i - stack[-1]",
+          "incorrect-choice-3": "max_length = max(max_length, i)",
+          "short-answer-solution": "We update the maximum length of valid substrings by calculating the difference between the current index and the last unmatched index.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 15,
+          "hint-if-incorrect": "Consider how you would calculate the length of the current valid substring.",
+          "explanation-after-correct-answer": "We update the maximum length of valid substrings by calculating the difference between the current index and the last unmatched index.",
+        },
+        {
+          "context": "Consider other values of not_empty and is_match",
+          "short-answer-question": "What are the other values of not_empty and is_match?",
+          "mcq-question": "What are the other values of not_empty and is_match?",
+          "correct-choice": "at least one not_empty and is_match is false",
+          "incorrect-choice-1": "both not_empty and is_match are false",
+          "incorrect-choice-2": "not_empty is true and is_match is false",
+          "incorrect-choice-3": "not_empty is false and is_match is true",
+          "short-answer-solution": "If at least one of not_empty and is_match is false, we do not update max_length.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 16,
+          "hint-if-incorrect": "Consider the nagation of the if statement on line 13",
+          "explanation-after-correct-answer": "If at least one of not_empty and is_match is false, we do not update max_length.",
+        },
+        {
+          "context": "We need to handle the case where the current closing bracket does not match the last opening bracket.",
+          "short-answer-question": "What should we do if the current closing bracket does not match the last opening bracket?",
+          "short-answer-solution": "If the current closing bracket does not match the last opening bracket, we update the last unmatched index to the current index.",
+          "mcq-question": "What should we do if the current closing bracket does not match the last opening bracket?",
+          "correct-choice": "Update the last unmatched index",
+          "incorrect-choice-1": "Pop the stack",
+          "incorrect-choice-2": "Increment max_length",
+          "incorrect-choice-3": "Push the closing bracket onto the stack",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 17,
+          "hint-if-incorrect": "Think about how you would handle an unmatched closing bracket.",
+          "explanation-after-correct-answer": "If the current closing bracket does not match the last opening bracket, we update the last unmatched index to the current index.",
+        }
+      ]
+    },
+    {
+      "title": "Return the maximum length of valid substrings",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to return the maximum length of valid substrings.",
+          "short-answer-question": "What should the function return?",
+          "mcq-question": "What should the function return?",
+          "correct-choice": "max_length",
+          "incorrect-choice-1": "len(stack)",
+          "incorrect-choice-2": "i",
+          "incorrect-choice-3": "s",
+          "short-answer-solution": "The function should return max_length, which stores the length of the longest valid parenthesis substring.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 18,
+          "hint-if-incorrect": "Consider what variable stores the length of the longest valid substring.",
+          "explanation-after-correct-answer": "The function should return max_length, which stores the length of the longest valid parenthesis substring.",
+        }
+      ]
+    },
+    {
+      "title": "Test the function with an example",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to test the function with an example input.",
+          "short-answer-question": "What is the expected output for the input '(()'?",
+          "mcq-question": "What is the expected output for the input '(()'?",
+          "correct-choice": "2",
+          "incorrect-choice-1": "3",
+          "incorrect-choice-2": "1",
+          "incorrect-choice-3": "0",
+          "short-answer-solution": "The expected output for the input '(()' is 2, as the longest valid parenthesis substring is '()'.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 19,
+          "hint-if-incorrect": "Consider the length of the longest valid parenthesis substring in the input '(()'.",
+          "explanation-after-correct-answer": "The expected output for the input '(()' is 2, as the longest valid parenthesis substring is '()'.",
+        }
+      ]
+    }
+  ]
+}
 
-export const task4Decomposition = {}
+export const task3Decomposition = {
+  "subgoals": [
+    {
+      "title": "Define the sliding_window_maximum function",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that takes a list of integers and an integer k.",
+          "short-answer-question": "What should the function signature look like for this task?",
+          "mcq-question": "What should the function signature look like?",
+          "correct-choice": "def sliding_window_maximum(nums: list[int], k: int) -> list[int]:",
+          "incorrect-choice-1": "def sliding_window_maximum(nums: list[int], k: int) -> int:",
+          "incorrect-choice-2": "def sliding_window_maximum(nums: list[int], k: int) -> None:",
+          "incorrect-choice-3": "def sliding_window_maximum(nums: list[int], k: int) -> list[str]:",
+          "short-answer-solution": "The function should be defined as def sliding_window_maximum(nums: list[int], k: int) -> list[int]: because it takes a list of integers and an integer k, and returns a list of integers.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the input and output types.",
+          "explanation-after-correct-answer": "The function signature specifies that the function takes a list of integers and an integer k, and returns a list of integers."
+        }
+      ]
+    },
+    {
+      "title": "Initialize deque and result list",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to initialize a deque and a result list to store indices and results respectively.",
+          "short-answer-question": "Why do we need to initialize a deque and a result list?",
+          "mcq-question": "Why do we need to initialize a deque and a result list?",
+          "correct-choice": "To store indices and results respectively",
+          "incorrect-choice-1": "To store the maximum values directly",
+          "incorrect-choice-2": "To store the input list and k",
+          "incorrect-choice-3": "To store temporary values and intermediate results",
+          "short-answer-solution": "We need a deque to store indices of elements in the current window and a result list to store the maximum values of each window.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Think about what data structures are needed for the sliding window approach.",
+          "explanation-after-correct-answer": "The deque will store indices of elements in the current window, and the result list will store the maximum values of each window."
+        },
+        {
+          "context": "We need to initialize a deque and a result list to store indices and results respectively.",
+          "short-answer-question": "What should the initial values of the deque and result list be?",
+          "mcq-question": "What should the initial values of the deque and result list be?",
+          "correct-choice": "Both should be empty",
+          "incorrect-choice-1": "Deque should be empty, result list should have one element",
+          "incorrect-choice-2": "Deque should have one element, result list should be empty",
+          "incorrect-choice-3": "Both should have one element",
+          "short-answer-solution": "Both the deque and the result list should be initialized as empty because we will populate them as we iterate through the input list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Think about the initial state before any processing is done.",
+          "explanation-after-correct-answer": "Both the deque and the result list are initialized as empty because they will be populated during the iteration through the input list."
+        }
+      ]
+    },
+    {
+      "title": "Iterate through the input list",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to iterate through the input list to process each element.",
+          "short-answer-question": "How should we iterate through the input list?",
+          "mcq-question": "How should we iterate through the input list?",
+          "correct-choice": "Using a for loop with enumerate",
+          "incorrect-choice-1": "Using a while loop",
+          "incorrect-choice-2": "Using a for loop with range",
+          "incorrect-choice-3": "Using a list comprehension",
+          "short-answer-solution": "We should use a for loop with enumerate to get both the index and the value of each element in the input list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Think about how to get both the index and the value of each element.",
+          "explanation-after-correct-answer": "Using a for loop with enumerate allows us to get both the index and the value of each element in the input list."
+        }
+      ]
+    },
+    {
+      "title": "Remove indices outside the current window",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to remove indices from the deque that are outside the current window.",
+          "short-answer-question": "What condition should we check to remove indices outside the current window?",
+          "mcq-question": "What condition should we check to remove indices outside the current window?",
+          "correct-choice": "dq and dq[0] < i - k + 1",
+          "incorrect-choice-1": "dq and dq[0] > i - k + 1",
+          "incorrect-choice-2": "dq and dq[-1] < i - k + 1",
+          "incorrect-choice-3": "dq and dq[-1] > i - k + 1",
+          "short-answer-solution": "We should check if the deque is not empty and if the first element in the deque is less than the current index minus k plus 1.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Think about the condition that determines if an index is outside the current window.",
+          "explanation-after-correct-answer": "We check if the deque is not empty and if the first element in the deque is less than the current index minus k plus 1 to remove indices outside the current window."
+        },
+        {
+          "context": "We need to remove indices from the deque that are outside the current window.",
+          "short-answer-question": "What should we do if the condition is met?",
+          "mcq-question": "What should we do if the condition is met?",
+          "correct-choice": "Remove the first element from the deque",
+          "incorrect-choice-1": "Remove the last element from the deque",
+          "incorrect-choice-2": "Add the current index to the deque",
+          "incorrect-choice-3": "Add the current value to the deque",
+          "short-answer-solution": "If the condition is met, we should remove the first element from the deque because it is outside the current window.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Think about what needs to be removed from the deque.",
+          "explanation-after-correct-answer": "We remove the first element from the deque if it is outside the current window to maintain the correct window size."
+        }
+      ]
+    },
+    {
+      "title": "Remove smaller elements from the deque",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to remove elements from the deque that are smaller than the current element.",
+          "short-answer-question": "What condition should we check to remove smaller elements from the deque?",
+          "mcq-question": "What condition should we check to remove smaller elements from the deque?",
+          "correct-choice": "dq and nums[dq[-1]] < n",
+          "incorrect-choice-1": "dq and nums[dq[-1]] > n",
+          "incorrect-choice-2": "dq and nums[dq[0]] < n",
+          "incorrect-choice-3": "dq and nums[dq[0]] > n",
+          "short-answer-solution": "We should check if the deque is not empty and if the last element in the deque is smaller than the current element.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Think about the condition that determines if an element is smaller than the current element.",
+          "explanation-after-correct-answer": "We check if the deque is not empty and if the last element in the deque is smaller than the current element to remove smaller elements."
+        },
+        {
+          "context": "We need to remove elements from the deque that are smaller than the current element.",
+          "short-answer-question": "What should we do if the condition is met?",
+          "mcq-question": "What should we do if the condition is met?",
+          "correct-choice": "Remove the last element from the deque",
+          "incorrect-choice-1": "Remove the first element from the deque",
+          "incorrect-choice-2": "Add the current index to the deque",
+          "incorrect-choice-3": "Add the current value to the deque",
+          "short-answer-solution": "If the condition is met, we should remove the last element from the deque because it is smaller than the current element.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 8,
+          "hint-if-incorrect": "Think about what needs to be removed from the deque.",
+          "explanation-after-correct-answer": "We remove the last element from the deque if it is smaller than the current element to maintain the correct order."
+        },
+        {
+          "context": "We need to add the current index to the deque.",
+          "short-answer-question": "Where should we do with the current index in the deque?",
+          "mcq-question": "Where should we add the current index in the deque?",
+          "correct-choice": "At the end of the deque",
+          "incorrect-choice-1": "At the beginning of the deque",
+          "incorrect-choice-2": "In the middle of the deque",
+          "incorrect-choice-3": "At a random position in the deque",
+          "short-answer-solution": "We should add the current index at the end of the deque to maintain the order of indices.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 9,
+          "hint-if-incorrect": "Think about the order of indices in the deque.",
+          "explanation-after-correct-answer": "We add the current index at the end of the deque to maintain the order of indices."
+        }
+      ]
+    },
+    {
+      "title": "Add maximum value to the result list",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We need to add the maximum value of the current window to the result list.",
+          "short-answer-question": "What condition should we check before adding the maximum value to the result list?",
+          "mcq-question": "What condition should we check before adding the maximum value to the result list?",
+          "correct-choice": "i >= k - 1",
+          "incorrect-choice-1": "i > k - 1",
+          "incorrect-choice-2": "i <= k - 1",
+          "incorrect-choice-3": "i < k - 1",
+          "short-answer-solution": "We should check if the current index is greater than or equal to k - 1 to ensure that we have a complete window.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 10,
+          "hint-if-incorrect": "Think about when we have a complete window.",
+          "explanation-after-correct-answer": "We check if the current index is greater than or equal to k - 1 to ensure that we have a complete window before adding the maximum value to the result list."
+        },
+        {
+          "context": "We need to add the maximum value of the current window to the result list.",
+          "short-answer-question": "How do we get the maximum value of the current window?",
+          "mcq-question": "How do we get the maximum value of the current window?",
+          "correct-choice": "nums[dq[0]]",
+          "incorrect-choice-1": "nums[dq[-1]]",
+          "incorrect-choice-2": "nums[dq[1]]",
+          "incorrect-choice-3": "nums[dq[-2]]",
+          "short-answer-solution": "We get the maximum value of the current window by accessing the element at the index stored at the front of the deque.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 11,
+          "hint-if-incorrect": "Think about the position of the maximum value in the deque.",
+          "explanation-after-correct-answer": "We get the maximum value of the current window by accessing the element at the index stored at the front of the deque and add it to the result list."
+        }
+      ]
+    },
+    {
+      "title": "Return the result list",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We need to return the result list after processing all elements.",
+          "short-answer-question": "What should we return at the end of the function?",
+          "mcq-question": "What should we return at the end of the function?",
+          "correct-choice": "The result list",
+          "incorrect-choice-1": "The deque",
+          "incorrect-choice-2": "The input list",
+          "incorrect-choice-3": "The last element of the result list",
+          "short-answer-solution": "We should return the result list which contains the maximum values of each sliding window.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 12,
+          "hint-if-incorrect": "Think about what we have been storing the results in.",
+          "explanation-after-correct-answer": "We return the result list which contains the maximum values of each sliding window."
+        }
+      ]
+    },
+    {
+      "title": "Test the function with an example",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to test the function with an example input.",
+          "short-answer-question": "What should the output be with the input [1, 3, -1, -3, 5, 3, 6, 7] and k = 3?",
+          "mcq-question": "What should the test input be?",
+          "correct-choice": "[1, 3, -1, -3, 5, 3, 6, 7], 3",
+          "incorrect-choice-1": "[1, 3, -1, -3, 5, 3, 6, 7], 2",
+          "incorrect-choice-2": "[1, 3, -1, -3, 5, 3, 6, 7], 4",
+          "incorrect-choice-3": "[1, 3, -1, -3, 5, 3, 6, 7], 1",
+          "short-answer-solution": "[3, 3, 5, 5, 6, 7]",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 13,
+          "hint-if-incorrect": "Think about the example given in the task description.",
+          "explanation-after-correct-answer": "[1, 3, -1] -> max is 3, [3, -1, -3] -> max is 3, [-1, -3, 5] -> max is 5, [-3, 5, 3] -> max is 5, [5, 3, 6] -> max is 6, [3, 6, 7] -> max is 7"
+        }
+      ]
+    }
+  ]
+}
 
-export const task5Decomposition = {}
 
-export const task6Decomposition = {}
-
-export const tech1WarmupDecomposition = {
+export const tech2WarmupDecomposition = {
   "subgoals": [
     {
       "title": "Define the function and its parameters",
@@ -350,7 +847,7 @@ export const tech1WarmupDecomposition = {
       ]
     },
     {
-      "title": "Initialize an empty list for the reversed result",
+      "title": "Initialize an empty list for the result and create copy use stack",
       "indent-level": 1,
       "leading-questions": [
         {
@@ -366,13 +863,7 @@ export const tech1WarmupDecomposition = {
           "code-line-to-be-revealed": 2,
           "hint-if-incorrect": "Consider a data structure that maintains order and allows appending.",
           "explanation-after-correct-answer": "An empty list named 'reversed_list' is initialized to store the elements in reverse order."
-        }
-      ]
-    },
-    {
-      "title": "Create a copy of the input list to use as a stack",
-      "indent-level": 1,
-      "leading-questions": [
+        },
         {
           "context": "We need to use a stack to reverse the list.",
           "short-answer-question": "How can we create a copy of the input list to use as a stack?",
@@ -406,13 +897,7 @@ export const tech1WarmupDecomposition = {
           "code-line-to-be-revealed": 4,
           "hint-if-incorrect": "Consider the condition that checks if the stack is not empty.",
           "explanation-after-correct-answer": "The while loop continues to iterate as long as there are elements in the stack."
-        }
-      ]
-    },
-    {
-      "title": "Pop elements from the stack and append to the reversed list",
-      "indent-level": 2,
-      "leading-questions": [
+        },
         {
           "context": "We need to move elements from the stack to the reversed list.",
           "short-answer-question": "What operation should we perform to remove the top element from the stack?",
@@ -455,24 +940,24 @@ export const tech1WarmupDecomposition = {
       "leading-questions": [
         {
           "context": "We need to test the function with a sample input list.",
-          "short-answer-question": "What should be the sample input list to test the function?",
+          "short-answer-question": "What should be the output list to test the function given the input [1, 2, 3, 4, 5]?",
           "mcq-question": "What is a suitable sample input list to test the function?",
           "correct-choice": "[1, 2, 3, 4, 5]",
           "incorrect-choice-1": "[5, 4, 3, 2, 1]",
           "incorrect-choice-2": "[1, 3, 5, 7, 9]",
           "incorrect-choice-3": "[2, 4, 6, 8, 10]",
-          "short-answer-solution": "A suitable sample input list to test the function is [1, 2, 3, 4, 5]. This will help verify if the function correctly reverses the list.",
-          "selected-question": "mcq",
+          "short-answer-solution": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list.",
+          "selected-question": "short",
           "code-line-to-be-revealed": 7,
           "hint-if-incorrect": "Consider a simple, ordered list to test the function.",
-          "explanation-after-correct-answer": "The function is called with the sample input list [1, 2, 3, 4, 5] to test if it correctly reverses the list."
+          "explanation-after-correct-answer": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list."
         }
       ]
     }
   ]
 }
 
-export const tech2WarmupDecomposition = {
+export const tech1WarmupDecomposition = {
   "subgoals": [
     {
       "title": "Define the function and its input parameter",
@@ -495,8 +980,8 @@ export const tech2WarmupDecomposition = {
       ]
     },
     {
-      "title": "Initialize an empty list to store the reversed elements",
-      "indent-level": 0,
+      "title": "Initialize an empty list to store the result and create a copy as queue",
+      "indent-level": 1,
       "leading-questions": [
         {
           "context": "We need a place to store the reversed elements of the input list.",
@@ -511,13 +996,7 @@ export const tech2WarmupDecomposition = {
           "code-line-to-be-revealed": 2,
           "hint-if-incorrect": "Consider a data structure that maintains order and allows for easy insertion.",
           "explanation-after-correct-answer": "An empty list named 'reversed_list' is initialized to store the elements in reverse order."
-        }
-      ]
-    },
-    {
-      "title": "Create a copy of the input list to use as a queue",
-      "indent-level": 0,
-      "leading-questions": [
+        },
         {
           "context": "We need to create a queue-like structure from the input list.",
           "short-answer-question": "How can we create a copy of the input list?",
@@ -536,7 +1015,7 @@ export const tech2WarmupDecomposition = {
     },
     {
       "title": "Loop through the queue until it is empty",
-      "indent-level": 0,
+      "indent-level": 1,
       "leading-questions": [
         {
           "context": "We need to process each element in the queue until it is empty.",
@@ -551,13 +1030,7 @@ export const tech2WarmupDecomposition = {
           "code-line-to-be-revealed": 4,
           "hint-if-incorrect": "Consider a loop that continues until a condition is no longer true.",
           "explanation-after-correct-answer": "A while loop is used to process each element in the queue until it is empty."
-        }
-      ]
-    },
-    {
-      "title": "Insert elements from the queue into the reversed list",
-      "indent-level": 1,
-      "leading-questions": [
+        },
         {
           "context": "We need to insert elements from the queue into the reversed list in reverse order.",
           "short-answer-question": "How can we insert elements at the beginning of a list?",
@@ -576,7 +1049,7 @@ export const tech2WarmupDecomposition = {
     },
     {
       "title": "Return the reversed list",
-      "indent-level": 0,
+      "indent-level": 1,
       "leading-questions": [
         {
           "context": "We need to return the final reversed list after processing all elements.",
@@ -595,22 +1068,22 @@ export const tech2WarmupDecomposition = {
       ]
     },
     {
-      "title": "Call the function with a sample input",
+      "title": "Call the function with a sample list",
       "indent-level": 0,
       "leading-questions": [
         {
-          "context": "We need to test the function by calling it with a sample input list.",
-          "short-answer-question": "What should be the sample input list to test the function?",
-          "mcq-question": "What should be the sample input list to test the function?",
+          "context": "We need to test the function with a sample input list.",
+          "short-answer-question": "What should be the output list to test the function given the input [1, 2, 3, 4, 5]?",
+          "mcq-question": "What is a suitable sample input list to test the function?",
           "correct-choice": "[1, 2, 3, 4, 5]",
           "incorrect-choice-1": "[5, 4, 3, 2, 1]",
-          "incorrect-choice-2": "[1, 2, 3]",
-          "incorrect-choice-3": "[1, 3, 5, 7, 9]",
-          "short-answer-solution": "The sample input list to test the function should be [1, 2, 3, 4, 5] to verify if the function correctly reverses it.",
-          "selected-question": "mcq",
+          "incorrect-choice-2": "[1, 3, 5, 7, 9]",
+          "incorrect-choice-3": "[2, 4, 6, 8, 10]",
+          "short-answer-solution": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list.",
+          "selected-question": "short",
           "code-line-to-be-revealed": 7,
-          "hint-if-incorrect": "Consider a list that can be easily verified when reversed.",
-          "explanation-after-correct-answer": "The function is called with the sample input list [1, 2, 3, 4, 5] to test if it correctly reverses the list."
+          "hint-if-incorrect": "Consider a simple, ordered list to test the function.",
+          "explanation-after-correct-answer": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list."
         }
       ]
     }
@@ -696,13 +1169,7 @@ export const tech3WarmupDecomposition = {
           "code-line-to-be-revealed": 4,
           "hint-if-incorrect": "Think about the definition of a palindrome.",
           "explanation-after-correct-answer": "If the characters from both ends do not match, the function returns False, indicating the string is not a palindrome."
-        }
-      ]
-    },
-    {
-      "title": "Return True if all characters match",
-      "indent-level": 2,
-      "leading-questions": [
+        },
         {
           "context": "The function returns False if any characters from both ends do not match.",
           "short-answer-question": "What should the function return if all characters match?",

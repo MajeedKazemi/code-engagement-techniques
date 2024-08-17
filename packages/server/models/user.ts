@@ -76,6 +76,7 @@ const UserSchema = new Schema({
                 "BAC",
                 "BCA",
                 "CAB",
+                "CBA",
             ],
             default: "ABC",
     },
