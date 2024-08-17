@@ -847,6 +847,28 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     const getShortExplanationFeedback = (index: number) => {
         let attemptNumber = attempted.findIndex((attempt) => !attempt);
+
+        const question = questions[index];
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "trace predict follow-up question event",
+            {
+                type: "lead reveal answer question event",
+                question_order: index,
+                question_tyoe: "short answer",
+                variable: question.question,
+                correct_answer: question.aiGeneratedSolution,
+                user_answer: userResponse[index],
+                attemptNumber: attemptNumber,
+            }
+        )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+            });
+
+
         if(attempted.slice(0, -1).every(value => value === true)) {
             setAttempted([true, true, true, true]);
             setExplanationQuestionCorrect(

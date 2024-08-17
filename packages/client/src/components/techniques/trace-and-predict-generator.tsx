@@ -525,9 +525,13 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
                         </div>
                         AI Assistance:
                         </div>
-                        {showTimeout && <div className="warning">
-                            You have <strong>{timeoutValue}</strong> mins left!
-                        </div>
+                        {showTimeout && (timeoutValue >= 0 ?
+                            <div className="warning">
+                                You have <strong>{timeoutValue}</strong> mins left!                       
+                            </div> : 
+                            <div>
+                                <strong>Time's up!</strong> Please finish up.
+                            </div>)
                         }
                     </div>
                     <div className="modal-body">
