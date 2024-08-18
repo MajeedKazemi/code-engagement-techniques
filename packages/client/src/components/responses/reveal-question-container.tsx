@@ -4,7 +4,12 @@ import {
     HighlightedPart,
     HighlightedPartWithoutTab,
 } from "../docs/highlight-code";
-import { apiGetBaselineLineByLineExplanationSimulation, apiGetFeedbackFromRevealShortAnswer, apiLogEvents, logError } from "../../api/api";
+import {
+    apiGetBaselineLineByLineExplanationSimulation,
+    apiGetFeedbackFromRevealShortAnswer,
+    apiLogEvents,
+    logError,
+} from "../../api/api";
 import { AuthContext } from "../../context";
 import { highlightPsudo } from "../../utils/utils";
 import React from "react";
@@ -33,7 +38,6 @@ interface SubQuestions {
     explanationSolution: string;
 }
 
-
 function RevealQuestionComponent({
     data,
     taskID,
@@ -51,7 +55,9 @@ function RevealQuestionComponent({
         useState(false);
     const [lastAnswered, setLastAnswered] = useState<any[]>([]);
     const [reachedMax, setReachedMax] = useState<boolean[]>([]);
-    const [questionAnsweredTimes, setQuestionAnsweredTimes] = useState<any[]>([]);
+    const [questionAnsweredTimes, setQuestionAnsweredTimes] = useState<any[]>(
+        []
+    );
     const [count, setCount] = useState(5);
     const [hoveringHovered, setHoveringHovered] = useState<boolean[]>([]);
     const [explaination, setExplanation] = useState<string[]>([]);
@@ -59,9 +65,18 @@ function RevealQuestionComponent({
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [userResponse, setUserResponse] = useState<string[]>([]);
     const [feedback, setFeedback] = useState<string[]>([]);
-    const textareaRefs = useRef(data.map((subgoal) => subgoal.questions).flat().map(() => React.createRef<HTMLTextAreaElement>()));
+    const textareaRefs = useRef(
+        data
+            .map((subgoal) => subgoal.questions)
+            .flat()
+            .map(() => React.createRef<HTMLTextAreaElement>())
+    );
     const [hintForShort, setHintForShort] = useState<string[]>([]);
-    const [feedbackReady, setFeedbackReady] = useState<boolean[]>(new Array(data.map((subgoal) => subgoal.questions).flat().length).fill(false));
+    const [feedbackReady, setFeedbackReady] = useState<boolean[]>(
+        new Array(data.map((subgoal) => subgoal.questions).flat().length).fill(
+            false
+        )
+    );
 
     useEffect(() => {
         let counter: any = null;
@@ -79,15 +94,15 @@ function RevealQuestionComponent({
 
     useEffect(() => {
         if (textareaRefs.current[currentQuestionIndex].current) {
-            textareaRefs.current[currentQuestionIndex].current.focus();
+            textareaRefs.current[currentQuestionIndex]?.current?.focus();
         }
     }, [userResponse, currentQuestionIndex]);
 
     useEffect(() => {
         const questions = data.map((subgoal) => subgoal.questions).flat();
-        
+
         console.log("Questions: ", questions);
-        
+
         setRevealAnswer(new Array(questions.length).fill(false));
         setFirstAnswered(new Array(questions.length).fill(false));
         setSelectedChoice(new Array(questions.length).fill(""));
@@ -95,7 +110,10 @@ function RevealQuestionComponent({
         setLastAnswered(new Array(questions.length).fill(false));
         setReachedMax(new Array(questions.length).fill(false));
         setQuestionAnsweredTimes(
-            new Array(questions.length).fill({ currentTime: 0, currentAnswer: "" })
+            new Array(questions.length).fill({
+                currentTime: 0,
+                currentAnswer: "",
+            })
         );
         setUserResponse(new Array(questions.length).fill(""));
         setFeedback(new Array(questions.length).fill(""));
@@ -106,17 +124,12 @@ function RevealQuestionComponent({
         setQuestions(questions);
 
         // retrive the line by line explanation from the apiGetBaselineLineByLineExplanationSimulation
-        apiGetBaselineLineByLineExplanationSimulation(
-            context?.token,
-            taskID,
-        )
+        apiGetBaselineLineByLineExplanationSimulation(context?.token, taskID)
             .then(async (response) => {
                 if (response.ok) {
                     const data = await response.json();
 
-                    setExplanation(
-                        data.explanation
-                    );
+                    setExplanation(data.explanation);
                 }
             })
             .catch((error) => {
@@ -176,10 +189,15 @@ function RevealQuestionComponent({
     // }, [data]);
 
     useEffect(() => {
-        if (questions.length > 0 && questionAnsweredTimes.length > 0 && revealAnswer.length > 0) {
+        if (
+            questions.length > 0 &&
+            questionAnsweredTimes.length > 0 &&
+            revealAnswer.length > 0
+        ) {
             const newReachedMax = reachedMax.map((reached, i) =>
                 i === currentQuestionIndex
-                    ? questionAnsweredTimes[i].currentTime == 4 || revealAnswer[i]
+                    ? questionAnsweredTimes[i].currentTime == 4 ||
+                      revealAnswer[i]
                     : reached
             );
             setReachedMax(newReachedMax);
@@ -205,22 +223,17 @@ function RevealQuestionComponent({
         //     - attempt_number: {number} // how many times the user attempted to answer this question?
 
         const currentQuestion = questions[index];
-        apiLogEvents(
-            context?.token,
-            taskID,
-            "lead reveal mcq question event",
-            {
-                type: "lead reveal answer question event",
-                question_order: index,
-                question_tyoe: "mcq",
-                code_corresponding_to_question: currentQuestion.revealLine,
-                mcq_question_text: currentQuestion.mcqQuestion,
-                all_choices: currentQuestion.choices.map((choice) => choice.text),
-                selected_choice: text,
-                is_correct: isCorrect,
-                attempt_number: questionAnsweredTimes[index].currentTime + 1,
-            }
-        )
+        apiLogEvents(context?.token, taskID, "lead reveal mcq question event", {
+            type: "lead reveal answer question event",
+            question_order: index,
+            question_tyoe: "mcq",
+            code_corresponding_to_question: currentQuestion.revealLine,
+            mcq_question_text: currentQuestion.mcqQuestion,
+            all_choices: currentQuestion.choices.map((choice) => choice.text),
+            selected_choice: text,
+            is_correct: isCorrect,
+            attempt_number: questionAnsweredTimes[index].currentTime + 1,
+        })
             .then(() => {})
             .catch((error) => {
                 logError("sendLog: " + error.toString());
@@ -268,7 +281,6 @@ function RevealQuestionComponent({
             setIsWaitingForNextAttempt(true);
             setCount(5);
         }
-
     };
 
     useEffect(() => {
@@ -278,13 +290,14 @@ function RevealQuestionComponent({
         }
     }, [reachedMax]);
 
-
     function handleClick(index: number): void {
         const newFeedback = [...feedback];
         newFeedback[index] = "";
         setFeedback(newFeedback);
         setButtonDisabled(true);
-        setFeedbackReady(feedbackReady.map((ready, i) => i === index ? false : ready));
+        setFeedbackReady(
+            feedbackReady.map((ready, i) => (i === index ? false : ready))
+        );
         //if LLM check is at least 4/5.
         // console.log(userResponse[index], questions[index].answer);
         try {
@@ -293,7 +306,7 @@ function RevealQuestionComponent({
                 questions[index].revealLine,
                 userResponse[index],
                 questions[index].explanationSolution,
-                questions[index].shortQuestion,
+                questions[index].shortQuestion
             )
                 .then(async (response) => {
                     if (response.ok) {
@@ -335,7 +348,7 @@ function RevealQuestionComponent({
                                     1,
                             }
                         );
-                        if(data.response.correct == "yes") {
+                        if (data.response.correct == "yes") {
                             setButtonDisabled(false);
                             const newRevealAnswer = revealAnswer.map(
                                 (reveal, i) => (i === index ? true : reveal)
@@ -353,13 +366,24 @@ function RevealQuestionComponent({
                                 );
                             setQuestionAnsweredTimes(newQuestionAnsweredTimes);
                             setRevealAnswer(newRevealAnswer);
-                        }
-                        else {
+                        } else {
                             setButtonDisabled(false);
                             console.log("Feedback: ", data.response.feedback);
-                            console.log(hintForShort.map((hint, i) => i === index ? data.response.feedback : hint));
-                            setHintForShort(hintForShort.map((hint, i) => i === index ? data.response.feedback : hint));
-                            setFeedbackReady(feedbackReady.map((ready, i) => i === index ? true : ready));
+                            console.log(
+                                hintForShort.map((hint, i) =>
+                                    i === index ? data.response.feedback : hint
+                                )
+                            );
+                            setHintForShort(
+                                hintForShort.map((hint, i) =>
+                                    i === index ? data.response.feedback : hint
+                                )
+                            );
+                            setFeedbackReady(
+                                feedbackReady.map((ready, i) =>
+                                    i === index ? true : ready
+                                )
+                            );
 
                             const newQuestionAnsweredTimes =
                                 questionAnsweredTimes.map((question, i) =>
@@ -378,8 +402,6 @@ function RevealQuestionComponent({
                             newUserResponse[index] = "";
                             setUserResponse(newUserResponse);
                         }
-                        
-
                     }
                     //     if (data.response.score >= 3) {
                     //         const newRevealAnswer = revealAnswer.map(
@@ -419,7 +441,10 @@ function RevealQuestionComponent({
         }
     }
 
-    const handleUserInput = (index: number, event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    const handleUserInput = (
+        index: number,
+        event: React.ChangeEvent<HTMLTextAreaElement>
+    ): void => {
         const { value } = event.target;
         const cursorPosition = event.target.selectionStart; // Get the cursor position
 
@@ -456,9 +481,7 @@ function RevealQuestionComponent({
             <div
                 className={`reveal-question-container ${
                     index <= currentQuestionIndex ? "active" : ""
-                } ${
-                    index < currentQuestionIndex ? "answered" : ""
-                }`}
+                } ${index < currentQuestionIndex ? "answered" : ""}`}
                 key={`rq${index}`}
             >
                 <h1>{question.context}</h1>
@@ -474,286 +497,324 @@ function RevealQuestionComponent({
                             <div className={`reveal-select-all`}>
                                 {isWaitingForNextAttempt && (
                                     <div className="reveal-waiting-for-next-attempt">
-                                        <p>
-                                            You may retry in {count}{" "}
-                                            seconds
-                                        </p>
+                                        <p>You may retry in {count} seconds</p>
                                     </div>
                                 )}
-                                {question.choices!.map(
-                                    (choice, i) => (
-                                        <div
-                                            className={
-                                                isWaitingForNextAttempt
-                                                    ? "reveal-select-container disabled"
-                                                    : "reveal-select-container"
-                                            }
-                                            key={`${index}details${i}`}
-                                            onClick={() =>
-                                                handleSelect(
-                                                    choice.correct,
-                                                    index,
-                                                    choice.text
-                                                )
-                                            }
-                                        >
-                                            <div className="reveal-select-dot"></div>
-                                            {!choice.correct && questionAnsweredTimes[index] &&
-                                            questionAnsweredTimes[
-                                                index
-                                            ].currentAnswer ==
-                                                choice.text ? (
-                                                <div className="reveal-wrong-answer">
-                                                    <p>
-                                                        {
-                                                            choice.text
-                                                        }
-                                                    </p>
-                                                </div>
-                                            ) : (
+                                {question.choices!.map((choice, i) => (
+                                    <div
+                                        className={
+                                            isWaitingForNextAttempt
+                                                ? "reveal-select-container disabled"
+                                                : "reveal-select-container"
+                                        }
+                                        key={`${index}details${i}`}
+                                        onClick={() =>
+                                            handleSelect(
+                                                choice.correct,
+                                                index,
+                                                choice.text
+                                            )
+                                        }
+                                    >
+                                        <div className="reveal-select-dot"></div>
+                                        {!choice.correct &&
+                                        questionAnsweredTimes[index] &&
+                                        questionAnsweredTimes[index]
+                                            .currentAnswer == choice.text ? (
+                                            <div className="reveal-wrong-answer">
                                                 <p>{choice.text}</p>
-                                            )}
-                                            <p className="reveal-answer">
-                                                {choice.correct
-                                                    ? "Correct"
-                                                    : "Incorrect"}
-                                            </p>
-                                        </div>
-                                    )
-                                )}
+                                            </div>
+                                        ) : (
+                                            <p>{choice.text}</p>
+                                        )}
+                                        <p className="reveal-answer">
+                                            {choice.correct
+                                                ? "Correct"
+                                                : "Incorrect"}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
-                            {questionAnsweredTimes[index].currentTime > 0 &&
-                            (<div className="reveal-hint-mcq-incorrect">
-                                <strong>Incorrect: </strong> {question.hintForMCQ}
-                            </div>)
-                            }   
+                            {questionAnsweredTimes[index].currentTime > 0 && (
+                                <div className="reveal-hint-mcq-incorrect">
+                                    <strong>Incorrect: </strong>{" "}
+                                    {question.hintForMCQ}
+                                </div>
+                            )}
                         </>
                     )}
                     {reachedMax[index] && (
                         <>
                             <div className={`reveal-select-all`}>
-                                {question.choices!.map(
-                                    (choice, i) => (
-                                        <div
-                                            className="reveal-select-container"
-                                            key={`${index}details${i}`}
-                                            onClick={() =>
-                                                handleSelect(
-                                                    choice.correct,
-                                                    index,
-                                                    choice.text
-                                                )
-                                            }
-                                        >
-                                            <div className="reveal-select-dot"></div>
-                                            {choice.correct ? (
-                                                <div className="reveal-correct-answer">
-                                                    <p>
-                                                        {
-                                                            choice.text
-                                                        }
-                                                    </p>
-                                                </div>
-                                            ) : (
+                                {question.choices!.map((choice, i) => (
+                                    <div
+                                        className="reveal-select-container"
+                                        key={`${index}details${i}`}
+                                        onClick={() =>
+                                            handleSelect(
+                                                choice.correct,
+                                                index,
+                                                choice.text
+                                            )
+                                        }
+                                    >
+                                        <div className="reveal-select-dot"></div>
+                                        {choice.correct ? (
+                                            <div className="reveal-correct-answer">
                                                 <p>{choice.text}</p>
-                                            )}
-                                            <p className="reveal-answer">
-                                                {choice.correct
-                                                    ? "Correct"
-                                                    : "Incorrect"}
-                                            </p>
-                                        </div>
-                                    )
-                                )}
-                            </div>
-                            {question.revealLine
-                                .split("\n")
-                                .map((line, i) => (
-                                    <HighlightedPart part={line} />
+                                            </div>
+                                        ) : (
+                                            <p>{choice.text}</p>
+                                        )}
+                                        <p className="reveal-answer">
+                                            {choice.correct
+                                                ? "Correct"
+                                                : "Incorrect"}
+                                        </p>
+                                    </div>
                                 ))}
+                            </div>
+                            {question.revealLine.split("\n").map((line, i) => (
+                                <HighlightedPart part={line} />
+                            ))}
 
                             <div className="explanation-after-reveal">
-                                <strong>Explanation: </strong> {question.explanation}
+                                <strong>Explanation: </strong>{" "}
+                                {question.explanation}
                             </div>
                         </>
                     )}
                 </>
             </div>
-        )};
+        );
+    };
 
     const ShortQuestion = ({ question, index }: LineRevealProps) => {
         return (
             <div
                 className={`reveal-question-container ${
                     index <= currentQuestionIndex ? "active" : ""
-                } ${
-                    index < currentQuestionIndex ? "answered" : ""
-                }`}
+                } ${index < currentQuestionIndex ? "answered" : ""}`}
                 key={`rq${index}`}
             >
                 {/* <h1>{question.context}</h1> */}
-                {
-                    question.shortQuestion && !reachedMax[index] && (
-                        <div className="reveal-question-content-container">
-                            <b>Short Question: </b>
-                            <p className="reveal-question-content">
-                                {question.shortQuestion}
-                            </p>
-                            <div className="reveal-short-answer-container">
-                                <textarea
-                                    className="reveal-lead-textbox baseline-input"
-                                    id={`userInput${index}`}
-                                    ref={textareaRefs.current[index]}
-                                    value={userResponse[index]}
-                                    onChange={(e) => handleUserInput(index, e)}
-                                    onKeyDown={handleKeyDown}
-                                    rows={2}
-                                />
-                                <button
-                                    className="reveal-submit gpt-button"
-                                    onClick={() =>
-                                        handleClick(index)
-                                    }
-                                    disabled={
-                                        !userResponse[
-                                            index
-                                        ].trim() ||
-                                        buttonDisabled
-                                    }
-                                >
-                                    Submit
-                                </button>
-                            </div>
+                {question.shortQuestion && !reachedMax[index] && (
+                    <div className="reveal-question-content-container">
+                        <b>Short Question: </b>
+                        <p className="reveal-question-content">
+                            {question.shortQuestion}
+                        </p>
+                        <div className="reveal-short-answer-container">
+                            <textarea
+                                className="reveal-lead-textbox baseline-input"
+                                id={`userInput${index}`}
+                                ref={textareaRefs.current[index]}
+                                value={userResponse[index]}
+                                onChange={(e) => handleUserInput(index, e)}
+                                onKeyDown={handleKeyDown}
+                                rows={2}
+                            />
+                            <button
+                                className="reveal-submit gpt-button"
+                                onClick={() => handleClick(index)}
+                                disabled={
+                                    !userResponse[index].trim() ||
+                                    buttonDisabled
+                                }
+                            >
+                                Submit
+                            </button>
                         </div>
-                    )
-                }
+                    </div>
+                )}
                 {!reachedMax[index] && (
                     <div>
-                        {questionAnsweredTimes[index].currentTime > 0 &&
-                        (<>
-                        {feedbackReady[index] ? (
-                            <div className="reveal-hint-mcq-incorrect">
-                                <strong>Explanation: </strong> {hintForShort[index]}
-                            </div>
-                        ) : (
-                            <div className="step-answered-container">
-                                
-                                Checking Solution
-                                <ChatLoader/>
-                            </div>
+                        {questionAnsweredTimes[index].currentTime > 0 && (
+                            <>
+                                {feedbackReady[index] ? (
+                                    <div className="reveal-hint-mcq-incorrect">
+                                        <strong>Explanation: </strong>{" "}
+                                        {hintForShort[index]}
+                                    </div>
+                                ) : (
+                                    <div className="step-answered-container">
+                                        Checking Solution
+                                        <ChatLoader />
+                                    </div>
+                                )}
+                            </>
                         )}
-                        </>)
-                        }
                     </div>
-
                 )}
                 {reachedMax[index] && (
-                        <>
-                            <div className="explanation-after-reveal">
-                                    <strong>Your Response:{" "}</strong>
-                                    {questionAnsweredTimes[index].currentAnswer}
-                            </div>
-                            {question.revealLine
-                                .split("\n")
-                                .map((line, i) => (
-                                    <HighlightedPart part={line} />
-                                ))}
+                    <>
+                        <div className="explanation-after-reveal">
+                            <strong>Your Response: </strong>
+                            {questionAnsweredTimes[index].currentAnswer}
+                        </div>
+                        {question.revealLine.split("\n").map((line, i) => (
+                            <HighlightedPart part={line} />
+                        ))}
 
-                            <div className="explanation-after-reveal">
-                                <strong>Explanation: </strong> {question.explanationSolution}
-                            </div>
-                        </>
-                    )}
+                        <div className="explanation-after-reveal">
+                            <strong>Explanation: </strong>{" "}
+                            {question.explanationSolution}
+                        </div>
+                    </>
+                )}
             </div>
-        )};
+        );
+    };
 
     return (
         <div className="reveal-parent-container">
             <div className="reveal-container">
-                {questions.length > 0 && currentQuestionIndex >= questions.length && (
-                    <span id="game-over" style={{ opacity: 0 }}>
-                        Game Over
-                    </span>
-                )}
-                {questions.length > 0 && questions.map((question:SubQuestions, index) => (
-                    <div className="reveal-subgoal-container">
-                        {question.selectedQuestion === "mcq" ?
-                            <SingleMCQ question={question} index={index} />
-                            : <ShortQuestion question={question} index={index} />
-                        }
-                    </div>
-                ))}
+                {questions.length > 0 &&
+                    currentQuestionIndex >= questions.length && (
+                        <span id="game-over" style={{ opacity: 0 }}>
+                            Game Over
+                        </span>
+                    )}
+                {questions.length > 0 &&
+                    questions.map((question: SubQuestions, index) => (
+                        <div className="reveal-subgoal-container">
+                            {question.selectedQuestion === "mcq" ? (
+                                <SingleMCQ question={question} index={index} />
+                            ) : (
+                                <ShortQuestion
+                                    question={question}
+                                    index={index}
+                                />
+                            )}
+                        </div>
+                    ))}
             </div>
-            {questions.length > 0 && 
-            (<div className="reveal-code-line-by-line-container">
-                <h1 className="reveal-line-by-line-container-header">
-                    Task Decomposition Plan + Revealed Code:
-                </h1>
-                {data.map((subgoals, subgoalIndex) => {
-                    const cumulativeIndex = data
-                    .slice(0, subgoalIndex)
-                    .reduce((sum, currentSubgoal) => sum + currentSubgoal.questions.length, 0);
+            {questions.length > 0 && (
+                <div className="reveal-code-line-by-line-container">
+                    <h1 className="reveal-line-by-line-container-header">
+                        Task Decomposition Plan + Revealed Code:
+                    </h1>
+                    {data.map((subgoals, subgoalIndex) => {
+                        const cumulativeIndex = data
+                            .slice(0, subgoalIndex)
+                            .reduce(
+                                (sum, currentSubgoal) =>
+                                    sum + currentSubgoal.questions.length,
+                                0
+                            );
 
-                    return(
-                    
-                    <div 
-                        key={subgoalIndex} 
-                        className="subgoal-title-display" 
-                    >
-                        <h1 style={{ marginLeft: `${subgoals.indent * 30}px` }} >{subgoals.title}</h1>
-
-                        {subgoals.questions.map((question, index) => (
+                        return (
                             <div
-                                className={`reveal-code-container ${
-                                    cumulativeIndex < currentQuestionIndex ? "active" : "inactive"
-                                } `}
-                                id = {`code-container${cumulativeIndex + index}`}
+                                key={subgoalIndex}
+                                className="subgoal-title-display"
                             >
-                                {question.revealLine.split("\n").map((line) => (
-                                    <div className="reveal-hover-line-with-explanation"
-                                    onMouseEnter={() => {
-                                        //deepCopy of hoveringHovered
-                                        let temp = deepCopy(hoveringHovered);
-                                        //change all to false
-                                        temp.fill(false);
-                                        //change the current index to true
-                                        temp[cumulativeIndex+index] = true;
-                                        setHoveringHovered(temp);
+                                <h1
+                                    style={{
+                                        marginLeft: `${subgoals.indent * 30}px`,
                                     }}
-                                    onMouseLeave={() => {
-                                        //deepCopy of hoveringHovered
-                                        let temp = deepCopy(hoveringHovered);
-                                        //change all to false
-                                        temp.fill(false);
-                                        setHoveringHovered(temp);
-                                    }}
+                                >
+                                    {subgoals.title}
+                                </h1>
+
+                                {subgoals.questions.map((question, index) => (
+                                    <div
+                                        className={`reveal-code-container ${
+                                            cumulativeIndex <
+                                            currentQuestionIndex
+                                                ? "active"
+                                                : "inactive"
+                                        } `}
+                                        id={`code-container${
+                                            cumulativeIndex + index
+                                        }`}
                                     >
-                                        <HighlightedPartWithoutTab part={line} />
+                                        {question.revealLine
+                                            .split("\n")
+                                            .map((line) => (
+                                                <div
+                                                    className="reveal-hover-line-with-explanation"
+                                                    onMouseEnter={() => {
+                                                        //deepCopy of hoveringHovered
+                                                        let temp =
+                                                            deepCopy(
+                                                                hoveringHovered
+                                                            );
+                                                        //change all to false
+                                                        temp.fill(false);
+                                                        //change the current index to true
+                                                        temp[
+                                                            cumulativeIndex +
+                                                                index
+                                                        ] = true;
+                                                        setHoveringHovered(
+                                                            temp
+                                                        );
+                                                    }}
+                                                    onMouseLeave={() => {
+                                                        //deepCopy of hoveringHovered
+                                                        let temp =
+                                                            deepCopy(
+                                                                hoveringHovered
+                                                            );
+                                                        //change all to false
+                                                        temp.fill(false);
+                                                        setHoveringHovered(
+                                                            temp
+                                                        );
+                                                    }}
+                                                >
+                                                    <HighlightedPartWithoutTab
+                                                        part={line}
+                                                    />
 
-                                        {questions && hoveringHovered[cumulativeIndex+index] && explaination && (
-                                        <div className="flex-box-for-line-by-line">
-                                        <div className="hoverable-code-container-with-hint"
-                                            style={(cumulativeIndex + index) === questions.length-1 ? { position: "relative" } : {position: "absolute"}}
-                                        >
-                                            <div
-                                                className="hoverable-code-line-explanation"
-                                                dangerouslySetInnerHTML={{
-                                                    __html: highlightPsudo(explaination[cumulativeIndex+index]),
-                                                }}
-                                            ></div>
-                                        </div>
-                                        </div>
-                                        )}
-
+                                                    {questions &&
+                                                        hoveringHovered[
+                                                            cumulativeIndex +
+                                                                index
+                                                        ] &&
+                                                        explaination && (
+                                                            <div className="flex-box-for-line-by-line">
+                                                                <div
+                                                                    className="hoverable-code-container-with-hint"
+                                                                    style={
+                                                                        cumulativeIndex +
+                                                                            index ===
+                                                                        questions.length -
+                                                                            1
+                                                                            ? {
+                                                                                  position:
+                                                                                      "relative",
+                                                                              }
+                                                                            : {
+                                                                                  position:
+                                                                                      "absolute",
+                                                                              }
+                                                                    }
+                                                                >
+                                                                    <div
+                                                                        className="hoverable-code-line-explanation"
+                                                                        dangerouslySetInnerHTML={{
+                                                                            __html: highlightPsudo(
+                                                                                explaination[
+                                                                                    cumulativeIndex +
+                                                                                        index
+                                                                                ]
+                                                                            ),
+                                                                        }}
+                                                                    ></div>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                </div>
+                                            ))}
                                     </div>
                                 ))}
                             </div>
-                        ))}
-                    </div>
-                    )
-                })}
-                <div className="bottom-margin"></div>
-            </div>)}
+                        );
+                    })}
+                    <div className="bottom-margin"></div>
+                </div>
+            )}
         </div>
     );
 }
