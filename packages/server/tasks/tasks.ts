@@ -177,6 +177,8 @@ export class ModifyingTask extends Task {
 
 export class MultipleChoiceTask extends Task {
     choices: string[];
+    correspondingQuestion: number;
+    topic?: string;
     // answer: number;
     // topic: TaskTopic;
     // stage: TaskStage;
@@ -185,13 +187,16 @@ export class MultipleChoiceTask extends Task {
         id: string,
         description: string,
         choices: string[],
+        correspondingQuestion: number,
+
         // answer: number,
-        // topic: TaskTopic,
+        topic?: string,
         // stage: TaskStage
     ) {
         super(id, description, TaskType.MultipleChoice);
-
         this.choices = choices;
+        this.correspondingQuestion = correspondingQuestion;
+        this.topic = topic;
         // this.answer = answer;
         // this.topic = topic;
         // this.stage = stage;
@@ -238,10 +243,82 @@ export const CodingTasks = [
   ),
 
   new MultipleChoiceTask(
-    "2Rating",
-    "Rate your experience",
-    ["1", "2", "3", "4", "5"]
+    "2MCQ1",
+    "Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.\n\n How many deep breaths did you take?",
+    ["- One! 😄", "- Two!! 👏😊👏", "- Three!!! 🌟😍🌟", "- Four!!!! 🔥🤯🔥", "- None ☹️"],
+    0
   ),
+
+  new MultipleChoiceTask(
+    "2MCQ2",
+    `How mentally demanding was it to fully understand the AI-generated code?`,
+    ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ3",
+    `How physically demanding was it to fully understand the AI-generated code?`,
+    ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ4",
+    `How pressured did you feel by time while trying to fully understand the AI-generated code?`,
+    ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ5",
+    `How successful do you think you were in fully understanding the AI-generated code?`,
+    ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ6",
+    `How much effort did it take to fully understand the AI-generated code?`,
+    ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ7",
+    `How frustrated were you during the process of trying to fully understand the AI-generated code?`,
+    ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ8",
+    `How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?`,
+    ["1: Not at all Confident", "2: Slightly Confident", "3: Moderately Confident", "4: Very Confident", "5: Extremely Confident"],
+    0
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ9",
+    "How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?",
+    ["1: Not at all Confident", "2: Slightly Confident", "3: Moderately Confident", "4: Very Confident", "5: Extremely Confident"],
+    0
+  ), 
+
+  new MultipleChoiceTask(
+    "2MCQ10",
+    "Please skip this question",
+    ["skip"],
+    0,
+  ),
+
+  new MultipleChoiceTask(
+    "2MCQ11",
+    "Please skip this question",
+    ["skip"],
+    0,
+  ),
+  
 
   new AuthoringTask(
     "3",
@@ -261,9 +338,80 @@ new AuthoringTask(
 ),
 
 new MultipleChoiceTask(
-  "4Rating",
-  "Rate your experience",
-  ["1", "2", "3", "4", "5"]
+  "4MCQ1",
+  "Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.\n\n How many deep breaths did you take?",
+  ["- One! 😄", "- Two!! 👏😊👏", "- Three!!! 🌟😍🌟", "- Four!!!! 🔥🤯🔥", "- None ☹️"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ2",
+  `How mentally demanding was it to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ3",
+  `How physically demanding was it to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ4",
+  `How pressured did you feel by time while trying to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ5",
+  `How successful do you think you were in fully understanding the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ6",
+  `How much effort did it take to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ7",
+  `How frustrated were you during the process of trying to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ8",
+  `How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?`,
+  ["1: Not at all Confident", "2: Slightly Confident", "3: Moderately Confident", "4: Very Confident", "5: Extremely Confident"],
+  1
+),
+
+new MultipleChoiceTask(
+  "4MCQ9",
+  "How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?",
+  ["1: Not at all Confident", "2: Slightly Confident", "3: Moderately Confident", "4: Very Confident", "5: Extremely Confident"],
+  1
+), 
+
+new MultipleChoiceTask(
+  "4MCQ10",
+  "Please skip this question",
+  ["skip"],
+  1,
+),
+
+new MultipleChoiceTask(
+  "4MCQ11",
+  "Please skip this question",
+  ["skip"],
+  1,
 ),
 
 
@@ -284,9 +432,80 @@ new AuthoringTask(
 ),
 
 new MultipleChoiceTask(
-  "6Rating",
-  "Rate your experience",
-  ["1", "2", "3", "4", "5"]
+  "6MCQ1",
+  "Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.\n\n How many deep breaths did you take?",
+  ["- One! 😄", "- Two!! 👏😊👏", "- Three!!! 🌟😍🌟", "- Four!!!! 🔥🤯🔥", "- None ☹️"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ2",
+  `How mentally demanding was it to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ3",
+  `How physically demanding was it to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ4",
+  `How pressured did you feel by time while trying to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ5",
+  `How successful do you think you were in fully understanding the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ6",
+  `How much effort did it take to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ7",
+  `How frustrated were you during the process of trying to fully understand the AI-generated code?`,
+  ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ8",
+  `How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?`,
+  ["1: Not at all Confident", "2: Slightly Confident", "3: Moderately Confident", "4: Very Confident", "5: Extremely Confident"],
+  2
+),
+
+new MultipleChoiceTask(
+  "6MCQ9",
+  "How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?",
+  ["1: Not at all Confident", "2: Slightly Confident", "3: Moderately Confident", "4: Very Confident", "5: Extremely Confident"],
+  2
+), 
+
+new MultipleChoiceTask(
+  "6MCQ10",
+  "Please skip this question",
+  ["skip"],
+  2,
+),
+
+new MultipleChoiceTask(
+  "6MCQ11",
+  "Please skip this question",
+  ["skip"],
+  2,
 ),
 
 // coding tasks for evaluations

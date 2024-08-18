@@ -96,6 +96,8 @@ export const TasksPage = () => {
                     key={task.id}
                     id={task.id}
                     description={task.description}
+                    correspondingQuestion={task.correspondingQuestion}
+                    topic={task.topic}
                     choices={task.choices}
                     onCompletion={setNextTask}
                     taskType={task.type}

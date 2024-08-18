@@ -3,7 +3,7 @@ import { Fragment, useContext, useEffect, useRef, useState } from "react";
 
 import { apiUserSubmitTask, logError } from "../api/api";
 import { AuthContext } from "../context";
-import { TaskType } from "../utils/constants";
+import { EditorType, TaskType } from "../utils/constants";
 import { Button } from "./button";
 
 interface IMultipleChoiceTaskProps {
@@ -12,7 +12,8 @@ interface IMultipleChoiceTaskProps {
     choices?: string[];
 
     taskType: TaskType;
-
+    correspondingQuestion: number;
+    topic: string;
     onCompletion: () => void;
 }
 
@@ -24,6 +25,9 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
     const [canSubmit, setCanSubmit] = useState(false);
     const [startedAt, setStartedAt] = useState(new Date());
     const taskContainerEl = useRef<HTMLDivElement>(null);
+    const [editorType, setEditorType] = useState<string>("A");
+    const [questionDescription, setQuestionDescription] = useState<string>("");
+    const [questionChoices, setQuestionChoices] = useState<string[]>([]);
 
     const handleSubmitCode = () => {
         apiUserSubmitTask(
@@ -53,6 +57,57 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
     }, [userChoice]);
 
     useEffect(() => {
+        console.log(context?.user?.editorType);
+        if(context?.user?.editorType){
+            setEditorType(context?.user?.editorType[props.correspondingQuestion]);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (editorType === "A") {
+            setQuestionDescription(
+                props.description
+            )
+            setQuestionChoices(props.choices!);
+        }
+        else if (editorType === "B") {
+            if (props.topic === "Frustrating"){
+                setQuestionDescription(
+                    "How frustrating was it to go through the additional steps in this AI system? (Additional Steps: the part where the AI system had you trace the code step by step and answer questions about different parts of the generated code."
+                )
+                setQuestionChoices(["1: Not at all Frustrating", "2: Slightly Frustrating", "3: Moderately Frustrating", "4: Very Frustrating", "5: Extremely Frustrating"]);
+            }else if (props.topic === "Willing"){
+                setQuestionDescription(
+                    "How willing are you to go through these additional steps in the future to understand AI-generated code? (Additional Steps: the part where the AI system had you trace the code step by step and answer questions about different parts of the generated code."
+                )
+                setQuestionChoices(["1: Not at all Willing", "2: Slightly Willing", "3: Moderately Willing", "4: Very Willing", "5: Extremely Willing"]);
+            }else{
+                setQuestionDescription(
+                    props.description
+                )
+                setQuestionChoices(props.choices!);
+            }
+        } else if (editorType === "C"){
+            if (props.topic === "Frustrating"){
+                setQuestionDescription(
+                    "How frustrating was it to go through the additional steps in this AI system? (Additional Steps: the part of the AI system that had you answer questions about how to solve each part of the task before revealing its corresponding code."
+                )
+                setQuestionChoices(["1: Not at all Frustrating", "2: Slightly Frustrating", "3: Moderately Frustrating", "4: Very Frustrating", "5: Extremely Frustrating"]);
+            }else if (props.topic === "Willing"){
+                setQuestionDescription(
+                    "How willing are you to go through these additional steps in the future to understand AI-generated code? (Additional Steps: the part of the AI system that had you answer questions about how to solve each part of the task before revealing its corresponding code."
+                )
+                setQuestionChoices(["1: Not at all Willing", "2: Slightly Willing", "3: Moderately Willing", "4: Very Willing", "5: Extremely Willing"]);
+            }else {
+                setQuestionDescription(
+                    props.description
+                )
+                setQuestionChoices(props.choices!);
+            }
+        }
+    }, [editorType])
+
+    useEffect(() => {
         if (taskContainerEl.current) {
             Array.from(
                 taskContainerEl.current.getElementsByClassName("code-block")
@@ -76,14 +131,14 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
                     <span className="task-subtitle">
                         <p
                             dangerouslySetInnerHTML={{
-                                __html: props.description,
+                                __html: questionDescription,
                             }}
                         ></p>
                     </span>
                     <hr />
                     <form>
                         <p>Select from one of the following options:</p>
-                        {props.choices?.map((choice, index) => {
+                        {questionChoices && questionChoices.map((choice, index) => {
                             return (
                                 <div className="task-response-item" key={index}>
                                     <input
