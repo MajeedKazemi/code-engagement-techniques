@@ -385,59 +385,59 @@ const warmupQuestion2: questionObject[] = [
         }
     ];
 
-// const warmupQuestion1: questionObject[] = [
-//     {
-//       "step": 3,
-//       "question": "queue",
-//       "begin-line": 3,
-//       "end-line": 4,
-//       "explanation": "How does the initialization and the while loop condition affect the state of the 'queue' variable?",
-//       "aiGeneratedSolution": "The 'queue' is initialized as a copy of 'input_list'. The while loop continues until 'queue' is empty, progressively removing elements."
-//     },
-//     {
-//       "step": 7,
-//       "question": "reversed_list",
-//       "begin-line": 4,
-//       "end-line": 5,
-//       "explanation": "How does the insertion operation within the while loop affect the 'reversed_list' variable?",
-//       "aiGeneratedSolution": "Each iteration inserts the first element of 'queue' at the beginning of 'reversed_list', effectively reversing the order of elements."
-//     },
-//     {
-//       "step": 11,
-//       "question": "queue",
-//       "begin-line": 4,
-//       "end-line": 5,
-//       "explanation": "What changes occur to the 'queue' variable during each iteration of the while loop?",
-//       "aiGeneratedSolution": "In each iteration, the first element of 'queue' is removed using 'pop(0)', reducing the size of 'queue' until it becomes empty."
-//     },
-//     {
-//       "step": 13,
-//       "question": "reversed_list",
-//       "begin-line": 4,
-//       "end-line": 5,
-//       "explanation": "How does the final state of 'reversed_list' reflect the operations performed in the while loop?",
-//       "aiGeneratedSolution": "The final 'reversed_list' contains all elements of 'input_list' in reverse order, achieved by inserting elements at the beginning in each loop iteration."
-//     }
-//   ];
-
 const warmupQuestion1: questionObject[] = [
     {
-        "step": 4,
-        "question": "stack",
-        "begin-line": 4,
-        "end-line": 5,
-        "explanation": "How does the initialization of the stack variable at the beginning of the loop prepare for the subsequent operations?",
-        "aiGeneratedSolution": "The stack is initialized as an empty list to store opening parentheses, which will be used to check for balanced parentheses."
+      "step": 3,
+      "question": "queue",
+      "begin-line": 3,
+      "end-line": 4,
+      "explanation": "How does the initialization and the while loop condition affect the state of the 'queue' variable?",
+      "aiGeneratedSolution": "The 'queue' is initialized as a copy of 'input_list'. The while loop continues until 'queue' is empty, progressively removing elements."
     },
     {
-        "step": 9,
-        "question": "stack",
-        "begin-line": 7,
-        "end-line": 9,
-        "explanation": "How does the stack change when a closing parenthesis ')' is encountered, and what conditions are checked?",
-        "aiGeneratedSolution": "When a closing parenthesis ')' is encountered, the code checks if the stack is empty or if the top of the stack is not '('. If either condition is true, it returns False; otherwise, it pops the stack."
+      "step": 7,
+      "question": "reversed_list",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "How does the insertion operation within the while loop affect the 'reversed_list' variable?",
+      "aiGeneratedSolution": "Each iteration inserts the first element of 'queue' at the beginning of 'reversed_list', effectively reversing the order of elements."
+    },
+    {
+      "step": 11,
+      "question": "queue",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "What changes occur to the 'queue' variable during each iteration of the while loop?",
+      "aiGeneratedSolution": "In each iteration, the first element of 'queue' is removed using 'pop(0)', reducing the size of 'queue' until it becomes empty."
+    },
+    {
+      "step": 13,
+      "question": "reversed_list",
+      "begin-line": 4,
+      "end-line": 5,
+      "explanation": "How does the final state of 'reversed_list' reflect the operations performed in the while loop?",
+      "aiGeneratedSolution": "The final 'reversed_list' contains all elements of 'input_list' in reverse order, achieved by inserting elements at the beginning in each loop iteration."
     }
-];
+  ];
+
+// const warmupQuestion1: questionObject[] = [
+//     {
+//         "step": 4,
+//         "question": "stack",
+//         "begin-line": 4,
+//         "end-line": 5,
+//         "explanation": "How does the initialization of the stack variable at the beginning of the loop prepare for the subsequent operations?",
+//         "aiGeneratedSolution": "The stack is initialized as an empty list to store opening parentheses, which will be used to check for balanced parentheses."
+//     },
+//     {
+//         "step": 9,
+//         "question": "stack",
+//         "begin-line": 7,
+//         "end-line": 9,
+//         "explanation": "How does the stack change when a closing parenthesis ')' is encountered, and what conditions are checked?",
+//         "aiGeneratedSolution": "When a closing parenthesis ')' is encountered, the code checks if the stack is empty or if the top of the stack is not '('. If either condition is true, it returns False; otherwise, it pops the stack."
+//     }
+// ];
 
 const warmupQuestion3: questionObject[] = [
     {

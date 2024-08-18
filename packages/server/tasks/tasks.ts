@@ -222,8 +222,7 @@ export const CodingTasks = [
 
   new AuthoringTask(
     "1",
-    // "Write a function reverse_list_with_queue(input_list: list) -> list that uses a Queue to reverse the provided list and return it.",
-    "Write a function called  is_balanced_parentheses(txt: str) -> bool  that receives a string.txt  consisting of parentheses. The function should determine whether the parentheses are balanced. A string is considered balanced if every opening parenthesis  (  has a corresponding closing parenthesis  )  in the correct order.",
+    "Write a function reverse_list_with_queue(input_list: list) -> list that uses a Queue to reverse the provided list and return it.",
     tech1WarmupCode,
     tech1WarmupExplanation,
     tech1WarmupDecomposition,
