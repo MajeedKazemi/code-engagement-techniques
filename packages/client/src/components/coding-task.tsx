@@ -42,6 +42,7 @@ export const CodingTask = (props: CodingTaskProps) => {
     const [userCode, setUserCode] = useState("");
 
     const [canSubmit, setCanSubmit] = useState(false);
+    const [runCodeNoError, setRunCodeNoError] = useState(false);
 
     const sendLog = () => {
         apiLogEvents(
@@ -54,6 +55,10 @@ export const CodingTask = (props: CodingTaskProps) => {
             .catch((error) => {
                 logError("sendLog: " + error.toString());
             });
+    };
+
+    const setTrue = () => {
+        setRunCodeNoError(true);
     };
 
     const handleSubmitTask = () => {

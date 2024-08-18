@@ -110,7 +110,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [colorizedText, setColorizedText] = useState<string[]>([]);
     const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0);
     const [userResponse, setUserResponse] = useState<string[]>([]);
-    const textareaRefs = useRef<HTMLTextAreaElement>(null);
 
     // - step_event:
     // 	- type: `“first” | “previous” | “next” | “last”`
@@ -827,14 +826,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             return newUserResponse;
         });
 
-        // Wait until the state is updated and then set the cursor position
-        setTimeout(() => {
-            const textarea = textareaRefs.current;
-            if (textarea) {
-                textarea.selectionStart = cursorPosition;
-                textarea.selectionEnd = cursorPosition;
-            }
-        }, 0);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -991,75 +982,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         
     };
 
-    useEffect(() => {
-        if (textareaRefs.current) {
-            textareaRefs.current.focus();
-        }
-    }, [userResponse]);
 
-    const FollowUpQuestion = ({ question, index }: FollowUpProps) => {
-        return (
-            <div className="follow-up-question">
-                <div className="follow-up-header">
-                    <p>Follow Up</p>
-                </div>
-                <div className="follow-up-question-text">
-                    {question.explanation}
-                </div>
-                {explanationFeedback[index] != "" && explanationFeedbackReady[index] && !explanationQuestionCorrect[index] && !attempted.every(attempt => attempt) &&
-                    <div className="follow-up-question-feedback">
-                        {explanationFeedback[index]}
-                    </div>
-                }
-                {!explanationQuestionCorrect[index] && !buttonDisabled &&
-                <div className="follow-up-question-input">
-                    <textarea
-                        className="self-explain-textbox baseline-input"
-                        id="userInput"
-                        ref={textareaRefs}
-                        value={userResponse[index]}
-                        onChange={(e) => handleUserInput(index, e)}
-                        onKeyDown={handleKeyDown}
-                        rows={2}
-                    />
-                    <button
-                        className="gpt-button"
-                        onClick={() => {
-                            getShortExplanationFeedback(index);
-                        }}
-                        disabled={
-                            !userResponse[
-                                index
-                            ].trim() ||
-                            buttonDisabled
-                        }
-                    >
-                        Submit
-                    </button>
-                </div>
-                }
-                {!explanationFeedbackReady[index] && !attempted.every(attempt => attempt) && !attempted.every(value => value === false) &&
-                    <div className="step-answered-container">
-                        Checking Solution
-                    <ChatLoader/>
-                    </div>
-                }
-                {
-                    (explanationQuestionCorrect[index] || attempted.every(attempt => attempt)) &&
-                    <>
-                    <div className="follow-up-question-feedback correct">
-                        <strong>You Answered</strong> {userResponse[index]}
-                    </div>
-                    <div className="follow-up-question-feedback correct">
-                        <strong>Explanation:</strong> {question.aiGeneratedSolution}
-                    </div>
-                    </>
-
-                }
-                
-            </div>
-        );
-    }
 
 
     return (
@@ -1590,7 +1513,69 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         {solutions![index]}
                                                     </span>
                                                 </div>
-                                                <FollowUpQuestion question={item} index={index} />
+                                                <div className="follow-up-question">
+                                                    <div className="follow-up-header">
+                                                        <p>Follow Up</p>
+                                                    </div>
+                                                    <div className="follow-up-question-text">
+                                                        {item.explanation}
+                                                    </div>
+                                                    {explanationFeedback[index] != "" && explanationFeedbackReady[index] && !explanationQuestionCorrect[index] && !attempted.every(attempt => attempt) &&
+                                                        <div className="follow-up-question-feedback">
+                                                            {explanationFeedback[index]}
+                                                        </div>
+                                                    }
+                                                    {!explanationQuestionCorrect[index] && !buttonDisabled &&
+                                                    <div className="follow-up-question-input">
+                                                        <textarea
+                                                            className="self-explain-textbox baseline-input"
+                                                            id="userInput"
+                                                            // ref={textareaRefs}
+                                                            value={userResponse[index]}
+                                                            onChange={(e) => handleUserInput(index, e)}
+                                                            onKeyDown={handleKeyDown}
+                                                            rows={2}
+                                                            data-gramm="false"
+                                                            data-gramm_editor="false"
+                                                            autoComplete="off"
+                                                            spellCheck="false"
+                                                        />
+                                                        <button
+                                                            className="gpt-button"
+                                                            onClick={() => {
+                                                                getShortExplanationFeedback(index);
+                                                            }}
+                                                            disabled={
+                                                                !userResponse[
+                                                                    index
+                                                                ].trim() ||
+                                                                buttonDisabled
+                                                            }
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                    }
+                                                    {!explanationFeedbackReady[index] && !attempted.every(attempt => attempt) && !attempted.every(value => value === false) &&
+                                                        <div className="step-answered-container">
+                                                            Checking Solution
+                                                        <ChatLoader/>
+                                                        </div>
+                                                    }
+                                                    {
+                                                        (explanationQuestionCorrect[index] || attempted.every(attempt => attempt)) &&
+                                                        <>
+                                                        <div className="follow-up-question-feedback correct">
+                                                            <strong>You Answered</strong> {userResponse[index]}
+                                                        </div>
+                                                        <div className="follow-up-question-feedback correct">
+                                                            <strong>Explanation:</strong> {item.aiGeneratedSolution}
+                                                        </div>
+                                                        </>
+
+                                                    }
+                                                    
+                                                </div>
                                                 </>
                                             )}
                                         </div>

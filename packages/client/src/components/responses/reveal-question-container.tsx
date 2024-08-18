@@ -65,12 +65,17 @@ function RevealQuestionComponent({
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [userResponse, setUserResponse] = useState<string[]>([]);
     const [feedback, setFeedback] = useState<string[]>([]);
+
     const textareaRefs = useRef(
         data
             .map((subgoal) => subgoal.questions)
             .flat()
             .map(() => React.createRef<HTMLTextAreaElement>())
     );
+    // const textareaRefs = useRef([]);
+    // textareaRefs.current = userResponse.map((_, i) => textareaRefs.current[i] ?? React.createRef());
+
+
     const [hintForShort, setHintForShort] = useState<string[]>([]);
     const [feedbackReady, setFeedbackReady] = useState<boolean[]>(
         new Array(data.map((subgoal) => subgoal.questions).flat().length).fill(
@@ -92,11 +97,12 @@ function RevealQuestionComponent({
         };
     }, [isWaitingForNextAttempt]);
 
-    useEffect(() => {
-        if (textareaRefs.current[currentQuestionIndex].current) {
-            textareaRefs.current[currentQuestionIndex]?.current?.focus();
-        }
-    }, [userResponse, currentQuestionIndex]);
+    // useEffect(() => {
+    //     if (textareaRefs.current[currentQuestionIndex].current) {
+    //         textareaRefs.current[currentQuestionIndex]?.current?.focus();
+    //     }
+    // }, [userResponse, currentQuestionIndex]);
+
 
     useEffect(() => {
         const questions = data.map((subgoal) => subgoal.questions).flat();
@@ -444,9 +450,9 @@ function RevealQuestionComponent({
     const handleUserInput = (
         index: number,
         event: React.ChangeEvent<HTMLTextAreaElement>
-    ): void => {
-        const { value } = event.target;
-        const cursorPosition = event.target.selectionStart; // Get the cursor position
+    ) => {
+        const value = event.target.value;
+        // const cursorPosition = event.target.selectionStart; // Get the cursor position
 
         setUserResponse((prevState) => {
             const newUserResponse = [...prevState];
@@ -455,13 +461,13 @@ function RevealQuestionComponent({
         });
 
         // Wait until the state is updated and then set the cursor position
-        setTimeout(() => {
-            const textarea = textareaRefs.current[index].current;
-            if (textarea) {
-                textarea.selectionStart = cursorPosition;
-                textarea.selectionEnd = cursorPosition;
-            }
-        }, 0);
+        // setTimeout(() => {
+        //     const textarea = textareaRefs.current[index].current;
+        //     if (textarea) {
+        //         textarea.selectionStart = cursorPosition;
+        //         textarea.selectionEnd = cursorPosition;
+        //     }
+        // }, 0);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -472,199 +478,88 @@ function RevealQuestionComponent({
         }
     };
 
-    interface LineRevealProps {
-        question: SubQuestions;
-        index: number;
-    }
-    const SingleMCQ = ({ question, index }: LineRevealProps) => {
-        return (
-            <div
-                className={`reveal-question-container ${
-                    index <= currentQuestionIndex ? "active" : ""
-                } ${index < currentQuestionIndex ? "answered" : ""}`}
-                key={`rq${index}`}
-            >
-                <h1>{question.context}</h1>
-                <div className="reveal-question-content-container">
-                    <b>Question: </b>
-                    <p className="reveal-question-content">
-                        {question.mcqQuestion}
-                    </p>
-                </div>
-                <>
-                    {!reachedMax[index] && (
-                        <>
-                            <div className={`reveal-select-all`}>
-                                {isWaitingForNextAttempt && (
-                                    <div className="reveal-waiting-for-next-attempt">
-                                        <p>You may retry in {count} seconds</p>
-                                    </div>
-                                )}
-                                {question.choices!.map((choice, i) => (
-                                    <div
-                                        className={
-                                            isWaitingForNextAttempt
-                                                ? "reveal-select-container disabled"
-                                                : "reveal-select-container"
-                                        }
-                                        key={`${index}details${i}`}
-                                        onClick={() =>
-                                            handleSelect(
-                                                choice.correct,
-                                                index,
-                                                choice.text
-                                            )
-                                        }
-                                    >
-                                        <div className="reveal-select-dot"></div>
-                                        {!choice.correct &&
-                                        questionAnsweredTimes[index] &&
-                                        questionAnsweredTimes[index]
-                                            .currentAnswer == choice.text ? (
-                                            <div className="reveal-wrong-answer">
-                                                <p>{choice.text}</p>
-                                            </div>
-                                        ) : (
-                                            <p>{choice.text}</p>
-                                        )}
-                                        <p className="reveal-answer">
-                                            {choice.correct
-                                                ? "Correct"
-                                                : "Incorrect"}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                            {questionAnsweredTimes[index].currentTime > 0 && (
-                                <div className="reveal-hint-mcq-incorrect">
-                                    <strong>Incorrect: </strong>{" "}
-                                    {question.hintForMCQ}
-                                </div>
-                            )}
-                        </>
-                    )}
-                    {reachedMax[index] && (
-                        <>
-                            <div className={`reveal-select-all`}>
-                                {question.choices!.map((choice, i) => (
-                                    <div
-                                        className="reveal-select-container"
-                                        key={`${index}details${i}`}
-                                        onClick={() =>
-                                            handleSelect(
-                                                choice.correct,
-                                                index,
-                                                choice.text
-                                            )
-                                        }
-                                    >
-                                        <div className="reveal-select-dot"></div>
-                                        {choice.correct ? (
-                                            <div className="reveal-correct-answer">
-                                                <p>{choice.text}</p>
-                                            </div>
-                                        ) : (
-                                            <p>{choice.text}</p>
-                                        )}
-                                        <p className="reveal-answer">
-                                            {choice.correct
-                                                ? "Correct"
-                                                : "Incorrect"}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                            {question.revealLine.split("\n").map((line, i) => (
-                                <HighlightedPart part={line} />
-                            ))}
 
-                            <div className="explanation-after-reveal">
-                                <strong>Explanation: </strong>{" "}
-                                {question.explanation}
-                            </div>
-                        </>
-                    )}
-                </>
-            </div>
-        );
-    };
+    //     return (
+    //         <div
+    //             className={`reveal-question-container ${
+    //                 index <= currentQuestionIndex ? "active" : ""
+    //             } ${index < currentQuestionIndex ? "answered" : ""}`}
+    //             key={`rq${index}`}
+    //         >
+    //             {/* <h1>{question.context}</h1> */}
+    //             {question.shortQuestion && (
+    //                 <div className="reveal-question-content-container">
+    //                     <b>Short Question: </b>
+    //                     <p className="reveal-question-content">
+    //                         {question.shortQuestion}
+    //                     </p>
+    //                     {!reachedMax[index] && 
+    //                     <div className="reveal-short-answer-container">
+    //                         <textarea
+    //                             className="reveal-lead-textbox baseline-input"
+    //                             id={`userInput${index}`}
+    //                             // ref={textareaRefs.current[index]}
+    //                             value={userResponse[index]}
+    //                             onChange={(e) => handleUserInput(index, e)}
+    //                             onKeyDown={handleKeyDown}
+    //                             rows={2}
+    //                             data-gramm="false"
+    //                             data-gramm_editor="false"
+    //                             autoComplete="off"
+    //                             spellCheck="false"
+    //                         />
+    //                         <button
+    //                             className="reveal-submit gpt-button"
+    //                             onClick={() => handleClick(index)}
+    //                             disabled={
+    //                                 !userResponse[index].trim() ||
+    //                                 buttonDisabled
+    //                             }
+    //                         >
+    //                             Submit
+    //                         </button>
+    //                     </div>
+    //                     }
+    //                 </div>
+    //             )}
+    //             {!reachedMax[index] && (
+    //                 <div>
+    //                     {questionAnsweredTimes[index].currentTime > 0 && (
+    //                         <>
+    //                             {feedbackReady[index] ? (
+    //                                 <div className="reveal-hint-mcq-incorrect">
+    //                                     <strong>Explanation: </strong>{" "}
+    //                                     {hintForShort[index]}
+    //                                 </div>
+    //                             ) : (
+    //                                 <div className="step-answered-container">
+    //                                     Checking Solution
+    //                                     <ChatLoader />
+    //                                 </div>
+    //                             )}
+    //                         </>
+    //                     )}
+    //                 </div>
+    //             )}
+    //             {reachedMax[index] && (
+    //                 <>
+    //                     <div className="explanation-after-reveal">
+    //                         <strong>Your Response: </strong>
+    //                         {questionAnsweredTimes[index].currentAnswer}
+    //                     </div>
+    //                     {question.revealLine.split("\n").map((line, i) => (
+    //                         <HighlightedPart part={line} />
+    //                     ))}
 
-    const ShortQuestion = ({ question, index }: LineRevealProps) => {
-        return (
-            <div
-                className={`reveal-question-container ${
-                    index <= currentQuestionIndex ? "active" : ""
-                } ${index < currentQuestionIndex ? "answered" : ""}`}
-                key={`rq${index}`}
-            >
-                {/* <h1>{question.context}</h1> */}
-                {question.shortQuestion && !reachedMax[index] && (
-                    <div className="reveal-question-content-container">
-                        <b>Short Question: </b>
-                        <p className="reveal-question-content">
-                            {question.shortQuestion}
-                        </p>
-                        <div className="reveal-short-answer-container">
-                            <textarea
-                                className="reveal-lead-textbox baseline-input"
-                                id={`userInput${index}`}
-                                ref={textareaRefs.current[index]}
-                                value={userResponse[index]}
-                                onChange={(e) => handleUserInput(index, e)}
-                                onKeyDown={handleKeyDown}
-                                rows={2}
-                            />
-                            <button
-                                className="reveal-submit gpt-button"
-                                onClick={() => handleClick(index)}
-                                disabled={
-                                    !userResponse[index].trim() ||
-                                    buttonDisabled
-                                }
-                            >
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                )}
-                {!reachedMax[index] && (
-                    <div>
-                        {questionAnsweredTimes[index].currentTime > 0 && (
-                            <>
-                                {feedbackReady[index] ? (
-                                    <div className="reveal-hint-mcq-incorrect">
-                                        <strong>Explanation: </strong>{" "}
-                                        {hintForShort[index]}
-                                    </div>
-                                ) : (
-                                    <div className="step-answered-container">
-                                        Checking Solution
-                                        <ChatLoader />
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-                )}
-                {reachedMax[index] && (
-                    <>
-                        <div className="explanation-after-reveal">
-                            <strong>Your Response: </strong>
-                            {questionAnsweredTimes[index].currentAnswer}
-                        </div>
-                        {question.revealLine.split("\n").map((line, i) => (
-                            <HighlightedPart part={line} />
-                        ))}
-
-                        <div className="explanation-after-reveal">
-                            <strong>Explanation: </strong>{" "}
-                            {question.explanationSolution}
-                        </div>
-                    </>
-                )}
-            </div>
-        );
-    };
+    //                     <div className="explanation-after-reveal">
+    //                         <strong>Explanation: </strong>{" "}
+    //                         {question.explanationSolution}
+    //                     </div>
+    //                 </>
+    //             )}
+    //         </div>
+    //     );
+    // };
 
     return (
         <div className="reveal-parent-container">
@@ -676,17 +571,200 @@ function RevealQuestionComponent({
                         </span>
                     )}
                 {questions.length > 0 &&
-                    questions.map((question: SubQuestions, index) => (
-                        <div className="reveal-subgoal-container">
-                            {question.selectedQuestion === "mcq" ? (
-                                <SingleMCQ question={question} index={index} />
-                            ) : (
-                                <ShortQuestion
-                                    question={question}
-                                    index={index}
-                                />
-                            )}
-                        </div>
+                        questions.map((question: SubQuestions, index) => (
+                        index <= currentQuestionIndex && (
+                            <div className="reveal-subgoal-container" key={index}>
+                                {question.selectedQuestion === "mcq" ? (
+                                                <div
+                                                className={`reveal-question-container ${
+                                                    index <= currentQuestionIndex ? "active" : ""
+                                                } ${index < currentQuestionIndex ? "answered" : ""}`}
+                                                key={`rq${index}`}
+                                            >
+                                                <h1>{question.context}</h1>
+                                                <div className="reveal-question-content-container">
+                                                    <b>Question: </b>
+                                                    <p className="reveal-question-content">
+                                                        {question.mcqQuestion}
+                                                    </p>
+                                                </div>
+                                                <>
+                                                    {!reachedMax[index] && (
+                                                        <>
+                                                            <div className={`reveal-select-all`}>
+                                                                {isWaitingForNextAttempt && (
+                                                                    <div className="reveal-waiting-for-next-attempt">
+                                                                        <p>You may retry in {count} seconds</p>
+                                                                    </div>
+                                                                )}
+                                                                {question.choices!.map((choice, i) => (
+                                                                    <div
+                                                                        className={
+                                                                            isWaitingForNextAttempt
+                                                                                ? "reveal-select-container disabled"
+                                                                                : "reveal-select-container"
+                                                                        }
+                                                                        key={`${index}details${i}`}
+                                                                        onClick={() =>
+                                                                            handleSelect(
+                                                                                choice.correct,
+                                                                                index,
+                                                                                choice.text
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <div className="reveal-select-dot"></div>
+                                                                        {!choice.correct &&
+                                                                        questionAnsweredTimes[index] &&
+                                                                        questionAnsweredTimes[index]
+                                                                            .currentAnswer == choice.text ? (
+                                                                            <div className="reveal-wrong-answer">
+                                                                                <p>{choice.text}</p>
+                                                                            </div>
+                                                                        ) : (
+                                                                            <p>{choice.text}</p>
+                                                                        )}
+                                                                        <p className="reveal-answer">
+                                                                            {choice.correct
+                                                                                ? "Correct"
+                                                                                : "Incorrect"}
+                                                                        </p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            {questionAnsweredTimes[index].currentTime > 0 && (
+                                                                <div className="reveal-hint-mcq-incorrect">
+                                                                    <strong>Incorrect: </strong>{" "}
+                                                                    {question.hintForMCQ}
+                                                                </div>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                    {reachedMax[index] && (
+                                                        <>
+                                                            <div className={`reveal-select-all`}>
+                                                                {question.choices!.map((choice, i) => (
+                                                                    <div
+                                                                        className="reveal-select-container"
+                                                                        key={`${index}details${i}`}
+                                                                        onClick={() =>
+                                                                            handleSelect(
+                                                                                choice.correct,
+                                                                                index,
+                                                                                choice.text
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <div className="reveal-select-dot"></div>
+                                                                        {choice.correct ? (
+                                                                            <div className="reveal-correct-answer">
+                                                                                <p>{choice.text}</p>
+                                                                            </div>
+                                                                        ) : (
+                                                                            <p>{choice.text}</p>
+                                                                        )}
+                                                                        <p className="reveal-answer">
+                                                                            {choice.correct
+                                                                                ? "Correct"
+                                                                                : "Incorrect"}
+                                                                        </p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            {question.revealLine.split("\n").map((line, i) => (
+                                                                <HighlightedPart part={line} />
+                                                            ))}
+                                
+                                                            <div className="explanation-after-reveal">
+                                                                <strong>Explanation: </strong>{" "}
+                                                                {question.explanation}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </>
+                                            </div>
+                                ) : (
+                                    <div
+                                    className={`reveal-question-container ${
+                                        index <= currentQuestionIndex ? "active" : ""
+                                    } ${index < currentQuestionIndex ? "answered" : ""}`}
+                                    key={`rq${index}`}
+                                >
+                                    {/* <h1>{question.context}</h1> */}
+                                    {question.shortQuestion && (
+                                        <div className="reveal-question-content-container">
+                                            <b>Short Question: </b>
+                                            <p className="reveal-question-content">
+                                                {question.shortQuestion}
+                                            </p>
+                                            {!reachedMax[index] && 
+                                            <div className="reveal-short-answer-container">
+                                                <textarea
+                                                    className="reveal-lead-textbox baseline-input"
+                                                    id={`userInput${index}`}
+                                                    // ref={textareaRefs.current[index]}
+                                                    value={userResponse[index]}
+                                                    onChange={(e) => handleUserInput(index, e)}
+                                                    onKeyDown={handleKeyDown}
+                                                    rows={2}
+                                                    data-gramm="false"
+                                                    data-gramm_editor="false"
+                                                    autoComplete="off"
+                                                    spellCheck="false"
+                                                />
+                                                <button
+                                                    className="reveal-submit gpt-button"
+                                                    onClick={() => handleClick(index)}
+                                                    disabled={
+                                                        !userResponse[index].trim() ||
+                                                        buttonDisabled
+                                                    }
+                                                >
+                                                    Submit
+                                                </button>
+                                            </div>
+                                            }
+                                        </div>
+                                    )}
+                                    {!reachedMax[index] && (
+                                        <div>
+                                            {questionAnsweredTimes[index].currentTime > 0 && (
+                                                <>
+                                                    {feedbackReady[index] ? (
+                                                        <div className="reveal-hint-mcq-incorrect">
+                                                            <strong>Explanation: </strong>{" "}
+                                                            {hintForShort[index]}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="step-answered-container">
+                                                            Checking Solution
+                                                            <ChatLoader />
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+                                        </div>
+                                    )}
+                                    {reachedMax[index] && (
+                                        <>
+                                            <div className="explanation-after-reveal">
+                                                <strong>Your Response: </strong>
+                                                {questionAnsweredTimes[index].currentAnswer}
+                                            </div>
+                                            {question.revealLine.split("\n").map((line, i) => (
+                                                <HighlightedPart part={line} />
+                                            ))}
+
+                                            <div className="explanation-after-reveal">
+                                                <strong>Explanation: </strong>{" "}
+                                                {question.explanationSolution}
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                                )}
+                            </div>
+                        )
                     ))}
             </div>
             {questions.length > 0 && (
@@ -702,7 +780,7 @@ function RevealQuestionComponent({
                                     sum + currentSubgoal.questions.length,
                                 0
                             );
-
+                    
                         return (
                             <div
                                 key={subgoalIndex}
@@ -719,7 +797,7 @@ function RevealQuestionComponent({
                                 {subgoals.questions.map((question, index) => (
                                     <div
                                         className={`reveal-code-container ${
-                                            cumulativeIndex <
+                                            cumulativeIndex + index <
                                             currentQuestionIndex
                                                 ? "active"
                                                 : "inactive"

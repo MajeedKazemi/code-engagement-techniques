@@ -63,6 +63,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const [keyStrokes, setKeyStrokes] = useState<number>(0);
     const [loggedIO, setLoggedIO] = useState<any>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [runCodeNoError, setRunCodeNoError] = useState(false); 
 
     useImperativeHandle(ref, () => ({
         setCode(code: string) {
@@ -341,6 +342,10 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
             },
         ]);
 
+        //user had already run the code once
+        setRunCodeNoError(true);
+        console.log("Ran");
+
         apiLogEvents(
             context?.token,
             props.taskId,
@@ -561,6 +566,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
                     task={props.description}
                     moveOn={setNextTask}
                     technique={props.technique}
+                    runCodeNoError={runCodeNoError}
                 />
             )}
             {isModalOpen && (

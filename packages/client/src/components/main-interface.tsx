@@ -42,6 +42,7 @@ interface MainInterfaceProps {
     taskID: string;
     task: string;
     moveOn: () => void;
+    runCodeNoError: boolean;
 }
 
 interface BaselinePromptsProps {
@@ -55,6 +56,7 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
     taskID,
     task,
     moveOn,
+    runCodeNoError,
 }) => {
     const [isUserPromptsVisible, setIsUserPromptsVisible] = useState(true);
     const [generatedCodeComponentVisible, setGeneratedCodeComponentVisible] =
@@ -84,6 +86,10 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
     useEffect(() => {
         console.log("taskID: ", taskID);
     }, []);
+
+    useEffect(() => {
+        console.log(`runCodeNoError changed: ${runCodeNoError}`);
+    }, [runCodeNoError]);
 
     useEffect(() => {
         if (editor) {
@@ -415,10 +421,11 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
                         <div className="gpt-image">
                             <IconsDoc iconName="spark" />
                         </div>
-                        AI Assistance:
+                        AI Assistance: {(taskID == "1" || taskID == "3" || taskID == "5") && `Warm-up Task ${taskID}`}{(taskID == "2" || taskID == "4" || taskID == "6") && `Task ${taskID}`}
                     </h3>
                 </div>
                 {/* Conditionally render the generated code component */}
+                {runCodeNoError && <p style={{ display: 'none' }}>runCodeNoError</p>}
                 <div
                     className={`generated-code-component ${
                         generatedCodeComponentVisible ? "" : "hidden"

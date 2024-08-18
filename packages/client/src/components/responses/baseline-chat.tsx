@@ -46,7 +46,8 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
     const [timeUsed, setTimeUsed] = useState<number>(0);
-
+    const [runCodeNoError, setRunCodeNoError] = useState<boolean>(false);
+    
     useEffect(() => {
         // Create an interval that runs every second
         const interval = setInterval(() => {
@@ -59,6 +60,31 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
             clearInterval(interval);
         };
     }, []); // Empty array dependency makes this run once after initial render
+
+
+    useEffect(() => {
+        // Function to check the <p> element
+        const checkParagraphContent = () => {
+          const pElement = document.querySelector('p');
+          if (pElement && pElement.textContent!.includes('runCodeNoError')) {
+            setRunCodeNoError(true);
+          }
+        };
+   
+        // Call the function initially
+        checkParagraphContent();
+   
+        // Optionally, you can add a mutation observer to watch for changes in the DOM
+        // if the content might change dynamically
+        const observer = new MutationObserver(checkParagraphContent);
+        const config = { childList: true, subtree: true };
+        observer.observe(document.body, config);
+   
+        // Clean up the observer
+        return () => {
+          observer.disconnect();
+        };
+      }, []);
 
     useEffect(() => {
         if (explanation.length > 0 && explanationRef.current) {
@@ -388,6 +414,11 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     }, []);
 
     useEffect(() => {
+        console.log(`runCodeNoError changed: ${runCodeNoError}`);
+    }, [runCodeNoError]);
+
+
+    useEffect(() => {
         if (baselineRef.current && generatedCode && !editorRef.current) {
             editorRef.current = monaco.editor.create(baselineRef.current, {
                 value: generatedCode,
@@ -485,11 +516,11 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                         generating ? "inactive" : ""
                     }`}
                 >
-                    <button className="gpt-button" onClick={cancelClick}>
+                    <button className={`gpt-button ${!runCodeNoError ? 'disabled' : ''}`} onClick={cancelClick} disabled={!runCodeNoError}>
                         Next Task
                     </button>
                     <button
-                        className="gpt-button"
+                        className="gpt-button insert-code"
                         onClick={handleInsertCodeClick}
                     >
                         Insert Code
