@@ -130,6 +130,11 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [explanationQuestionCorrect, setExplanationQuestionCorrect] = useState<boolean[]>([]);
     const [attempted, setAttempted] = useState<boolean[]>([false, false, false, false]);
 
+    const [totalAttempts, setTotalAttempts] = useState(0);
+    const [totalCorrect, setTotalCorrect] = useState(0);
+    const [totalIncorrect, setTotalIncorrect] = useState(0);
+    const [questionFirstDisplayed, setQuestionFirstDisplayed] = useState(Date.now());
+
     const [variableSummaryOpen, setVariableSummaryOpen] =
         useState<boolean>(false);
 
@@ -144,6 +149,23 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 currentTabs: Math.floor(line.search(/\S|$/) / 4),
             }));
     };
+
+    useEffect(() => {
+
+        if(questionStop >= excutionSteps.length - 1){
+            apiLogEvents(context?.token, taskID, "trace predict total mini question summary", {
+                type: "trace predict end summary event",
+                taskID: taskID,
+                total_attempts: totalAttempts,
+                total_correct: totalCorrect,
+                total_incorrect: totalIncorrect,
+            })
+                .then(() => {})
+                .catch((error) => {
+                    logError("sendLog: " + error.toString());
+                });
+        }
+    }, [questionStop]);
 
     useEffect(() => {
         const editor = monaco.editor.create(readerRef.current!, {
@@ -650,6 +672,20 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         if (currentQuestion) {
             setQuestionStop(currentQuestion.step - 1);
             setCurrentQuestionIndex(questionIndex);
+            
+            //reset timer for mini question
+            apiLogEvents(
+                context?.token,
+                taskID,
+                "trace predict mini question time event",
+                {
+                    type: "trace predict mini question time event",
+                    question: currentQuestionIndex,
+                    time: Date.now() - questionFirstDisplayed,
+                }
+            ).then(() => {
+                setQuestionFirstDisplayed(Date.now());
+            });
         }
     };
 
@@ -851,6 +887,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     const getShortExplanationFeedback = (index: number) => {
         let attemptNumber = attempted.findIndex((attempt) => !attempt);
+        setTotalAttempts(totalAttempts + 1);
 
         const question = questions[index];
         apiLogEvents(
@@ -928,6 +965,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             console.log(data.response);
 
                             if(data.response.correct == "yes"){
+                                setTotalCorrect(totalCorrect + 1);
                                 setButtonDisabled(false);
                                 setExplanationQuestionCorrect(
                                     (prev) => {
@@ -950,6 +988,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 );
                                 setAttempted([false, false, false, false]);
                             }else {
+                                setTotalIncorrect(totalIncorrect + 1);
                                 setButtonDisabled(false);
                                 setExplanationFeedbackReady(
                                     (prev) => {
@@ -994,6 +1033,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             }
         
     };
+
+
 
 
 
@@ -1338,6 +1379,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                 // - prev_provided_feedback: {string} // if this is a retry and they have tried before
                                                                 // - new_student_answer: {string}
                                                                 // - attempt_number: {number}
+                                                                setTotalAttempts(totalAttempts + 1);
                                                                 let attemptNumber =
                                                                     currentWrongAnswers![
                                                                         index
@@ -1429,6 +1471,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     let temp = deepCopy(feedbackReady);
                                                                     temp[attemptNumber-1] = true;
                                                                     setFeedbackReady(temp);    
+                                                                    setTotalCorrect(totalCorrect + 1);
                                                                     
                                                                     
                                                                 } else if (
@@ -1444,6 +1487,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     tempNum[attemptNumber-1] = false;
                                                                     setFeedbackReady(tempNum);
                                                                     getCurrentFeedback();
+
+                                                                    setTotalIncorrect(totalIncorrect + 1);
 
                                                                     let temp =
                                                                         deepCopy(
@@ -1509,7 +1554,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         );    
                                                                         let temp = deepCopy(feedbackReady);
                                                                         temp[attemptNumber-1] = true;
-                                                                        setFeedbackReady(temp);                       
+                                                                        setFeedbackReady(temp);  
+                                                                        setTotalIncorrect(totalIncorrect + 1);                     
                                                                     }
                                                                 }
                                                             }}

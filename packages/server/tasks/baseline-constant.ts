@@ -165,31 +165,6 @@ The function then enters a while loop that continues as long as \`stack\` is not
 
 Finally, the function returns the \`reversed_list\`, which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
 
-export const tech1WarmupCode = 
-`def reverse_list_with_queue(input_list):
-    reversed_list = []
-    queue = input_list[:]
-    while queue:
-        reversed_list.insert(0, queue.pop(0))
-    return reversed_list
-reverse_list_with_queue([1, 2, 3, 4, 5])`
-
-export const tech1WarmupExplanation = 
-`def reverse_list_with_queue(input_list): ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
-    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
-    queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
-    while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
-        reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
-    return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
-reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_queue\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
-[END]
-
-[OVERALL-EXPLANATION]
-The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
-
-The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
-
-Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
 
 export const tech3WarmupCode = 
 `def is_palindrome(s: str) -> bool:
@@ -231,6 +206,69 @@ export const tech2WarmupCode =
 reverse_list_with_stack([1, 2, 3, 4, 5])`
 
 
+// export const tech1WarmupCode = 
+// `def reverse_list_with_queue(input_list):
+//     reversed_list = []
+//     queue = input_list[:]
+//     while queue:
+//         reversed_list.insert(0, queue.pop(0))
+//     return reversed_list
+// reverse_list_with_queue([1, 2, 3, 4, 5])`
+
+// export const tech1WarmupExplanation = 
+// `def reverse_list_with_queue(input_list): ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
+//     reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
+//     queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
+//     while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
+//         reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
+//     return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
+// reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_queue\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
+// [END]
+
+// [OVERALL-EXPLANATION]
+// The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
+
+// The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
+
+// Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
+
+export const tech1WarmupCode =
+`def is_balanced_parentheses(txt: str) -> bool:
+    stack = []
+    for char in txt:
+        if char == '(':
+            stack.append(char)
+        elif char == ')':
+            if not stack or stack[-1] != '(':
+                return False
+            stack.pop()      
+    return len(stack) == 0
+is_balanced_parentheses("()()")`
+
+export const tech1WarmupExplanation =
+`def is_balanced_parentheses(txt: str) -> bool: ### Defines a function named \`is_balanced_parentheses\` that takes a single argument \`txt\` of type string and returns a boolean value.
+    stack = [] ### Initializes an empty list named \`stack\` which will be used to keep track of opening parentheses.
+    for char in txt: ### Starts a for loop to iterate over each character in the input string \`txt\`.
+        if char == '(': ### Checks if the current character is an opening parenthesis '('.
+            stack.append(char) ### If it is an opening parenthesis, it is added to the \`stack\`.
+        elif char == ')': ### Checks if the current character is a closing parenthesis ')'.
+            if not stack or stack[-1] != '(': ### Checks if the \`stack\` is empty or if the top element of the \`stack\` is not an opening parenthesis '('.
+                return False ### If either condition is true, it means the parentheses are not balanced, so the function returns \`False\`.
+            stack.pop() ### If the top element of the \`stack\` is an opening parenthesis '(', it is removed from the \`stack\`.
+    return len(stack) == 0 ### After the loop, checks if the \`stack\` is empty. If it is empty, it means all opening parentheses have been matched with closing ones, so the function returns \`True\`. Otherwise, it returns \`False\`.
+is_balanced_parentheses("()()") ### Calls the function \`is_balanced_parentheses\` with the input string "()()" and prints the result.
+[END]
+
+[OVERALL-EXPLANATION]
+The function \`is_balanced_parentheses\` is designed to determine if a string of parentheses is balanced. It uses a stack data structure to keep track of opening parentheses. As it iterates through each character in the input string, it performs the following steps:
+
+1. If the character is an opening parenthesis '(', it pushes it onto the stack.
+2. If the character is a closing parenthesis ')', it checks if the stack is empty or if the top element of the stack is not an opening parenthesis '('. If either condition is true, it returns \`False\` because it means the parentheses are not balanced.
+3. If the top element of the stack is an opening parenthesis '(', it pops it from the stack.
+
+After iterating through all characters, the function checks if the stack is empty. If it is, it means all opening parentheses have been matched with closing ones in the correct order, so it returns \`True\`. Otherwise, it returns \`False\`.
+
+The function call \`is_balanced_parentheses("()()")\` is an example use case that checks if the string "()()" is balanced, which it is, so the function would return \`True\`.`
 
 
 // export const task4Code =

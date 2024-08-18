@@ -66,14 +66,11 @@ function RevealQuestionComponent({
     const [userResponse, setUserResponse] = useState<string[]>([]);
     const [feedback, setFeedback] = useState<string[]>([]);
 
-    const textareaRefs = useRef(
-        data
-            .map((subgoal) => subgoal.questions)
-            .flat()
-            .map(() => React.createRef<HTMLTextAreaElement>())
-    );
-    // const textareaRefs = useRef([]);
-    // textareaRefs.current = userResponse.map((_, i) => textareaRefs.current[i] ?? React.createRef());
+    const [totalAttempts, setTotalAttempts] = useState(0);
+    const [totalCorrect, setTotalCorrect] = useState(0);
+    const [totalIncorrect, setTotalIncorrect] = useState(0);
+    const [questionFirstDisplayed, setQuestionFirstDisplayed] = useState(Date.now());
+
 
 
     const [hintForShort, setHintForShort] = useState<string[]>([]);
@@ -97,11 +94,21 @@ function RevealQuestionComponent({
         };
     }, [isWaitingForNextAttempt]);
 
-    // useEffect(() => {
-    //     if (textareaRefs.current[currentQuestionIndex].current) {
-    //         textareaRefs.current[currentQuestionIndex]?.current?.focus();
-    //     }
-    // }, [userResponse, currentQuestionIndex]);
+    useEffect(() => {
+        if(currentQuestionIndex >= questions.length){
+            apiLogEvents(context?.token, taskID, "lead reveal total mini question summary", {
+                type: "lead reveal end summary event",
+                taskID: taskID,
+                total_attempts: totalAttempts,
+                total_correct: totalCorrect,
+                total_incorrect: totalIncorrect,
+            })
+                .then(() => {})
+                .catch((error) => {
+                    logError("sendLog: " + error.toString());
+                });
+        }
+    }, [currentQuestionIndex]);
 
 
     useEffect(() => {
@@ -217,6 +224,7 @@ function RevealQuestionComponent({
     const handleSelect = (isCorrect: boolean, index: number, text: string) => {
         if (isWaitingForNextAttempt) return;
 
+        setTotalAttempts(totalAttempts + 1);
         // Lead and Reveal:
         // - high priority:
         // - answer question event:
@@ -262,6 +270,7 @@ function RevealQuestionComponent({
         }
 
         if (isCorrect) {
+            setTotalCorrect(totalCorrect + 1);
             const newRevealAnswer = revealAnswer.map((reveal, i) =>
                 i === index ? true : reveal
             );
@@ -269,6 +278,7 @@ function RevealQuestionComponent({
             setRevealAnswer(newRevealAnswer);
             // console.log("New Reveal Answer: ", newRevealAnswer);
         } else {
+            setTotalIncorrect(totalIncorrect + 1);
             const newQuestionAnsweredTimes = questionAnsweredTimes.map(
                 (question, i) =>
                     i === index
@@ -293,6 +303,20 @@ function RevealQuestionComponent({
         if (reachedMax[currentQuestionIndex] == true) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setIsWaitingForNextAttempt(false);
+            //reset timer for the miniquestion
+            apiLogEvents(
+                context?.token,
+                taskID,
+                "lead reveal mini question time event",
+                {
+                    type: "lead reveal mini question time event",
+                    question: currentQuestionIndex,
+                    time: Date.now() - questionFirstDisplayed,
+                }
+            ).then(() => {
+                setQuestionFirstDisplayed(Date.now());
+            });
+                
         }
     }, [reachedMax]);
 
@@ -304,6 +328,7 @@ function RevealQuestionComponent({
         setFeedbackReady(
             feedbackReady.map((ready, i) => (i === index ? false : ready))
         );
+        setTotalAttempts(totalAttempts + 1);
         //if LLM check is at least 4/5.
         // console.log(userResponse[index], questions[index].answer);
         try {
@@ -353,8 +378,9 @@ function RevealQuestionComponent({
                                     questionAnsweredTimes[index].currentTime +
                                     1,
                             }
-                        );
+                        )
                         if (data.response.correct == "yes") {
+                            setTotalCorrect(totalCorrect + 1);
                             setButtonDisabled(false);
                             const newRevealAnswer = revealAnswer.map(
                                 (reveal, i) => (i === index ? true : reveal)
@@ -373,6 +399,7 @@ function RevealQuestionComponent({
                             setQuestionAnsweredTimes(newQuestionAnsweredTimes);
                             setRevealAnswer(newRevealAnswer);
                         } else {
+                            setTotalIncorrect(totalIncorrect + 1);
                             setButtonDisabled(false);
                             console.log("Feedback: ", data.response.feedback);
                             console.log(
@@ -409,33 +436,6 @@ function RevealQuestionComponent({
                             setUserResponse(newUserResponse);
                         }
                     }
-                    //     if (data.response.score >= 3) {
-                    //         const newRevealAnswer = revealAnswer.map(
-                    //             (reveal, i) => (i === index ? true : reveal)
-                    //         );
-                    //         setRevealAnswer(newRevealAnswer);
-                    //     } else {
-                    //         const newFeedback = [...feedback];
-                    //         newFeedback[index] = data.response.feedback;
-                    //         setFeedback(newFeedback);
-                    //         const newQuestionAnsweredTimes =
-                    //             questionAnsweredTimes.map((question, i) =>
-                    //                 i === index
-                    //                     ? {
-                    //                           currentTime:
-                    //                               question.currentTime + 1,
-                    //                           currentAnswer:
-                    //                               userResponse[index],
-                    //                       }
-                    //                     : question
-                    //             );
-                    //         setQuestionAnsweredTimes(newQuestionAnsweredTimes);
-                    //         //update the user response
-                    //         const newUserResponse = [...userResponse];
-                    //         newUserResponse[index] = "";
-                    //         setUserResponse(newUserResponse);
-                    //     }
-                    // }
                 })
                 .catch((error) => {
                     setButtonDisabled(false);

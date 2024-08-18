@@ -957,139 +957,6 @@ export const tech2WarmupDecomposition = {
   ]
 }
 
-export const tech1WarmupDecomposition = {
-  "subgoals": [
-    {
-      "title": "Define the function and its input parameter",
-      "indent-level": 0,
-      "leading-questions": [
-        {
-          "context": "We need to define a function that will reverse a list using a queue-like approach.",
-          "short-answer-question": "What type of data should the function's input parameter be?",
-          "mcq-question": "What type of data should the function's input parameter be?",
-          "correct-choice": "A list",
-          "incorrect-choice-1": "A string",
-          "incorrect-choice-2": "An integer",
-          "incorrect-choice-3": "A dictionary",
-          "short-answer-solution": "The function's input parameter should be a list because we are required to reverse a list using a queue-like approach.",
-          "selected-question": "short",
-          "code-line-to-be-revealed": 1,
-          "hint-if-incorrect": "Think about the data structure that can be reversed.",
-          "explanation-after-correct-answer": "The function is defined to take a list as its input parameter, which will be reversed using a queue-like approach."
-        }
-      ]
-    },
-    {
-      "title": "Initialize an empty list to store the result and create a copy as queue",
-      "indent-level": 1,
-      "leading-questions": [
-        {
-          "context": "We need a place to store the reversed elements of the input list.",
-          "short-answer-question": "What data structure should we use to store the reversed elements?",
-          "mcq-question": "What data structure should we use to store the reversed elements?",
-          "correct-choice": "A list",
-          "incorrect-choice-1": "A set",
-          "incorrect-choice-2": "A dictionary",
-          "incorrect-choice-3": "A tuple",
-          "short-answer-solution": "We should use a list to store the reversed elements because lists are ordered and allow for easy insertion of elements.",
-          "selected-question": "short",
-          "code-line-to-be-revealed": 2,
-          "hint-if-incorrect": "Consider a data structure that maintains order and allows for easy insertion.",
-          "explanation-after-correct-answer": "An empty list named 'reversed_list' is initialized to store the elements in reverse order."
-        },
-        {
-          "context": "We need to create a queue-like structure from the input list.",
-          "short-answer-question": "How can we create a copy of the input list?",
-          "mcq-question": "How can we create a copy of the input list?",
-          "correct-choice": "Using slicing (input_list[:])",
-          "incorrect-choice-1": "Using the copy() method",
-          "incorrect-choice-2": "Using the deepcopy() function",
-          "incorrect-choice-3": "Using a for loop",
-          "short-answer-solution": "We can create a copy of the input list using slicing (input_list[:]), which creates a shallow copy of the list.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 3,
-          "hint-if-incorrect": "Think about a method that creates a shallow copy of a list.",
-          "explanation-after-correct-answer": "A copy of the input list is created using slicing and assigned to the variable 'queue'."
-        }
-      ]
-    },
-    {
-      "title": "Loop through the queue until it is empty",
-      "indent-level": 1,
-      "leading-questions": [
-        {
-          "context": "We need to process each element in the queue until it is empty.",
-          "short-answer-question": "What kind of loop should we use to process each element in the queue?",
-          "mcq-question": "What kind of loop should we use to process each element in the queue?",
-          "correct-choice": "A while loop",
-          "incorrect-choice-1": "A for loop",
-          "incorrect-choice-2": "A do-while loop",
-          "incorrect-choice-3": "A foreach loop",
-          "short-answer-solution": "We should use a while loop because it allows us to continue processing elements until the queue is empty.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 4,
-          "hint-if-incorrect": "Consider a loop that continues until a condition is no longer true.",
-          "explanation-after-correct-answer": "A while loop is used to process each element in the queue until it is empty."
-        },
-        {
-          "context": "We need to insert elements from the queue into the reversed list in reverse order.",
-          "short-answer-question": "How can we insert elements at the beginning of a list?",
-          "mcq-question": "How can we insert elements at the beginning of a list?",
-          "correct-choice": "Using the insert() method with index 0",
-          "incorrect-choice-1": "Using the append() method",
-          "incorrect-choice-2": "Using the extend() method",
-          "incorrect-choice-3": "Using the add() method",
-          "short-answer-solution": "We can insert elements at the beginning of a list using the insert() method with index 0.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 5,
-          "hint-if-incorrect": "Think about a method that allows inserting elements at a specific position in a list.",
-          "explanation-after-correct-answer": "The insert() method with index 0 is used to insert elements from the queue into the reversed list in reverse order."
-        }
-      ]
-    },
-    {
-      "title": "Return the reversed list",
-      "indent-level": 1,
-      "leading-questions": [
-        {
-          "context": "We need to return the final reversed list after processing all elements.",
-          "short-answer-question": "What should the function return after processing all elements?",
-          "mcq-question": "What should the function return after processing all elements?",
-          "correct-choice": "The reversed list",
-          "incorrect-choice-1": "The original list",
-          "incorrect-choice-2": "The queue",
-          "incorrect-choice-3": "None",
-          "short-answer-solution": "The function should return the reversed list after processing all elements.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 6,
-          "hint-if-incorrect": "Consider what the final output of the function should be.",
-          "explanation-after-correct-answer": "The function returns the reversed list after processing all elements from the queue."
-        }
-      ]
-    },
-    {
-      "title": "Call the function with a sample list",
-      "indent-level": 0,
-      "leading-questions": [
-        {
-          "context": "We need to test the function with a sample input list.",
-          "short-answer-question": "What should be the output list to test the function given the input [1, 2, 3, 4, 5]?",
-          "mcq-question": "What is a suitable sample input list to test the function?",
-          "correct-choice": "[1, 2, 3, 4, 5]",
-          "incorrect-choice-1": "[5, 4, 3, 2, 1]",
-          "incorrect-choice-2": "[1, 3, 5, 7, 9]",
-          "incorrect-choice-3": "[2, 4, 6, 8, 10]",
-          "short-answer-solution": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list.",
-          "selected-question": "short",
-          "code-line-to-be-revealed": 7,
-          "hint-if-incorrect": "Consider a simple, ordered list to test the function.",
-          "explanation-after-correct-answer": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list."
-        }
-      ]
-    }
-  ]
-}
-
 export const tech3WarmupDecomposition = {
   "subgoals": [
     {
@@ -1223,6 +1090,334 @@ export const tech3WarmupDecomposition = {
           "code-line-to-be-revealed": 7,
           "hint-if-incorrect": "Think about how functions are typically tested.",
           "explanation-after-correct-answer": "The function is tested by calling it with the string 'racecar' to check if it correctly identifies it as a palindrome."
+        }
+      ]
+    }
+  ]
+}
+
+// export const tech1WarmupDecomposition = {
+//   "subgoals": [
+//     {
+//       "title": "Define the function and its input parameter",
+//       "indent-level": 0,
+//       "leading-questions": [
+//         {
+//           "context": "We need to define a function that will reverse a list using a queue-like approach.",
+//           "short-answer-question": "What type of data should the function's input parameter be?",
+//           "mcq-question": "What type of data should the function's input parameter be?",
+//           "correct-choice": "A list",
+//           "incorrect-choice-1": "A string",
+//           "incorrect-choice-2": "An integer",
+//           "incorrect-choice-3": "A dictionary",
+//           "short-answer-solution": "The function's input parameter should be a list because we are required to reverse a list using a queue-like approach.",
+//           "selected-question": "short",
+//           "code-line-to-be-revealed": 1,
+//           "hint-if-incorrect": "Think about the data structure that can be reversed.",
+//           "explanation-after-correct-answer": "The function is defined to take a list as its input parameter, which will be reversed using a queue-like approach."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Initialize an empty list to store the result and create a copy as queue",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "We need a place to store the reversed elements of the input list.",
+//           "short-answer-question": "What data structure should we use to store the reversed elements?",
+//           "mcq-question": "What data structure should we use to store the reversed elements?",
+//           "correct-choice": "A list",
+//           "incorrect-choice-1": "A set",
+//           "incorrect-choice-2": "A dictionary",
+//           "incorrect-choice-3": "A tuple",
+//           "short-answer-solution": "We should use a list to store the reversed elements because lists are ordered and allow for easy insertion of elements.",
+//           "selected-question": "short",
+//           "code-line-to-be-revealed": 2,
+//           "hint-if-incorrect": "Consider a data structure that maintains order and allows for easy insertion.",
+//           "explanation-after-correct-answer": "An empty list named 'reversed_list' is initialized to store the elements in reverse order."
+//         },
+//         {
+//           "context": "We need to create a queue-like structure from the input list.",
+//           "short-answer-question": "How can we create a copy of the input list?",
+//           "mcq-question": "How can we create a copy of the input list?",
+//           "correct-choice": "Using slicing (input_list[:])",
+//           "incorrect-choice-1": "Using the copy() method",
+//           "incorrect-choice-2": "Using the deepcopy() function",
+//           "incorrect-choice-3": "Using a for loop",
+//           "short-answer-solution": "We can create a copy of the input list using slicing (input_list[:]), which creates a shallow copy of the list.",
+//           "selected-question": "mcq",
+//           "code-line-to-be-revealed": 3,
+//           "hint-if-incorrect": "Think about a method that creates a shallow copy of a list.",
+//           "explanation-after-correct-answer": "A copy of the input list is created using slicing and assigned to the variable 'queue'."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Loop through the queue until it is empty",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "We need to process each element in the queue until it is empty.",
+//           "short-answer-question": "What kind of loop should we use to process each element in the queue?",
+//           "mcq-question": "What kind of loop should we use to process each element in the queue?",
+//           "correct-choice": "A while loop",
+//           "incorrect-choice-1": "A for loop",
+//           "incorrect-choice-2": "A do-while loop",
+//           "incorrect-choice-3": "A foreach loop",
+//           "short-answer-solution": "We should use a while loop because it allows us to continue processing elements until the queue is empty.",
+//           "selected-question": "mcq",
+//           "code-line-to-be-revealed": 4,
+//           "hint-if-incorrect": "Consider a loop that continues until a condition is no longer true.",
+//           "explanation-after-correct-answer": "A while loop is used to process each element in the queue until it is empty."
+//         },
+//         {
+//           "context": "We need to insert elements from the queue into the reversed list in reverse order.",
+//           "short-answer-question": "How can we insert elements at the beginning of a list?",
+//           "mcq-question": "How can we insert elements at the beginning of a list?",
+//           "correct-choice": "Using the insert() method with index 0",
+//           "incorrect-choice-1": "Using the append() method",
+//           "incorrect-choice-2": "Using the extend() method",
+//           "incorrect-choice-3": "Using the add() method",
+//           "short-answer-solution": "We can insert elements at the beginning of a list using the insert() method with index 0.",
+//           "selected-question": "mcq",
+//           "code-line-to-be-revealed": 5,
+//           "hint-if-incorrect": "Think about a method that allows inserting elements at a specific position in a list.",
+//           "explanation-after-correct-answer": "The insert() method with index 0 is used to insert elements from the queue into the reversed list in reverse order."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Return the reversed list",
+//       "indent-level": 1,
+//       "leading-questions": [
+//         {
+//           "context": "We need to return the final reversed list after processing all elements.",
+//           "short-answer-question": "What should the function return after processing all elements?",
+//           "mcq-question": "What should the function return after processing all elements?",
+//           "correct-choice": "The reversed list",
+//           "incorrect-choice-1": "The original list",
+//           "incorrect-choice-2": "The queue",
+//           "incorrect-choice-3": "None",
+//           "short-answer-solution": "The function should return the reversed list after processing all elements.",
+//           "selected-question": "mcq",
+//           "code-line-to-be-revealed": 6,
+//           "hint-if-incorrect": "Consider what the final output of the function should be.",
+//           "explanation-after-correct-answer": "The function returns the reversed list after processing all elements from the queue."
+//         }
+//       ]
+//     },
+//     {
+//       "title": "Call the function with a sample list",
+//       "indent-level": 0,
+//       "leading-questions": [
+//         {
+//           "context": "We need to test the function with a sample input list.",
+//           "short-answer-question": "What should be the output list to test the function given the input [1, 2, 3, 4, 5]?",
+//           "mcq-question": "What is a suitable sample input list to test the function?",
+//           "correct-choice": "[1, 2, 3, 4, 5]",
+//           "incorrect-choice-1": "[5, 4, 3, 2, 1]",
+//           "incorrect-choice-2": "[1, 3, 5, 7, 9]",
+//           "incorrect-choice-3": "[2, 4, 6, 8, 10]",
+//           "short-answer-solution": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list.",
+//           "selected-question": "short",
+//           "code-line-to-be-revealed": 7,
+//           "hint-if-incorrect": "Consider a simple, ordered list to test the function.",
+//           "explanation-after-correct-answer": "The output list would be [5, 4, 3, 2, 1] to test if the function correctly reverses the input list."
+//         }
+//       ]
+//     }
+//   ]
+// }
+
+export const tech1WarmupDecomposition = {
+  "subgoals": [
+    {
+      "title": "Define the function and initialize the stack",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We need to define a function that checks if parentheses are balanced.",
+          "short-answer-question": "What should be the input type and return type of the function?",
+          "mcq-question": "What should be the input type and return type of the function?",
+          "correct-choice": "Input: str, Return: bool",
+          "incorrect-choice-1": "Input: list, Return: bool",
+          "incorrect-choice-2": "Input: str, Return: int",
+          "incorrect-choice-3": "Input: list, Return: str",
+          "short-answer-solution": "The function should take a string as input and return a boolean indicating whether the parentheses are balanced.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 1,
+          "hint-if-incorrect": "Think about the type of data the function will process and what it should return.",
+          "explanation-after-correct-answer": "The function is defined to take a string and return a boolean, which is appropriate for checking balanced parentheses."
+        },
+        {
+          "context": "The function is defined, now we need to initialize a stack to keep track of parentheses.",
+          "short-answer-question": "Why do we need a stack to check for balanced parentheses?",
+          "mcq-question": "Why do we need a stack to check for balanced parentheses?",
+          "correct-choice": "To keep track of opening parentheses",
+          "incorrect-choice-1": "To keep track of closing parentheses",
+          "incorrect-choice-2": "To store the entire string",
+          "incorrect-choice-3": "To count the number of parentheses",
+          "short-answer-solution": "A stack helps in keeping track of opening parentheses and ensures they are closed in the correct order.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Think about how a stack operates (LIFO) and why it is useful for this problem.",
+          "explanation-after-correct-answer": "A stack is initialized to keep track of opening parentheses, which helps in ensuring they are closed correctly."
+        }
+      ]
+    },
+    {
+      "title": "Iterate through each character in the string",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We have initialized the stack. Now, we need to iterate through each character in the string.",
+          "short-answer-question": "What kind of loop is suitable for iterating through each character in a string?",
+          "mcq-question": "What kind of loop is suitable for iterating through each character in a string?",
+          "correct-choice": "for loop",
+          "incorrect-choice-1": "while loop",
+          "incorrect-choice-2": "do-while loop",
+          "incorrect-choice-3": "foreach loop",
+          "short-answer-solution": "A for loop is suitable for iterating through each character in a string as it allows us to process each character one by one.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 3,
+          "hint-if-incorrect": "Think about the loops available in Python and which one is commonly used for iterating over sequences.",
+          "explanation-after-correct-answer": "A for loop is used to iterate through each character in the string, allowing us to process each character."
+        }
+      ]
+    },
+    {
+      "title": "Check if the character is an opening parenthesis",
+      "indent-level": 2,
+      "leading-questions": [
+        {
+          "context": "We are iterating through each character in the string. Now, we need to check if the character is an opening parenthesis.",
+          "short-answer-question": "What should we do if the character is an opening parenthesis?",
+          "mcq-question": "What should we do if the character is an opening parenthesis?",
+          "correct-choice": "Push it onto the stack",
+          "incorrect-choice-1": "Pop it from the stack",
+          "incorrect-choice-2": "Ignore it",
+          "incorrect-choice-3": "Return False",
+          "short-answer-solution": "If the character is an opening parenthesis, we should push it onto the stack to keep track of it.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 4,
+          "hint-if-incorrect": "Think about how we keep track of opening parentheses using a stack.",
+          "explanation-after-correct-answer": "We check if the character is an opening parenthesis to decide whether to push it onto the stack."
+        },
+        {
+          "context": "We check if the character is an opening parenthesis. If it is, we need to push it onto the stack.",
+          "short-answer-question": "How do we push an element onto a stack in Python?",
+          "mcq-question": "How do we push an element onto a stack in Python?",
+          "correct-choice": "stack.append(char)",
+          "incorrect-choice-1": "stack.push(char)",
+          "incorrect-choice-2": "stack.insert(char)",
+          "incorrect-choice-3": "stack.add(char)",
+          "short-answer-solution": "In Python, we use the append() method to push an element onto a stack.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 5,
+          "hint-if-incorrect": "Think about the list methods available in Python for adding elements.",
+          "explanation-after-correct-answer": "We use the append() method to push the opening parenthesis onto the stack."
+        }
+      ]
+    },
+    {
+      "title": "Check if the character is a closing parenthesis",
+      "indent-level": 1,
+      "leading-questions": [
+        {
+          "context": "We have handled the opening parenthesis. Now, we need to check if the character is a closing parenthesis.",
+          "short-answer-question": "What should we do if the character is a closing parenthesis?",
+          "mcq-question": "What should we do if the character is a closing parenthesis?",
+          "correct-choice": "Check if the stack is empty or top is not '('",
+          "incorrect-choice-1": "Push it onto the stack",
+          "incorrect-choice-2": "Ignore it",
+          "incorrect-choice-3": "Return True",
+          "short-answer-solution": "If the character is a closing parenthesis, we need to check if the stack is empty or the top of the stack is not an opening parenthesis.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Think about how we validate the closing parenthesis with the stack.",
+          "explanation-after-correct-answer": "We check if the character is a closing parenthesis to decide the next steps for validation."
+        },
+        {
+          "context": "We check if the character is a closing parenthesis. If it is, we need to validate it with the stack.",
+          "short-answer-question": "What should we do if the stack is empty or the top of the stack is not an opening parenthesis?",
+          "mcq-question": "What should we do if the stack is empty or the top of the stack is not an opening parenthesis?",
+          "correct-choice": "Return False",
+          "incorrect-choice-1": "Push it onto the stack",
+          "incorrect-choice-2": "Ignore it",
+          "incorrect-choice-3": "Return True",
+          "short-answer-solution": "If the stack is empty or the top of the stack is not an opening parenthesis, we should return False as the parentheses are not balanced.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Think about what it means if the stack is empty or the top is not an opening parenthesis.",
+          "explanation-after-correct-answer": "We return False if the stack is empty or the top of the stack is not an opening parenthesis, indicating unbalanced parentheses."
+        },
+        {
+          "context": "We have validated the closing parenthesis. If the stack is not empty and the top is an opening parenthesis, we need to pop the stack.",
+          "short-answer-question": "What should we do after validating a closing parenthesis with the stack?",
+          "mcq-question": "What should we do after validating a closing parenthesis with the stack?",
+          "correct-choice": "Pop the stack",
+          "incorrect-choice-1": "Push it onto the stack",
+          "incorrect-choice-2": "Ignore it",
+          "incorrect-choice-3": "Return True",
+          "short-answer-solution": "After validating a closing parenthesis, we should pop the stack to remove the corresponding opening parenthesis.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 8,
+          "hint-if-incorrect": "Think about how we remove the corresponding opening parenthesis from the stack.",
+          "explanation-after-correct-answer": "We pop the stack to remove the corresponding opening parenthesis after validating a closing parenthesis."
+        },
+        {
+          "context": "We have validated the closing parenthesis. If the stack is not empty and the top is an opening parenthesis, we need to pop the stack.",
+          "short-answer-question": "What should we do after validating a closing parenthesis with the stack?",
+          "mcq-question": "What should we do after validating a closing parenthesis with the stack?",
+          "correct-choice": "Pop the stack",
+          "incorrect-choice-1": "Push it onto the stack",
+          "incorrect-choice-2": "Ignore it",
+          "incorrect-choice-3": "Return True",
+          "short-answer-solution": "After validating a closing parenthesis, we should pop the stack to remove the corresponding opening parenthesis.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 9,
+          "hint-if-incorrect": "Think about how we remove the corresponding opening parenthesis from the stack.",
+          "explanation-after-correct-answer": "We pop the stack to remove the corresponding opening parenthesis after validating a closing parenthesis."
+        }
+      ]
+    },
+    {
+      "title": "Check if the stack is empty at the end",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We have processed all characters in the string. Now, we need to check if the stack is empty.",
+          "short-answer-question": "Why is it important to check if the stack is empty at the end?",
+          "mcq-question": "Why is it important to check if the stack is empty at the end?",
+          "correct-choice": "To ensure all parentheses are closed",
+          "incorrect-choice-1": "To count the number of parentheses",
+          "incorrect-choice-2": "To find unmatched closing parentheses",
+          "incorrect-choice-3": "To validate the string length",
+          "short-answer-solution": "Checking if the stack is empty ensures that all opening parentheses have been matched with closing parentheses, indicating balanced parentheses.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 10,
+          "hint-if-incorrect": "Think about what an empty stack signifies in the context of balanced parentheses.",
+          "explanation-after-correct-answer": "We check if the stack is empty to ensure all opening parentheses have been matched with closing parentheses, indicating balanced parentheses."
+        }
+      ]
+    },
+    {
+      "title": "Test the function with an example",
+      "indent-level": 0,
+      "leading-questions": [
+        {
+          "context": "We have implemented the function. Now, we need to test it with an example.",
+          "short-answer-question": "What is the output for simple input \"()()\" to test the function?",
+          "mcq-question": "What is a simple example to test the function?",
+          "correct-choice": "\"()()\"",
+          "incorrect-choice-1": "\"((\"",
+          "incorrect-choice-2": "\")(\"",
+          "incorrect-choice-3": "\"(()\"",
+          "short-answer-solution": "The output for the input \"()()\" should be True to indicate that the parentheses are balanced.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 11,
+          "hint-if-incorrect": "Think about a string with balanced parentheses.",
+          "explanation-after-correct-answer": "The output for the input \"()()\" should be True to indicate that the parentheses are balanced."
         }
       ]
     }
