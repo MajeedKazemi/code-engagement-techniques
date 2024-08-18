@@ -355,7 +355,7 @@ const warmupQuestion2: questionObject[] = [
             "step": 3,
             "question": "stack",
             "begin-line": 3,
-            "end-line": 3,
+            "end-line": 4,
             "explanation": "How does the initialization and subsequent use of 'stack' in lines 3 affect the logic of the while loop?",
             "aiGeneratedSolution": "The 'stack' is initialized as a copy of 'input_list'. It is then used in the while loop to pop elements until empty, reversing the list."
         },
@@ -387,10 +387,10 @@ const warmupQuestion2: questionObject[] = [
 
 const warmupQuestion1: questionObject[] = [
     {
-      "step": 4,
+      "step": 3,
       "question": "queue",
       "begin-line": 3,
-      "end-line": 3,
+      "end-line": 4,
       "explanation": "How does the initialization and the while loop condition affect the state of the 'queue' variable?",
       "aiGeneratedSolution": "The 'queue' is initialized as a copy of 'input_list'. The while loop continues until 'queue' is empty, progressively removing elements."
     },
@@ -422,36 +422,28 @@ const warmupQuestion1: questionObject[] = [
 
 const warmupQuestion3: questionObject[] = [
     {
-      "step": 4,
-      "question": "dq",
-      "begin-line": 3,
-      "end-line": 3,
-      "explanation": "How does the length of 'dq' change during each iteration of the while loop, and why is this significant for checking if the string is a palindrome?",
-      "aiGeneratedSolution": "The length of 'dq' decreases by 2 each iteration, removing one character from the front and one from the back, ensuring symmetry is checked."
+        "step": 4,
+        "question": "dq",
+        "begin-line": 4,
+        "end-line": 4,
+        "explanation": "How does the condition dq.pop(0) != dq.pop() determine the outcome of the palindrome check?",
+        "aiGeneratedSolution": "The condition dq.pop(0) != dq.pop() checks if the first and last characters are different. If they are, the function returns False, indicating the string is not a palindrome."
     },
     {
-      "step": 6,
-      "question": "dq",
-      "begin-line": 4,
-      "end-line": 5,
-      "explanation": "What happens to 'dq' when the characters at the front and back do not match, and how does this affect the function's return value?",
-      "aiGeneratedSolution": "If characters don't match, 'dq' is immediately returned as False, indicating the string is not a palindrome."
+        "step": 6,
+        "question": "dq",
+        "begin-line": 4,
+        "end-line": 4,
+        "explanation": "What is the significance of comparing dq.pop(0) and dq.pop() in the palindrome check?",
+        "aiGeneratedSolution": "Comparing dq.pop(0) and dq.pop() checks if the first and last characters of the string are the same, which is crucial for determining if the string is a palindrome."
     },
     {
-      "step": 8,
-      "question": "dq",
-      "begin-line": 3,
-      "end-line": 3,
-      "explanation": "Why is it important to check the length of 'dq' in the while loop condition, and how does this contribute to the function's logic?",
-      "aiGeneratedSolution": "Checking 'dq's length ensures the loop runs only while there are characters to compare, crucial for validating the palindrome property."
-    },
-    {
-      "step": 10,
-      "question": "dq",
-      "begin-line": 4,
-      "end-line": 5,
-      "explanation": "How does the comparison of characters at the front and back of 'dq' ensure the string is a palindrome?",
-      "aiGeneratedSolution": "Comparing front and back characters ensures symmetry. If all pairs match, the string is a palindrome; otherwise, it is not."
+        "step": 8,
+        "question": "dq",
+        "begin-line": 4,
+        "end-line": 4,
+        "explanation": "How does the while loop and the pop operations affect the dq list during the palindrome check?",
+        "aiGeneratedSolution": "The while loop and pop operations progressively remove and compare characters from both ends of dq, ensuring that all characters match in a palindrome."
     }
   ]
 ;
@@ -493,36 +485,36 @@ const warmupQuestion3: questionObject[] = [
 
 const taskQuestion1: questionObject[] = [
     {
-        "step": 4,
-        "question": "q",
-        "begin-line": 2,
-        "end-line": 3,
-        "explanation": "How does the initialization of the queue 'q' and the result list set up the initial state for generating parentheses?",
-        "aiGeneratedSolution": "The queue 'q' starts with an empty string and counters for open/close parentheses and depth, setting up the initial state for BFS."
-    },
-    {
         "step": 7,
-        "question": "s",
-        "begin-line": 5,
-        "end-line": 6,
-        "explanation": "What role does the variable 's' play when checking the length of the current string in the queue?",
-        "aiGeneratedSolution": "The variable 's' represents the current string of parentheses. If its length equals 2*n, it is added to the result list."
-    },
-    {
-        "step": 10,
-        "question": "new_max_d",
-        "begin-line": 11,
+        "question": "q",
+        "begin-line": 10,
         "end-line": 12,
-        "explanation": "How is 'new_max_d' calculated and why is it important for the logic of generating valid parentheses?",
-        "aiGeneratedSolution": "The 'new_max_d' is calculated as the maximum of 'max_d' and 'cur_d + 1', ensuring the depth constraint is respected when adding an open parenthesis."
+        "explanation": "How does the code ensure that new states are added to the queue 'q' when an opening parenthesis is added?",
+        "aiGeneratedSolution": "The code checks if 'opens' is less than 'n' and appends a new state with an additional '('. This ensures all possible valid combinations are explored."
     },
     {
-        "step": 19,
+        "step": 17,
         "question": "q",
         "begin-line": 13,
         "end-line": 14,
-        "explanation": "How does the queue 'q' change when a close parenthesis is added, and why is the depth constraint checked?",
-        "aiGeneratedSolution": "When a close parenthesis is added, 'q' is updated with the new string and counters. The depth constraint ensures the maximum depth does not exceed 'm'."
+        "explanation": "How does the code ensure that new states are added to the queue 'q' when a closing parenthesis is added?",
+        "aiGeneratedSolution": "The code checks if 'closes' is less than 'opens' and 'max_d' is within 'm', then appends a new state with an additional ')'."
+    },
+    {
+        "step": 28,
+        "question": "new_max_d",
+        "begin-line": 10,
+        "end-line": 12,
+        "explanation": "How is 'new_max_d' calculated and what role does it play in the logic?",
+        "aiGeneratedSolution": "'new_max_d' is calculated as the maximum of 'max_d' and 'cur_d + 1'. It tracks the maximum depth of nested parentheses to ensure it doesn't exceed 'm'."
+    },
+    {
+        "step": 45,
+        "question": "result",
+        "begin-line": 5,
+        "end-line": 8,
+        "explanation": "How does the code determine when to add a string to the 'result' list?",
+        "aiGeneratedSolution": "The code adds a string to 'result' when its length equals '2 * n', indicating a complete valid parentheses sequence."
     }
 ]
 ;
@@ -537,7 +529,7 @@ const taskQuestion2: questionObject[] = [
             "aiGeneratedSolution": "The code iterates through each character in the input string, updating the 'char' variable with the current character."
         },
         {
-            "step": 9,
+            "step": 7,
             "question": "stack",
             "begin-line": 7,
             "end-line": 8,
@@ -545,15 +537,15 @@ const taskQuestion2: questionObject[] = [
             "aiGeneratedSolution": "When encountering an opening bracket, the index of the bracket is pushed onto the stack, helping to track the positions for matching."
         },
         {
-            "step": 13,
-            "question": "stack",
-            "begin-line": 7,
-            "end-line": 8,
-            "explanation": "How does the stack change when encountering a closing bracket?",
-            "aiGeneratedSolution": "When encountering a closing bracket, if it matches the last opening bracket, the index of the last opening bracket is popped from the stack."
+            "step": 16,
+            "question": "is_match",
+            "begin-line": 10,
+            "end-line": 12,
+            "explanation": "How is the 'is_match' variable used to determine if a valid bracket sequence is found?",
+            "aiGeneratedSolution": "The 'is_match' variable is set to True when a closing bracket is found and the stack is not empty, indicating a valid bracket sequence."
         },
         {
-            "step": 22,
+            "step": 19,
             "question": "max_length",
             "begin-line": 13,
             "end-line": 15,
@@ -634,36 +626,36 @@ const taskQuestion2: questionObject[] = [
 
 const taskQuestion3: questionObject[] = [
     {
-        "step": 9,
-        "question": "dq",
-        "begin-line": 9,
-        "end-line": 9,
-        "explanation": "How does appending the current index to dq affect the tracking of the maximum values in the sliding window?",
-        "aiGeneratedSolution": "Appending the current index ensures dq contains indices of elements in descending order, maintaining the maximum value at the front."
-    },
-    {
-        "step": 16,
+        "step": 11,
         "question": "dq",
         "begin-line": 7,
-        "end-line": 8,
-        "explanation": "What is the purpose of removing elements from dq while the current element is greater than the elements at dq's indices?",
-        "aiGeneratedSolution": "Removing elements ensures dq only contains indices of elements that could be the maximum in the current window, maintaining efficiency."
+        "end-line": 9,
+        "explanation": "How does the code ensure that only the indices of elements larger than the current element are kept in the deque?",
+        "aiGeneratedSolution": "The while loop at lines 7-9 removes indices from the deque if the corresponding elements in nums are smaller than the current element."
     },
     {
-        "step": 23,
+        "step": 20,
         "question": "result",
         "begin-line": 10,
         "end-line": 11,
-        "explanation": "Why is the maximum value of the current window appended to the result list when the index is greater than or equal to k-1?",
-        "aiGeneratedSolution": "Appending the maximum value ensures the result list contains the maximum values for each sliding window of size k."
+        "explanation": "What condition must be met for an element to be added to the result list, and how is this element determined?",
+        "aiGeneratedSolution": "The condition is i >= k - 1. The element added to the result list is nums[dq[0]], the maximum of the current window."
     },
     {
-        "step": 40,
+        "step": 29,
+        "question": 'dp',
+        "begin-line": 5,
+        "end-line": 6,
+        "explanation": "What does the code do to maintain the deque's validity when the window slides past the first element?",
+        "aiGeneratedSolution": "The if statement at lines 5-6 removes the index at the front of the deque if it is out of the current window's range."
+    },
+    {
+        "step": 41,
         "question": "result",
-        "begin-line": 10,
+        "begin-line": 7,
         "end-line": 11,
-        "explanation": "How does the condition 'if i >= k - 1' ensure the correct maximum values are appended to the result list?",
-        "aiGeneratedSolution": "The condition ensures that only when the window is fully formed (i.e., has at least k elements), the maximum value is appended to the result."
+        "explanation": "How do the operations within the loop contribute to building the result list?",
+        "aiGeneratedSolution": "The loop maintains a deque of indices of the maximum elements for the current window, and appends the maximum to the result list when the window is valid."
     }
 ];
 
