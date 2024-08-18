@@ -4,6 +4,7 @@ import { AuthContext } from "../../context";
 import {
     apiGetBaselineCodexSimulation,
     apiGetBaselineExplainationCodexSimulation,
+    apiGetBaselineLineByLineExplanationSimulation,
     apiLogEvents,
     logError,
 } from "../../api/api";
@@ -14,6 +15,13 @@ import IconsDoc from "../docs/icons-doc";
 import { HighlightedPartWithoutTab } from "../docs/highlight-code";
 
 export let baselineCancelClicked = false;
+
+interface LineWithLeadSpaces {
+    original: string;
+    trimmed: string;
+    leadSpaces: number;
+    currentTabs: number;
+}
 
 interface BaselineGenerateCodeProps {
     prompt: string;
@@ -47,7 +55,10 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     const [counter, setCounter] = useState<number>(0);
     const [timeUsed, setTimeUsed] = useState<number>(0);
     const [runCodeNoError, setRunCodeNoError] = useState<boolean>(false);
-    
+    const [lineByLineexplaination, setLineByLineExplanation] = useState<string[]>([]);
+    const [colorizedText, setColorizedText] = useState<string[]>([]);
+    const [hoveringHovered, setHoveringHovered] = useState<boolean[]>(new Array(code.length).fill(false));
+
     useEffect(() => {
         // Create an interval that runs every second
         const interval = setInterval(() => {
@@ -61,6 +72,9 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
         };
     }, []); // Empty array dependency makes this run once after initial render
 
+    function deepCopy(arr: any[]): any[] {
+        return arr.map((item) => (Array.isArray(item) ? deepCopy(item) : item));
+    }
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -402,9 +416,66 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     };
 
     useEffect(() => {
+        const lines = generatedCode.split("\n")
+        .filter((line) => line.trim() !== "")
+        .map((line) => ({
+            original: line,
+            trimmed: line.replace(/^\s+/, ""), // Strip leading whitespaces
+            leadSpaces: line.search(/\S|$/), // Counts leading whitespaces
+            currentTabs: Math.floor(line.search(/\S|$/) / 4),
+        }));
+
+        console.log(lines);
+
+        async function getColorizedText(index: number) {
+            const colorized = await monaco.editor.colorize(
+                lines[index].original.replace(/\t/g, "    "),
+                "python",
+                {}
+            );
+            return colorized;
+        }
+
+        async function fetchAllColorizedText() {
+            const promises = lines.map((_, index) => getColorizedText(index));
+            const colorizedTextArray = await Promise.all(promises);
+            return colorizedTextArray;
+        }
+
+        if (lines && lines.length > 0) {
+            console.log(lines);
+            fetchAllColorizedText().then((colorizedTextArray) => {
+                setColorizedText(colorizedTextArray);
+            });
+        }
+
+        apiGetBaselineLineByLineExplanationSimulation(
+            context?.token,
+            taskID,
+        )
+            .then(async (response) => {
+                if (response.ok && editor) {
+                    const data = await response.json();
+
+                    setLineByLineExplanation(
+                        data.explanation
+                    );
+                }
+            })
+            .catch((error) => {
+                editor?.updateOptions({ readOnly: false });
+                logError(error.toString());
+            });
+
+
+        
+    }, [generatedCode]);
+
+    useEffect(() => {
         if (code.length > 0 && exp.length > 0) {
             setGeneratedCode(code);
             setGeneratedExplanation(exp);
+            
         } else {
             generateCode();
         }
@@ -493,14 +564,60 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                     <>
                         {/* //   <div ref={baselineRef} className="read-only-editor"></div> */}
                         <div className="baseline-read-only-editor">
-                            {generatedCode &&
-                                generatedCode
-                                    .split("\n")
-                                    .map((line) => (
-                                        <HighlightedPartWithoutTab
-                                            part={line}
-                                        />
+                            {generatedCode &&  
+                                generatedCode.split("\n").map((line, index) => (
+                                    <div
+                                        id={`line-${index}`}
+                                        key={index}
+                                        className="trace-predict-tracker"
+                                    >
+                                        <>
+                                            <pre
+                                                onMouseEnter={() => {
+                                                    //deepCopy of hoveringHovered
+                                                    let temp = deepCopy(hoveringHovered);
+                                                    //change all to false
+                                                    temp.fill(false);
+                                                    //change the current index to true
+                                                    temp[index] = true;
+                                                    setHoveringHovered(temp);
+                                                }}
+                                                onMouseLeave={() => {
+                                                    //deepCopy of hoveringHovered
+                                                    let temp = deepCopy(hoveringHovered);
+                                                    //change all to false
+                                                    temp.fill(false);
+                                                    setHoveringHovered(temp);
+                                                }}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: colorizedText[index],
+                                                }}
+                                            ></pre>
+                                            {hoveringHovered[index] && lineByLineexplaination && (
+                                            <div className="hoverable-code-container-with-hint">
+                                                <div
+                                                    className="hoverable-code-line-explanation"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: highlightPsudo(lineByLineexplaination[index]),
+                                                    }}
+                                                ></div>
+                                            </div>
+                                            )}
+                                        </>
+                                    </div>
                                     ))}
+                                    <div
+                                        id={`line-${code.split("\n").length+1}`}
+                                        className="trace-predict-tracker"
+                                    ></div>
+                                    <div
+                                        id={`line-${code.split("\n").length+2}`}
+                                        className="trace-predict-tracker"
+                                    ></div>
+                                    <div
+                                        id={`line-${code.split("\n").length+3}`}
+                                        className="trace-predict-tracker"
+                                    ></div>
                         </div>
                         <div className="read-only-explaination">
                             <b>Code Explanation</b>

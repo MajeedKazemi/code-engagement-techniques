@@ -49,6 +49,14 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
     const [showTimeout, setShowTimeout] = useState<boolean>(false);
 
     useEffect(() => {
+        if (taskID === "1" || taskID === "3" || taskID === "5") {
+          setTimeoutValue(5);
+        } else if (taskID === "2" || taskID === "4" || taskID === "6") {
+          setTimeoutValue(13);
+        }
+      }, [taskID]);
+
+    useEffect(() => {
         let intervalId: number | null = null;
 
         if (isTimerStarted) {
