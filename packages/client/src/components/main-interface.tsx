@@ -425,7 +425,7 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
                     </h3>
                 </div>
                 {/* Conditionally render the generated code component */}
-                {runCodeNoError && <p style={{ display: 'none' }}>runCodeNoError</p>}
+                {runCodeNoError && <p id="run-code-no-error" style={{ display: 'none' }}></p>}
                 <div
                     className={`generated-code-component ${
                         generatedCodeComponentVisible ? "" : "hidden"

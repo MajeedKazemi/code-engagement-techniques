@@ -352,11 +352,11 @@ const taskDecomp6 = {
 
 const warmupQuestion2: questionObject[] = [
         {
-            "step": 5,
+            "step": 3,
             "question": "stack",
             "begin-line": 3,
-            "end-line": 4,
-            "explanation": "How does the initialization and subsequent use of 'stack' in lines 3-4 affect the logic of the while loop?",
+            "end-line": 3,
+            "explanation": "How does the initialization and subsequent use of 'stack' in lines 3 affect the logic of the while loop?",
             "aiGeneratedSolution": "The 'stack' is initialized as a copy of 'input_list'. It is then used in the while loop to pop elements until empty, reversing the list."
         },
         {
@@ -376,7 +376,7 @@ const warmupQuestion2: questionObject[] = [
             "aiGeneratedSolution": "During each iteration, 'stack' has its last element removed (popped), reducing its size until it becomes empty, which ends the loop."
         },
         {
-            "step": 15,
+            "step": 13,
             "question": "reversed_list",
             "begin-line": 4,
             "end-line": 5,
@@ -387,10 +387,10 @@ const warmupQuestion2: questionObject[] = [
 
 const warmupQuestion1: questionObject[] = [
     {
-      "step": 5,
+      "step": 4,
       "question": "queue",
       "begin-line": 3,
-      "end-line": 4,
+      "end-line": 3,
       "explanation": "How does the initialization and the while loop condition affect the state of the 'queue' variable?",
       "aiGeneratedSolution": "The 'queue' is initialized as a copy of 'input_list'. The while loop continues until 'queue' is empty, progressively removing elements."
     },
@@ -411,7 +411,7 @@ const warmupQuestion1: questionObject[] = [
       "aiGeneratedSolution": "In each iteration, the first element of 'queue' is removed using 'pop(0)', reducing the size of 'queue' until it becomes empty."
     },
     {
-      "step": 15,
+      "step": 13,
       "question": "reversed_list",
       "begin-line": 4,
       "end-line": 5,
@@ -529,6 +529,14 @@ const taskQuestion1: questionObject[] = [
 
 const taskQuestion2: questionObject[] = [
         {
+            "step": 5,
+            "question": "char",
+            "begin-line": 5,
+            "end-line": 6,
+            "explanation": "How does the code iterate through each character in the input string?",
+            "aiGeneratedSolution": "The code iterates through each character in the input string, updating the 'char' variable with the current character."
+        },
+        {
             "step": 9,
             "question": "stack",
             "begin-line": 7,
@@ -552,14 +560,6 @@ const taskQuestion2: questionObject[] = [
             "explanation": "How is max_length updated when a valid bracket sequence is found?",
             "aiGeneratedSolution": "max_length is updated to the maximum of its current value and the length of the valid bracket sequence found, calculated as the difference between the current index and the new top of the stack."
         },
-        {
-            "step": 24,
-            "question": "max_length",
-            "begin-line": 18,
-            "end-line": 19,
-            "explanation": "What happens to max_length when an unmatched closing bracket is encountered?",
-            "aiGeneratedSolution": "When an unmatched closing bracket is encountered, max_length remains unchanged, and the index of the unmatched closing bracket is set as the new base in the stack."
-        }
     ]
 
 // const taskQuestion4: questionObject[] = [

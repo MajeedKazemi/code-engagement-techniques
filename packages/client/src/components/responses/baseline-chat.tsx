@@ -63,27 +63,24 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
 
 
     useEffect(() => {
-        // Function to check the <p> element
-        const checkParagraphContent = () => {
-          const pElement = document.querySelector('p');
-          if (pElement && pElement.textContent!.includes('runCodeNoError')) {
-            setRunCodeNoError(true);
-          }
-        };
-   
-        // Call the function initially
-        checkParagraphContent();
-   
-        // Optionally, you can add a mutation observer to watch for changes in the DOM
-        // if the content might change dynamically
-        const observer = new MutationObserver(checkParagraphContent);
-        const config = { childList: true, subtree: true };
-        observer.observe(document.body, config);
-   
-        // Clean up the observer
-        return () => {
-          observer.disconnect();
-        };
+        const interval = setInterval(() => {
+            if (document.getElementById("run-code-no-error")) {
+                setRunCodeNoError(true);
+                apiLogEvents(
+                    context?.token,
+                    taskID,
+                    "User clicked run code first time successfully",
+                    Date.now(),
+                  )
+                    .then(() => {})
+                    .catch((error) => {
+                        logError("sendLog: "
+                        + error.toString());
+                });
+                clearInterval(interval);
+            }
+        }, 1000);
+        return () => clearInterval(interval);
       }, []);
 
     useEffect(() => {

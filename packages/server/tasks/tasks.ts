@@ -245,7 +245,7 @@ export const CodingTasks = [
 
   new AuthoringTask(
     "3",
-    "Write a function reverse_list_with_stack(input_list: list) -> list that uses a Queue to reverse the provided list and return it.",
+    "Write a function reverse_list_with_stack(input_list: list) -> list that uses a Stack to reverse the provided list and return it.",
     tech2WarmupCode,
     tech2WarmupExplanation,
     tech2WarmupDecomposition,
