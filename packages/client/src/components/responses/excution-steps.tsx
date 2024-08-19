@@ -888,7 +888,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     const getShortExplanationFeedback = (index: number) => {
         let attemptNumber = attempted.findIndex((attempt) => !attempt);
-        setTotalAttempts(totalAttempts + 1);
+        setTotalAttempts(prevTotalAttempts => prevTotalAttempts + 1);
 
         const question = questions[index];
         apiLogEvents(
@@ -966,7 +966,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             console.log(data.response);
 
                             if(data.response.correct == "yes"){
-                                setTotalCorrect(totalCorrect + 1);
+                                setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
                                 setButtonDisabled(false);
                                 setExplanationQuestionCorrect(
                                     (prev) => {
@@ -989,7 +989,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 );
                                 setAttempted([false, false, false, false]);
                             }else {
-                                setTotalIncorrect(totalIncorrect + 1);
+                                setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
                                 setButtonDisabled(false);
                                 setExplanationFeedbackReady(
                                     (prev) => {
@@ -1380,7 +1380,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                 // - prev_provided_feedback: {string} // if this is a retry and they have tried before
                                                                 // - new_student_answer: {string}
                                                                 // - attempt_number: {number}
-                                                                setTotalAttempts(totalAttempts + 1);
+                                                                setTotalAttempts(prevTotalAttempts => prevTotalAttempts + 1);
                                                                 let attemptNumber =
                                                                     currentWrongAnswers![
                                                                         index
@@ -1459,7 +1459,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     let temp = deepCopy(feedbackReady);
                                                                     temp[attemptNumber-1] = true;
                                                                     setFeedbackReady(temp);    
-                                                                    setTotalCorrect(totalCorrect + 1);
+                                                                    setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
                                                                     
                                                                     
                                                                 } else if (
@@ -1476,7 +1476,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                     setFeedbackReady(tempNum);
                                                                     getCurrentFeedback();
 
-                                                                    setTotalIncorrect(totalIncorrect + 1);
+                                                                    setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
 
                                                                     let temp =
                                                                         deepCopy(
@@ -1543,7 +1543,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         let temp = deepCopy(feedbackReady);
                                                                         temp[attemptNumber-1] = true;
                                                                         setFeedbackReady(temp);  
-                                                                        setTotalIncorrect(totalIncorrect + 1);                     
+                                                                        setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)                     
                                                                     }
                                                                 }
                                                             }}

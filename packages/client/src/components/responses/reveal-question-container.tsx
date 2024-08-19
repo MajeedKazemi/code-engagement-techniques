@@ -224,7 +224,7 @@ function RevealQuestionComponent({
     const handleSelect = (isCorrect: boolean, index: number, text: string) => {
         if (isWaitingForNextAttempt) return;
 
-        setTotalAttempts(totalAttempts + 1);
+        setTotalAttempts(prevTotalAttempts => prevTotalAttempts + 1);
         // Lead and Reveal:
         // - high priority:
         // - answer question event:
@@ -270,7 +270,7 @@ function RevealQuestionComponent({
         }
 
         if (isCorrect) {
-            setTotalCorrect(totalCorrect + 1);
+            setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
             const newRevealAnswer = revealAnswer.map((reveal, i) =>
                 i === index ? true : reveal
             );
@@ -278,7 +278,7 @@ function RevealQuestionComponent({
             setRevealAnswer(newRevealAnswer);
             // console.log("New Reveal Answer: ", newRevealAnswer);
         } else {
-            setTotalIncorrect(totalIncorrect + 1);
+            setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
             const newQuestionAnsweredTimes = questionAnsweredTimes.map(
                 (question, i) =>
                     i === index
@@ -328,7 +328,7 @@ function RevealQuestionComponent({
         setFeedbackReady(
             feedbackReady.map((ready, i) => (i === index ? false : ready))
         );
-        setTotalAttempts(totalAttempts + 1);
+        setTotalAttempts(prevTotalAttempts => prevTotalAttempts + 1);
         //if LLM check is at least 4/5.
         // console.log(userResponse[index], questions[index].answer);
         try {
@@ -380,7 +380,7 @@ function RevealQuestionComponent({
                             }
                         )
                         if (data.response.correct == "yes") {
-                            setTotalCorrect(totalCorrect + 1);
+                            setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
                             setButtonDisabled(false);
                             const newRevealAnswer = revealAnswer.map(
                                 (reveal, i) => (i === index ? true : reveal)
@@ -399,7 +399,7 @@ function RevealQuestionComponent({
                             setQuestionAnsweredTimes(newQuestionAnsweredTimes);
                             setRevealAnswer(newRevealAnswer);
                         } else {
-                            setTotalIncorrect(totalIncorrect + 1);
+                            setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
                             setButtonDisabled(false);
                             console.log("Feedback: ", data.response.feedback);
                             console.log(
