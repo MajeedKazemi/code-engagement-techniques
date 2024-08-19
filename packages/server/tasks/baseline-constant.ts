@@ -1,7 +1,7 @@
 export const task1Code =
 `def generate_parentheses(n: int, d: int) -> list[str]:
     result = []
-    q = [[“”, 0, 0, 0, 0]]
+    q = [['', 0, 0, 0, 0]]
     while q:
         s, opens, closes, max_d, cur_d = q.pop(0)
         if opens == n and closes == n:
@@ -10,9 +10,9 @@ export const task1Code =
             if opens < n:
                 new_max_d = max(max_d, cur_d + 1)
                 if new_max_d <= d:
-                    q.append([s + “(”, opens + 1, closes, new_max_d, cur_d + 1])
+                    q.append([s + '(', opens + 1, closes, new_max_d, cur_d + 1])
             if closes < opens and max_d <= d:
-                q.append([s + “)”, opens, closes + 1, max_d, cur_d - 1])
+                q.append([s + ')', opens, closes + 1, max_d, cur_d - 1])
     return result
 generate_parentheses(2, 2) # Output: ['(())', '()()']`
 
@@ -51,7 +51,7 @@ The function uses a breadth-first search (BFS) approach to explore all possible 
    - If the number of closed parentheses is less than the number of open parentheses, a new state with an additional closed parenthesis is enqueued, provided the maximum depth is within the limit.
 4. The function returns the list of valid combinations after processing all possible states.
 
-The example use case \`generate_parentheses(2, 2)\` demonstrates the function's ability to generate valid combinations of 2 pairs of parentheses with a maximum depth of 2, resulting in the output \`['(())', '()()']\`.`
+The example use case \`generate_parentheses(2, 2)\` demonstrates the function's ability to generate valid combinations of 2 pairs of parentheses with a maximum depth of 2, resulting in the output \"['(())', '()()']\".`
 
 export const task2Code =
 `def longest_valid_brackets(s: str) -> int:
@@ -72,7 +72,7 @@ export const task2Code =
             else:
                 stack[-1] = i
     return max_length
-print(longest_valid_brackets("(()"))  # Output: 2`
+print(longest_valid_brackets('(()'))  # Output: 2`
 
 
 export const task2Explanation =

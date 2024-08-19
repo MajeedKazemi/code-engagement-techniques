@@ -1435,25 +1435,12 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                             );
                                                                         }
                                                                     );
-                                                                if (
-                                                                    (solution &&
-                                                                        typeof solution ==
-                                                                            "string" &&
-                                                                        inputValue.replace(
-                                                                            /\s+/g,
-                                                                            ""
-                                                                        ) ==
-                                                                            solution.replace(
-                                                                                /\s+/g,
-                                                                                ""
-                                                                            )) ||
-                                                                    Number(
-                                                                        inputValue
-                                                                    ) ===
-                                                                        Number(
-                                                                            solution
-                                                                        )
-                                                                ) {
+                                                                    if (
+                                                                        (solution &&
+                                                                            typeof solution === "string" &&
+                                                                            inputValue.replace(/\s+/g, "").replace(/['"]/g, '"') === solution.replace(/\s+/g, "").replace(/['"]/g, '"')) ||
+                                                                        Number(inputValue) === Number(solution)
+                                                                    ) {
                                                                     setShowSolution!(
                                                                         (
                                                                             prev

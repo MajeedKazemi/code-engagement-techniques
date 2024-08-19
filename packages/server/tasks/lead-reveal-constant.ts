@@ -1034,7 +1034,7 @@ export const tech3WarmupDecomposition = {
           "incorrect-choice-2": "Return the original string",
           "incorrect-choice-3": "Return the reversed string",
           "short-answer-solution": "If all characters match, the function should return True, indicating the string is a palindrome.",
-          "selected-question": "mcq",
+          "selected-question": "short",
           "code-line-to-be-revealed": 5,
           "hint-if-incorrect": "Consider the definition of a palindrome.",
           "explanation-after-correct-answer": "If all characters match, the function returns True, indicating the string is a palindrome."
@@ -1074,7 +1074,7 @@ export const tech3WarmupDecomposition = {
           "incorrect-choice-2": "Return the function",
           "incorrect-choice-3": "Convert the string to a list",
           "short-answer-solution": "We can test the function by calling it with a string argument, such as 'racecar', to see if it correctly identifies it as a palindrome.",
-          "selected-question": "mcq",
+          "selected-question": "short",
           "code-line-to-be-revealed": 7,
           "hint-if-incorrect": "Think about how functions are typically tested.",
           "explanation-after-correct-answer": "The function is tested by calling it with the string 'racecar' to check if it correctly identifies it as a palindrome."
