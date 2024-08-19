@@ -1,48 +1,57 @@
 export const task1Code =
-`def generate_parentheses(n: int, m: int) -> list[str]:
-    q = [("", 0, 0, 0, 0)]
+`def generate_parentheses(n: int, d: int) -> list[str]:
     result = []
+    q = [[“”, 0, 0, 0, 0]]
     while q:
         s, opens, closes, max_d, cur_d = q.pop(0)
-        if len(s) == 2 * n:
+        if opens == n and closes == n:
             result.append(s)
-            continue
         else:
             if opens < n:
                 new_max_d = max(max_d, cur_d + 1)
-                q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1))
-            if closes < opens and max_d <= m:
-                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1))
+                if new_max_d <= d:
+                    q.append([s + “(”, opens + 1, closes, new_max_d, cur_d + 1])
+            if closes < opens and max_d <= d:
+                q.append([s + “)”, opens, closes + 1, max_d, cur_d - 1])
     return result
 generate_parentheses(2, 2) # Output: ['(())', '()()']`
 
+
+
 export const task1Explanation =
-`def generate_parentheses(n: int, m: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`m\`, and returns a list of strings.
-    q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a tuple containing an empty string and four zeros. The tuple represents the current string, the number of open parentheses, the number of close parentheses, the maximum depth, and the current depth.
+`[OUTPUT]
+def generate_parentheses(n: int, d: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`d\`, and returns a list of strings. This function will generate all valid combinations of \`n\` pairs of parentheses with a maximum depth of \`d\`.
     result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
+    q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a list containing an empty string and four integers all set to 0. These integers represent the number of open parentheses, the number of closed parentheses, the maximum depth encountered so far, and the current depth, respectively.
     while q: ### Start a while loop that continues as long as the queue \`q\` is not empty.
         s, opens, closes, max_d, cur_d = q.pop(0) ### Dequeue the first element from \`q\` and unpack it into variables \`s\`, \`opens\`, \`closes\`, \`max_d\`, and \`cur_d\`.
-        if len(s) == 2 * n: ### Check if the length of the current string \`s\` is equal to \`2 * n\`. If true, it means a valid combination is formed.
-            result.append(s) ### Append the valid combination \`s\` to the \`result\` list.
-            continue ### Continue to the next iteration of the while loop.
-        else: ### If the length of \`s\` is not equal to \`2 * n\`, proceed to the next steps.
-            if opens < n: ### Check if the number of open parentheses \`opens\` is less than \`n\`.
-                new_max_d = max(max_d, cur_d + 1) ### Calculate the new maximum depth \`new_max_d\` by taking the maximum of the current maximum depth \`max_d\` and \`cur_d + 1\`.
-                q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1)) ### Enqueue a new tuple with an additional open parenthesis, incremented \`opens\`, and updated depths.
-            if closes < opens and max_d <= m: ### Check if the number of close parentheses \`closes\` is less than \`opens\` and the maximum depth \`max_d\` is less than or equal to \`m\`.
-                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1)) ### Enqueue a new tuple with an additional close parenthesis, incremented \`closes\`, and updated current depth.
-    return result ### Return the list \`result\` containing all valid combinations of parentheses.
-generate_parentheses(2, 2) ### Call the function \`generate_parentheses\` with \`n=2\` and \`m=2\` to generate all valid combinations of parentheses with these constraints. The output will be: ['(())', '()()']
+        if opens == n and closes == n: ### Check if the number of open and closed parentheses both equal \`n\`.
+            result.append(s) ### If true, append the current string \`s\` to the \`result\` list.
+        else: ### If the condition is not met, continue to the next steps.
+            if opens < n: ### Check if the number of open parentheses is less than \`n\`.
+                new_max_d = max(max_d, cur_d + 1) ### Calculate the new maximum depth if another open parenthesis is added.
+                if new_max_d <= d: ### Check if the new maximum depth is less than or equal to \`d\`.
+                    q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1)) ### If true, enqueue a new list with an additional open parenthesis, incrementing the count of open parentheses and updating the depths.
+            if closes < opens and max_d <= d: ### Check if the number of closed parentheses is less than the number of open parentheses and the maximum depth is within the limit.
+                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1)) ### If true, enqueue a new list with an additional closed parenthesis, incrementing the count of closed parentheses and updating the current depth.
+    return result ### Return the \`result\` list containing all valid combinations of parentheses.
+generate_parentheses(2, 2) # Output: ['(())', '()()'] ### Example use case: Call the function with \`n=2\` and \`d=2\`, which should return the list ['(())', '()()'].
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`generate_parentheses\` that generates all valid combinations of \`n\` pairs of parentheses, ensuring that the maximum depth of nested parentheses does not exceed \`m\`. The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses.
+The function \`generate_parentheses\` is designed to generate all valid combinations of \`n\` pairs of parentheses such that the depth of any valid parentheses substring does not exceed \`d\`. The depth is defined as the maximum number of open parentheses at any point within the substring.
 
-The function initializes a queue \`q\` with a tuple representing an empty string and initial values for open and close parentheses counts, maximum depth, and current depth. It also initializes an empty list \`result\` to store the valid combinations.
+The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses. It starts with an empty string and iteratively adds open and closed parentheses while maintaining the constraints on the number of open and closed parentheses and the depth.
 
-The while loop continues as long as the queue is not empty. In each iteration, the function dequeues the first element and checks if the length of the current string is equal to \`2 * n\`. If true, it appends the string to the result list. Otherwise, it explores adding an open parenthesis if the number of open parentheses is less than \`n\`, and a close parenthesis if the number of close parentheses is less than the number of open parentheses and the maximum depth is within the allowed limit.
+1. The function initializes an empty list \`result\` to store the valid combinations.
+2. It uses a queue \`q\` to manage the state of the current string, the number of open and closed parentheses, and the depth information.
+3. The while loop processes each state in the queue:
+   - If the number of open and closed parentheses both equal \`n\`, the current string is a valid combination and is added to the result list.
+   - If the number of open parentheses is less than \`n\`, a new state with an additional open parenthesis is enqueued, provided the new depth does not exceed \`d\`.
+   - If the number of closed parentheses is less than the number of open parentheses, a new state with an additional closed parenthesis is enqueued, provided the maximum depth is within the limit.
+4. The function returns the list of valid combinations after processing all possible states.
 
-By using BFS, the function ensures that all valid combinations are generated and stored in the result list, which is then returned. The function call \`generate_parentheses(2, 2)\` demonstrates the use case, generating the output \`['(())', '()()']\`.`
+The example use case \`generate_parentheses(2, 2)\` demonstrates the function's ability to generate valid combinations of 2 pairs of parentheses with a maximum depth of 2, resulting in the output \`['(())', '()()']\`.`
 
 export const task2Code =
 `def longest_valid_brackets(s: str) -> int:

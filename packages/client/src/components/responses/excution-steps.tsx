@@ -718,6 +718,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     }, []);
 
     const getCurrQuestionSolution = (index: number) => {
+
         const currentQuestion = questions[index];
         if (currentQuestion) {
             // let currStep = currentQuestion.step;

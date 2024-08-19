@@ -236,7 +236,7 @@ export const CodingTasks = [
 
   new AuthoringTask(
     "2",
-    `You are required to implement a function that generates all valid combinations of n pairs of parentheses, where n is an integer input representing the number of pairs, and m is an integer input representing the maximum allowed depth of nested parentheses. The nesting depth is defined as the maximum number of opening parentheses ( that are open at any point in the string before being closed by a matching closing parenthesis ) . For example, in the string "((()))" , the nesting depth is 3 , whereas in "()()" , the depth is 1 . The function must return a list of strings, where each string is a valid sequence of n pairs of parentheses that does not exceed the nesting depth m . For instance, ()()", "(())()", "()(())"] but not could return ["() because the latter has a nesting depth of 3 , generate_parentheses(3, 2) "((()))" which exceeds the specified maximum. The solution should be implemented using a Queue, ensuring that all combinations are explored systematically while respecting the depth constraint.`,
+    `Write a function \`generate_parentheses(n: int, d: int) -> list[str]\` that generates all combinations of \`n\` pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed \`d\`. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in \`()(())\` the max is 2, in \`(()(()))\` the max is 3, and in \`()()()\` the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
     task1Code,
     task1Explanation,
     task1Decomposition,
@@ -310,6 +310,7 @@ export const CodingTasks = [
     "Please skip this question",
     ["skip"],
     0,
+    "Frustrating",
   ),
 
   new MultipleChoiceTask(
@@ -317,6 +318,7 @@ export const CodingTasks = [
     "Please skip this question",
     ["skip"],
     0,
+    "Willing"
   ),
   
 
@@ -405,6 +407,7 @@ new MultipleChoiceTask(
   "Please skip this question",
   ["skip"],
   1,
+  "Frustrating"
 ),
 
 new MultipleChoiceTask(
@@ -412,6 +415,7 @@ new MultipleChoiceTask(
   "Please skip this question",
   ["skip"],
   1,
+  "Willing"
 ),
 
 
@@ -499,6 +503,7 @@ new MultipleChoiceTask(
   "Please skip this question",
   ["skip"],
   2,
+  "Frustrating"
 ),
 
 new MultipleChoiceTask(
@@ -506,6 +511,7 @@ new MultipleChoiceTask(
   "Please skip this question",
   ["skip"],
   2,
+  "Willing"
 ),
 
 // coding tasks for evaluations

@@ -522,19 +522,19 @@ const taskQuestion1: questionObject[] = [
     },
     {
         "step": 28,
-        "question": "new_max_d",
+        "question": "q",
         "begin-line": 10,
         "end-line": 12,
-        "explanation": "How is 'new_max_d' calculated and what role does it play in the logic?",
-        "aiGeneratedSolution": "'new_max_d' is calculated as the maximum of 'max_d' and 'cur_d + 1'. It tracks the maximum depth of nested parentheses to ensure it doesn't exceed 'm'."
+        "explanation": "How does the code ensure that new states are added to the queue 'q' when an opening parenthesis is added?",
+        "aiGeneratedSolution": "The code checks if 'opens' is less than 'n' and appends a new state with an additional '('. This ensures all possible valid combinations are explored."
     },
     {
-        "step": 45,
-        "question": "result",
+        "step": 50,
+        "question": "s",
         "begin-line": 5,
-        "end-line": 8,
-        "explanation": "How does the code determine when to add a string to the 'result' list?",
-        "aiGeneratedSolution": "The code adds a string to 'result' when its length equals '2 * n', indicating a complete valid parentheses sequence."
+        "end-line": 5,
+       "explanation": "How does the variable 's' change from '(())' to '()()' at this point in the code?",
+        "aiGeneratedSolution": "The variable 's' changes as the algorithm explores different valid combinations of parentheses, transitioning from one valid sequence '(())' to another '()()'."
     }
 ]
 ;

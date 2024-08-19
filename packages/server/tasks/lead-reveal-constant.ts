@@ -1,274 +1,262 @@
 export const task1Decomposition = {
   "subgoals": [
     {
-      "title": "Define the function with appropriate parameters",
+      "title": "Define the function and initialize variables",
       "indent-level": 0,
       "leading-questions": [
         {
-          "context": "We need to define a function that generates well-formed parentheses combinations.",
+          "context": "We need to define a function that generates valid parentheses combinations.",
           "short-answer-question": "What parameters should the function take to generate parentheses combinations?",
           "mcq-question": "What parameters should the function take to generate parentheses combinations?",
-          "correct-choice": "n and m",
-          "incorrect-choice-1": "n and k",
-          "incorrect-choice-2": "m and k",
-          "incorrect-choice-3": "n and p",
-          "short-answer-solution": "The function should take two parameters: n (number of pairs of parentheses) and m (maximum nesting level).",
+          "correct-choice": "Two integers: n and d",
+          "incorrect-choice-1": "A list and an integer",
+          "incorrect-choice-2": "Two strings",
+          "incorrect-choice-3": "A string and an integer",
+          "short-answer-solution": "The function should take two integers: n (number of pairs of parentheses) and d (maximum depth).",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 1,
-          "hint-if-incorrect": "Think about the requirements: number of pairs and maximum nesting level.",
-          "explanation-after-correct-answer": "The function is defined with parameters n and m to generate combinations of well-formed parentheses with constraints on nesting."
-        }
-      ]
-    },
-    {
-      "title": "Initialize the queue and result list",
-      "indent-level": 1,
-      "leading-questions": [
-        {
-          "context": "We need to initialize the queue and result list to start generating combinations.",
-          "short-answer-question": "What should be the initial state of the queue?",
-          "mcq-question": "What should be the initial state of the queue?",
-          "correct-choice": "An empty string with counters set to 0",
-          "incorrect-choice-1": "A string with one open parenthesis",
-          "incorrect-choice-2": "A string with one close parenthesis",
-          "incorrect-choice-3": "A string with n open parentheses",
-          "short-answer-solution": "The initial state of the queue should be an empty string with counters for open, close, max depth, and current depth all set to 0.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 2,
-          "hint-if-incorrect": "Consider the starting point for generating combinations.",
-          "explanation-after-correct-answer": "The queue is initialized with an empty string and counters for open, close, max depth, and current depth all set to 0."
+          "hint-if-incorrect": "Think about what inputs are needed to generate parentheses combinations.",
+          "explanation-after-correct-answer": "The function is defined with two parameters: n (number of pairs of parentheses) and d (maximum depth)."
         },
         {
-          "context": "We need to initialize the result list to store the final combinations.",
-          "short-answer-question": "What should be the initial state of the result list?",
-          "mcq-question": "What should be the initial state of the result list?",
-          "correct-choice": "An empty list",
-          "incorrect-choice-1": "A list with one empty string",
-          "incorrect-choice-2": "A list with one open parenthesis",
-          "incorrect-choice-3": "A list with n open parentheses",
-          "short-answer-solution": "The initial state of the result list should be an empty list to store the final combinations.",
+          "context": "The function is defined, now we need to initialize variables.",
+          "short-answer-question": "What type of data structure should be used to store the result?",
+          "mcq-question": "What type of data structure should be used to store the result?",
+          "correct-choice": "A list",
+          "incorrect-choice-1": "A dictionary",
+          "incorrect-choice-2": "A set",
+          "incorrect-choice-3": "A tuple",
+          "short-answer-solution": "A list should be used to store the result because it allows for easy appending of valid parentheses combinations.",
+          "selected-question": "short",
+          "code-line-to-be-revealed": 2,
+          "hint-if-incorrect": "Consider a data structure that allows for easy appending of elements.",
+          "explanation-after-correct-answer": "A list named 'result' is initialized to store the valid parentheses combinations."
+        },
+        {
+          "context": "The result list is initialized, now we need to initialize the queue.",
+          "short-answer-question": "What should the initial state of the queue contain?",
+          "mcq-question": "What should the initial state of the queue contain?",
+          "correct-choice": "An empty string and four zeros",
+          "incorrect-choice-1": "A string with one parenthesis and three zeros",
+          "incorrect-choice-2": "Two empty strings and two zeros",
+          "incorrect-choice-3": "A string with two parentheses and two zeros",
+          "short-answer-solution": "The initial state of the queue should contain an empty string and four zeros representing the counts of opens, closes, max depth, and current depth.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 3,
-          "hint-if-incorrect": "Consider where the final combinations will be stored.",
-          "explanation-after-correct-answer": "The result list is initialized as an empty list to store the final combinations of well-formed parentheses."
+          "hint-if-incorrect": "Think about the initial state of the parentheses and the counts.",
+          "explanation-after-correct-answer": "The queue is initialized with an empty string and four zeros representing the counts of opens, closes, max depth, and current depth."
         }
       ]
     },
     {
       "title": "Process the queue until it's empty",
-      "indent-level": 2,
+      "indent-level": 1,
       "leading-questions": [
         {
-          "context": "We need to process the queue to generate combinations until it's empty.",
+          "context": "The queue is initialized, now we need to process it until it's empty.",
           "short-answer-question": "What loop structure should be used to process the queue?",
           "mcq-question": "What loop structure should be used to process the queue?",
           "correct-choice": "A while loop",
           "incorrect-choice-1": "A for loop",
           "incorrect-choice-2": "A do-while loop",
-          "incorrect-choice-3": "A recursive function",
+          "incorrect-choice-3": "A foreach loop",
           "short-answer-solution": "A while loop should be used to process the queue until it's empty.",
           "selected-question": "short",
           "code-line-to-be-revealed": 4,
           "hint-if-incorrect": "Consider a loop that continues until a condition is met.",
-          "explanation-after-correct-answer": "A while loop is used to process the queue until it's empty, ensuring all combinations are generated."
-        },
+          "explanation-after-correct-answer": "A while loop is used to process the queue until it's empty."
+        }
+      ]
+    },
+    {
+      "title": "Pop elements from the queue and check conditions",
+      "indent-level": 2,
+      "leading-questions": [
         {
-          "context": "We need to pop an element from the queue to process it.",
-          "short-answer-question": "What method should be used to pop an element from the queue?",
-          "mcq-question": "What method should be used to pop an element from the queue?",
+          "context": "The while loop is set up, now we need to pop elements from the queue.",
+          "short-answer-question": "What method should be used to pop elements from the queue?",
+          "mcq-question": "What method should be used to pop elements from the queue?",
           "correct-choice": "pop(0)",
           "incorrect-choice-1": "pop()",
           "incorrect-choice-2": "remove()",
           "incorrect-choice-3": "del()",
-          "short-answer-solution": "The pop(0) method should be used to pop the first element from the queue.",
+          "short-answer-solution": "The pop(0) method should be used to pop elements from the front of the queue.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 5,
-          "hint-if-incorrect": "Consider the method that removes the first element.",
-          "explanation-after-correct-answer": "The pop(0) method is used to remove and return the first element from the queue for processing."
+          "hint-if-incorrect": "Consider a method that removes the first element of the list.",
+          "explanation-after-correct-answer": "The pop(0) method is used to pop elements from the front of the queue."
+        },
+        {
+          "context": "Elements are being popped from the queue, now we need to check if we have a valid combination.",
+          "short-answer-question": "What condition should be checked to determine if we have a valid combination?",
+          "mcq-question": "What condition should be checked to determine if we have a valid combination?",
+          "correct-choice": "opens == n and closes == n",
+          "incorrect-choice-1": "opens == n or closes == n",
+          "incorrect-choice-2": "opens == closes",
+          "incorrect-choice-3": "opens + closes == n",
+          "short-answer-solution": "The condition opens == n and closes == n should be checked to determine if we have a valid combination.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 6,
+          "hint-if-incorrect": "Consider the condition that indicates all pairs of parentheses are used.",
+          "explanation-after-correct-answer": "The condition opens == n and closes == n is checked to determine if we have a valid combination."
+        },
+        {
+          "context": "We have a valid combination, now we need to add it to the result list.",
+          "short-answer-question": "What method should be used to add the valid combination to the result list?",
+          "mcq-question": "What method should be used to add the valid combination to the result list?",
+          "correct-choice": "append()",
+          "incorrect-choice-1": "insert()",
+          "incorrect-choice-2": "extend()",
+          "incorrect-choice-3": "add()",
+          "short-answer-solution": "The append() method should be used to add the valid combination to the result list.",
+          "selected-question": "mcq",
+          "code-line-to-be-revealed": 7,
+          "hint-if-incorrect": "Consider a method that adds an element to the end of the list.",
+          "explanation-after-correct-answer": "The append() method is used to add the valid combination to the result list."
         }
       ]
     },
     {
-      "title": "Check the length of the current string",
+      "title": "Generate new states and add to the queue",
       "indent-level": 2,
       "leading-questions": [
         {
-          "context": "We need to check if the current string length to determine if it's a complete combination.",
-          "short-answer-question": "What condition should be checked to determine if the string is complete?",
-          "mcq-question": "What condition should be checked to determine if the string is complete?",
-          "correct-choice": "len(s) == 2 * n",
-          "incorrect-choice-1": "len(s) == n",
-          "incorrect-choice-2": "len(s) == m",
-          "incorrect-choice-3": "len(s) == n + m",
-          "short-answer-solution": "The condition len(s) == 2 * n should be checked to determine if the string is a complete combination.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 6,
-          "hint-if-incorrect": "Consider the total number of parentheses in a complete combination.",
-          "explanation-after-correct-answer": "The condition len(s) == 2 * n checks if the current string has the correct number of parentheses to be a complete combination."
-        },
-        {
-          "context": "We need to add the complete combination to the result list.",
-          "short-answer-question": "What should be done with the complete combination?",
-          "mcq-question": "What should be done with the complete combination?",
-          "correct-choice": "Add it to the result list",
-          "incorrect-choice-1": "Print it",
-          "incorrect-choice-2": "Discard it",
-          "incorrect-choice-3": "Store it in a temporary variable",
-          "short-answer-solution": "The complete combination should be added to the result list.",
-          "selected-question": "mcq",
-          "code-line-to-be-revealed": 7,
-          "hint-if-incorrect": "Consider where the final combinations are stored.",
-          "explanation-after-correct-answer": "The complete combination is added to the result list to store it for the final output."
-        },
-        {
-          "context": "We need to continue to the next iteration if the string is complete.",
-          "short-answer-question": "What should be done after adding the complete combination to the result list?",
-          "mcq-question": "What should be done after adding the complete combination to the result list?",
-          "correct-choice": "Continue to the next iteration",
-          "incorrect-choice-1": "Break the loop",
-          "incorrect-choice-2": "Return the result list",
-          "incorrect-choice-3": "Restart the loop",
-          "short-answer-solution": "After adding the complete combination to the result list, we should continue to the next iteration.",
+          "context": "We need to handle cases where the current state is not a valid combination.",
+          "short-answer-question": "What should be done if the current state is not a valid combination?",
+          "mcq-question": "What should be done if the current state is not a valid combination?",
+          "correct-choice": "Generate new states",
+          "incorrect-choice-1": "Terminate the function",
+          "incorrect-choice-2": "Remove the state from the queue",
+          "incorrect-choice-3": "Return an error",
+          "short-answer-solution": "If the current state is not a valid combination, we should generate new states by adding either an open or close parenthesis.",
           "selected-question": "short",
           "code-line-to-be-revealed": 8,
-          "hint-if-incorrect": "Consider what to do after processing a complete combination.",
-          "explanation-after-correct-answer": "The continue statement is used to skip the remaining code in the current iteration and move to the next iteration."
+          "hint-if-incorrect": "Consider what needs to be done to explore other possible combinations.",
+          "explanation-after-correct-answer": "If the current state is not a valid combination, new states are generated by adding either an open or close parenthesis."
         },
         {
-          "context": "We need to handle the case where the string is not complete.",
-          "short-answer-question": "What should be done if the string is not complete?",
-          "mcq-question": "What should be done if the string is not complete?",
-          "correct-choice": "Generate new combinations",
-          "incorrect-choice-1": "Discard the string",
-          "incorrect-choice-2": "Print the string",
-          "incorrect-choice-3": "Store it in a temporary variable",
-          "short-answer-solution": "If the string is not complete, we should generate new combinations by adding open or close parentheses.",
+          "context": "We need to generate new states and add them to the queue if the current state is not valid.",
+          "short-answer-question": "What condition should be checked before adding a new open parenthesis?",
+          "mcq-question": "What condition should be checked before adding a new open parenthesis?",
+          "correct-choice": "opens < n",
+          "incorrect-choice-1": "opens > n",
+          "incorrect-choice-2": "opens == n",
+          "incorrect-choice-3": "opens <= n",
+          "short-answer-solution": "The condition opens < n should be checked before adding a new open parenthesis.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 9,
-          "hint-if-incorrect": "Consider what to do with incomplete combinations.",
-          "explanation-after-correct-answer": "If the string is not complete, we need to generate new combinations by adding open or close parentheses."
-        }
-      ]
-    },
-    {
-      "title": "Check if more open parentheses can be added",
-      "indent-level": 3,
-      "leading-questions": [
+          "hint-if-incorrect": "Consider the maximum number of open parentheses allowed.",
+          "explanation-after-correct-answer": "The condition opens < n is checked before adding a new open parenthesis."
+        },
         {
-          "context": "We need to check if more open parentheses can be added to the current string.",
-          "short-answer-question": "What condition should be checked to add more open parentheses?",
-          "mcq-question": "What condition should be checked to add more open parentheses?",
-          "correct-choice": "opens < n",
-          "incorrect-choice-1": "opens < m",
-          "incorrect-choice-2": "opens < 2 * n",
-          "incorrect-choice-3": "opens < closes",
-          "short-answer-solution": "The condition opens < n should be checked to determine if more open parentheses can be added.",
+          "context": "We need to calculate the new maximum depth before adding a new open parenthesis.",
+          "short-answer-question": "What function should be used to calculate the new maximum depth?",
+          "mcq-question": "What function should be used to calculate the new maximum depth?",
+          "correct-choice": "max()",
+          "incorrect-choice-1": "min()",
+          "incorrect-choice-2": "sum()",
+          "incorrect-choice-3": "len()",
+          "short-answer-solution": "The max() function should be used to calculate the new maximum depth.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 10,
-          "hint-if-incorrect": "Consider the maximum number of open parentheses allowed.",
-          "explanation-after-correct-answer": "The condition opens < n checks if the number of open parentheses is less than the maximum allowed, allowing us to add more."
+          "hint-if-incorrect": "Consider a function that returns the larger of two values.",
+          "explanation-after-correct-answer": "The max() function is used to calculate the new maximum depth."
         },
         {
-          "context": "We need to calculate the new maximum depth if an open parenthesis is added.",
-          "short-answer-question": "How should the new maximum depth be calculated?",
-          "mcq-question": "How should the new maximum depth be calculated?",
-          "correct-choice": "max(max_d, cur_d + 1)",
-          "incorrect-choice-1": "max(max_d, cur_d)",
-          "incorrect-choice-2": "max(max_d + 1, cur_d)",
-          "incorrect-choice-3": "max(max_d, cur_d - 1)",
-          "short-answer-solution": "The new maximum depth should be calculated as max(max_d, cur_d + 1) to account for the added open parenthesis.",
-          "selected-question": "mcq",
+          "context": "We need to check if the new maximum depth is within the allowed depth before adding a new open parenthesis.",
+          "short-answer-question": "What condition should be checked before adding a new open parenthesis?",
+          "mcq-question": "What condition should be checked before adding a new open parenthesis?",
+          "correct-choice": "new_max_d <= d",
+          "incorrect-choice-1": "new_max_d >= d",
+          "incorrect-choice-2": "new_max_d == d",
+          "incorrect-choice-3": "new_max_d < d",
+          "short-answer-solution": "The condition new_max_d <= d should be checked before adding a new open parenthesis.",
+          "selected-question": "short",
           "code-line-to-be-revealed": 11,
-          "hint-if-incorrect": "Consider how the depth changes when an open parenthesis is added.",
-          "explanation-after-correct-answer": "The new maximum depth is calculated as max(max_d, cur_d + 1) to account for the added open parenthesis, ensuring the depth is updated correctly."
+          "hint-if-incorrect": "Consider the maximum depth allowed.",
+          "explanation-after-correct-answer": "The condition new_max_d <= d is checked before adding a new open parenthesis."
         },
         {
-          "context": "We need to add a new state with an open parenthesis to the queue.",
-          "short-answer-question": "What should be added to the queue when an open parenthesis is added?",
-          "mcq-question": "What should be added to the queue when an open parenthesis is added?",
-          "correct-choice": "New state with updated counters",
-          "incorrect-choice-1": "New state with only the string updated",
-          "incorrect-choice-2": "New state with only the counters updated",
-          "incorrect-choice-3": "New state with the same counters",
-          "short-answer-solution": "A new state with the updated string and counters should be added to the queue when an open parenthesis is added.",
+          "context": "We need to add the new state with an open parenthesis to the queue.",
+          "short-answer-question": "What should be appended to the queue for a new open parenthesis?",
+          "mcq-question": "What should be appended to the queue for a new open parenthesis?",
+          "correct-choice": "(s + '(', opens + 1, closes, new_max_d, cur_d + 1)",
+          "incorrect-choice-1": "(s + ')', opens + 1, closes, new_max_d, cur_d + 1)",
+          "incorrect-choice-2": "(s + '(', opens, closes + 1, new_max_d, cur_d + 1)",
+          "incorrect-choice-3": "(s + '(', opens + 1, closes, new_max_d, cur_d - 1)",
+          "short-answer-solution": "The list [s + '(', opens + 1, closes, new_max_d, cur_d + 1] should be appended to the queue for a new open parenthesis.",
           "selected-question": "short",
           "code-line-to-be-revealed": 12,
-          "hint-if-incorrect": "Consider what needs to be updated when adding an open parenthesis.",
-          "explanation-after-correct-answer": "A new state with the updated string and counters is added to the queue when an open parenthesis is added, allowing further combinations to be generated."
-        }
-      ]
-    },
-    {
-      "title": "Check if more close parentheses can be added",
-      "indent-level": 3,
-      "leading-questions": [
+          "hint-if-incorrect": "Consider the changes needed for an open parenthesis.",
+          "explanation-after-correct-answer": "The list [s + '(', opens + 1, closes, new_max_d, cur_d + 1] is appended to the queue for a new open parenthesis."
+        },
         {
-          "context": "We need to check if more close parentheses can be added to the current string.",
-          "short-answer-question": "What conditions should be checked to add more close parentheses?",
-          "mcq-question": "What conditions should be checked to add more close parentheses?",
-          "correct-choice": "closes < opens and max_d <= m",
-          "incorrect-choice-1": "closes < n and max_d <= m",
-          "incorrect-choice-2": "closes < opens and max_d < m",
-          "incorrect-choice-3": "closes < n and max_d < m",
-          "short-answer-solution": "The conditions closes < opens and max_d <= m should be checked to determine if more close parentheses can be added.",
+          "context": "We need to check if we can add a new close parenthesis.",
+          "short-answer-question": "What conditions should be checked before adding a new close parenthesis?",
+          "mcq-question": "What conditions should be checked before adding a new close parenthesis?",
+          "correct-choice": "closes < opens and max_d <= d",
+          "incorrect-choice-1": "closes > opens and max_d <= d",
+          "incorrect-choice-2": "closes < opens and max_d >= d",
+          "incorrect-choice-3": "closes == opens and max_d <= d",
+          "short-answer-solution": "The conditions closes < opens and max_d <= d should be checked before adding a new close parenthesis.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 13,
           "hint-if-incorrect": "Consider the conditions for adding a close parenthesis.",
-          "explanation-after-correct-answer": "The conditions closes < opens and max_d <= m ensure that more close parentheses can be added without violating the constraints."
+          "explanation-after-correct-answer": "The conditions closes < opens and max_d <= d are checked before adding a new close parenthesis."
         },
         {
-          "context": "We need to add a new state with a close parenthesis to the queue.",
-          "short-answer-question": "What should be added to the queue when a close parenthesis is added?",
-          "mcq-question": "What should be added to the queue when a close parenthesis is added?",
-          "correct-choice": "New state with updated counters",
-          "incorrect-choice-1": "New state with only the string updated",
-          "incorrect-choice-2": "New state with only the counters updated",
-          "incorrect-choice-3": "New state with the same counters",
-          "short-answer-solution": "A new state with the updated string and counters should be added to the queue when a close parenthesis is added.",
+          "context": "We need to add the new state with a close parenthesis to the queue.",
+          "short-answer-question": "What should be appended to the queue for a new close parenthesis?",
+          "mcq-question": "What should be appended to the queue for a new close parenthesis?",
+          "correct-choice": "[s + ')', opens, closes + 1, max_d, cur_d - 1]",
+          "incorrect-choice-1": "[s + '(', opens, closes + 1, max_d, cur_d - 1]",
+          "incorrect-choice-2": "[s + ')', opens + 1, closes, max_d, cur_d - 1]",
+          "incorrect-choice-3": "[s + ')', opens, closes + 1, max_d, cur_d + 1]",
+          "short-answer-solution": "The list [s + ')', opens, closes + 1, max_d, cur_d - 1] should be appended to the queue for a new close parenthesis.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 14,
-          "hint-if-incorrect": "Consider what needs to be updated when adding a close parenthesis.",
-          "explanation-after-correct-answer": "A new state with the updated string and counters is added to the queue when a close parenthesis is added, allowing further combinations to be generated."
+          "hint-if-incorrect": "Consider the changes needed for a close parenthesis.",
+          "explanation-after-correct-answer": "The list [s + ')', opens, closes + 1, max_d, cur_d - 1] is appended to the queue for a new close parenthesis."
         }
       ]
     },
     {
-      "title": "Return the result list with all combinations",
+      "title": "Return the result list",
       "indent-level": 1,
       "leading-questions": [
         {
-          "context": "We need to return the result list containing all the generated combinations.",
-          "short-answer-question": "What should be returned at the end of the function?",
-          "mcq-question": "What should be returned at the end of the function?",
+          "context": "We have processed all possible states, now we need to return the result list.",
+          "short-answer-question": "What should the function return?",
+          "mcq-question": "What should the function return?",
           "correct-choice": "The result list",
           "incorrect-choice-1": "The queue",
-          "incorrect-choice-2": "The last state",
-          "incorrect-choice-3": "The initial state",
-          "short-answer-solution": "The result list containing all the generated combinations should be returned at the end of the function.",
+          "incorrect-choice-2": "The initial state",
+          "incorrect-choice-3": "The maximum depth",
+          "short-answer-solution": "The function should return the result list containing all valid parentheses combinations.",
           "selected-question": "mcq",
           "code-line-to-be-revealed": 15,
-          "hint-if-incorrect": "Consider where the final combinations are stored.",
-          "explanation-after-correct-answer": "The result list containing all the generated combinations is returned at the end of the function, providing the final output."
+          "hint-if-incorrect": "Consider what contains the valid parentheses combinations.",
+          "explanation-after-correct-answer": "The function returns the result list containing all valid parentheses combinations."
         }
       ]
     },
     {
       "title": "Test the function with an example",
-      "indent-level": 1,
+      "indent-level": 0,
       "leading-questions": [
         {
-          "context": "We need to test the function with an example to verify its correctness.",
-          "short-answer-question": "What example can be used to test the function?",
-          "mcq-question": "What example can be used to test the function?",
-          "correct-choice": "generate_parentheses(2, 2)",
-          "incorrect-choice-1": "generate_parentheses(3, 3)",
-          "incorrect-choice-2": "generate_parentheses(1, 1)",
-          "incorrect-choice-3": "generate_parentheses(2, 1)",
-          "short-answer-solution": "Write any example would be fine, as long as the function takes in 2 integer values",
+          "context": "We need to test the function to ensure it works correctly.",
+          "short-answer-question": "What would be the output of the function given the test input 2 and 2?",
+          "mcq-question": "What parameters should be used to test the function?",
+          "correct-choice": "2 and 2",
+          "incorrect-choice-1": "3 and 3",
+          "incorrect-choice-2": "1 and 1",
+          "incorrect-choice-3": "4 and 4",
+          "short-answer-solution": "['(())', '()()']",
           "selected-question": "short",
           "code-line-to-be-revealed": 16,
-          "hint-if-incorrect": "Consider a simple example with small values for n and m.",
-          "explanation-after-correct-answer": "One simple example is generate_parentheses(2, 2) can be used to test the function and verify its correctness, ensuring it generates the expected output."
+          "hint-if-incorrect": "Consider the number of pairs of parentheses and the maximum depth.",
+          "explanation-after-correct-answer": "The output of the function with input 2 and 2 is ['(())', '()()']."
         }
       ]
     }
