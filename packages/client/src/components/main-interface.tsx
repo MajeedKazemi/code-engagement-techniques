@@ -79,6 +79,32 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
         useState<boolean>(false);
     const [rows, setRows] = useState(4);
     const [matched, setMatched] = useState<boolean>(true);
+    const [timeoutValue, setTimeoutValue] = useState<number>(13);
+    const [showTimeout, setShowTimeout] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (taskID === "1" || taskID === "3" || taskID === "5") {
+          setTimeoutValue(5);
+        } else if (taskID === "2" || taskID === "4" || taskID === "6") {
+          setTimeoutValue(13);
+        }
+      }, [taskID]);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setTimeoutValue((prevTimeout) => {
+            const newTimeout = prevTimeout - 1;
+            if (newTimeout < 3) {
+              setShowTimeout(true);
+            }
+            return newTimeout;
+          });
+        }, 60000); // 60000 milliseconds = 1 minute
+    
+        return () => {
+          clearInterval(interval);
+        };
+      }, []);
 
     //loggers
     const [generateButtonLog, setGenerateButtonLog] = useState<any>([]);
@@ -421,8 +447,17 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
                         <div className="gpt-image">
                             <IconsDoc iconName="spark" />
                         </div>
-                        AI Assistance: {(taskID == "1" || taskID == "3" || taskID == "5") && `Warm-up Task ${taskID}`}{(taskID == "2" || taskID == "4" || taskID == "6") && `Task ${taskID}`}
+                        AI Assistance: 
+                        {(taskID == "1" || taskID == "3" || taskID == "5") && <div>Warm-up Task {taskID}</div>}{(taskID == "2" || taskID == "4" || taskID == "6") && <div>Task {taskID}</div>}
                     </h3>
+                    {showTimeout && (timeoutValue >= 0 ?
+                            <div className="warning">
+                                You have <strong>{timeoutValue}</strong> mins left!                       
+                            </div> : 
+                            <div>
+                                <strong>Time's up!</strong> Please finish up.
+                            </div>)
+                    }
                 </div>
                 {/* Conditionally render the generated code component */}
                 {runCodeNoError && <p id="run-code-no-error" style={{ display: 'none' }}></p>}

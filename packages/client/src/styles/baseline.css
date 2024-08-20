@@ -3,18 +3,22 @@
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     border-bottom: 1px solid black;
-    height: 55px;
+    height: 75px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .baseline-title h3{
     padding: 10px;
     margin: 0 0 0 0;
+
 }
 
 .chat-user-prompt{
     margin: 2rem 1rem;
     overflow-y: scroll;
-    height: calc(100% - 55px - 2rem);
+    height: calc(100% - 75px - 2rem);
 }
 
 .baseline-generator-container{
