@@ -259,6 +259,7 @@ export const apiGetFeedbackFromRevealShortAnswer = (
 
 export const apiGetFeedbackFromTracePredictShortAnswer = (
     token: string | null | undefined,
+    code: string,
     studentSolution: string,
     aiGeneratedSolution: string,
     question: string,
@@ -271,6 +272,7 @@ export const apiGetFeedbackFromTracePredictShortAnswer = (
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+            code: code,
             studentSolution: studentSolution,
             aiGeneratedSolution: aiGeneratedSolution,
             question: question,

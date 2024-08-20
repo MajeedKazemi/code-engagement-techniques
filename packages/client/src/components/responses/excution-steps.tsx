@@ -955,6 +955,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             try {
                 apiGetFeedbackFromTracePredictShortAnswer(
                     context?.token,
+                    code,
                     userResponse[index],
                     questions[index].aiGeneratedSolution,
                     questions[index].explanation,
@@ -965,7 +966,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             const data = await response.json();
                             console.log(data.response);
 
-                            if(data.response.correct == "yes"){
+                            if(parseInt(data.response.correctness) && parseInt(data.response.correctness) > 2){
+                                console.log(parseInt(data.response.correctness));
                                 setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
                                 setButtonDisabled(false);
                                 setExplanationQuestionCorrect(
