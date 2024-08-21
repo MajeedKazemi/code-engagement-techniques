@@ -539,3 +539,7 @@
 .follow-up-question-feedback.correct{
     background-color: rgba(192, 228, 188, 255);
 }
+
+.follow-up-question-feedback.normal{
+    background-color: rgba(220, 230, 255, 255);
+}

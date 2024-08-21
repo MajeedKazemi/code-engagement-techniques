@@ -209,7 +209,7 @@ function RevealQuestionComponent({
         ) {
             const newReachedMax = reachedMax.map((reached, i) =>
                 i === currentQuestionIndex
-                    ? questionAnsweredTimes[i].currentTime == 4 ||
+                    ? questionAnsweredTimes[i].currentTime == 3 ||
                       revealAnswer[i]
                     : reached
             );
@@ -407,6 +407,8 @@ function RevealQuestionComponent({
                                     i === index ? data.response.feedback : hint
                                 )
                             );
+                    
+
                             setHintForShort(
                                 hintForShort.map((hint, i) =>
                                     i === index ? data.response.feedback : hint
@@ -729,7 +731,11 @@ function RevealQuestionComponent({
                                     {!reachedMax[index] && (
                                         <div>
                                             {questionAnsweredTimes[index].currentTime > 0 && (
-                                                <>
+                                                <>  
+                                                    <div className="reveal-hint-mcq-incorrect">
+                                                        <strong>Your Response: </strong>
+                                                        {questionAnsweredTimes[index].currentAnswer}
+                                                    </div>
                                                     {feedbackReady[index] ? (
                                                         <div className="reveal-hint-mcq-incorrect">
                                                             <strong>Explanation: </strong>{" "}
@@ -751,7 +757,7 @@ function RevealQuestionComponent({
                                                 <strong>Your Response: </strong>
                                                 {questionAnsweredTimes[index].currentAnswer}
                                             </div>
-                                            {question.revealLine.split("\n").map((line, i) => (
+                                            Current line: {question.revealLine.split("\n").map((line, i) => (
                                                 <HighlightedPart part={line} />
                                             ))}
 

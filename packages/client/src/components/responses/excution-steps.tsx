@@ -128,7 +128,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [explanationFeedbackReady, setExplanationFeedbackReady] = useState<boolean[]>([]);
     const [explanationFeedback, setExplanationFeedback] = useState<string[]>([]);
     const [explanationQuestionCorrect, setExplanationQuestionCorrect] = useState<boolean[]>([]);
-    const [attempted, setAttempted] = useState<boolean[]>([false, false, false, false]);
+    const [attempted, setAttempted] = useState<boolean[]>([false, false, false]);
+    const [wrongExplainationAnswers, setWrongExplainationAnswers] = useState<string[][]>([]);
 
     const [totalAttempts, setTotalAttempts] = useState(0);
     const [totalCorrect, setTotalCorrect] = useState(0);
@@ -371,6 +372,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             setSolutions(solutions);
 
             setHoveringHovered(new Array(questions.length).fill(false));
+            setWrongExplainationAnswers(new Array(questions.length).fill(["", "", ""]));
 
             // retrive the line by line explanation from the apiGetBaselineLineByLineExplanationSimulation
             apiGetBaselineLineByLineExplanationSimulation(
@@ -804,6 +806,15 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         return null; // return null if no frame or variable is found
     }
 
+    function getLastNonEmptyElement(arr: string[]): string | undefined {
+        for (let i = arr.length - 1; i >= 0; i--) {
+            if (arr[i] !== "") {
+                return arr[i];
+            }
+        }
+        return "You have used all the attempts";
+    }
+
     const getCurrentFeedback = () => {
         //codeBlock is the code block that the question is asking about, the content from begin-line to end-line
         let codeBlock = "";
@@ -912,7 +923,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
 
         if(attempted.slice(0, -1).every(value => value === true)) {
-            setAttempted([true, true, true, true]);
+            setAttempted([true, true, true]);
             setExplanationQuestionCorrect(
                 (prev) => {
                     let temp = deepCopy(prev);
@@ -932,7 +943,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             setInputValue(
                 ""
             );
-            setAttempted([false, false, false, false]);
+            setAttempted([false, false, false]);
             return;
         }
         else {
@@ -989,10 +1000,19 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 setInputValue(
                                     ""
                                 );
-                                setAttempted([false, false, false, false]);
+                                setAttempted([false, false, false]);
                             }else {
                                 setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
                                 setButtonDisabled(false);
+
+                                let wrongExplainationCopy = deepCopy(wrongExplainationAnswers);
+                                const attemptNumber = attempted.findIndex(attempt => !attempt);
+                                wrongExplainationCopy[index][attemptNumber] = userResponse[index];
+                                setWrongExplainationAnswers(wrongExplainationCopy);
+
+
+                                console.log(wrongExplainationCopy);
+
                                 setExplanationFeedbackReady(
                                     (prev) => {
                                         let temp = deepCopy(prev);
@@ -1570,9 +1590,14 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         {item.explanation}
                                                     </div>
                                                     {explanationFeedback[index] != "" && explanationFeedbackReady[index] && !explanationQuestionCorrect[index] && !attempted.every(attempt => attempt) &&
+                                                        <>
                                                         <div className="follow-up-question-feedback">
-                                                            {explanationFeedback[index]}
+                                                            <strong>You answered:</strong> {getLastNonEmptyElement(wrongExplainationAnswers[index])}
                                                         </div>
+                                                        <div className="follow-up-question-feedback">
+                                                            <strong>Hint:</strong> {explanationFeedback[index]}
+                                                        </div>
+                                                        </>
                                                     }
                                                     {!explanationQuestionCorrect[index] && !buttonDisabled &&
                                                     <div className="follow-up-question-input">
@@ -1614,8 +1639,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     {
                                                         (explanationQuestionCorrect[index] || attempted.every(attempt => attempt)) &&
                                                         <>
-                                                        <div className="follow-up-question-feedback correct">
-                                                            <strong>You Answered</strong> {userResponse[index]}
+                                                        <div className="follow-up-question-feedback normal">
+                                                            <strong>Your Last Attempt</strong> {userResponse[index]}
                                                         </div>
                                                         <div className="follow-up-question-feedback correct">
                                                             <strong>Explanation:</strong> {item.aiGeneratedSolution}
