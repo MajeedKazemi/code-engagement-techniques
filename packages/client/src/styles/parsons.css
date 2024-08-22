@@ -39,8 +39,8 @@
     padding: 0.5rem 2rem;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    font-size: 1.2rem;
-    height: 3rem;
+    font-size: 1rem;
+    height: 1.5rem;
     justify-content: space-between;
   }
 
@@ -51,7 +51,6 @@
 
   .warning {
     border-radius: 25px;
-    background-color: #f06c77;
     padding: 10px;
     color: black;
     font-size: 15px;
@@ -73,8 +72,8 @@
   }
   
   .modal-body {
-    padding: 2rem 2rem;
-    height: calc(100% - 9.5rem);
+    padding: 1rem 1rem;
+    height: calc(100% - 7.5rem);
     overflow-y: scroll;
   }
   

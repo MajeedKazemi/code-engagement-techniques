@@ -350,75 +350,68 @@ const taskDecomp6 = {
 }
 
 
-const warmupQuestion2: questionObject[] = [
-        {
-            "step": 3,
-            "question": "stack",
-            "begin-line": 3,
-            "end-line": 4,
-            "explanation": "How does the initialization and subsequent use of 'stack' in lines 3 affect the logic of the while loop?",
-            "aiGeneratedSolution": "The 'stack' is initialized as a copy of 'input_list'. It is then used in the while loop to pop elements until empty, reversing the list."
-        },
-        {
-            "step": 7,
-            "question": "reversed_list",
-            "begin-line": 4,
-            "end-line": 5,
-            "explanation": "How does the 'reversed_list' change within the while loop in lines 4-5?",
-            "aiGeneratedSolution": "In each iteration of the while loop, the last element of 'stack' is popped and appended to 'reversed_list', gradually building the reversed list."
-        },
-        {
-            "step": 11,
-            "question": "stack",
-            "begin-line": 4,
-            "end-line": 5,
-            "explanation": "What happens to 'stack' during each iteration of the while loop in lines 4-5?",
-            "aiGeneratedSolution": "During each iteration, 'stack' has its last element removed (popped), reducing its size until it becomes empty, which ends the loop."
-        },
-        {
-            "step": 13,
-            "question": "reversed_list",
-            "begin-line": 4,
-            "end-line": 5,
-            "explanation": "What is the final state of 'reversed_list' after the while loop completes in lines 4-5?",
-            "aiGeneratedSolution": "After the while loop completes, 'reversed_list' contains all the elements of 'input_list' in reverse order."
-        }
-    ];
-
-const warmupQuestion1: questionObject[] = [
+const warmupQuestion2: newQuestionObject[] = [
     {
-      "step": 3,
-      "question": "queue",
+      "step": 4,
       "begin-line": 3,
-      "end-line": 4,
-      "explanation": "How does the initialization and the while loop condition affect the state of the 'queue' variable?",
-      "aiGeneratedSolution": "The 'queue' is initialized as a copy of 'input_list'. The while loop continues until 'queue' is empty, progressively removing elements."
+      "end-line": 3,
+      "question-about-purpose-of-code": "Why is the 'stack' variable initialized with a copy of 'input_list'?",
+      "answer": "The 'stack' is initialized with a copy of 'input_list' to prevent modifying the original list and to use stack operations for reversal.",
+      "top-two-variables": [
+        "stack",
+        "input_list"
+      ]
+    },
+    {
+      "step": 5,
+      "begin-line": 4,
+      "end-line": 5,
+      "question-about-purpose-of-code": "What is the role of the while loop in the function?",
+      "answer": "The while loop pops elements from the 'stack' and appends them to 'reversed_list', effectively reversing the order of the elements.",
+      "top-two-variables": [
+        "stack",
+        "reversed_list"
+      ]
     },
     {
       "step": 7,
-      "question": "reversed_list",
-      "begin-line": 4,
+      "begin-line": 5,
       "end-line": 5,
-      "explanation": "How does the insertion operation within the while loop affect the 'reversed_list' variable?",
-      "aiGeneratedSolution": "Each iteration inserts the first element of 'queue' at the beginning of 'reversed_list', effectively reversing the order of elements."
-    },
-    {
-      "step": 11,
-      "question": "queue",
-      "begin-line": 4,
-      "end-line": 5,
-      "explanation": "What changes occur to the 'queue' variable during each iteration of the while loop?",
-      "aiGeneratedSolution": "In each iteration, the first element of 'queue' is removed using 'pop(0)', reducing the size of 'queue' until it becomes empty."
-    },
-    {
-      "step": 13,
-      "question": "reversed_list",
-      "begin-line": 4,
-      "end-line": 5,
-      "explanation": "How does the final state of 'reversed_list' reflect the operations performed in the while loop?",
-      "aiGeneratedSolution": "The final 'reversed_list' contains all elements of 'input_list' in reverse order, achieved by inserting elements at the beginning in each loop iteration."
+      "question-about-purpose-of-code": "What is the purpose of appending popped elements from 'stack' to 'reversed_list'?",
+      "answer": "Appending popped elements from 'stack' to 'reversed_list' is the main operation that reverses the order of the list.",
+      "top-two-variables": [
+        "reversed_list",
+        "stack"
+      ]
     }
-  ];
+  ]
+
+const warmupQuestion1: newQuestionObject[] = [
+    {
+        "step": 4,
+        "begin-line": 3,
+        "end-line": 3,
+        "question-about-purpose-of-code": "Why is the queue initialized with a copy of the input list on line 3?",
+        "answer": "The queue is initialized with a copy of the input list to prevent modification of the original list and to provide a source of elements for the loop's operation.",
+        "top-two-variables": ["queue"]
+    },
+    {
+        "step": 5,
+        "begin-line": 4,
+        "end-line": 5,
+        "question-about-purpose-of-code": "What is the role of the while loop in the function reverse_list_with_queue?",
+        "answer": "The while loop processes each element in the queue and inserts it at the beginning of the reversed list, thus reversing the order of elements.",
+        "top-two-variables": ["queue", "reversed_list"]
+    },
+    {
+        "step": 9,
+        "begin-line": 5,
+        "end-line": 5,
+        "question-about-purpose-of-code": "What does the insert method do on line 5 and how does it contribute to the overall function?",
+        "answer": "The insert method inserts the first element of the queue at the beginning of the reversed list, thus changing the order of elements to achieve the reverse effect.",
+        "top-two-variables": ["reversed_list"]
+    },
+]
 
 // const warmupQuestion1: questionObject[] = [
 //     {
@@ -439,33 +432,40 @@ const warmupQuestion1: questionObject[] = [
 //     }
 // ];
 
-const warmupQuestion3: questionObject[] = [
+const warmupQuestion3: newQuestionObject[] = [
     {
         "step": 4,
-        "question": "dq",
-        "begin-line": 4,
-        "end-line": 4,
-        "explanation": "How does the condition dq.pop(0) != dq.pop() determine the outcome of the palindrome check?",
-        "aiGeneratedSolution": "The condition dq.pop(0) != dq.pop() checks if the first and last characters are different. If they are, the function returns False, indicating the string is not a palindrome."
+        "begin-line": 3,
+        "end-line": 5,
+        "question-about-purpose-of-code": "What is the purpose of the while loop in lines 3 to 5?",
+        "answer": "The loop iteratively checks and removes characters from both ends of the list until it's either empty or contains one character, which is crucial for palindrome validation.",
+        "top-two-variables": ["dq", "s"]
     },
     {
-        "step": 6,
-        "question": "dq",
+        "step": 5,
         "begin-line": 4,
         "end-line": 4,
-        "explanation": "What is the significance of comparing dq.pop(0) and dq.pop() in the palindrome check?",
-        "aiGeneratedSolution": "Comparing dq.pop(0) and dq.pop() checks if the first and last characters of the string are the same, which is crucial for determining if the string is a palindrome."
+        "question-about-purpose-of-code": "What is the purpose of the if statement on line 4?",
+        "answer": "It checks if the first and last characters of the list are equal, which is the core logic for palindrome validation.",
+        "top-two-variables": ["dq", "s"]
     },
     {
-        "step": 8,
-        "question": "dq",
+        "step": 7,
         "begin-line": 4,
         "end-line": 4,
-        "explanation": "How does the while loop and the pop operations affect the dq list during the palindrome check?",
-        "aiGeneratedSolution": "The while loop and pop operations progressively remove and compare characters from both ends of dq, ensuring that all characters match in a palindrome."
+        "question-about-purpose-of-code": "What does the pop function do in line 4?",
+        "answer": "It removes and returns the first and last characters from the list, which are then compared to check for palindrome.",
+        "top-two-variables": ["dq"]
+    },
+    {
+        "step": 11,
+        "begin-line": 6,
+        "end-line": 6,
+        "question-about-purpose-of-code": "What is the purpose of the return statement on line 6?",
+        "answer": "It returns True if the input string is a palindrome, concluding the palindrome check.",
+        "top-two-variables": ["dq"]
     }
-  ]
-;
+]
 
 // const taskQuestion1: questionObject[] = [
 //     {
@@ -503,76 +503,145 @@ const warmupQuestion3: questionObject[] = [
 // ];
 
 
-const taskQuestion1: questionObject[] = [
+const taskQuestion1: newQuestionObject[] = [
     {
-        "step": 7,
-        "question": "q",
-        "begin-line": 10,
-        "end-line": 12,
-        "explanation": "How does the code ensure that new states are added to the queue 'q' when an opening parenthesis is added?",
-        "aiGeneratedSolution": "The code checks if 'opens' is less than 'n' and appends a new state with an additional '('. This ensures all possible valid combinations are explored."
-    },
-    {
-        "step": 17,
-        "question": "q",
-        "begin-line": 13,
-        "end-line": 14,
-        "explanation": "How does the code ensure that new states are added to the queue 'q' when a closing parenthesis is added?",
-        "aiGeneratedSolution": "The code checks if 'closes' is less than 'opens' and 'max_d' is within 'm', then appends a new state with an additional ')'."
-    },
-    {
-        "step": 28,
-        "question": "q",
-        "begin-line": 10,
-        "end-line": 12,
-        "explanation": "How does the code ensure that new states are added to the queue 'q' when an opening parenthesis is added?",
-        "aiGeneratedSolution": "The code checks if 'opens' is less than 'n' and appends a new state with an additional '('. This ensures all possible valid combinations are explored."
-    },
-    {
-        "step": 50,
-        "question": "s",
+        "step": 6,
         "begin-line": 5,
         "end-line": 5,
-       "explanation": "How does the variable 's' change from '(())' to '()()' at this point in the code?",
-        "aiGeneratedSolution": "The variable 's' changes as the algorithm explores different valid combinations of parentheses, transitioning from one valid sequence '(())' to another '()()'."
+        "question-about-purpose-of-code": "What is the purpose of line 5 that pops the first element from the queue and unpacks it into multiple variables?",
+        "answer": "This line retrieves the next state to process from the queue 'q' and unpacks it into the variables 's', 'opens', 'closes', 'max_d', and 'cur_d'.",
+        "top-two-variables": [
+          "q",
+          "s"
+        ]
+    },
+    {
+      "step": 8,
+      "begin-line": 9,
+      "end-line": 12,
+      "question-about-purpose-of-code": "What is the purpose of the code block from lines 9 to 12 that checks the condition 'if opens < n' and updates 'q' and 'new_max_d'?",
+      "answer": "This block handles the case when an opening parenthesis can be added. It updates the queue 'q' with the new state after adding an opening parenthesis and updating the maximum depth 'new_max_d'.",
+      "top-two-variables": [
+        "q",
+        "new_max_d"
+      ]
+    },
+    {
+        "step": 9,
+        "begin-line": 10,
+        "end-line": 10,
+        "question-about-purpose-of-code": "What is the purpose of line 10 that calculates the new maximum depth 'new_max_d' when adding an opening parenthesis?",
+        "answer": "This line calculates the new maximum depth if an opening parenthesis is added to the current state, which is used to check if the depth restriction is met.",
+        "top-two-variables": [
+          "new_max_d",
+          "cur_d"
+        ]
+    },
+    {
+      "step": 24,
+      "begin-line": 13,
+      "end-line": 14,
+      "question-about-purpose-of-code": "What is the purpose of the code block from lines 13 to 14 that checks the condition 'if closes < opens and max_d <= d' and updates 'q'?",
+      "answer": "This block handles the case when a closing parenthesis can be added. It updates the queue 'q' with the new state after adding a closing parenthesis and updating the current depth 'cur_d'.",
+      "top-two-variables": [
+        "q",
+        "closes"
+      ]
+    },
+    {
+      "step": 47,
+      "begin-line": 6,
+      "end-line": 7,
+      "question-about-purpose-of-code": "What is the purpose of the code block from lines 6 to 7 that checks the condition 'if opens == n and closes == n' and updates 'result'?",
+      "answer": "This block checks if the current state represents a valid combination of parentheses (i.e., it has 'n' opening and closing parentheses) and if so, adds it to the result list.",
+      "top-two-variables": [
+        "result",
+        "s"
+      ]
     }
-]
-;
+  ]
 
-const taskQuestion2: questionObject[] = [
-        {
-            "step": 5,
-            "question": "char",
-            "begin-line": 5,
-            "end-line": 6,
-            "explanation": "How does the code iterate through each character in the input string?",
-            "aiGeneratedSolution": "The code iterates through each character in the input string, updating the 'char' variable with the current character."
-        },
-        {
-            "step": 7,
-            "question": "stack",
-            "begin-line": 7,
-            "end-line": 8,
-            "explanation": "How does the stack change when encountering an opening bracket?",
-            "aiGeneratedSolution": "When encountering an opening bracket, the index of the bracket is pushed onto the stack, helping to track the positions for matching."
-        },
-        {
-            "step": 16,
-            "question": "is_match",
-            "begin-line": 10,
-            "end-line": 12,
-            "explanation": "How is the 'is_match' variable used to determine if a valid bracket sequence is found?",
-            "aiGeneratedSolution": "The 'is_match' variable is set to True when a closing bracket is found and the stack is not empty, indicating a valid bracket sequence."
-        },
-        {
-            "step": 19,
-            "question": "max_length",
-            "begin-line": 13,
-            "end-line": 15,
-            "explanation": "How is max_length updated when a valid bracket sequence is found?",
-            "aiGeneratedSolution": "max_length is updated to the maximum of its current value and the length of the valid bracket sequence found, calculated as the difference between the current index and the new top of the stack."
-        },
-    ]
+const taskQuestion2: newQuestionObject[] = [
+    {
+        "step": 12,
+        "begin-line": 7,
+        "end-line": 8,
+        "question-about-purpose-of-code": "Why does the code append the index of the opening brackets to the stack in lines 7 and 8?",
+        "answer": "Appending the index of the opening brackets to the stack helps keep track of the brackets and their positions, which is useful for calculating the length of the valid substring.",
+        "top-two-variables": [
+          "stack",
+          "char"
+        ]
+    },
+    {
+      "step": 16,
+      "begin-line": 10,
+      "end-line": 17,
+      "question-about-purpose-of-code": "What is the purpose of the block of code from lines 10 to 17 that checks for certain conditions and updates the stack and max_length?",
+      "answer": "This block handles closing brackets. It checks if the top of the stack is an opening bracket that matches the current bracket. If so, it pops the stack and updates max_length. If not, it updates the top of the stack to the current index.",
+      "top-two-variables": [
+        "stack",
+        "max_length"
+      ]
+    },
+    {
+      "step": 22,
+      "begin-line": 15,
+      "end-line": 15,
+      "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
+      "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring.",
+      "top-two-variables": [
+        "max_length",
+        "i"
+      ]
+    },
+    {
+      "step": 23,
+      "begin-line": 17,
+      "end-line": 17,
+      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
+      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets.",
+      "top-two-variables": [
+        "stack",
+        "i"
+      ]
+    }
+  ]
+
+// const taskQuestion2: questionObject[] = [
+//         {
+//             "step": 5,
+//             "question": "char",
+//             "begin-line": 5,
+//             "end-line": 6,
+//             "explanation": "How does the code iterate through each character in the input string?",
+//             "aiGeneratedSolution": "The code iterates through each character in the input string, updating the 'char' variable with the current character."
+//         },
+//         {
+//             "step": 7,
+//             "question": "stack",
+//             "begin-line": 7,
+//             "end-line": 8,
+//             "explanation": "How does the stack change when encountering an opening bracket?",
+//             "aiGeneratedSolution": "When encountering an opening bracket, the index of the bracket is pushed onto the stack, helping to track the positions for matching."
+//         },
+//         {
+//             "step": 16,
+//             "question": "is_match",
+//             "begin-line": 10,
+//             "end-line": 12,
+//             "explanation": "How is the 'is_match' variable used to determine if a valid bracket sequence is found?",
+//             "aiGeneratedSolution": "The 'is_match' variable is set to True when a closing bracket is found and the stack is not empty, indicating a valid bracket sequence."
+//         },
+//         {
+//             "step": 19,
+//             "question": "max_length",
+//             "begin-line": 13,
+//             "end-line": 15,
+//             "explanation": "How is max_length updated when a valid bracket sequence is found?",
+//             "aiGeneratedSolution": "max_length is updated to the maximum of its current value and the length of the valid bracket sequence found, calculated as the difference between the current index and the new top of the stack."
+//         },
+//     ]
 
 // const taskQuestion4: questionObject[] = [
 //     {
@@ -644,44 +713,61 @@ const taskQuestion2: questionObject[] = [
 //     }
 // ];
 
-const taskQuestion3: questionObject[] = [
+const taskQuestion3: newQuestionObject[] = [
     {
-        "step": 11,
-        "question": "dq",
+        "step": 12,
         "begin-line": 7,
+        "end-line": 8,
+        "question-about-purpose-of-code": "What is the role of the while loop that pops elements from the deque 'dq'?",
+        "answer": "It ensures that 'dq' is in decreasing order, which is crucial for finding the maximum in the sliding window.",
+        "top-two-variables": ["dq", "n"]
+    },
+    {
+        "step": 15,
+        "begin-line": 9,
         "end-line": 9,
-        "explanation": "How does the code ensure that only the indices of elements larger than the current element are kept in the deque?",
-        "aiGeneratedSolution": "The while loop at lines 7-9 removes indices from the deque if the corresponding elements in nums are smaller than the current element."
+        "question-about-purpose-of-code": "Why is the current index 'i' being appended to 'dq'?",
+        "answer": "Appending 'i' to 'dq' is essential for tracking elements within the current window.",
+        "top-two-variables": ["dq", "i"]
     },
     {
-        "step": 20,
-        "question": "result",
-        "begin-line": 10,
-        "end-line": 11,
-        "explanation": "What condition must be met for an element to be added to the result list, and how is this element determined?",
-        "aiGeneratedSolution": "The condition is i >= k - 1. The element added to the result list is nums[dq[0]], the maximum of the current window."
-    },
-    {
-        "step": 29,
-        "question": 'dp',
+        "step": 30,
         "begin-line": 5,
         "end-line": 6,
-        "explanation": "What does the code do to maintain the deque's validity when the window slides past the first element?",
-        "aiGeneratedSolution": "The if statement at lines 5-6 removes the index at the front of the deque if it is out of the current window's range."
+        "question-about-purpose-of-code": "Why are elements being popped from the front of the deque 'dq' in the if condition?",
+        "answer": "This removes elements that are outside the current window, ensuring the window size remains valid.",
+        "top-two-variables": ["dq", "i"]
     },
     {
-        "step": 41,
-        "question": "result",
-        "begin-line": 7,
+        "step": 38,
+        "begin-line": 10,
         "end-line": 11,
-        "explanation": "How do the operations within the loop contribute to building the result list?",
-        "aiGeneratedSolution": "The loop maintains a deque of indices of the maximum elements for the current window, and appends the maximum to the result list when the window is valid."
+        "question-about-purpose-of-code": "Why are we appending 'nums[dq[0]]' to the result list?",
+        "answer": "This appends the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+        "top-two-variables": ["result", "dq"]
+    },
+    {
+        "step": 63,
+        "begin-line": 11,
+        "end-line": 11,
+        "question-about-purpose-of-code": "What is the significance of appending 'nums[dq[0]]' to 'result'?",
+        "answer": "This adds the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+        "top-two-variables": ["result", "dq"]
     }
-];
+]
 
 
 type TaskDecompositions = {
     [key: number]: StepDecomposition
+}
+
+interface newQuestionObject {
+    step: number;
+    "begin-line": number;
+    "end-line": number;
+    "question-about-purpose-of-code": string;
+    answer: string;
+    "top-two-variables": string[];
 }
 
 interface questionObject {
@@ -695,7 +781,7 @@ interface questionObject {
 
 
 type TaskQuestions = {
-    [key: number]: questionObject[];
+    [key: number]: newQuestionObject[];
 };
 
 export const taskQuestions: TaskQuestions = {

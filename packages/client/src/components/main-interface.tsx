@@ -80,7 +80,7 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
     const [rows, setRows] = useState(4);
     const [matched, setMatched] = useState<boolean>(true);
     const [timeoutValue, setTimeoutValue] = useState<number>(13);
-    const [showTimeout, setShowTimeout] = useState<boolean>(false);
+    const [showTimeout, setShowTimeout] = useState<boolean>(true);
 
     useEffect(() => {
         if (taskID === "1" || taskID === "3" || taskID === "5") {

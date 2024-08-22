@@ -1,5 +1,5 @@
 .editor {
-    width: 55vw;
+    width: 45vw;
     height: calc(55% - 2px);
     border: solid 1px #ccc;
     border-radius: 6px;
@@ -45,7 +45,7 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     position: relative;
-    width: 55vw;
+    width: 45vw;
     padding: 12px 0 12px 0;
     height: calc(45% - 65px);
 }
@@ -90,7 +90,7 @@
     align-items: center;
     justify-content:end;
     height: 40px;
-    width: 55vw;
+    width: 45vw;
 }
 
 .quick-editing-buttons-container {
@@ -179,7 +179,7 @@
 
 .task-workspace {
     margin-left: 12px;
-    width: 55vw;
+    width: 45vw;
 }
 
 .coding-task-workspace {
@@ -203,6 +203,7 @@
     border-radius: 4px;
     background-color: white;
     padding: 5px;
+    overflow-x: auto;
 }
 
 .task-baseline{

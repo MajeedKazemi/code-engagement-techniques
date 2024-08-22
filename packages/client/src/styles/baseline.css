@@ -12,7 +12,8 @@
 .baseline-title h3{
     padding: 10px;
     margin: 0 0 0 0;
-
+    display: flex;
+    align-items: center;
 }
 
 .chat-user-prompt{

@@ -124,7 +124,7 @@ const ExcutionTimeline: React.FC<TimelineProps> = ({
                 </button>
             </div>
             <p style={{ fontSize: "14px", marginTop: "1rem" }}>
-                Step {currentStep + 1} of {totalSteps}
+                Step {currentStep+2} of {totalSteps}
             </p>
         </div>
     );

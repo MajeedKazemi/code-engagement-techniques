@@ -18,9 +18,9 @@
 }
 
 .excution-generator {
-    padding-bottom: 2rem;
-    overflow-y: scroll;
-    height: calc(100% - 6rem);
+    padding-bottom: 0.5rem;
+    overflow-y: none;
+    height: calc(100% - 1rem);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -119,7 +119,6 @@
 }
 
 .frame {
-    overflow-y: scroll;
     margin-right: 0;
     flex: 1;
     height: 80%;
@@ -135,6 +134,8 @@
     width: 60%;
     margin-top: 20px;
     margin-right: 1rem;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .legend-item {
@@ -163,8 +164,9 @@
 }
 
 .step-by-step-code-container {
-    height: 35vh;
-    overflow-y: scroll;
+    height: auto;
+    overflow-y: none;
+    overflow-x: auto;
     border-radius: 6px;
     border: #353535 solid 1px;
 }
@@ -211,7 +213,7 @@
     width: 40%;
     margin-left: 10px;
     margin-right: 12px;
-    height: 68vh;
+    height: 100%;
 }
 
 .code-editor {
@@ -290,7 +292,7 @@
     border: #353535 solid 1px;
     width: 100%;
     margin-top: 20px;
-    height: 70%;
+    height: 100%;
     background-color: rgba(220, 230, 255, 255);
 }
 
@@ -368,6 +370,8 @@
 .question-input {
     height: 1.5rem;
     width: 70%;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .question-submission-button {
@@ -479,11 +483,11 @@
 
 .overall-explanation {
     background-color: rgba(220, 230, 255, 255);;
-    height: 100px;
-    overflow-y: auto;
-    margin-top: 20px;
+    overflow-y: none;
+    margin-top: 10px;
     padding: 10px;
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 
 .follow-up-question {
@@ -542,4 +546,9 @@
 
 .follow-up-question-feedback.normal{
     background-color: rgba(220, 230, 255, 255);
+}
+
+.prompt-text.trace-predict-side{
+    overflow: none !important;
+    height: auto;
 }

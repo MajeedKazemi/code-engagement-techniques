@@ -46,7 +46,7 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
     const [timeoutValue, setTimeoutValue] = useState<number>(13);
-    const [showTimeout, setShowTimeout] = useState<boolean>(false);
+    const [showTimeout, setShowTimeout] = useState<boolean>(true);
 
     useEffect(() => {
         if (taskID === "1" || taskID === "3" || taskID === "5") {
@@ -543,21 +543,10 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
                         }
                     </div>
                     <div className="modal-body">
-                        <div className="prompt-text">
+                        {/* <div className="prompt-text">
                             <span className="button-span">Prompt:</span>{" "}
                             {prompt}
-                        </div>
-                        <div className="overall-explanation-container">
-                            {generatedExplanation && (
-                                <div className="overall-explanation">
-                                    <b>Explanation:</b> 
-                                    <div dangerouslySetInnerHTML={{
-                                        __html: highlightPsudo(generatedExplanation, "code-highlight"),
-                                    }}>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        </div> */}
                         {/* <p>
                     <b>Prompts: </b> {prompt}
                   </p> */}
@@ -568,11 +557,13 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
                                 <GPTLoader />
                             </div>
                         )}
-                        {!waiting && counter >= 5 && (
+                        {!waiting && counter >= 5 && generatedExplanation && (
                             <ExcutionSteps
                                 code={generatedCode}
                                 backendCodes={backendCodes}
                                 taskID={taskID}
+                                prompt={prompt}
+                                generatedExplanation={generatedExplanation}
                             />
                         )}
                     </div>
