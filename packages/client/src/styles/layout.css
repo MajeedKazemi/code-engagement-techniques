@@ -5,6 +5,7 @@
 
 .layout-content {
     height: calc(100vh - 24px);
+    overflow-y: hidden;
 }
 
 .response-container {

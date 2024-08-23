@@ -76,6 +76,10 @@
     height: calc(100% - 7.5rem);
     overflow-y: scroll;
   }
+
+  .modal-body.leadreveal{
+    padding-right: 0;
+  }
   
   .modal-footer {
     position: absolute;

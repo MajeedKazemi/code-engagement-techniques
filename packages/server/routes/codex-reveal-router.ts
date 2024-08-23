@@ -179,37 +179,27 @@ function parseResponse(response: string): any {
 
 
 revealRouter.post("/feedbackFromRevealShortAnswer", verifyUser, async (req, res, next) => {
-  const { line, studentSolution, aiGeneratedSolution, question } = req.body;
+  const { code, studentSolution, aiGeneratedSolution, question } = req.body;
   const userId = (req.user as IUser)._id;
   if (studentSolution !== undefined) {
-      let messages: Array<ChatCompletionRequestMessage> = [
-          {
-              role: "system",
-              content: `You will be given details about a specific line of code before it is revealed. The goal of this exercise is to challenge the user to think critically and deeply without revealing the answer. 
+    let messages: Array<ChatCompletionRequestMessage> = [
+        {
+            role: "system",
+            content: `The student has been given the provided [code] that certain lines in it have been highlighted. The student has been asked a [question] about these lines. And the student has answered [student-solution]. See if their answer makes sense based on the provided [code], you can also take a look at the AI-generated solution [ai-generated-solution]. The goal is to make sure the student is understanding these highlighted lines correctly and providing a good explanation to the [question]. There is no need for ther [student-solution] to be exactly the same as the [ai-generated-solution]. The student can be creative and provide a different but correct answer.
+            
+            Please return a JSON object with the following format:
+            {
+                "correctness": <0-5>, // 0 means completely wrong, 5 means the student has answered perfectly with a lot of detail.
+                "feedback": "<20-30 word of explanation about what the student got correctly and what they are missing in their answer.>"
+            }`,
+          },
+    ];
 
-              Input: 
-              - [line]: The specific line of code in question.
-              - [student-solution]: The student's proposed solution to the problem or question posed by the line of code.
-              - [ai-generated-solution]: The AI-generated solution to the same problem or question.
-              - [question]: The question associated with the line of code intended to stimulate critical thinking.
-
-              Task: 
-
-              By comparing the logic of the student solution and the AI-generated solution, return the following JSON object:
-
-              {
-                "correct": "<either 'yes' or 'no'>",
-                "feedback": "<15-25 words of explanations and hints that guide users to the AI-generated solution. Be detailed and concise.>"
-              }
-
-              Your evaluation should focus on whether the student's solution correctly addresses the question and matches the AI-generated solution in terms of logic and correctness. Provide constructive feedback to guide users toward improving their understanding, ideally steering them towards the AI-generated solution if their answer is`,
-            }
-      ];
-
-      messages.push({
-        role: "user",
-        content: `[line]: ${line}\n[student-solution]: ${studentSolution}\n[ai-generated-solution]: ${aiGeneratedSolution}\n[question]: ${question}`,
-    });
+    messages.push({
+      role: "user",
+      content: `[code]: ${code}\n
+      [student-solution]: ${studentSolution}\n[ai-generated-solution]: ${aiGeneratedSolution}\n[question]: ${question}`,
+  });
 
     const result = await openai.createChatCompletion({
         model: "gpt-4o-mini",

@@ -23,83 +23,47 @@ interface RevealGenerateCodeProps {
     moveOn: () => void;
 }
 
-interface QuestionObject {
-    correct: boolean;
-    text: string;
-}
 
 interface QuestionInterface {
-    title: string;
-    indent: number;
+    revealLines: string;
     questions: SubQuestions[];
 }
 
 interface SubQuestions {
     context: string;
-    selectedQuestion: string;
-    shortQuestion: string;
-    mcqQuestion: string;
-    hintForMCQ: string;
-    explanation: string;
-    choices: QuestionObject[];
-    explanationSolution: string;
-    revealLine: string;
-}
-
-function shuffleArray(array: any[]): any[] {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+    question: string
+    solution: string;
 }
 
 function responseToQuestion(response: any, code: string): QuestionInterface[] {
     return response.subgoals.map((item: any) => {
         // question details:
         let questionsInSubgoals = [];
-        const indentLevel = item["indent-level"];
+        const questionLines = item["subgoal-code-lines-to-be-revealed"];
 
-        for (let i = 0; i < item["leading-questions"].length; i++) {
-            const questionDetails =
-            item["leading-questions"][i];
-            const questionLines = questionDetails["code-line-to-be-revealed"];
-            // randomize choices, save them in questionObject format
-            const choices = shuffleArray([
-                { correct: true, text: questionDetails["correct-choice"] },
-                { correct: false, text: questionDetails["incorrect-choice-1"] },
-                { correct: false, text: questionDetails["incorrect-choice-2"] },
-                { correct: false, text: questionDetails["incorrect-choice-3"] },
-            ]);
+        // revealLines
+        const codeLines = code.split("\n");
+        const revealLines = Array.isArray(questionLines) ? questionLines :[questionLines];
+        const lines = revealLines
+            .map((index: number) => codeLines[index - 1])
+            .filter((line: string) => typeof line === "string")
+            .join("\n");
 
-            // revealLines
-            const codeLines = code.split("\n");
-            const revealLines = Array.isArray(questionLines) ? questionLines :[questionLines];
-            const lines = revealLines
-                .map((index: number) => codeLines[index - 1])
-                .filter((line: string) => typeof line === "string")
-                .join("\n");
-
+        for (let i = 0; i < item["questions"].length; i++) {
+            const questionDetails = item["questions"][i];
             
             questionsInSubgoals.push(
-                {
-                    context: questionDetails.context,
-                    selectedQuestion: questionDetails["selected-question"],
-                    shortQuestion: questionDetails["short-answer-question"],
-                    mcqQuestion: questionDetails["mcq-question"],
-                    hintForMCQ: questionDetails["hint-if-incorrect"],
-                    explanation: questionDetails["explanation-after-correct-answer"],
-                    choices: choices,
-                    revealLine: lines,
-                    explanationSolution: questionDetails["short-answer-solution"],
+                {   
+                    context: questionDetails["context-so-far"],
+                    question: questionDetails["question"],
+                    solution: questionDetails["answer"],
                 }
             );
         }
 
 
         return {
-            title: item.title,
-            indent: indentLevel,
+            revealLines: lines,
             questions: questionsInSubgoals,
         };
     });
@@ -248,8 +212,6 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
             }
         }
     };
-
-    // const generateCode = () => {
     //     if (prompt.length === 0) {
     //         setFeedback(
     //             "You should write an instruction of the code that you want to be generated."
@@ -445,30 +407,6 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
         return () => clearInterval(interval);
     }, []);
 
-    const closePopup = async () => {
-        setIsModalOpen(true);
-    };
-
-    const handleModalClick = (confirmed: boolean) => {
-        setIsModalOpen(false);
-
-        if (confirmed) {
-            setIsOpen(false);
-            const overlayElement = document.querySelector(
-                ".overlay"
-            ) as HTMLElement;
-            const editorElement = document.querySelector(
-                ".editor"
-            ) as HTMLElement;
-            overlayElement!.style.display = "none";
-            editorElement.style.zIndex = "1";
-            setGeneratedCode("");
-            setGeneratedExplanation("");
-            moveOn();
-            revealCancelClicked = !revealCancelClicked;
-        }
-    };
-
     useEffect(() => {
         if (isOver) {
             setIsOpen(false);
@@ -531,16 +469,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
                             </div>)
                         }
                     </div>
-                    <div className="modal-body">
-                        <div className="prompt-text">
-                            <span className="button-span">Prompt:</span>{" "}
-                            {prompt}
-                        </div>
-                        {/* <p>
-                    <b>Prompts: </b> {prompt}
-                  </p> */}
-
-                        {/* parsons main div */}
+                    <div className="modal-body leadreveal">
                         {(waiting || counter < 5) && (
                             <div className="gptLoader">
                                 <GPTLoader />
@@ -550,6 +479,8 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
                             <RevealQuestionComponent
                                 data={questions}
                                 taskID={taskID}
+                                prompt={prompt}
+                                code={generatedCode}
                             />
                         )}
                     </div>
@@ -576,23 +507,6 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
                                 </button>
                             </>
                         )}
-                        {/* <button disabled={!buttonClickOver} type="button" className={`btn btn-secondary ${!buttonClickOver ? 'disabled' : ''}`} onClick={() => setIsOver(true)}>
-                    Done
-                    </button>
-                  <button disabled={waiting} type="button" className="btn btn-secondary" onClick={closePopup}>
-                    Next
-                  </button>
-                  {isModalOpen && (
-                      <div className="modal-next-confirm">
-                        <div className="modal-next-confirm-content">
-                        <h3>Are you sure you want to go to the next task?</h3>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <button type="button" onClick={() => handleModalClick(true)}>Yes</button>
-                          <button type="button" onClick={() => handleModalClick(false)}>No</button>
-                        </div>
-                        </div>
-                      </div>
-                  )} */}
                     </div>
                 </div>
             )}
@@ -601,6 +515,3 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
 };
 
 export default RevealGenerateCode;
-function setGeneratedQuestion(code: any) {
-    throw new Error("Function not implemented.");
-}
