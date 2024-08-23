@@ -1672,7 +1672,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         <p>Follow Up</p>
                                                     </div>
                                                     <div className="follow-up-question-text">
-                                                        {item.answer}
+                                                        {item["question-about-purpose-of-code"]}
                                                     </div>
                                                     {explanationFeedback[index] != "" && explanationFeedbackReady[index] && !explanationQuestionCorrect[index] && !attempted.every(attempt => attempt) &&
                                                         <>
