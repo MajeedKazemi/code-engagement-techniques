@@ -110,6 +110,14 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     }, [explanation]);
 
     const cancelClick = () => {
+        const r = confirm(
+            "Are you sure you want to move to the next task? You can't return to this task."
+        );
+
+        if (!r) {
+            return;
+        }
+
         const overlayElement = document.querySelector(
             ".overlay"
         ) as HTMLElement;
