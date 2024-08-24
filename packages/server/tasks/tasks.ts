@@ -675,8 +675,32 @@ is_palindrome("raider")
 <br/>
 <p>Examples:</p>
 <pre class="code-block">
+sliding_window_maximum([1,3,-1,-3,5,3,6,7], 3)
+# Output: [3, 3, 5, 5, 6, 7]
+# Explanation: The sliding windows are:
+# - [1, 3, -1] -> max is 3
+# - [3, -1, -3] -> max is 3
+# - [-1, -3, 5] -> max is 5
+# - [-3, 5, 3] -> max is 5
+# - [5, 3, 6] -> max is 6
+# - [3, 6, 7] -> max is 7
 </pre>
 <pre class="code-block">
+sliding_window_maximum([4, 2, 12, 3, 7], 4)
+# Output: [12, 12]
+# Explanation: The sliding windows are:
+# - [4, 2, 12, 3] -> max is 12
+# - [2, 12, 3, 7] -> max is 12
+</pre>
+<pre class="code-block">
+sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
+# Output: [11, 11, 8, 7, 10]
+# Explanation: The sliding windows are:
+# - [9, 11] -> max is 11
+# - [11, 8] -> max is 11
+# - [8, 5] -> max is 8
+# - [5, 7] -> max is 7
+# - [7, 10] -> max is 10
 </pre>
 <br/>
 <br/>
@@ -1088,46 +1112,160 @@ assert dna_sequences("NN") == ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', '
 assert dna_sequences("AAN") == ['AAA', 'AAC', 'AAG', 'AAT']`
     ),
 
+    new MultipleChoiceTask(
+        "MC4RB",
+        `<h1>Task 4: Longest Valid Parentheses (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>longest_valid_parentheses(s: str) -> int</b> that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = "(()"', the output should be '2', as the longest valid substring is '"()"'. For 's = ")()())"', the output should be '4' due to the substring '"()()"'. Another example would be 's = ""', where the output should be '0' since there are no valid parentheses.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+longest_valid_parentheses("(()")
+# Output: 2
+# Explanation: The longest valid substring is "()", which has a length of 2.
+</pre>
+<pre class="code-block">
+longest_valid_parentheses(")()())")
+# Output: 4
+# Explanation: The longest valid substring is "()()", which has a length of 4.
+</pre>
+<pre class="code-block">
+longest_valid_parentheses("((())(()")
+# Output: 4
+# Explanation: The longest valid substring is "(())", which has a length of 4.
+</pre>
+<pre class="code-block">
+longest_valid_parentheses("()(())))")
+# Output: 6
+# Explanation: The longest valid substring is "()(()))", which has a length of 6.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
     new ManualCodingTask(
         "mc4",
         "Write a function 'longest_valid_parentheses(s: str) -> int' that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = \"(()\"', the output should be '2', as the longest valid substring is '\"()\"'. For 's = \")()())\"', the output should be '4' due to the substring '\"()()\"'. Another example would be 's = \"\"', where the output should be '0' since there are no valid parentheses.",
         `def longest_valid_parentheses(s: str) -> int:
     """
     Write a function 'longest_valid_parentheses(s: str) -> int' that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = "(()"', the output should be '2', as the longest valid substring is '"()"'. For 's = ")()())"', the output should be '4' due to the substring '"()()"'. Another example would be 's = ""', where the output should be '0' since there are no valid parentheses.
-    
-    Args:
-        s (str): The input string containing only '(' and ')'.
-        
-    Returns:
-        int: The length of the longest valid parentheses substring.
-        
-    Examples:
-        >>> longest_valid_parentheses("(()")
-        2
-        
-        >>> longest_valid_parentheses(")()())")
-        4
-        
-        >>> longest_valid_parentheses("((())(()")
-        4
-                
-        >>> longest_valid_parentheses(")(()")
-        2
-                
-        >>> longest_valid_parentheses("()(())))")
-        6
+
+    Please fill out the #TODO parts.
+
+    >>> longest_valid_parentheses("(()")
+    # Output: 2
+    # Explanation: The longest valid substring is "()", which has a length of 2.
+
+    >>> longest_valid_parentheses(")()())")
+    # Output: 4
+    # Explanation: The longest valid substring is "()()", which has a length of 4.
+
+    >>> longest_valid_parentheses("((())(()")
+    # Output: 4
+    # Explanation: The longest valid substring is "(())", which has a length of 4.
+
+    >>> longest_valid_parentheses("()(())))")
+    # Output: 6
+    # Explanation: The longest valid substring is "()(()))", which has a length of 6.
     """
-`
+    stack = [-1]
+    max_length = 0
+    
+    for i in range(len(s)):
+        char = s[i]
+        
+        if char == "(":
+            # TODO: fill this part
+        elif char == ")":
+            if len(stack) > 1:
+                # TODO: fill this part
+                # TODO: fill this part
+            else:
+                # TODO: fill this part
+                
+    return max_length
+
+assert longest_valid_parentheses("(()") == 2
+assert longest_valid_parentheses(")()())") == 4
+assert longest_valid_parentheses("((())(()") == 4
+assert longest_valid_parentheses("()(())))") == 6`
+    ),
+
+    new MultipleChoiceTask(
+        "MC5RB",
+        `<h1>Task 5: Longest Valid DNA Sequences (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>longest_valid_dna_subsequence(s: str) -> str</b> that finds and returns the longest valid subsequence of a DNA string where each 'A' is paired with a 'T' and each 'C' is paired with a 'G'. The DNA string is considered valid if the sequence of pairs is correctly balanced, meaning every 'A' has a corresponding 'T' after it and every 'C' has a corresponding 'G'. For example, in the string '"ATCGGCAT"', the longest valid subsequence is '"ATCGGC"', while in the string '"ATATGC"', the longest valid subsequence is '"ATAT"'. The function should return this subsequence as a string.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+longest_valid_dna_subsequence("TACG")
+# Output: "CG"
+# Explanation: The input string "TACG" has the valid subsequence "CG". The characters 'C' and 'G' form a valid pair, but 'TA' does not have a corresponding 'T' after 'A'. Therefore, the longest valid subsequence is "CG".
+</pre>
+<pre class="code-block">
+longest_valid_dna_subsequence("GGCATCGGTA")
+# Output: "CATCGG"
+# Explanation: The input string "GGCATCGGTA" has the longest valid subsequence "CATCGG". This subsequence includes correctly paired 'A' with 'T' and 'C' with 'G'. Other combinations do not result in a longer valid subsequence.
+</pre>
+<pre class="code-block">
+longest_valid_dna_subsequence("AATTCG")
+# Output: "AATTCG"
+# Explanation: The input string "AATTCG" is itself a valid subsequence. All 'A's are paired with 'T's and 'C's are paired with 'G's correctly. So, the longest valid subsequence is the entire string "AATTCG".
+</pre>
+<pre class="code-block">
+longest_valid_dna_subsequence("ATGCGT")
+# Output: "AT"
+# Explanation: In the input string "ATGCGT", the longest valid subsequence is "AT". Even though there are 'G' and 'C', they do not form a balanced subsequence after considering the initial valid "AT".
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new ManualCodingTask(
-        "fc4",
+        "mc5",
         `Write a function 'longest_valid_dna_subsequence(s: str) -> str' that finds and returns the longest valid subsequence of a DNA string where each 'A' is paired with a 'T' and each 'C' is paired with a 'G'. The DNA string is considered valid if the sequence of pairs is correctly balanced, meaning every 'A' has a corresponding 'T' after it and every 'C' has a corresponding 'G'. For example, in the string '"ATCGGCAT"', the longest valid subsequence is '"ATCGGC"', while in the string '"ATATGC"', the longest valid subsequence is '"ATAT"'. The function should return this subsequence as a string.`,
         `def longest_valid_dna_subsequence(s: str) -> str:
     """
     Write a function 'longest_valid_dna_subsequence(s: str) -> str' that finds and returns the longest valid subsequence of a DNA string where each 'A' is paired with a 'T' and each 'C' is paired with a 'G'. The DNA string is considered valid if the sequence of pairs is correctly balanced, meaning every 'A' has a corresponding 'T' after it and every 'C' has a corresponding 'G'. For example, in the string '"ATCGGCAT"', the longest valid subsequence is '"ATCGGC"', while in the string '"ATATGC"', the longest valid subsequence is '"ATAT"'. The function should return this subsequence as a string.
 
     Please fill out the #TODO parts.
+
+    >>> longest_valid_dna_subsequence("TACG")
+    # Output: "CG"
+    # Explanation: The input string "TACG" has the valid subsequence "CG". The characters 'C' and 'G' form a valid pair, but 'TA' does not have a corresponding 'T' after 'A'. Therefore, the longest valid subsequence is "CG".
+
+    >>> longest_valid_dna_subsequence("GGCATCGGTA")
+    # Output: "CATCGG"
+    # Explanation: The input string "GGCATCGGTA" has the longest valid subsequence "CATCGG". This subsequence includes correctly paired 'A' with 'T' and 'C' with 'G'. Other combinations do not result in a longer valid subsequence.
+
+    >>> longest_valid_dna_subsequence("AATTCG")
+    # Output: "AATTCG"
+    # Explanation: The input string "AATTCG" is itself a valid subsequence. All 'A's are paired with 'T's and 'C's are paired with 'G's correctly. So, the longest valid subsequence is the entire string "AATTCG".
+
+    >>> longest_valid_dna_subsequence("ATGCGT")
+    # Output: "AT"
+    # Explanation: In the input string "ATGCGT", the longest valid subsequence is "AT". Even though there are 'G' and 'C', they do not form a balanced subsequence after considering the initial valid "AT".
     """
     pair_map = {'A': 'T', 'C': 'G'}
     stack = [-1]
@@ -1150,39 +1288,273 @@ assert dna_sequences("AAN") == ['AAA', 'AAC', 'AAG', 'AAT']`
                 # TODO: fill this part
     
     return # TODO: fill this part
-`
+
+assert longest_valid_dna_subsequence("TACG") == "CG"
+assert longest_valid_dna_subsequence("GGCATCGGTA") == "CATCGG"
+assert longest_valid_dna_subsequence("AATTCG") == "AATTCG"
+assert longest_valid_dna_subsequence("ATGCGT") == "AT"`
+    ),
+
+    new MultipleChoiceTask(
+        "MC6RB",
+        `<h1>Task 6: Invalid Parentheses Indicies (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+
+<p>Write a function <b>invalid_parentheses_indices(s: str) -> int</b> that calculates the minimum number of invalid parentheses that need to be removed to make the input string <b>s</b> valid. The function should traverse the string <b>s</b>, keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input <b>s = "())()"</b>, the function should return <b>1</b> because removing one closing parenthesis at index <b>2</b> would make the string valid. If the input is <b>s = "(()"</b>, it should return <b>1</b> as well because removing one opening parenthesis at index <b>0</b> would make the string valid.</p>
+
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+invalid_parentheses_indices(")()(")
+# Output: [0, 3]
+# Explanation: Parentheses at indices 0 and 3 are unmatched and need removal.
+</pre>
+<pre class="code-block">
+invalid_parentheses_indices("())()")
+# Output: [2]
+# Explanation: The parenthesis at index 2 is unmatched and needs removal.
+</pre>
+<pre class="code-block">
+invalid_parentheses_indices(")((")
+# Output: [0, 1, 2]
+# Explanation: All three parentheses are unmatched and need removal.
+</pre>
+<pre class="code-block">
+invalid_parentheses_indices(")()(")
+# Output: [0, 3]
+# Explanation: Parentheses at indices 0 and 3 are unmatched and need removal.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new ManualCodingTask(
-        "mc5",
+        "mc6",
+        ``,
+        `def invalid_parentheses_indices(s: str) -> list[int]:
+    """
+    Write a function 'invalid_parentheses_indices(s: str) -> int' that calculates the minimum number of invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()"', the function should return 1 because removing one closing parenthesis at index 2 would make the string valid. If the input is 's = "(()"', it should return 1 as well because removing one opening parenthesis at index 0 would make the string valid.
+
+    Please fill out the #TODO parts.
+
+    >>> invalid_parentheses_indices(")()(")
+    # Output: [0, 3]
+    # Explanation: Parentheses at indices 0 and 3 are unmatched and need removal.
+
+    >>> invalid_parentheses_indices("())()")
+    # Output: [2]
+    # Explanation: The parenthesis at index 2 is unmatched and needs removal.
+
+    >>> invalid_parentheses_indices(")((")
+    # Output: [0, 1, 2]
+    # Explanation: All three parentheses are unmatched and need removal.
+
+    >>> invalid_parentheses_indices(")()(")
+    # Output: [0, 3]
+    # Explanation: Parentheses at indices 0 and 3 are unmatched and need removal.
+    """
+    invalid_indices = []
+    stack = # TODO: fill this par
+    
+    for i in range(len(s)):
+        char = s[i]
+        
+        if char == '(':
+            stack.append(i)
+        elif char == ')':
+            if stack:
+                stack.pop()
+            else:
+                # TODO: fill this part
+	
+	# TODO: fill this part
+	# TODO: fill this part
+	
+    return invalid_indices
+
+assert invalid_parentheses_indices(")()(") == [0, 3]
+assert invalid_parentheses_indices("())()") == [2]
+assert invalid_parentheses_indices(")((") == [0, 1, 2]
+assert invalid_parentheses_indices(")()(") == [0, 3]`
+    ),
+
+    new MultipleChoiceTask(
+        "MC7RB",
+        `<h1>Task 7: Longest Valid DNA Sequences (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+
+<p>Write a function <b>sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]</b> that finds the minimum value within every sliding window of size <b>k</b> in the given list <b>nums</b>, and returns a list of tuples where each tuple contains the minimum value and its index within the window. The sliding window moves one position at a time from left to right across the list. For example, given <b>nums = [4, 2, 12, 3, 8]</b> and <b>k = 3</b>, the function should return <b>[(2, 1), (2, 1), (3, 3)]</b>, and for <b>nums = [1, 3, -1, -3, 5]</b> with <b>k = 2</b>, it should return <b>[(1, 0), (-1, 2), (-3, 3), (-3, 3)]</b>.</p>
+
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+sliding_window_minimum([4, 2, 12, 3, 8], 3)
+# Output: [(2, 1), (2, 1), (3, 3)]
+# Explanation: For k=3, the sliding windows are [4, 2, 12], [2, 12, 3], and [12, 3, 8]. The minimums are 2 at index 1, 2 at index 1, and 3 at index 3.
+</pre>
+<pre class="code-block">
+sliding_window_minimum([1, 3, -1, -3, 5], 2)
+# Output: [(1, 0), (-1, 2), (-3, 3), (-3, 3)]
+# Explanation: For k=2, the sliding windows are [1, 3], [3, -1], [-1, -3], and [-3, 5]. The minimums are 1 at index 0, -1 at index 2, -3 at index 3, and -3 at index 3.
+</pre>
+<pre class="code-block">
+sliding_window_minimum([10, 5, 2, 7, 8, 7], 3)
+# Output: [(2, 2), (2, 2), (2, 2), (7, 3)]
+# Explanation: For k=3, the sliding windows are [10, 5, 2], [5, 2, 7], [2, 7, 8], and [7, 8, 7]. The minimums are 2 at index 2, 2 at index 2, 2 at index 2, and 7 at index 3.
+</pre>
+<pre class="code-block">
+sliding_window_minimum([4, 5, 6, 3, 2, 1], 4)
+# Output: [(3, 3), (2, 4), (1, 5)]
+# Explanation: For k=4, the sliding windows are [4, 5, 6, 3], [5, 6, 3, 2], and [6, 3, 2, 1]. The minimums are 3 at index 3, 2 at index 4, and 1 at index 5.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
+    new ManualCodingTask(
+        "mc7",
         `Write a function 'sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]' that finds the minimum value within every sliding window of size 'k' in the given list 'nums', and returns a list of tuples where each tuple contains the minimum value and its index within the window. The sliding window moves one position at a time from left to right across the list. For example, given 'nums = [4, 2, 12, 3, 8]' and 'k = 3', the function should return '[(2, 1), (2, 1), (3, 3)]', and for 'nums = [1, 3, -1, -3, 5]' with 'k = 2', it should return '[(1, 0), (-1, 2), (-3, 3), (-3, 3)]'.`,
         `def sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]:
     """
-    Write a function 'sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]' that finds the minimum value within every sliding window of size 'k' in the given list 'nums', and returns a list of tuples where each tuple contains the minimum value and its index within the window. The sliding window moves one position at a time from left to right across the list. For example, given 'nums = [4, 2, 12, 3, 8]' and 'k = 3', the function should return '[(2, 1), (2, 1), (3, 3)]', and for 'nums = [1, 3, -1, -3, 5]' with 'k = 2', it should return '[(1, 0), (-1, 2), (-3, 3), (-3, 3)]'.
-    
-    Args:
-        nums (list[int]): The list of integers to process.
-        k (int): The size of the sliding window.
-        
-    Returns:
-        list[tuple[int, int]]: A list of tuples, each containing the minimum value within the sliding window and its corresponding index in the original list.
-        
-    Examples:
-        >>> sliding_window_minimum([4, 2, 12, 3, 8], 3)
-        [(2, 1), (2, 1), (3, 3)]
-        
-        >>> sliding_window_minimum([1, 3, -1, -3, 5], 2)
-        [(1, 0), (-1, 2), (-3, 3), (-3, 3)]
-        
-        >>> sliding_window_minimum([10, 5, 2, 7, 8, 7], 3)
-        [(2, 2), (2, 2), (2, 2), (7, 3)]
-        
-        >>> sliding_window_minimum([4, 5, 6, 3, 2, 1], 4)
-        [(3, 3), (2, 4), (1, 5)]
-        
-        >>> sliding_window_minimum([7, 2, 5, 3, 6, 4], 2)
-        [(2, 1), (2, 1), (3, 3), (3, 3), (4, 5)]
+    Write a function 'sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]' that finds the minimum value within every sliding window of size 'k' in the given list 'nums', and returns a list of tuples where each tuple contains the minimum value and its index within the window. The sliding window moves one position at a time from left to right across the list. For example, given 'nums = [4, 2, 12, 3, 8]' and 'k = 3', the function should return '[(2, 1), (2, 1), (3, 3)]', and for 'nums = [1, 3, -1, -3, 5]' with 'k = 2', it should return '[(1, 0), (-1, 2), (-3, 3), (-3, 3)]'..
+
+    Please fill out the #TODO parts.
+
+    >>> sliding_window_minimum([4, 2, 12, 3, 8], 3)
+    # Output: [(2, 1), (2, 1), (3, 3)]
+    # Explanation: For k=3, the sliding windows are [4, 2, 12], [2, 12, 3], and [12, 3, 8]. The minimums are 2 at index 1, 2 at index 1, and 3 at index 3.
+
+    >>> sliding_window_minimum([1, 3, -1, -3, 5], 2)
+    # Output: [(1, 0), (-1, 2), (-3, 3), (-3, 3)]
+    # Explanation: For k=2, the sliding windows are [1, 3], [3, -1], [-1, -3], and [-3, 5]. The minimums are 1 at index 0, -1 at index 2, -3 at index 3, and -3 at index 3.
+
+    >>> sliding_window_minimum([10, 5, 2, 7, 8, 7], 3)
+    # Output: [(2, 2), (2, 2), (2, 2), (7, 3)]
+    # Explanation: For k=3, the sliding windows are [10, 5, 2], [5, 2, 7], [2, 7, 8], and [7, 8, 7]. The minimums are 2 at index 2, 2 at index 2, 2 at index 2, and 7 at index 3.
     """
+    dq = []
+    result = []
+    
+    for i, n in enumerate(nums):
+        if dq and # TODO: fill this part
+            dq.pop(0)
+            
+        while # TODO: fill this part
+            dq.pop()
+            
+        dq.append(i)
+        
+        if i >= k - 1:
+            # TODO: fill this part
+            
+    return result
+
+assert sliding_window_minimum([4, 2, 12, 3, 8], 3) == [(2, 1), (2, 1), (3, 3)]
+assert sliding_window_minimum([1, 3, -1, -3, 5], 2) == [(1, 0), (-1, 2), (-3, 3), (-3, 3)]
+assert sliding_window_minimum([10, 5, 2, 7, 8, 7], 3) == [(2, 2), (2, 2), (2, 2), (7, 3)]`
+    ),
+
+    new MultipleChoiceTask(
+        "MC8RB",
+        `<h1>Task 8: Longest Valid DNA Sequences (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+
+<p>Write a function </p>
+
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+
+</pre>
+<pre class="code-block">
+
+</pre>
+<pre class="code-block">
+
+</pre>
+<pre class="code-block">
+
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
+    new ManualCodingTask(
+        "mc8",
+        ``,
+        `def longest_valid_dna_subsequence(s: str) -> str:
+`
+    ),
+
+    new MultipleChoiceTask(
+        "MC9RB",
+        `<h1>Task 5: Longest Valid DNA Sequences (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+
+<p>Write a function </p>
+
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+
+</pre>
+<pre class="code-block">
+
+</pre>
+<pre class="code-block">
+
+</pre>
+<pre class="code-block">
+
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
+    new ManualCodingTask(
+        "mc9",
+        ``,
+        `def longest_valid_dna_subsequence(s: str) -> str:
 `
     ),
 ];
