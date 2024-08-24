@@ -1437,60 +1437,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     </div>
                 </div>
 
-                <div className={`step-by-step-timeline-container`}>
-                    <div className="legend">
-                        {questionStop >= excutionSteps.length - 1 &&
-                            currentStep == excutionSteps.length - 1 && (
-                                <span id="game-over" style={{ opacity: 0 }}>
-                                    Game Over
-                                </span>
-                            )}
-                        {questionStop >= excutionSteps.length - 1 && (
-                            <span id="send-log" style={{ opacity: 0 }}>
-                                send-log
-                            </span>
-                        )}
-                        <div className="legend-item">
-                            <FaLongArrowAltRight className="green-arrow" />
-                            <div className="legend-text">
-                                Line that just executed
-                            </div>
-                        </div>
-                        <div className="legend-item">
-                            <FaLongArrowAltRight className="red-arrow" />
-                            <div className="legend-text">
-                                Next line to execute
-                            </div>
-                        </div>
-                    </div>
-
-                    <ExcutionTimeline
-                        totalSteps={excutionSteps.length}
-                        setCurrentStep={setCurrentStep}
-                        currentStep={currentStep}
-                        stop={questionStop}
-                        setFirstClickCounter={setFirstClickCounter}
-                        setPrevClickCounter={setPrevClickCounter}
-                        setNextClickCounter={setNextClickCounter}
-                        setLastClickCounter={setLastClickCounter}
-                        clickedButton={() => {
-                            // setVariableSummaryOpen(false);
-                            for (let line = 0; line <= lines.length; line++) {
-                                let elementId = `line-${line}`;
-                                let element =
-                                    document.getElementById(elementId);
-
-                                if (element) {
-                                    element.classList.remove(
-                                        "highlighted-trace-predict"
-                                    );
-                                }
-                            }
-                        }}
-                    />
-                </div>
-
-                <div className="content-wrapper">
+                <div className="variable-values-content-wrapper">
                     <div className="step-by-step-frame-header">
                         <div className="barIcon">
                             <IconsDoc iconName="bar" />
@@ -1506,10 +1453,12 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                         <div
                                             className={`frame-container ${item.type}`}
                                         >
-                                            <p>
+                                            <span>
                                                 {item.name}:&nbsp;&nbsp;&nbsp;
-                                            </p>
-                                            <p>{JSON.stringify(item.value)}</p>
+                                            </span>
+                                            <span>
+                                                {JSON.stringify(item.value)}
+                                            </span>
                                         </div>
                                     </>
                                 ))}
@@ -1595,6 +1544,58 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             </div>
 
             <div className="excution-container">
+                <div className={`step-by-step-timeline-container`}>
+                    <div className="legend">
+                        {questionStop >= excutionSteps.length - 1 &&
+                            currentStep == excutionSteps.length - 1 && (
+                                <span id="game-over" style={{ opacity: 0 }}>
+                                    Game Over
+                                </span>
+                            )}
+                        {questionStop >= excutionSteps.length - 1 && (
+                            <span id="send-log" style={{ opacity: 0 }}>
+                                send-log
+                            </span>
+                        )}
+                        <div className="legend-item">
+                            <FaLongArrowAltRight className="green-arrow" />
+                            <div className="legend-text">
+                                Line that just executed
+                            </div>
+                        </div>
+                        <div className="legend-item">
+                            <FaLongArrowAltRight className="red-arrow" />
+                            <div className="legend-text">
+                                Next line to execute
+                            </div>
+                        </div>
+                    </div>
+
+                    <ExcutionTimeline
+                        totalSteps={excutionSteps.length}
+                        setCurrentStep={setCurrentStep}
+                        currentStep={currentStep}
+                        stop={questionStop}
+                        setFirstClickCounter={setFirstClickCounter}
+                        setPrevClickCounter={setPrevClickCounter}
+                        setNextClickCounter={setNextClickCounter}
+                        setLastClickCounter={setLastClickCounter}
+                        clickedButton={() => {
+                            // setVariableSummaryOpen(false);
+                            for (let line = 0; line <= lines.length; line++) {
+                                let elementId = `line-${line}`;
+                                let element =
+                                    document.getElementById(elementId);
+
+                                if (element) {
+                                    element.classList.remove(
+                                        "highlighted-trace-predict"
+                                    );
+                                }
+                            }
+                        }}
+                    />
+                </div>
                 <div
                     className={`step-by-step-questions-container ${
                         isOnStop ? "active" : ""
@@ -1629,7 +1630,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         .length != 1 && (
                                                         <>
                                                             {" and "}
-                                                            <span className="variable">
+                                                            <span className="code-highlight-baseline">
                                                                 {
                                                                     item[
                                                                         "top-two-variables"
@@ -1653,7 +1654,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     Given the current state of
                                                     the variables, what will be
                                                     the value of{" "}
-                                                    <span className="variable">
+                                                    <span className="code-highlight-baseline">
                                                         {
                                                             item[
                                                                 "top-two-variables"
@@ -1664,7 +1665,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         .length != 1 && (
                                                         <>
                                                             {" and "}
-                                                            <span className="variable">
+                                                            <span className="code-highlight-baseline">
                                                                 {
                                                                     item[
                                                                         "top-two-variables"
@@ -1748,7 +1749,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     <div
                                                         className={`step-question-container`}
                                                     >
-                                                        <span className="variable">
+                                                        <span className="code-highlight-baseline">
                                                             {
                                                                 item[
                                                                     "top-two-variables"
@@ -1799,7 +1800,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                 <div className="step-answered-container step-answered-container-correct">
                                                     <p>
                                                         Value of{" "}
-                                                        <span className="variable">
+                                                        <span className="code-highlight-baseline">
                                                             {
                                                                 item[
                                                                     "top-two-variables"
@@ -1876,7 +1877,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     <div
                                                         className={`step-question-container`}
                                                     >
-                                                        <span className="variable">
+                                                        <span className="code-highlight-baseline">
                                                             {
                                                                 item[
                                                                     "top-two-variables"
@@ -1928,7 +1929,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     <div className="step-answered-container step-answered-container-correct">
                                                         <p>
                                                             Value of{" "}
-                                                            <span className="variable">
+                                                            <span className="code-highlight-baseline">
                                                                 {
                                                                     item[
                                                                         "top-two-variables"
