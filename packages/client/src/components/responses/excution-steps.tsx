@@ -131,9 +131,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [buttonDisabled, setButtonDisabled] = useState(false);
     // const [taskSolutions, setTaskSolutions] = useState<any[]>([]);
 
-    const [currFeedback, setCurrFeedback] = useState<string[][]>([
-        ["", "", ""],
-        ["", "", ""],
+    const [currFeedback, setCurrFeedback] = useState<string[][][]>([
     ]);
     const [feedbackReady, setFeedbackReady] = useState<boolean[][]>([
         [true, true, true],
@@ -150,11 +148,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     );
     const [explanationQuestionCorrect, setExplanationQuestionCorrect] =
         useState<boolean[]>([]);
-    const [attempted, setAttempted] = useState<boolean[]>([
-        false,
-        false,
-        false,
-    ]);
+    const [attempted, setAttempted] = useState<boolean[][]>([]);
     const [wrongExplainationAnswers, setWrongExplainationAnswers] = useState<
         string[][]
     >([]);
@@ -390,6 +384,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 new Array(questions.length).fill(false),
                 new Array(questions.length).fill(false),
             ]);
+            setAttempted(new Array(questions.length).fill([false, false, false]));
+            setCurrFeedback(new Array(questions.length).fill([["", "", ""], ["", "", ""]]));
             setUserResponse(new Array(questions.length).fill(""));
             setCurrentWrongAnswers([
                 new Array(questions.length).fill(["", "", ""]),
@@ -722,10 +718,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     const updateQuestion = (questionIndex: number) => {
 
-        setCurrFeedback([
-            ["", "", ""],
-            ["", "", ""],
-        ]);
+        setInputValue(["", ""]);
 
         const currentQuestion = questions[questionIndex];
         if (currentQuestion) {
@@ -916,7 +909,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         return "You have used all the attempts";
     }
 
-    const getCurrentFeedback = (variableIndex: number) => {
+    const getCurrentFeedback = (index: number, variableIndex: number) => {
         //codeBlock is the code block that the question is asking about, the content from begin-line to end-line
         let codeBlock = "";
         //get the codeBlock
@@ -968,7 +961,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 if (response.ok) {
                     const data = await response.json();
                     let tempFeedback = deepCopy(currFeedback);
-                    tempFeedback[variableIndex][numberOfAttempts - 1] =
+                    tempFeedback[index][variableIndex][numberOfAttempts - 1] =
                         data.feedback;
                     // console.log(tempFeedback);
                     setCurrFeedback(tempFeedback);
@@ -1009,7 +1002,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     useEffect (() => {
         let index = currentQuestionIndex;
         let item = questions[index];
-        console.log("showSolution", currentQuestionIndex);
         if (currentQuestionIndex >= 1 && ((showSolution![0][index] &&
             showSolution![1][index]) || (showSolution![0][index] && item["top-two-variables"].length== 1))){
                 if(item["question-about-purpose-of-code"] == null || item.answer == null){
@@ -1030,7 +1022,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         newInputValue[1] = "";
                         return newInputValue;
                     });
-                    setAttempted([false, false, false]);
                 }   
         }
     }, [showSolution]);
@@ -1039,7 +1030,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         index: number,
         variableIndex: number
     ) => {
-        let attemptNumber = attempted.findIndex((attempt) => !attempt);
+        let attemptNumber = attempted[index].findIndex((attempt) => !attempt);
         setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
 
         const question = questions[index];
@@ -1062,33 +1053,11 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 logError("sendLog: " + error.toString());
             });
 
-        if (attempted.slice(0, -1).every((value) => value === true)) {
-            setAttempted([true, true, true]);
-            setExplanationQuestionCorrect((prev) => {
-                let temp = deepCopy(prev);
-                temp[index] = true;
-                return temp;
-            });
-
-            setIsOnStop(false);
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-            updateQuestion(index + 1);
-            setInputValue((prevInputValue) => {
-                const newInputValue = [...prevInputValue];
-                newInputValue[variableIndex] = "";
-                return newInputValue;
-            });
-
-            setAttempted([false, false, false]);
-            return;
-        } else {
             setButtonDisabled(true);
             //find the first occurence of false and send to true
-            setAttempted((prev) => {
-                let temp = deepCopy(prev);
-                temp[attemptNumber] = true;
-                return temp;
-            });
+            let tempAttempted = deepCopy(attempted);
+            tempAttempted[index][attemptNumber] = true;
+            setAttempted(tempAttempted);
             setExplanationFeedbackReady((prev) => {
                 let temp = deepCopy(prev);
                 temp[index] = false;
@@ -1106,7 +1075,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         if (response.ok) {
                             setButtonDisabled(false);
                             const data = await response.json();
-                            console.log(data.response);
 
                             if (
                                 parseInt(data.response.correctness) &&
@@ -1135,7 +1103,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                     newInputValue[variableIndex] = "";
                                     return newInputValue;
                                 });
-                                setAttempted([false, false, false]);
                             } else {
                                 setTotalIncorrect(
                                     (prevTotalIncorrect) =>
@@ -1146,7 +1113,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                 let wrongExplainationCopy = deepCopy(
                                     wrongExplainationAnswers
                                 );
-                                const attemptNumber = attempted.findIndex(
+
+                                const attemptNumber = attempted[index].findIndex(
                                     (attempt) => !attempt
                                 );
                                 wrongExplainationCopy[index][attemptNumber] =
@@ -1177,6 +1145,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                     temp[index] = "";
                                     return temp;
                                 });
+
                             }
                         }
                     })
@@ -1188,8 +1157,32 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 setButtonDisabled(false);
                 logError(error.toString());
             }
-        }
+            
     };
+
+    useEffect(() => {
+        if(currentQuestionIndex >= 0 && attempted[currentQuestionIndex]){
+        if (attempted[currentQuestionIndex].every((value) => value === true)) {
+            setExplanationQuestionCorrect((prev) => {
+                let temp = deepCopy(prev);
+                temp[currentQuestionIndex] = true;
+                return temp;
+            });
+
+            setIsOnStop(false);
+            setCurrentQuestionNumber(currentQuestionNumber + 1);
+            updateQuestion(currentQuestionIndex + 1);
+            setUserResponse((prev) => {
+                let temp = deepCopy(prev);
+                temp[currentQuestionIndex] = "";
+                return temp;
+            });
+
+            return;
+        }}
+    },[attempted]);
+
+
 
     function submitTracingQuestion(index: number, variableIndex: number) {
         let solution = solutions![index].first;
@@ -1204,7 +1197,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         // - prev_provided_feedback: {string} // if this is a retry and they have tried before
         // - new_student_answer: {string}
         // - attempt_number: {number}
-        setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
         let attemptNumber =
             currentWrongAnswers![variableIndex][index].filter(
                 (item) => item.length > 0
@@ -1238,7 +1230,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         ).then(async (response) => {
             if (response.ok){
                 const data = await response.json();
-                console.log(data.response);
                 if (data.response.match || data.response.match == 'true'){
                     setShowSolution((prev) => {
                         if (!prev) return prev;
@@ -1257,6 +1248,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     temp[variableIndex][attemptNumber - 1] = true;
                     setFeedbackReady(temp);
                     setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
+                    setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
                 }else if (currentWrongAnswers && index == currentQuestionIndex){
                     //set the current wrong answers
                     //find the first empty string in the array
@@ -1265,7 +1257,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     let tempNum = deepCopy(feedbackReady);
                     tempNum[variableIndex][attemptNumber - 1] = false;
                     setFeedbackReady(tempNum);
-                    getCurrentFeedback(variableIndex);
+                    getCurrentFeedback(index, variableIndex);
 
                     setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
 
@@ -1278,36 +1270,14 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         temp[variableIndex][currentQuestionIndex][emptyIndex] =
                             inputValue[variableIndex];
                         setCurrentWrongAnswers(temp);
+                        console.log("currentWrongAnswers", temp);
                         setInputValue((prevInputValue) => {
                             const newInputValue = [...prevInputValue];
                             newInputValue[variableIndex] = "";
                             return newInputValue;
                         });
                     }
-                    if (currentWrongAnswers[variableIndex][index][2] == "") {
-                        //means there is at least one more try
-                    } else {
-                        // there is no more try, update question and reveal the answer
-                        setShowSolution((prev) => {
-                            if (!prev) return prev;
-
-                            // Create a shallow copy of the top-level array
-                            let temp = prev.map((innerArray) => [...innerArray]);
-
-                            // Ensure the nested array exists
-                            if (temp[variableIndex]) {
-                                // Set the specific value to true
-                                temp[variableIndex][index] = true;
-                            }
-                            return temp;
-                        });
-                        let temp = deepCopy(feedbackReady);
-                        temp[variableIndex][attemptNumber - 1] = true;
-                        setFeedbackReady(temp);
-                        setTotalIncorrect(
-                            (prevTotalIncorrect) => prevTotalIncorrect + 1
-                        );
-                    }
+                    
                 }
             }
         }).catch((error) => {
@@ -1316,6 +1286,73 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
             
     }
+
+    useEffect(() => {
+        if(currentWrongAnswers && currentWrongAnswers[0] && currentWrongAnswers[0][currentQuestionIndex]){
+        console.log("currentWrongAnswers", currentWrongAnswers);
+        let attemptNumber0 =
+            currentWrongAnswers![0][currentQuestionIndex].filter(
+                (item) => item.length > 0
+            ).length + 1;
+
+        if (currentWrongAnswers![0][currentQuestionIndex][2] == "") {
+            //means there is at least one more try
+        } else {
+            // there is no more try, update question and reveal the answer
+            setShowSolution((prev) => {
+                if (!prev) return prev;
+
+                // Create a shallow copy of the top-level array
+                let temp = prev.map((innerArray) => [...innerArray]);
+
+                // Ensure the nested array exists
+                if (temp[0]) {
+                    // Set the specific value to true
+                    temp[0][currentQuestionIndex] = true;
+                }
+                console.log(temp);
+                return temp;
+            });
+            let temp = deepCopy(feedbackReady);
+            temp[0][attemptNumber0 - 1] = true;
+            setFeedbackReady(temp);
+            setTotalIncorrect(
+                (prevTotalIncorrect) => prevTotalIncorrect + 1
+            );
+            setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
+        }
+        let attemptNumber1 =
+            currentWrongAnswers![1][currentQuestionIndex].filter(
+                (item) => item.length > 0
+            ).length + 1;
+
+        if (currentWrongAnswers![1][currentQuestionIndex][2] == "") {
+            //means there is at least one more try
+        } else {
+            // there is no more try, update question and reveal the answer
+            setShowSolution((prev) => {
+                if (!prev) return prev;
+
+                // Create a shallow copy of the top-level array
+                let temp = prev.map((innerArray) => [...innerArray]);
+
+                // Ensure the nested array exists
+                if (temp[1]) {
+                    // Set the specific value to true
+                    temp[1][currentQuestionIndex] = true;
+                }
+                return temp;
+            });
+            let temp = deepCopy(feedbackReady);
+            temp[1][attemptNumber1 - 1] = true;
+            setFeedbackReady(temp);
+            setTotalIncorrect(
+                (prevTotalIncorrect) => prevTotalIncorrect + 1
+            );
+            setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
+        }
+        }
+    }, [currentWrongAnswers]);
 
     return (
         <div className="excution-generator">
@@ -1734,7 +1771,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         <div className="feedback-from-step">
                                                                             <p>
                                                                                 {
-                                                                                    currFeedback[0][
+                                                                                    currFeedback[index][0][
                                                                                         attamptNumber
                                                                                     ]
                                                                                 }
@@ -1858,7 +1895,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         <div className="feedback-from-step">
                                                                             <p>
                                                                                 {
-                                                                                    currFeedback[1][
+                                                                                    currFeedback[index][1][
                                                                                         attamptNumber
                                                                                     ]
                                                                                 }
@@ -1970,7 +2007,43 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             !explanationQuestionCorrect[
                                                                 index
                                                             ] &&
-                                                            !attempted.every(
+                                                            attempted[index].every(
+                                                                (attempt) =>
+                                                                    attempt
+                                                            ) && (
+                                                                <>
+                                                                    <div className="follow-up-question-feedback">
+                                                                        <strong>
+                                                                            You
+                                                                            answered:
+                                                                        </strong>{" "}
+                                                                        {getLastNonEmptyElement(
+                                                                            wrongExplainationAnswers[
+                                                                                index
+                                                                            ]
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="follow-up-question-feedback correct">
+                                                                    <strong>
+                                                                        Explanation:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                        item.answer
+                                                                    }
+                                                                    </div>
+                                                                </>
+                                                            )
+                                                        }
+                                                        {explanationFeedback[
+                                                            index
+                                                        ] != "" &&
+                                                            explanationFeedbackReady[
+                                                                index
+                                                            ] &&
+                                                            !explanationQuestionCorrect[
+                                                                index
+                                                            ] &&
+                                                            !attempted[index].every(
                                                                 (attempt) =>
                                                                     attempt
                                                             ) && (
@@ -2001,7 +2074,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         {!explanationQuestionCorrect[
                                                             index
                                                         ] &&
-                                                            !buttonDisabled && (
+                                                            !buttonDisabled && !attempted[index].every(
+                                                                (attempt) =>
+                                                                    attempt
+                                                            ) &&(
                                                                 <div className="follow-up-question-input">
                                                                     <textarea
                                                                         className="self-explain-textbox baseline-input"
@@ -2051,11 +2127,11 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         {!explanationFeedbackReady[
                                                             index
                                                         ] &&
-                                                            !attempted.every(
+                                                            !attempted[index].every(
                                                                 (attempt) =>
                                                                     attempt
                                                             ) &&
-                                                            !attempted.every(
+                                                            !attempted[index].every(
                                                                 (value) =>
                                                                     value ===
                                                                     false
@@ -2068,17 +2144,11 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             )}
                                                         {(explanationQuestionCorrect[
                                                             index
-                                                        ] ||
-                                                            attempted.every(
-                                                                (attempt) =>
-                                                                    attempt
-                                                            )) && (
+                                                        ]) && (
                                                             <>
                                                                 <div className="follow-up-question-feedback normal">
                                                                     <strong>
-                                                                        Your
-                                                                        Last
-                                                                        Attempt
+                                                                        You Answered
                                                                     </strong>{" "}
                                                                     {
                                                                         userResponse[
