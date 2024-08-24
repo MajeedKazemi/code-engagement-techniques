@@ -610,8 +610,8 @@ const taskQuestion2: newQuestionObject[] = [
       "step": 42,
       "begin-line": 17,
       "end-line": 17,
-      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
-      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets.",
+      "question-about-purpose-of-code": null,
+      "answer": null,
       "top-two-variables": [
         "stack",
         "i"
@@ -621,8 +621,8 @@ const taskQuestion2: newQuestionObject[] = [
       "step": 69,
       "begin-line": 17,
       "end-line": 17,
-      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
-      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets.",
+      "question-about-purpose-of-code": null,
+      "answer": null,
       "top-two-variables": [
         "stack",
         "i"
@@ -632,8 +632,8 @@ const taskQuestion2: newQuestionObject[] = [
       "step": 108,
       "begin-line": 15,
       "end-line": 15,
-      "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
-      "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring.",
+      "question-about-purpose-of-code": null,
+      "answer": null,
       "top-two-variables": [
         "max_length",
         "i"
@@ -798,8 +798,8 @@ interface newQuestionObject {
     step: number;
     "begin-line": number;
     "end-line": number;
-    "question-about-purpose-of-code": string;
-    answer: string;
+    "question-about-purpose-of-code": string | null;
+    answer: string | null;
     "top-two-variables": string[];
 }
 
