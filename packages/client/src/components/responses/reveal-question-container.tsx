@@ -361,8 +361,12 @@ function RevealQuestionComponent({
                 </div>
                 {questions.length > 0 &&
                     questions.map(
-                        (question: SubQuestions, index) =>
-                            index <= currentQuestionIndex && (
+                        (question: SubQuestions, index) => {
+
+                            let subgoalIndexforCurrentQuestion = getCurrentSubgoalByQuestionIndex(index);
+                            let lastQuestionId = getTotalQuestionsBeforeThisSubgoal(subgoalIndexforCurrentQuestion) - 1;
+
+                            return (index <= currentQuestionIndex && (
                                 <div
                                     className="reveal-subgoal-container"
                                     key={index}
@@ -504,10 +508,7 @@ function RevealQuestionComponent({
                                                     {question.solution}
                                                 </div>
 
-                                                {getCurrentSubgoalByQuestionIndex(
-                                                    index
-                                                ) ==
-                                                    currentSubgoalIndex - 1 &&
+                                                {index == lastQuestionId &&
                                                     data[0] && (
                                                         <div>
                                                             {data[
@@ -552,10 +553,7 @@ function RevealQuestionComponent({
                                                     {question.solution}
                                                 </div>
 
-                                                {getCurrentSubgoalByQuestionIndex(
-                                                    index
-                                                ) ==
-                                                    currentSubgoalIndex - 1 &&
+                                                {lastQuestionId == index &&
                                                     data[0] && (
                                                         <div>
                                                             {data[
@@ -582,7 +580,8 @@ function RevealQuestionComponent({
                                         )}
                                     </div>
                                 </div>
-                            )
+                            ))
+                        }
                     )}
             </div>
             <div className="right-side-code-container">
