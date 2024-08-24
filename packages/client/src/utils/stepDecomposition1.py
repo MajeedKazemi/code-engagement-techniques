@@ -6604,38 +6604,53 @@ steps=[
 ]
 
 decomposition = {
-  "complex-multiline-blocks": [
-    {
-      "begin-line": 10,
-      "end-line": 15,
-      "top-two-changing-variables": ["stack", "max_length"],
-      "question-about-purpose-of-code": "What is the purpose of the block of code from lines 10 to 15 that checks for certain conditions and updates the stack and max_length?",
-      "answer": "This block handles closing brackets. It checks if the top of the stack is an opening bracket that matches the current bracket. If so, it pops the stack and updates max_length."
-    },
-    {
-      "begin-line": 7,
-      "end-line": 8,
-      "top-two-changing-variables": ["stack", "char"],
-      "question-about-purpose-of-code": "Why does the code append the index of the opening brackets to the stack in lines 7 and 8?",
-      "answer": "Appending the index of the opening brackets to the stack helps keep track of the brackets and their positions, which is useful for calculating the length of the valid substring."
-    }
-  ],
-  "complex-single-line-codes": [
-    {
-      "begin-line": 15,
-      "end-line": 15,
-      "top-two-changing-variables": ["max_length", "i"],
-      "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
-      "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring."
-    },
-    {
-      "begin-line": 17,
-      "end-line": 17,
-      "top-two-changing-variables": ["stack", "i"],
-      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
-      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets."
-    }
-  ]
+    "complex-multiline-blocks": [
+        {
+            "begin-line": 9,
+            "end-line": 12,
+            "top-two-changing-variables": ["q", "new_max_d"],
+            "question-about-purpose-of-code": "What is the purpose of the code block from lines 9 to 12 that checks the condition 'if opens < n' and updates 'q' and 'new_max_d'?",
+            "answer": "This block handles the case when an opening parenthesis can be added. It updates the queue 'q' with the new state after adding an opening parenthesis and updating the maximum depth 'new_max_d'.",
+        },
+        {
+            "begin-line": 13,
+            "end-line": 14,
+            "top-two-changing-variables": ["q", "closes"],
+            "question-about-purpose-of-code": "What is the purpose of the code block from lines 13 to 14 that checks the condition 'if closes < opens and max_d <= d' and updates 'q'?",
+            "answer": "This block handles the case when a closing parenthesis can be added. It updates the queue 'q' with the new state after adding a closing parenthesis and updating the current depth 'cur_d'.",
+        },
+        {
+            "begin-line": 6,
+            "end-line": 7,
+            "top-two-changing-variables": ["result", "s"],
+            "question-about-purpose-of-code": "What is the purpose of the code block from lines 6 to 7 that checks the condition 'if opens == n and closes == n' and updates 'result'?",
+            "answer": "This block checks if the current state represents a valid combination of parentheses (i.e., it has 'n' opening and closing parentheses) and if so, adds it to the result list.",
+        }
+    ],
+    "complex-single-line-codes": [
+        {
+            "begin-line": 5,
+            "end-line": 5,
+            "variable": "s",
+            "question-about-purpose-of-code": "What is the purpose of line 5 that pops the first element from the queue and unpacks it into multiple variables?",
+            "answer": "This line retrieves the next state to process from the queue 'q' and unpacks it into the variables 's', 'opens', 'closes', 'max_d', and 'cur_d'.",
+            "top-two-changing-variables": [
+                "q",
+                "s"
+            ]
+        },
+        {
+            "begin-line": 10,
+            "end-line": 10,
+            "variable": "new_max_d",
+            "question-about-purpose-of-code": "What is the purpose of line 10 that calculates the new maximum depth 'new_max_d' when adding an opening parenthesis?",
+            "answer": "This line calculates the new maximum depth if an opening parenthesis is added to the current state, which is used to check if the depth restriction is met.",
+            "top-two-changing-variables": [
+            "new_max_d",
+            "cur_d"
+            ]
+        }
+    ]
 }
 
 def find_step_ranges(begin_line, end_line, steps):
@@ -6667,7 +6682,7 @@ for block in decomposition['complex-multiline-blocks']:
     step_ranges = find_step_ranges(begin_line, end_line, steps)
     
     for start_step, end_step in step_ranges:
-        if end_step - start_step <= 10 and end_line - begin_line <= 7:
+        if end_step - start_step <= 50 and end_line - begin_line <= 7:
             new_block = {
                 "begin-line": begin_line,
                 "end-line": end_line,

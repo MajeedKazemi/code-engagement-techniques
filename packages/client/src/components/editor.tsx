@@ -64,6 +64,7 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
     const [loggedIO, setLoggedIO] = useState<any>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [runCodeNoError, setRunCodeNoError] = useState(false); 
+    const [timeoutValue, setTimeoutValue] = useState<number>(0);
 
     useImperativeHandle(ref, () => ({
         setCode(code: string) {
@@ -78,6 +79,20 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
         setEditor(null);
         props.onCompletion();
     };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeoutValue((prevTimeout) => {
+                const newTimeout = prevTimeout + 1;
+
+                return newTimeout;
+            });
+        }, 60000); // 60000 milliseconds = 1 minute
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     useEffect(() => {
         if (monacoEl && !editor) {
@@ -397,11 +412,19 @@ export const Editor = forwardRef((props: EditorProps, ref) => {
 
     return (
         <Fragment>
+            {props.type == "coding" && (
+                <div className="elapsed-time-container coding-task-time">
+                    Elapsed Time:{" "}
+                    <span className="elapsed-time-value">
+                        {timeoutValue + " mins"}
+                    </span>
+                </div>
+            )}
             <section
                 className={`task-workspace ${
                     props.type == "coding" ? "coding-task-workspace" : ""
                 }`}
-            >
+            >   
                 <div className="overlay"></div>
                 <div
                     className={`editor ${

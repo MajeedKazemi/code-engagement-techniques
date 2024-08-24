@@ -3973,38 +3973,45 @@ steps = [
 ]
 
 decomposition = {
-  "complex-multiline-blocks": [
-    {
-      "begin-line": 10,
-      "end-line": 15,
-      "top-two-changing-variables": ["stack", "max_length"],
-      "question-about-purpose-of-code": "What is the purpose of the block of code from lines 10 to 15 that checks for certain conditions and updates the stack and max_length?",
-      "answer": "This block handles closing brackets. It checks if the top of the stack is an opening bracket that matches the current bracket. If so, it pops the stack and updates max_length."
-    },
-    {
-      "begin-line": 7,
-      "end-line": 8,
-      "top-two-changing-variables": ["stack", "char"],
-      "question-about-purpose-of-code": "Why does the code append the index of the opening brackets to the stack in lines 7 and 8?",
-      "answer": "Appending the index of the opening brackets to the stack helps keep track of the brackets and their positions, which is useful for calculating the length of the valid substring."
-    }
-  ],
-  "complex-single-line-codes": [
-    {
-      "begin-line": 15,
-      "end-line": 15,
-      "top-two-changing-variables": ["max_length", "i"],
-      "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
-      "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring."
-    },
-    {
-      "begin-line": 17,
-      "end-line": 17,
-      "top-two-changing-variables": ["stack", "i"],
-      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
-      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets."
-    }
-  ]
+    "complex-multiline-blocks": [
+        {
+            "begin-line": 7,
+            "end-line": 8,
+            "top-two-changing-variables": ["dq", "n"],
+            "question-about-purpose-of-code": "What is the role of the while loop that pops elements from the deque 'dq'?",
+            "answer": "It ensures that 'dq' is in decreasing order, which is crucial for finding the maximum in the sliding window.",
+        },
+        {
+            "begin-line": 5,
+            "end-line": 6,
+            "top-two-changing-variables": ["dq", "i"],
+            "question-about-purpose-of-code": "Why are elements being popped from the front of the deque 'dq' in the if condition?",
+            "answer": "This removes elements that are outside the current window, ensuring the window size remains valid.",
+        },
+        {
+            "begin-line": 10,
+            "end-line": 11,
+            "top-two-changing-variables": ["result", "dq"],
+            "question-about-purpose-of-code": "Why are we appending 'nums[dq[0]]' to the result list?",
+            "answer": "This appends the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+        },
+    ],
+    "complex-single-line-codes": [
+        {
+            "begin-line": 9,
+            "end-line": 9,
+            "top-two-changing-variables": ["dq"],
+            "question-about-purpose-of-code": "Why is the current index 'i' being appended to 'dq'?",
+            "answer": "Appending 'i' to 'dq' is essential for tracking elements within the current window.",
+        },
+        {
+            "begin-line": 11,
+            "end-line": 11,
+            "top-two-changing-variables": ["result"],
+            "question-about-purpose-of-code": "What is the significance of appending 'nums[dq[0]]' to 'result'?",
+            "answer": "This adds the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+        }
+    ]
 }
 
 def find_step_ranges(begin_line, end_line, steps):
@@ -4016,7 +4023,7 @@ def find_step_ranges(begin_line, end_line, steps):
         if step['currLine'] == begin_line:
             in_range = True
             start_steps.append(step['step'])
-        if in_range and step['currLine'] == end_line:
+        if in_range and step['nextLine'] == end_line:
             end_steps.append(step['step'])
             in_range = False
 
@@ -4034,9 +4041,10 @@ for block in decomposition['complex-multiline-blocks']:
     end_line = block['end-line']
     
     step_ranges = find_step_ranges(begin_line, end_line, steps)
+    print(step_ranges)
     
     for start_step, end_step in step_ranges:
-        if end_step - start_step <= 10 and end_line - begin_line <= 7:
+        if end_step - start_step <= 50 and end_line - begin_line <= 7:
             new_block = {
                 "begin-line": begin_line,
                 "end-line": end_line,

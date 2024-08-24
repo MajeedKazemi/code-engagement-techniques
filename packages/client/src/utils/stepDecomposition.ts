@@ -729,46 +729,115 @@ const taskQuestion2: newQuestionObject[] = [
 
 const taskQuestion3: newQuestionObject[] = [
     {
-        "step": 12,
-        "begin-line": 7,
-        "end-line": 8,
-        "question-about-purpose-of-code": "What is the role of the while loop that pops elements from the deque 'dq'?",
-        "answer": "It ensures that 'dq' is in decreasing order, which is crucial for finding the maximum in the sliding window.",
-        "top-two-variables": ["dq", "n"]
+      "step": 17,
+      "begin-line": 7,
+      "end-line": 8,
+      "question-about-purpose-of-code": "What is the role of the while loop that pops elements from the deque 'dq'?",
+      "answer": "It ensures that 'dq' is in decreasing order, which is crucial for finding the maximum in the sliding window.",
+      "top-two-variables": [
+        "dq",
+        "n"
+      ]
     },
     {
-        "step": 15,
-        "begin-line": 9,
-        "end-line": 9,
-        "question-about-purpose-of-code": "Why is the current index 'i' being appended to 'dq'?",
-        "answer": "Appending 'i' to 'dq' is essential for tracking elements within the current window.",
-        "top-two-variables": ["dq", "i"]
+      "step": 28,
+      "begin-line": 10,
+      "end-line": 11,
+      "question-about-purpose-of-code": "Why are we appending 'nums[dq[0]]' to the result list?",
+      "answer": "This appends the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+      "top-two-variables": [
+        "result",
+        "dq"
+      ]
     },
     {
-        "step": 30,
-        "begin-line": 5,
-        "end-line": 6,
-        "question-about-purpose-of-code": "Why are elements being popped from the front of the deque 'dq' in the if condition?",
-        "answer": "This removes elements that are outside the current window, ensuring the window size remains valid.",
-        "top-two-variables": ["dq", "i"]
-    },
-    {
-        "step": 38,
-        "begin-line": 10,
-        "end-line": 11,
-        "question-about-purpose-of-code": "Why are we appending 'nums[dq[0]]' to the result list?",
-        "answer": "This appends the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
-        "top-two-variables": ["result", "dq"]
-    },
-    {
-        "step": 63,
+        "step": 37,
         "begin-line": 11,
         "end-line": 11,
         "question-about-purpose-of-code": "What is the significance of appending 'nums[dq[0]]' to 'result'?",
         "answer": "This adds the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
-        "top-two-variables": ["result", "dq"]
-    }
-]
+        "top-two-variables": [
+          "result"
+        ]
+    },
+    {
+    "step": 50,
+      "begin-line": 7,
+      "end-line": 8,
+      "question-about-purpose-of-code": null,
+      "answer": null,
+      "top-two-variables": [
+        "dq",
+        "i"
+      ]
+    },
+    {
+      "step": 63,
+      "begin-line": 5,
+      "end-line": 6,
+      "question-about-purpose-of-code": "Why are elements being popped from the front of the deque 'dq' in the if condition?",
+      "answer": "This removes elements that are outside the current window, ensuring the window size remains valid.",
+      "top-two-variables": [
+        "dq",
+        "i"
+      ]
+    },
+    {
+      "step": 80,
+      "begin-line": 7,
+      "end-line": 8,
+      "question-about-purpose-of-code": null,
+      "answer": null,
+      "top-two-variables": [
+        "dq",
+        "i"
+      ]
+    },
+
+  ]
+
+// const taskQuestion3: newQuestionObject[] = [
+//     {
+//         "step": 12,
+//         "begin-line": 7,
+//         "end-line": 8,
+//         "question-about-purpose-of-code": "What is the role of the while loop that pops elements from the deque 'dq'?",
+//         "answer": "It ensures that 'dq' is in decreasing order, which is crucial for finding the maximum in the sliding window.",
+//         "top-two-variables": ["dq", "n"]
+//     },
+//     {
+//         "step": 15,
+//         "begin-line": 9,
+//         "end-line": 9,
+//         "question-about-purpose-of-code": "Why is the current index 'i' being appended to 'dq'?",
+//         "answer": "Appending 'i' to 'dq' is essential for tracking elements within the current window.",
+//         "top-two-variables": ["dq", "i"]
+//     },
+//     {
+//         "step": 30,
+//         "begin-line": 5,
+//         "end-line": 6,
+//         "question-about-purpose-of-code": "Why are elements being popped from the front of the deque 'dq' in the if condition?",
+//         "answer": "This removes elements that are outside the current window, ensuring the window size remains valid.",
+//         "top-two-variables": ["dq", "i"]
+//     },
+//     {
+//         "step": 38,
+//         "begin-line": 10,
+//         "end-line": 11,
+//         "question-about-purpose-of-code": "Why are we appending 'nums[dq[0]]' to the result list?",
+//         "answer": "This appends the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+//         "top-two-variables": ["result", "dq"]
+//     },
+//     {
+//         "step": 63,
+//         "begin-line": 11,
+//         "end-line": 11,
+//         "question-about-purpose-of-code": "What is the significance of appending 'nums[dq[0]]' to 'result'?",
+//         "answer": "This adds the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+//         "top-two-variables": ["result", "dq"]
+//     }
+// ]
 
 
 type TaskDecompositions = {
