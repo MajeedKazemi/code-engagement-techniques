@@ -117,7 +117,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [showCode, setShowCode] = useState<boolean>(false);
     const [lines, setLines] = useState<LineWithLeadSpaces[]>([]);
     const [colorizedText, setColorizedText] = useState<string[]>([]);
-    const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0);
+    const [currentQuestionNumber, setCurrentQuestionNumber] =
+        useState<number>(0);
     const [userResponse, setUserResponse] = useState<string[]>([]);
 
     // - step_event:
@@ -129,28 +130,47 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const [buttonDisabled, setButtonDisabled] = useState(false);
     // const [taskSolutions, setTaskSolutions] = useState<any[]>([]);
 
-    const [currFeedback, setCurrFeedback] = useState<string[][]>([["", "", ""], ["", "", ""]]);
-    const [feedbackReady, setFeedbackReady] = useState<boolean[][]>([[true, true, true], [true, true, true]]);
+    const [currFeedback, setCurrFeedback] = useState<string[][]>([
+        ["", "", ""],
+        ["", "", ""],
+    ]);
+    const [feedbackReady, setFeedbackReady] = useState<boolean[][]>([
+        [true, true, true],
+        [true, true, true],
+    ]);
     const [hoveringHovered, setHoveringHovered] = useState<boolean[]>([]);
     const [explaination, setExplanation] = useState<string[]>([]);
 
-    const [explanationFeedbackReady, setExplanationFeedbackReady] = useState<boolean[]>([]);
-    const [explanationFeedback, setExplanationFeedback] = useState<string[]>([]);
-    const [explanationQuestionCorrect, setExplanationQuestionCorrect] = useState<boolean[]>([]);
-    const [attempted, setAttempted] = useState<boolean[]>([false, false, false]);
-    const [wrongExplainationAnswers, setWrongExplainationAnswers] = useState<string[][]>([]);
+    const [explanationFeedbackReady, setExplanationFeedbackReady] = useState<
+        boolean[]
+    >([]);
+    const [explanationFeedback, setExplanationFeedback] = useState<string[]>(
+        []
+    );
+    const [explanationQuestionCorrect, setExplanationQuestionCorrect] =
+        useState<boolean[]>([]);
+    const [attempted, setAttempted] = useState<boolean[]>([
+        false,
+        false,
+        false,
+    ]);
+    const [wrongExplainationAnswers, setWrongExplainationAnswers] = useState<
+        string[][]
+    >([]);
 
     const [totalAttempts, setTotalAttempts] = useState(0);
     const [totalCorrect, setTotalCorrect] = useState(0);
     const [totalIncorrect, setTotalIncorrect] = useState(0);
-    const [questionFirstDisplayed, setQuestionFirstDisplayed] = useState(Date.now());
+    const [questionFirstDisplayed, setQuestionFirstDisplayed] = useState(
+        Date.now()
+    );
 
     const [variableSummaryOpen, setVariableSummaryOpen] =
         useState<boolean>(true);
 
-    
     const processLines = (): LineWithLeadSpaces[] => {
-        return code.split("\n")
+        return code
+            .split("\n")
             .filter((line) => line.trim() !== "")
             .map((line) => ({
                 original: line,
@@ -161,15 +181,19 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     };
 
     useEffect(() => {
-
-        if(questionStop >= excutionSteps.length - 1){
-            apiLogEvents(context?.token, taskID, "trace predict total mini question summary", {
-                type: "trace predict end summary event",
-                taskID: taskID,
-                total_attempts: totalAttempts,
-                total_correct: totalCorrect,
-                total_incorrect: totalIncorrect,
-            })
+        if (questionStop >= excutionSteps.length - 1) {
+            apiLogEvents(
+                context?.token,
+                taskID,
+                "trace predict total mini question summary",
+                {
+                    type: "trace predict end summary event",
+                    taskID: taskID,
+                    total_attempts: totalAttempts,
+                    total_correct: totalCorrect,
+                    total_incorrect: totalIncorrect,
+                }
+            )
                 .then(() => {})
                 .catch((error) => {
                     logError("sendLog: " + error.toString());
@@ -217,9 +241,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             // in use, find the id by line+startLine to line+endLine
             // add a class called "highlighted-trace-predict" to those id
             for (let line = startLine; line <= endLine; line++) {
-                let elementId = `line-${line-1}`;
+                let elementId = `line-${line - 1}`;
                 let element = document.getElementById(elementId);
-        
+
                 if (element) {
                     element.classList.add("highlighted-trace-predict");
                 }
@@ -346,30 +370,34 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         // }
 
         let currentTask = 0;
-        if (parseInt(taskID) > 0){
+        if (parseInt(taskID) > 0) {
             currentTask = parseInt(taskID);
             setQuestions(taskQuestions[currentTask]);
         } else {
             setQuestions(taskQuestions[0]);
-        
         }
     };
 
     useEffect(() => {
         if (questions.length > 0 && lines) {
             // start by setting the question stop
-            setQuestionStop(questions[0].step-2);
+            setQuestionStop(questions[0].step - 2);
             console.log("questions", questions);
             // setCurrentQuestionWrongAnswers(new Array(questions.length).fill([]));
             setCurrentQuestionIndex(0);
-            setShowSolution([new Array(questions.length).fill(false), new Array(questions.length).fill(false)]);
+            setShowSolution([
+                new Array(questions.length).fill(false),
+                new Array(questions.length).fill(false),
+            ]);
             setUserResponse(new Array(questions.length).fill(""));
-            setCurrentWrongAnswers(
-                [new Array(questions.length).fill(["", "", ""]),
-                new Array(questions.length).fill(["", "", ""])]
-            );
+            setCurrentWrongAnswers([
+                new Array(questions.length).fill(["", "", ""]),
+                new Array(questions.length).fill(["", "", ""]),
+            ]);
             setExplanationFeedback(new Array(questions.length).fill(""));
-            setExplanationQuestionCorrect(new Array(questions.length).fill(false));
+            setExplanationQuestionCorrect(
+                new Array(questions.length).fill(false)
+            );
 
             // start by generating the solutions
             var solutions = new Array(questions.length).fill("");
@@ -377,36 +405,35 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 solutions[i] = getCurrQuestionSolution(i)!;
             }
 
-            setExplanationFeedbackReady(new Array(questions.length).fill(false));
+            setExplanationFeedbackReady(
+                new Array(questions.length).fill(false)
+            );
             console.log("solutions", solutions);
             setSolutions(solutions);
 
             setHoveringHovered(new Array(questions.length).fill(false));
-            setWrongExplainationAnswers(new Array(questions.length).fill(["", "", ""]));
+            setWrongExplainationAnswers(
+                new Array(questions.length).fill(["", "", ""])
+            );
 
             // retrive the line by line explanation from the apiGetBaselineLineByLineExplanationSimulation
             apiGetBaselineLineByLineExplanationSimulation(
                 context?.token,
-                taskID,
+                taskID
             )
                 .then(async (response) => {
                     if (response.ok && editor) {
                         const data = await response.json();
 
-                        setExplanation(
-                            data.explanation
-                        );
+                        setExplanation(data.explanation);
                     }
                 })
                 .catch((error) => {
                     editor?.updateOptions({ readOnly: false });
                     logError(error.toString());
                 });
-
-
         }
     }, [questions, lines]);
-
 
     useEffect(() => {
         if (tracing) {
@@ -495,7 +522,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         }
     }, [tracking]);
 
-
     const generateTrace = () => {
         if (!tracing) {
             socket?.emit("python", {
@@ -560,23 +586,21 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         setLines(processLines());
     }, []);
 
-
     useEffect(() => {
         if (backendCode.length > 0) {
             console.log("backendCode", backendCode);
             // console.log("backendCode", backendCode);
-            // generateTrace();
+            generateTrace();
 
             // for python tracer simulation
             // setTracing(true);
             // console.log("tracing", tracing);
             let currentTask = 0;
-            if (parseInt(taskID) > 0){
+            if (parseInt(taskID) > 0) {
                 currentTask = parseInt(taskID);
                 setExcutionSteps(taskTrace[currentTask]);
             } else {
                 setExcutionSteps(taskTrace[0]);
-            
             }
         }
     }, [backendCode]);
@@ -592,89 +616,98 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         generateQuestion();
     }, [excutionSteps]);
 
-    // useEffect(() => {
-    //     if (storedInput.length == 0 && finishedTracing) {
-    //         generateTrack();
-    //     }
-    //     if (storedInput.length > 0 && !tracing) {
-    //         console.log("storedInput", storedInput);
-    //         generateTrack();
-    //     }
-    // }, [storedInput, tracing, finishedTracing]);
+    useEffect(() => {
+        if (storedInput.length == 0 && finishedTracing) {
+            generateTrack();
+        }
+        if (storedInput.length > 0 && !tracing) {
+            console.log("storedInput", storedInput);
+            generateTrack();
+        }
+    }, [storedInput, tracing, finishedTracing]);
 
     useEffect(() => {
-            let fElements: f[][] = trackOutput.map((item) => {
-                // console.log("item", item);
-                let parsedItem = JSON.parse(
-                    item
-                        .replace(/'/g, '"')
-                        .replace(/\(/g, "[")
-                        .replace(/\)/g, "]")
-                );
-                // console.log("parsedItem", parsedItem, item);
-                return Object.keys(parsedItem).map((key) => {
-                    let value = parsedItem[key];
-                    let valueType = "str"; // Default to str
+        let fElements: f[][] = trackOutput.map((item) => {
+            // console.log("item", item);
 
-                    if (typeof value === "number") {
-                        // value is a number
-                        valueType = "int";
-                    } else if (typeof value === "boolean") {
-                        // value is a boolean
-                        valueType = "bool";
-                    } else if (typeof value === "string") {
-                        // Check first character to identify string type
-                        if (value.startsWith("{")) {
-                            valueType = "dict";
-                        } else if (value.startsWith("[")) {
-                            valueType = "list";
-                        } else if (value.startsWith("(")) {
-                            valueType = "tuple";
-                        }
+            let parsedItem: any = JSON.parse(
+                item
+                    .replace(/'/g, '"')
+                    .replace(/\(/g, "[")
+                    .replace(/\)/g, "]")
+                    .replace(/True/g, "true")
+                    .replace(/False/g, "false")
+                    .replace(/None/g, "null")
+            );
+
+            // console.log("parsedItem", parsedItem, item);
+            return Object.keys(parsedItem).map((key) => {
+                let value = parsedItem[key];
+                let valueType = "str"; // Default to str
+
+                if (typeof value === "number") {
+                    // value is a number
+                    valueType = "int";
+                } else if (typeof value === "boolean") {
+                    // value is a boolean
+                    valueType = "bool";
+                } else if (typeof value === "string") {
+                    // Check first character to identify string type
+                    if (value.startsWith("{")) {
+                        valueType = "dict";
+                    } else if (value.startsWith("[")) {
+                        valueType = "list";
+                    } else if (value.startsWith("(")) {
+                        valueType = "tuple";
                     }
+                }
 
-                    return {
-                        name: key,
-                        type: valueType,
-                        value: value,
-                    };
-                });
+                return {
+                    name: key,
+                    type: valueType,
+                    value: value,
+                };
             });
-            let objectArray = excutionSteps;
+        });
+        let objectArray = excutionSteps;
 
-            let minLength = Math.min(fElements.length, objectArray.length);
+        let minLength = Math.min(fElements.length, objectArray.length);
 
-            for (let i = 0; i < minLength; i++) {
-                objectArray[i].frame = fElements[i];
+        for (let i = 0; i < minLength; i++) {
+            objectArray[i].frame = fElements[i];
+        }
+
+        if (objectArray.length > fElements.length) {
+            let lastElement = fElements[fElements.length - 1];
+
+            for (let i = fElements.length; i < objectArray.length; i++) {
+                objectArray[i].frame = lastElement;
             }
+        }
 
-            if (objectArray.length > fElements.length) {
-                let lastElement = fElements[fElements.length - 1];
-
-                for (let i = fElements.length; i < objectArray.length; i++) {
-                    objectArray[i].frame = lastElement;
-                }
+        if (backendCode.length > 0) {
+            // check if the current excutionstep requires input
+            let lineObjects = backendCode.split("\n");
+            if (
+                !lineObjects[
+                    objectArray[objectArray.length - 1].currLine - 1
+                ].includes("input(") &&
+                objectArray.some((step) => step.frame.length !== 0)
+            ) {
+                // we know the tracing is done, generate questions
+                generateQuestion();
             }
+        }
 
-            if (backendCode.length > 0) {
-                // check if the current excutionstep requires input
-                let lineObjects = backendCode.split("\n");
-                if (
-                    !lineObjects[
-                        objectArray[objectArray.length - 1].currLine - 1
-                    ].includes("input(") &&
-                    objectArray.some((step) => step.frame.length !== 0)
-                ) {
-                    // we know the tracing is done, generate questions
-                    generateQuestion();
-                }
-            }
-
-            setExcutionSteps(objectArray);
+        setExcutionSteps(objectArray);
     }, [trackOutput]);
 
     useEffect(() => {
-        if (showSolution && showSolution[0].every((value) => value === true) && showSolution[1].every((value) => value === true)) {
+        if (
+            showSolution &&
+            showSolution[0].every((value) => value === true) &&
+            showSolution[1].every((value) => value === true)
+        ) {
             setQuestionStop(excutionSteps.length - 1);
         }
     }, [showSolution]);
@@ -682,9 +715,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     const updateQuestion = (questionIndex: number) => {
         const currentQuestion = questions[questionIndex];
         if (currentQuestion) {
-            setQuestionStop(currentQuestion.step-2);
+            setQuestionStop(currentQuestion.step - 2);
             setCurrentQuestionIndex(questionIndex);
-            
+
             //reset timer for mini question
             apiLogEvents(
                 context?.token,
@@ -730,7 +763,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     }, []);
 
     const getCurrQuestionSolution = (index: number) => {
-
         const currentQuestion = questions[index];
         if (currentQuestion) {
             // let currStep = currentQuestion.step;
@@ -739,7 +771,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             // let currValue = currFrame?.find(
             //     (item) => item.name === currVariable
             // )?.value;
-            
+
             var currValue = null;
             //find the current question
             const currStep = currentQuestion.step;
@@ -755,7 +787,12 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             let currentSolutions: any[] = [];
             variablesOfInterest.forEach((voi) => {
                 console.log("voi", voi);
-                const result = findFrameWithVariable(frames, currStep, stopLine, voi);
+                const result = findFrameWithVariable(
+                    frames,
+                    currStep,
+                    stopLine,
+                    voi
+                );
 
                 //update currValue with the value after the block that can be found using "next-line"
                 if (result) {
@@ -773,10 +810,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             return {
                 first: currentSolutions[0],
                 second: currentSolutions[1],
-            }
+            };
         }
     };
-
 
     function findFrameWithVariable(
         taskTrace: any[],
@@ -784,44 +820,53 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         stopLine: number,
         variableOfInterest: string
     ): { value: any; type: string } | null {
-    
         for (let i = 0; i < taskTrace.length; i++) {
             const frame = taskTrace[i];
             if (frame.currLine === stopLine) {
                 // if frame.frame is not undefined
                 console.log("frame", frame);
                 console.log("stopLine", stopLine);
-                if(!frame.frame) {
+                if (!frame.frame) {
                     return null;
                 }
                 //get frame's index
-                if (i+1 < taskTrace.length) {
-                    const targetFrame = taskTrace[i+1];
+                if (i + 1 < taskTrace.length) {
+                    const targetFrame = taskTrace[i + 1];
                     // console.log("targetFrame", targetFrame);
                     // console.log("variableOfInterest", variableOfInterest);
-                    const variable = targetFrame.frame.find((v: { name: string; }) => v.name === variableOfInterest);
+                    const variable = targetFrame.frame.find(
+                        (v: { name: string }) => v.name === variableOfInterest
+                    );
                     // console.log("variable", variable);
                     if (variable) {
                         return { value: variable.value, type: variable.type };
-                    }else{
+                    } else {
                         //wired thing occured for task 6
-                        if(taskID == "6"){
-                            const variable = {"name": "dq", "type": "str", "value": [2,3]};
+                        if (taskID == "6") {
+                            const variable = {
+                                name: "dq",
+                                type: "str",
+                                value: [2, 3],
+                            };
                             if (variable) {
-                                return { value: variable.value, type: variable.type };
+                                return {
+                                    value: variable.value,
+                                    type: variable.type,
+                                };
                             }
                         }
                     }
-                }
-                else{
-                    const variable = frame.frame.find((v: { name: string; }) => v.name === variableOfInterest);
+                } else {
+                    const variable = frame.frame.find(
+                        (v: { name: string }) => v.name === variableOfInterest
+                    );
                     if (variable) {
                         return { value: variable.value, type: variable.type };
                     }
                 }
             }
         }
-    
+
         return null; // return null if no frame or variable is found
     }
 
@@ -846,17 +891,25 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         }
         // console.log("codeBlock", codeBlock);
 
-        let currentFrame = excutionSteps[currentStep+1].frame;
-        let variableName = questions[currentQuestionIndex]["top-two-variables"][variableIndex];
+        let currentFrame = excutionSteps[currentStep + 1].frame;
+        let variableName =
+            questions[currentQuestionIndex]["top-two-variables"][variableIndex];
         let userAnswer = inputValue[variableIndex];
         let solution = solutions![currentQuestionIndex].first;
-        if (variableIndex != 0){
+        if (variableIndex != 0) {
             solution = solutions![currentQuestionIndex].second;
         }
 
-        let numberOfAttempts = currentWrongAnswers![variableIndex][currentQuestionIndex].filter((item) => item.length > 0).length+1;
+        let numberOfAttempts =
+            currentWrongAnswers![variableIndex][currentQuestionIndex].filter(
+                (item) => item.length > 0
+            ).length + 1;
         //previousResponse is the last response of the currentQuestionIndex
-        let previousResponse = currentWrongAnswers![variableIndex][currentQuestionIndex].filter((item) => item.length > 0).pop();
+        let previousResponse = currentWrongAnswers![variableIndex][
+            currentQuestionIndex
+        ]
+            .filter((item) => item.length > 0)
+            .pop();
 
         console.log(numberOfAttempts, previousResponse);
 
@@ -866,29 +919,28 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         // console.log("solution", solution);
         try {
             apiGetFeedbackForDecomposition(
-                context?.token, 
+                context?.token,
                 codeBlock,
                 currentFrame,
                 variableName,
                 userAnswer,
                 solution,
                 numberOfAttempts,
-                previousResponse || "",
-            ).then(
-                async (response) => {
-                    if (response.ok) {
-                        const data = await response.json();
-                        let tempFeedback = deepCopy(currFeedback);
-                        tempFeedback[variableIndex][numberOfAttempts-1] = data.feedback;
-                        setCurrFeedback(tempFeedback);
-                        //feedback ready to be true at numberOfAttempts -1
-                        let temp = deepCopy(feedbackReady);
-                        temp[variableIndex][numberOfAttempts-1] = true;
-                        setFeedbackReady(temp);
-                        console.log("feedback", data.feedback);
-                    }
+                previousResponse || ""
+            ).then(async (response) => {
+                if (response.ok) {
+                    const data = await response.json();
+                    let tempFeedback = deepCopy(currFeedback);
+                    tempFeedback[variableIndex][numberOfAttempts - 1] =
+                        data.feedback;
+                    setCurrFeedback(tempFeedback);
+                    //feedback ready to be true at numberOfAttempts -1
+                    let temp = deepCopy(feedbackReady);
+                    temp[variableIndex][numberOfAttempts - 1] = true;
+                    setFeedbackReady(temp);
+                    console.log("feedback", data.feedback);
                 }
-            );
+            });
         } catch (error: any) {
             logError(error.toString());
         }
@@ -899,7 +951,10 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         index: number;
     }
 
-    const handleUserInput = (index: number, event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    const handleUserInput = (
+        index: number,
+        event: React.ChangeEvent<HTMLTextAreaElement>
+    ): void => {
         const { value } = event.target;
         const cursorPosition = event.target.selectionStart; // Get the cursor position
 
@@ -908,7 +963,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             newUserResponse[index] = value;
             return newUserResponse;
         });
-
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -919,9 +973,12 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         }
     };
 
-    const getShortExplanationFeedback = (index: number, variableIndex: number) => {
+    const getShortExplanationFeedback = (
+        index: number,
+        variableIndex: number
+    ) => {
         let attemptNumber = attempted.findIndex((attempt) => !attempt);
-        setTotalAttempts(prevTotalAttempts => prevTotalAttempts + 1);
+        setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
 
         const question = questions[index];
         apiLogEvents(
@@ -943,25 +1000,17 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                 logError("sendLog: " + error.toString());
             });
 
-
-        if(attempted.slice(0, -1).every(value => value === true)) {
+        if (attempted.slice(0, -1).every((value) => value === true)) {
             setAttempted([true, true, true]);
-            setExplanationQuestionCorrect(
-                (prev) => {
-                    let temp = deepCopy(prev);
-                    temp[index] = true;
-                    return temp;
-                }
-            );
-    
-            setIsOnStop(
-                false
-            );
+            setExplanationQuestionCorrect((prev) => {
+                let temp = deepCopy(prev);
+                temp[index] = true;
+                return temp;
+            });
+
+            setIsOnStop(false);
             setCurrentQuestionNumber(currentQuestionNumber + 1);
-            updateQuestion(
-                index +
-                    1
-            );
+            updateQuestion(index + 1);
             setInputValue((prevInputValue) => {
                 const newInputValue = [...prevInputValue];
                 newInputValue[variableIndex] = "";
@@ -970,31 +1019,26 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
             setAttempted([false, false, false]);
             return;
-        }
-        else {
+        } else {
             setButtonDisabled(true);
             //find the first occurence of false and send to true
-            setAttempted(
-                (prev) => {
-                    let temp = deepCopy(prev);
-                    temp[attemptNumber] = true;
-                    return temp;
-                }
-            )
-            setExplanationFeedbackReady(
-                (prev) => {
-                    let temp = deepCopy(prev);
-                    temp[index] = false;
-                    return temp;
-                }
-            );
+            setAttempted((prev) => {
+                let temp = deepCopy(prev);
+                temp[attemptNumber] = true;
+                return temp;
+            });
+            setExplanationFeedbackReady((prev) => {
+                let temp = deepCopy(prev);
+                temp[index] = false;
+                return temp;
+            });
             try {
                 apiGetFeedbackFromTracePredictShortAnswer(
                     context?.token,
                     code,
                     userResponse[index],
                     questions[index].answer,
-                    questions[index]["question-about-purpose-of-code"],
+                    questions[index]["question-about-purpose-of-code"]
                 )
                     .then(async (response) => {
                         if (response.ok) {
@@ -1002,232 +1046,226 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             const data = await response.json();
                             console.log(data.response);
 
-                            if(parseInt(data.response.correctness) && parseInt(data.response.correctness) > 2){
-                                console.log(parseInt(data.response.correctness));
-                                setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
+                            if (
+                                parseInt(data.response.correctness) &&
+                                parseInt(data.response.correctness) > 2
+                            ) {
+                                console.log(
+                                    parseInt(data.response.correctness)
+                                );
+                                setTotalCorrect(
+                                    (prevTotalCorrect) => prevTotalCorrect + 1
+                                );
                                 setButtonDisabled(false);
-                                setExplanationQuestionCorrect(
-                                    (prev) => {
-                                        let temp = deepCopy(prev);
-                                        temp[index] = true;
-                                        return temp;
-                                    }
+                                setExplanationQuestionCorrect((prev) => {
+                                    let temp = deepCopy(prev);
+                                    temp[index] = true;
+                                    return temp;
+                                });
+
+                                setIsOnStop(false);
+                                setCurrentQuestionNumber(
+                                    currentQuestionNumber + 1
                                 );
-                        
-                                setIsOnStop(
-                                    false
-                                );
-                                setCurrentQuestionNumber(currentQuestionNumber + 1);
-                                updateQuestion(
-                                    index +
-                                        1
-                                );
+                                updateQuestion(index + 1);
                                 setInputValue((prevInputValue) => {
                                     const newInputValue = [...prevInputValue];
                                     newInputValue[variableIndex] = "";
                                     return newInputValue;
                                 });
                                 setAttempted([false, false, false]);
-                            }else {
-                                setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
+                            } else {
+                                setTotalIncorrect(
+                                    (prevTotalIncorrect) =>
+                                        prevTotalIncorrect + 1
+                                );
                                 setButtonDisabled(false);
 
-                                let wrongExplainationCopy = deepCopy(wrongExplainationAnswers);
-                                const attemptNumber = attempted.findIndex(attempt => !attempt);
-                                wrongExplainationCopy[index][attemptNumber] = userResponse[index];
-                                setWrongExplainationAnswers(wrongExplainationCopy);
-
+                                let wrongExplainationCopy = deepCopy(
+                                    wrongExplainationAnswers
+                                );
+                                const attemptNumber = attempted.findIndex(
+                                    (attempt) => !attempt
+                                );
+                                wrongExplainationCopy[index][attemptNumber] =
+                                    userResponse[index];
+                                setWrongExplainationAnswers(
+                                    wrongExplainationCopy
+                                );
 
                                 console.log(wrongExplainationCopy);
 
-                                setExplanationFeedbackReady(
-                                    (prev) => {
-                                        let temp = deepCopy(prev);
-                                        temp[index] = true;
-                                        return temp;
-                                    }
-                                );
-                                setExplanationFeedback(
-                                    (prev) => {
-                                        let temp = deepCopy(prev);
-                                        temp[index] = data.response.feedback;
-                                        return temp;
-                                    }
-                                );
-                                setExplanationQuestionCorrect(
-                                    (prev) => {
-                                        let temp = deepCopy(prev);
-                                        temp[index] = false;
-                                        return temp;
-                                    }
-                                );
-                                setUserResponse(
-                                    (prev) => {
-                                        let temp = deepCopy(prev);
-                                        temp[index] = "";
-                                        return temp;
-                                    }
-                                );
+                                setExplanationFeedbackReady((prev) => {
+                                    let temp = deepCopy(prev);
+                                    temp[index] = true;
+                                    return temp;
+                                });
+                                setExplanationFeedback((prev) => {
+                                    let temp = deepCopy(prev);
+                                    temp[index] = data.response.feedback;
+                                    return temp;
+                                });
+                                setExplanationQuestionCorrect((prev) => {
+                                    let temp = deepCopy(prev);
+                                    temp[index] = false;
+                                    return temp;
+                                });
+                                setUserResponse((prev) => {
+                                    let temp = deepCopy(prev);
+                                    temp[index] = "";
+                                    return temp;
+                                });
                             }
                         }
-
-                        })
-                        .catch((error) => {
-                            setButtonDisabled(false);
-                            logError(error.toString());
-                        });
-                } catch (error: any) {
-                    setButtonDisabled(false);
-                    logError(error.toString());
-                }
+                    })
+                    .catch((error) => {
+                        setButtonDisabled(false);
+                        logError(error.toString());
+                    });
+            } catch (error: any) {
+                setButtonDisabled(false);
+                logError(error.toString());
             }
-        
+        }
     };
 
+    function submitTracingQuestion(index: number, variableIndex: number) {
+        let solution = solutions![index].first;
 
-    function submitTracingQuestion(index: number, variableIndex: number){
-            let solution = solutions![index].first;
-
-            if (variableIndex != 0){
-                solution = solutions![index].second;
+        if (variableIndex != 0) {
+            solution = solutions![index].second;
+        }
+        // - answer question event:
+        // - highlighted_line_of_code: {string}
+        // - question_text: {string}
+        // - prev_student_answer: {string} // if this is a retry and they have tried before
+        // - prev_provided_feedback: {string} // if this is a retry and they have tried before
+        // - new_student_answer: {string}
+        // - attempt_number: {number}
+        setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
+        let attemptNumber =
+            currentWrongAnswers![variableIndex][index].filter(
+                (item) => item.length > 0
+            ).length + 1;
+        apiLogEvents(
+            context?.token,
+            taskID,
+            "trace predict answer question event",
+            {
+                type: "trace predict answer question event",
+                current_step: currentStep,
+                highlighted_line_of_code:
+                    backendCode[excutionSteps[currentStep + 1].currLine],
+                prev_student_answer: !currentWrongAnswers
+                    ? ""
+                    : currentWrongAnswers[variableIndex][index],
+                expected_solution: solution, //correct or incorrect
+                new_student_answer: inputValue[variableIndex],
+                attempt_number: attemptNumber,
             }
-            // - answer question event:
-            // - highlighted_line_of_code: {string}
-            // - question_text: {string}
-            // - prev_student_answer: {string} // if this is a retry and they have tried before
-            // - prev_provided_feedback: {string} // if this is a retry and they have tried before
-            // - new_student_answer: {string}
-            // - attempt_number: {number}
-            setTotalAttempts(prevTotalAttempts => prevTotalAttempts + 1);
-            let attemptNumber =
-                currentWrongAnswers![variableIndex][index].filter(
-                    (item) => item.length > 0).length + 1;
-            apiLogEvents(
-                context?.token,
-                taskID,
-                "trace predict answer question event",
-                {
-                    type: "trace predict answer question event",
-                    current_step:
-                        currentStep,
-                    highlighted_line_of_code:
-                        backendCode[
-                            excutionSteps[
-                                currentStep +
-                                    1
-                            ]
-                                .currLine
-                        ],
-                    prev_student_answer:
-                        !currentWrongAnswers
-                            ? ""
-                            : currentWrongAnswers[variableIndex][index],
-                    expected_solution:
-                        solution, //correct or incorrect
-                    new_student_answer:
-                        inputValue[variableIndex],
-                    attempt_number:
-                        attemptNumber,
+        )
+            .then(() => {})
+            .catch((error) => {
+                logError("sendLog: " + error.toString());
+            });
+        if (
+            (solution &&
+                typeof solution === "string" &&
+                inputValue[variableIndex]
+                    .replace(/\s+/g, "")
+                    .replace(/['"]/g, '"') ===
+                    solution.replace(/\s+/g, "").replace(/['"]/g, '"')) ||
+            Number(inputValue[variableIndex]) === Number(solution)
+        ) {
+            setShowSolution((prev) => {
+                if (!prev) return prev;
+
+                // Create a shallow copy of the top-level array
+                let temp = prev.map((innerArray) => [...innerArray]);
+
+                // Ensure the nested array exists
+                if (temp[variableIndex]) {
+                    // Set the specific value to true
+                    temp[variableIndex][index] = true;
                 }
-            )
-                .then(() => {})
-                .catch((error) => {
-                    logError("sendLog: " +
-                        error.toString()
-                    );}
-                );
-                if ((solution &&
-                        typeof solution === "string" &&
-                        inputValue[variableIndex].replace(/\s+/g, "").replace(/['"]/g, '"') === solution.replace(/\s+/g, "").replace(/['"]/g, '"')) ||
-                    Number(inputValue[variableIndex]) === Number(solution)
-                ) {
+                return temp;
+            });
+            let temp = deepCopy(feedbackReady);
+            temp[variableIndex][attemptNumber - 1] = true;
+            setFeedbackReady(temp);
+            setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
+        } else if (currentWrongAnswers && index == currentQuestionIndex) {
+            //set the current wrong answers
+            //find the first empty string in the array
+
+            //set feedback
+            let tempNum = deepCopy(feedbackReady);
+            tempNum[variableIndex][attemptNumber - 1] = false;
+            setFeedbackReady(tempNum);
+            getCurrentFeedback(index);
+
+            setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
+
+            let temp = deepCopy(currentWrongAnswers);
+            console.log(temp[variableIndex][currentQuestionIndex]);
+            let emptyIndex = temp[variableIndex][
+                currentQuestionIndex
+            ].findIndex((item: string) => item === "");
+            if (emptyIndex <= 2 && emptyIndex >= 0) {
+                temp[variableIndex][currentQuestionIndex][emptyIndex] =
+                    inputValue[variableIndex];
+                setCurrentWrongAnswers(temp);
+                setInputValue((prevInputValue) => {
+                    const newInputValue = [...prevInputValue];
+                    newInputValue[variableIndex] = "";
+                    return newInputValue;
+                });
+            }
+            if (currentWrongAnswers[variableIndex][index][2] == "") {
+                //means there is at least one more try
+            } else {
+                // there is no more try, update question and reveal the answer
                 setShowSolution((prev) => {
                     if (!prev) return prev;
-                
+
                     // Create a shallow copy of the top-level array
-                    let temp = prev.map(innerArray => [...innerArray]);
-                
+                    let temp = prev.map((innerArray) => [...innerArray]);
+
                     // Ensure the nested array exists
                     if (temp[variableIndex]) {
                         // Set the specific value to true
                         temp[variableIndex][index] = true;
-                    } 
+                    }
                     return temp;
                 });
                 let temp = deepCopy(feedbackReady);
-                temp[variableIndex][attemptNumber-1] = true;
-                setFeedbackReady(temp);    
-                setTotalCorrect(prevTotalCorrect => prevTotalCorrect + 1)
-                
-                
-            } else if (currentWrongAnswers && index ==currentQuestionIndex) {
-                //set the current wrong answers
-                //find the first empty string in the array
-
-                //set feedback
-                let tempNum = deepCopy(feedbackReady);
-                tempNum[variableIndex][attemptNumber-1] = false;
-                setFeedbackReady(tempNum);
-                getCurrentFeedback(index);
-
-                setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)
-
-                let temp = deepCopy(currentWrongAnswers);
-                console.log(temp[variableIndex][currentQuestionIndex]);
-                let emptyIndex = temp[variableIndex][currentQuestionIndex].findIndex((item: string) =>item ==="");
-                if (emptyIndex <= 2 && emptyIndex >= 0) {
-                    temp[variableIndex][currentQuestionIndex][emptyIndex] = inputValue[variableIndex];
-                    setCurrentWrongAnswers(temp);
-                    setInputValue((prevInputValue) => {
-                        const newInputValue = [...prevInputValue];
-                        newInputValue[variableIndex] = "";
-                        return newInputValue;
-                    });
-                }
-                if (currentWrongAnswers[variableIndex][index][2] == "") {
-                    //means there is at least one more try
-                } else {
-                    // there is no more try, update question and reveal the answer
-                    setShowSolution((prev) => {
-                        if (!prev) return prev;
-                    
-                        // Create a shallow copy of the top-level array
-                        let temp = prev.map(innerArray => [...innerArray]);
-                    
-                        // Ensure the nested array exists
-                        if (temp[variableIndex]) {
-                            // Set the specific value to true
-                            temp[variableIndex][index] = true;
-                        } 
-                        return temp;
-                    });
-                    let temp = deepCopy(feedbackReady);
-                    temp[variableIndex][attemptNumber-1] = true;
-                    setFeedbackReady(temp);  
-                    setTotalIncorrect(prevTotalIncorrect => prevTotalIncorrect + 1)                     
-                }
+                temp[variableIndex][attemptNumber - 1] = true;
+                setFeedbackReady(temp);
+                setTotalIncorrect(
+                    (prevTotalIncorrect) => prevTotalIncorrect + 1
+                );
             }
+        }
     }
-
-
-
-
 
     return (
         <div className="excution-generator">
             <div className="step-by-step-read-container">
                 <div className="prompt-text trace-predict-side">
-                    <span className="button-span">Prompt:</span>{" "}
-                    {prompt}
+                    <span className="button-span">Prompt:</span> {prompt}
                 </div>
                 <div className="overall-explanation-container">
                     {generatedExplanation && (
                         <div className="overall-explanation">
-                            <b>Explanation:</b> 
-                            <div dangerouslySetInnerHTML={{
-                                __html: highlightPsudo(generatedExplanation, "code-highlight"),
-                            }}>
-                            </div>
+                            <b>Explanation:</b>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: highlightPsudo(
+                                        generatedExplanation,
+                                        "code-highlight"
+                                    ),
+                                }}
+                            ></div>
                         </div>
                     )}
                 </div>
@@ -1251,23 +1289,23 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             {code.split("\n").map((line, index) => (
                                 <div className="line">
                                     <span className="trace-line-number">
-                                        {index+1}
+                                        {index + 1}
                                     </span>
                                 </div>
                             ))}
                             <div className="line">
                                 <span className="trace-line-number">
-                                    {code.split("\n").length+1}
+                                    {code.split("\n").length + 1}
                                 </span>
                             </div>
                             <div className="line">
                                 <span className="trace-line-number">
-                                    {code.split("\n").length+2}
+                                    {code.split("\n").length + 2}
                                 </span>
                             </div>
                             <div className="line">
                                 <span className="trace-line-number">
-                                    {code.split("\n").length+3}
+                                    {code.split("\n").length + 3}
                                 </span>
                             </div>
                         </div>
@@ -1277,59 +1315,65 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             id="code-editor"
                             ref={readerRef}
                         ></div>
-                        <div className="trace-code-container"
-                        >
+                        <div className="trace-code-container">
                             {code.split("\n").map((line, index) => (
-                            <div
-                                id={`line-${index}`}
-                                key={index}
-                                className="trace-predict-tracker"
-                            >
-                                <>
-                                    <pre
-                                        onMouseEnter={() => {
-                                            //deepCopy of hoveringHovered
-                                            let temp = deepCopy(hoveringHovered);
-                                            //change all to false
-                                            temp.fill(false);
-                                            //change the current index to true
-                                            temp[index] = true;
-                                            setHoveringHovered(temp);
-                                        }}
-                                        onMouseLeave={() => {
-                                            //deepCopy of hoveringHovered
-                                            let temp = deepCopy(hoveringHovered);
-                                            //change all to false
-                                            temp.fill(false);
-                                            setHoveringHovered(temp);
-                                        }}
-                                        dangerouslySetInnerHTML={{
-                                            __html: colorizedText[index],
-                                        }}
-                                    ></pre>
-                                    {hoveringHovered[index] && explaination && (
-                                    <div className="hoverable-code-container-with-hint">
-                                        <div
-                                            className="hoverable-code-line-explanation"
-                                            dangerouslySetInnerHTML={{
-                                                __html: highlightPsudo(explaination[index]),
+                                <div
+                                    id={`line-${index}`}
+                                    key={index}
+                                    className="trace-predict-tracker"
+                                >
+                                    <>
+                                        <pre
+                                            onMouseEnter={() => {
+                                                //deepCopy of hoveringHovered
+                                                let temp =
+                                                    deepCopy(hoveringHovered);
+                                                //change all to false
+                                                temp.fill(false);
+                                                //change the current index to true
+                                                temp[index] = true;
+                                                setHoveringHovered(temp);
                                             }}
-                                        ></div>
-                                    </div>
-                                    )}
-                                </>
-                            </div>
+                                            onMouseLeave={() => {
+                                                //deepCopy of hoveringHovered
+                                                let temp =
+                                                    deepCopy(hoveringHovered);
+                                                //change all to false
+                                                temp.fill(false);
+                                                setHoveringHovered(temp);
+                                            }}
+                                            dangerouslySetInnerHTML={{
+                                                __html: colorizedText[index],
+                                            }}
+                                        ></pre>
+                                        {hoveringHovered[index] &&
+                                            explaination && (
+                                                <div className="hoverable-code-container-with-hint">
+                                                    <div
+                                                        className="hoverable-code-line-explanation"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: highlightPsudo(
+                                                                explaination[
+                                                                    index
+                                                                ]
+                                                            ),
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            )}
+                                    </>
+                                </div>
                             ))}
                             <div
-                                id={`line-${code.split("\n").length+1}`}
+                                id={`line-${code.split("\n").length + 1}`}
                                 className="trace-predict-tracker"
                             ></div>
                             <div
-                                id={`line-${code.split("\n").length+2}`}
+                                id={`line-${code.split("\n").length + 2}`}
                                 className="trace-predict-tracker"
                             ></div>
                             <div
-                                id={`line-${code.split("\n").length+3}`}
+                                id={`line-${code.split("\n").length + 3}`}
                                 className="trace-predict-tracker"
                             ></div>
                         </div>
@@ -1375,10 +1419,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             // setVariableSummaryOpen(false);
                             for (let line = 0; line <= lines.length; line++) {
                                 let elementId = `line-${line}`;
-                                let element = document.getElementById(elementId);
-                        
+                                let element =
+                                    document.getElementById(elementId);
+
                                 if (element) {
-                                    element.classList.remove("highlighted-trace-predict");
+                                    element.classList.remove(
+                                        "highlighted-trace-predict"
+                                    );
                                 }
                             }
                         }}
@@ -1395,21 +1442,24 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     {variableSummaryOpen && (
                         <div className="frame">
                             {/* Your frame content goes here */}
-                            {currStep?.frame && currStep?.frame.map((item, index) => (
-                                <>
-                                    <div
-                                        className={`frame-container ${item.type}`}
-                                    >
-                                        <p>{item.name}:&nbsp;&nbsp;&nbsp;</p>
-                                        <p>{JSON.stringify(item.value)}</p>
-                                    </div>
-                                </>
-                            ))}
+                            {currStep?.frame &&
+                                currStep?.frame.map((item, index) => (
+                                    <>
+                                        <div
+                                            className={`frame-container ${item.type}`}
+                                        >
+                                            <p>
+                                                {item.name}:&nbsp;&nbsp;&nbsp;
+                                            </p>
+                                            <p>{JSON.stringify(item.value)}</p>
+                                        </div>
+                                    </>
+                                ))}
                         </div>
                     )}
                 </div>
 
-                <div className="print-container" style={{ display: 'none' }}>
+                <div className="print-container" style={{ display: "none" }}>
                     <div className="quick-editing-buttons-container">
                         <Fragment>
                             {" "}
@@ -1499,249 +1549,482 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                         {questions.length > 0 &&
                             questions.map(
                                 (item, index) =>
-                                    item.step-2 <= currentStep && (
-                                        <div className={`steps-question-div`} 
+                                    item.step - 2 <= currentStep && (
+                                        <div
+                                            className={`steps-question-div`}
                                             id={`question-number-${index}`}
                                         >
-                                            {item["begin-line"] == item["end-line"] ?
+                                            {item["begin-line"] ==
+                                            item["end-line"] ? (
                                                 <p className="question">
-                                                    Given the current state of the
-                                                    variables, what will be the
-                                                    value of{" "}
+                                                    Given the current state of
+                                                    the variables, what will be
+                                                    the value of{" "}
                                                     <span className="variable">
-                                                        {item["top-two-variables"][0]}
-                                                    </span>{" and "}
+                                                        {
+                                                            item[
+                                                                "top-two-variables"
+                                                            ][0]
+                                                        }
+                                                    </span>
+                                                    {" and "}
                                                     <span className="variable">
-                                                        {item["top-two-variables"][1]}
+                                                        {
+                                                            item[
+                                                                "top-two-variables"
+                                                            ][1]
+                                                        }
                                                     </span>
                                                     on the highlighted line
                                                     <span>
-                                                        {questions[index]["begin-line"]}
-                                                    </span> is executed?{" "}
-                                                </p> : <p className="question">
-                                                    Given the current state of the
-                                                    variables, what will be the
-                                                    value of{" "}
+                                                        {
+                                                            questions[index][
+                                                                "begin-line"
+                                                            ]
+                                                        }
+                                                    </span>{" "}
+                                                    is executed?{" "}
+                                                </p>
+                                            ) : (
+                                                <p className="question">
+                                                    Given the current state of
+                                                    the variables, what will be
+                                                    the value of{" "}
                                                     <span className="variable">
-                                                        {item["top-two-variables"][0]}
-                                                    </span>{" and "}
+                                                        {
+                                                            item[
+                                                                "top-two-variables"
+                                                            ][0]
+                                                        }
+                                                    </span>
+                                                    {" and "}
                                                     <span className="variable">
-                                                        {item["top-two-variables"][1]}
+                                                        {
+                                                            item[
+                                                                "top-two-variables"
+                                                            ][1]
+                                                        }
                                                     </span>
                                                     after the highlighted code
                                                     <span>
-                                                        {questions[index]["begin-line"]}
-                                                    </span> to line 
+                                                        {
+                                                            questions[index][
+                                                                "begin-line"
+                                                            ]
+                                                        }
+                                                    </span>{" "}
+                                                    to line
                                                     <span>
-                                                        {questions[index]["end-line"]}
-                                                    </span> are
-                                                    executed?{" "}
+                                                        {
+                                                            questions[index][
+                                                                "end-line"
+                                                            ]
+                                                        }
+                                                    </span>{" "}
+                                                    are executed?{" "}
                                                 </p>
-                                            }
+                                            )}
                                             {!showSolution![0][index] &&
-                                                index == currentQuestionIndex && (
-                                                <div className={`step-question-container`}>
-                                                    <span className="variable">{item["top-two-variables"][0]}</span>
-                                                    <input
-                                                        className="question-input"
-                                                        value={inputValue[0]}
-                                                        onChange={(e) =>
-                                                            setInputValue((prevInputValue) => {
-                                                                const newInputValue = [...prevInputValue];
-                                                                newInputValue[0] = e.target.value;
-                                                                return newInputValue;
-                                                            })
-                                                        }
-                                                    />
-                                                    <button
-                                                        className="question-submission-button"
-                                                        disabled={inputValue[0].trim().length ===0}
-                                                        onClick={() => submitTracingQuestion(index, 0)}
+                                                index ==
+                                                    currentQuestionIndex && (
+                                                    <div
+                                                        className={`step-question-container`}
                                                     >
-                                                        Submit
-                                                    </button>
-                                                </div>
-                                            )}
-                                            {currentWrongAnswers && currentWrongAnswers[0][index] && currentWrongAnswers[0][index].length > 0 && currentWrongAnswers[0][index].map(
-                                                (item, attamptNumber) =>
-                                                    item.length > 0 && (
-                                                        <>
-                                                        {feedbackReady[0][attamptNumber] ? (
-                                                            <div className="step-answered-container">
-                                                                <div className="step-answered-container-feedback">
-                                                                    You Answered:
-                                                                    <span className="wrong">
-                                                                        {item}
-                                                                    </span>
-                                                                    <p style={{ color: "red" }}>
-                                                                        Incorrect!
-                                                                    </p>
-                                                                </div>
-                                                                <div className="feedback-from-step">
-                                                                    <p>
-                                                                    {currFeedback[0][attamptNumber]}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        ) : (
-                                                            <div className="step-answered-container">
-                                                                
-                                                                Checking Solution
-                                                                <ChatLoader/>
-                                                            </div>
-                                                        )}
-                                                    </>
-                                                )
-                                            )}
-                                            {showSolution![0][index] &&(
-                                            <div className="step-answered-container step-answered-container-correct">
-                                                <p>Value of <span className="variable">{item["top-two-variables"][0]}
-                                                </span>:</p>
-                                                <span className="correct">
-                                                    {solutions![index].first}
-                                                </span>
-                                            </div>
-                                            )}
-                                            {!showSolution![1][index] && 
-                                                index == currentQuestionIndex && (
-                                                <div className={`step-question-container`}>
-                                                    <span className="variable">{item["top-two-variables"][1]}</span>
-                                                    <input
-                                                        className="question-input"
-                                                        value={inputValue[1]}
-                                                        onChange={(e) =>
-                                                            setInputValue((prevInputValue) => {
-                                                                const newInputValue = [...prevInputValue];
-                                                                newInputValue[1] = e.target.value;
-                                                                return newInputValue;
-                                                            })
-                                                        }
-                                                    />
-                                                    <button
-                                                        className="question-submission-button"
-                                                        disabled={inputValue[1].trim().length ===0}
-                                                        onClick={() => submitTracingQuestion(index, 1)}
-                                                    >
-                                                        Submit
-                                                    </button>
-                                                </div>
-                                            )}
-                                            {currentWrongAnswers && currentWrongAnswers[1][index] && currentWrongAnswers[1][index].length > 0 && currentWrongAnswers[1][index].map(
-                                                (item, attamptNumber) =>
-                                                    item.length > 0 && (
-                                                        <>
-                                                        {feedbackReady[1][attamptNumber] ? (
-                                                            <div className="step-answered-container">
-                                                                <div className="step-answered-container-feedback">
-                                                                    You Answered:
-                                                                    <span className="wrong">
-                                                                        {item}
-                                                                    </span>
-                                                                    <p style={{ color: "red" }}>
-                                                                        Incorrect!
-                                                                    </p>
-                                                                </div>
-                                                                <div className="feedback-from-step">
-                                                                    <p>
-                                                                    {currFeedback[1][attamptNumber]}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        ) : (
-                                                            <div className="step-answered-container">
-                                                                
-                                                                Checking Solution
-                                                                <ChatLoader/>
-                                                            </div>
-                                                        )}
-                                                    </>
-                                                )
-                                            )}
-                                            {showSolution![1][index] &&(
-                                            <div className="step-answered-container step-answered-container-correct">
-                                                 <p>Value of <span className="variable">{item["top-two-variables"][1]}
-                                                </span>:</p>
-                                                <span className="correct">
-                                                    {solutions![index].second}
-                                                </span>
-                                            </div>
-                                            )}
-                                            {showSolution![0][index] && showSolution![1][index] &&(
-                                                <div className="follow-up-question">
-                                                    <div className="follow-up-header">
-                                                        <p>Follow Up</p>
-                                                    </div>
-                                                    <div className="follow-up-question-text">
-                                                        {item["question-about-purpose-of-code"]}
-                                                    </div>
-                                                    {explanationFeedback[index] != "" && explanationFeedbackReady[index] && !explanationQuestionCorrect[index] && !attempted.every(attempt => attempt) &&
-                                                        <>
-                                                        <div className="follow-up-question-feedback">
-                                                            <strong>You answered:</strong> {getLastNonEmptyElement(wrongExplainationAnswers[index])}
-                                                        </div>
-                                                        <div className="follow-up-question-feedback">
-                                                            <strong>Hint:</strong> {explanationFeedback[index]}
-                                                        </div>
-                                                        </>
-                                                    }
-                                                    {!explanationQuestionCorrect[index] && !buttonDisabled &&
-                                                    <div className="follow-up-question-input">
-                                                        <textarea
-                                                            className="self-explain-textbox baseline-input"
-                                                            id="userInput"
-                                                            // ref={textareaRefs}
-                                                            value={userResponse[index]}
-                                                            onChange={(e) => handleUserInput(index, e)}
-                                                            onKeyDown={handleKeyDown}
-                                                            rows={2}
-                                                            data-gramm="false"
-                                                            data-gramm_editor="false"
-                                                            autoComplete="off"
-                                                            spellCheck="false"
+                                                        <span className="variable">
+                                                            {
+                                                                item[
+                                                                    "top-two-variables"
+                                                                ][0]
+                                                            }
+                                                        </span>
+                                                        <input
+                                                            className="question-input"
+                                                            value={
+                                                                inputValue[0]
+                                                            }
+                                                            onChange={(e) =>
+                                                                setInputValue(
+                                                                    (
+                                                                        prevInputValue
+                                                                    ) => {
+                                                                        const newInputValue =
+                                                                            [
+                                                                                ...prevInputValue,
+                                                                            ];
+                                                                        newInputValue[0] =
+                                                                            e.target.value;
+                                                                        return newInputValue;
+                                                                    }
+                                                                )
+                                                            }
                                                         />
                                                         <button
-                                                            className="gpt-button"
-                                                            onClick={() => {
-                                                                getShortExplanationFeedback(index, 0);
-                                                            }}
+                                                            className="question-submission-button"
                                                             disabled={
-                                                                !userResponse[
-                                                                    index
-                                                                ].trim() ||
-                                                                buttonDisabled
+                                                                inputValue[0].trim()
+                                                                    .length ===
+                                                                0
+                                                            }
+                                                            onClick={() =>
+                                                                submitTracingQuestion(
+                                                                    index,
+                                                                    0
+                                                                )
                                                             }
                                                         >
                                                             Submit
                                                         </button>
                                                     </div>
-                                                    }
-                                                    {!explanationFeedbackReady[index] && !attempted.every(attempt => attempt) && !attempted.every(value => value === false) &&
-                                                        <div className="step-answered-container">
-                                                            Checking Solution
-                                                        <ChatLoader/>
-                                                        </div>
-                                                    }
-                                                    {
-                                                        (explanationQuestionCorrect[index] || attempted.every(attempt => attempt)) &&
-                                                        <>
-                                                        <div className="follow-up-question-feedback normal">
-                                                            <strong>Your Last Attempt</strong> {userResponse[index]}
-                                                        </div>
-                                                        <div className="follow-up-question-feedback correct">
-                                                            <strong>Explanation:</strong> {item.answer}
-                                                        </div>
-                                                        </>
-
-                                                    }
-                                                    
+                                                )}
+                                            {currentWrongAnswers &&
+                                                currentWrongAnswers[0][index] &&
+                                                currentWrongAnswers[0][index]
+                                                    .length > 0 &&
+                                                currentWrongAnswers[0][
+                                                    index
+                                                ].map(
+                                                    (item, attamptNumber) =>
+                                                        item.length > 0 && (
+                                                            <>
+                                                                {feedbackReady[0][
+                                                                    attamptNumber
+                                                                ] ? (
+                                                                    <div className="step-answered-container">
+                                                                        <div className="step-answered-container-feedback">
+                                                                            You
+                                                                            Answered:
+                                                                            <span className="wrong">
+                                                                                {
+                                                                                    item
+                                                                                }
+                                                                            </span>
+                                                                            <p
+                                                                                style={{
+                                                                                    color: "red",
+                                                                                }}
+                                                                            >
+                                                                                Incorrect!
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="feedback-from-step">
+                                                                            <p>
+                                                                                {
+                                                                                    currFeedback[0][
+                                                                                        attamptNumber
+                                                                                    ]
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="step-answered-container">
+                                                                        Checking
+                                                                        Solution
+                                                                        <ChatLoader />
+                                                                    </div>
+                                                                )}
+                                                            </>
+                                                        )
+                                                )}
+                                            {showSolution![0][index] && (
+                                                <div className="step-answered-container step-answered-container-correct">
+                                                    <p>
+                                                        Value of{" "}
+                                                        <span className="variable">
+                                                            {
+                                                                item[
+                                                                    "top-two-variables"
+                                                                ][0]
+                                                            }
+                                                        </span>
+                                                        :
+                                                    </p>
+                                                    <span className="correct">
+                                                        {
+                                                            solutions![index]
+                                                                .first
+                                                        }
+                                                    </span>
                                                 </div>
                                             )}
+                                            {!showSolution![1][index] &&
+                                                index ==
+                                                    currentQuestionIndex && (
+                                                    <div
+                                                        className={`step-question-container`}
+                                                    >
+                                                        <span className="variable">
+                                                            {
+                                                                item[
+                                                                    "top-two-variables"
+                                                                ][1]
+                                                            }
+                                                        </span>
+                                                        <input
+                                                            className="question-input"
+                                                            value={
+                                                                inputValue[1]
+                                                            }
+                                                            onChange={(e) =>
+                                                                setInputValue(
+                                                                    (
+                                                                        prevInputValue
+                                                                    ) => {
+                                                                        const newInputValue =
+                                                                            [
+                                                                                ...prevInputValue,
+                                                                            ];
+                                                                        newInputValue[1] =
+                                                                            e.target.value;
+                                                                        return newInputValue;
+                                                                    }
+                                                                )
+                                                            }
+                                                        />
+                                                        <button
+                                                            className="question-submission-button"
+                                                            disabled={
+                                                                inputValue[1].trim()
+                                                                    .length ===
+                                                                0
+                                                            }
+                                                            onClick={() =>
+                                                                submitTracingQuestion(
+                                                                    index,
+                                                                    1
+                                                                )
+                                                            }
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            {currentWrongAnswers &&
+                                                currentWrongAnswers[1][index] &&
+                                                currentWrongAnswers[1][index]
+                                                    .length > 0 &&
+                                                currentWrongAnswers[1][
+                                                    index
+                                                ].map(
+                                                    (item, attamptNumber) =>
+                                                        item.length > 0 && (
+                                                            <>
+                                                                {feedbackReady[1][
+                                                                    attamptNumber
+                                                                ] ? (
+                                                                    <div className="step-answered-container">
+                                                                        <div className="step-answered-container-feedback">
+                                                                            You
+                                                                            Answered:
+                                                                            <span className="wrong">
+                                                                                {
+                                                                                    item
+                                                                                }
+                                                                            </span>
+                                                                            <p
+                                                                                style={{
+                                                                                    color: "red",
+                                                                                }}
+                                                                            >
+                                                                                Incorrect!
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="feedback-from-step">
+                                                                            <p>
+                                                                                {
+                                                                                    currFeedback[1][
+                                                                                        attamptNumber
+                                                                                    ]
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="step-answered-container">
+                                                                        Checking
+                                                                        Solution
+                                                                        <ChatLoader />
+                                                                    </div>
+                                                                )}
+                                                            </>
+                                                        )
+                                                )}
+                                            {showSolution![1][index] && (
+                                                <div className="step-answered-container step-answered-container-correct">
+                                                    <p>
+                                                        Value of{" "}
+                                                        <span className="variable">
+                                                            {
+                                                                item[
+                                                                    "top-two-variables"
+                                                                ][1]
+                                                            }
+                                                        </span>
+                                                        :
+                                                    </p>
+                                                    <span className="correct">
+                                                        {
+                                                            solutions![index]
+                                                                .second
+                                                        }
+                                                    </span>
+                                                </div>
+                                            )}
+                                            {showSolution![0][index] &&
+                                                showSolution![1][index] && (
+                                                    <div className="follow-up-question">
+                                                        <div className="follow-up-header">
+                                                            <p>Follow Up</p>
+                                                        </div>
+                                                        <div className="follow-up-question-text">
+                                                            {
+                                                                item[
+                                                                    "question-about-purpose-of-code"
+                                                                ]
+                                                            }
+                                                        </div>
+                                                        {explanationFeedback[
+                                                            index
+                                                        ] != "" &&
+                                                            explanationFeedbackReady[
+                                                                index
+                                                            ] &&
+                                                            !explanationQuestionCorrect[
+                                                                index
+                                                            ] &&
+                                                            !attempted.every(
+                                                                (attempt) =>
+                                                                    attempt
+                                                            ) && (
+                                                                <>
+                                                                    <div className="follow-up-question-feedback">
+                                                                        <strong>
+                                                                            You
+                                                                            answered:
+                                                                        </strong>{" "}
+                                                                        {getLastNonEmptyElement(
+                                                                            wrongExplainationAnswers[
+                                                                                index
+                                                                            ]
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="follow-up-question-feedback">
+                                                                        <strong>
+                                                                            Hint:
+                                                                        </strong>{" "}
+                                                                        {
+                                                                            explanationFeedback[
+                                                                                index
+                                                                            ]
+                                                                        }
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        {!explanationQuestionCorrect[
+                                                            index
+                                                        ] &&
+                                                            !buttonDisabled && (
+                                                                <div className="follow-up-question-input">
+                                                                    <textarea
+                                                                        className="self-explain-textbox baseline-input"
+                                                                        id="userInput"
+                                                                        // ref={textareaRefs}
+                                                                        value={
+                                                                            userResponse[
+                                                                                index
+                                                                            ]
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            handleUserInput(
+                                                                                index,
+                                                                                e
+                                                                            )
+                                                                        }
+                                                                        onKeyDown={
+                                                                            handleKeyDown
+                                                                        }
+                                                                        rows={2}
+                                                                        data-gramm="false"
+                                                                        data-gramm_editor="false"
+                                                                        autoComplete="off"
+                                                                        spellCheck="false"
+                                                                    />
+                                                                    <button
+                                                                        className="gpt-button"
+                                                                        onClick={() => {
+                                                                            getShortExplanationFeedback(
+                                                                                index,
+                                                                                0
+                                                                            );
+                                                                        }}
+                                                                        disabled={
+                                                                            !userResponse[
+                                                                                index
+                                                                            ].trim() ||
+                                                                            buttonDisabled
+                                                                        }
+                                                                    >
+                                                                        Submit
+                                                                    </button>
+                                                                </div>
+                                                            )}
+                                                        {!explanationFeedbackReady[
+                                                            index
+                                                        ] &&
+                                                            !attempted.every(
+                                                                (attempt) =>
+                                                                    attempt
+                                                            ) &&
+                                                            !attempted.every(
+                                                                (value) =>
+                                                                    value ===
+                                                                    false
+                                                            ) && (
+                                                                <div className="step-answered-container">
+                                                                    Checking
+                                                                    Solution
+                                                                    <ChatLoader />
+                                                                </div>
+                                                            )}
+                                                        {(explanationQuestionCorrect[
+                                                            index
+                                                        ] ||
+                                                            attempted.every(
+                                                                (attempt) =>
+                                                                    attempt
+                                                            )) && (
+                                                            <>
+                                                                <div className="follow-up-question-feedback normal">
+                                                                    <strong>
+                                                                        Your
+                                                                        Last
+                                                                        Attempt
+                                                                    </strong>{" "}
+                                                                    {
+                                                                        userResponse[
+                                                                            index
+                                                                        ]
+                                                                    }
+                                                                </div>
+                                                                <div className="follow-up-question-feedback correct">
+                                                                    <strong>
+                                                                        Explanation:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                        item.answer
+                                                                    }
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                )}
                                         </div>
                                     )
                             )}
                     </div>
                 </div>
-
             </div>
         </div>
     );
