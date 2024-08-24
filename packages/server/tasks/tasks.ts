@@ -239,6 +239,60 @@ export enum TaskStage {
 }
 
 export const CodingTasks = [
+    new MultipleChoiceTask(
+        "PRE1",
+        `<h1>Study Introduction</h1>
+
+<p>Imagine you're working on a large coding project and need to implement several functions. You know their behavior and have some input/output examples but lack the details for implementation. You decided to use an AI tool like ChatGPT to generate the code.</p>
+<br/>
+<p>For each task, you will first be presented with the task description and examples. Please carefully read them and ensure you understand the problem and the expected behavior of the function you are about to work on. Additionally, you can:</p>
+<ul>
+    <li>You can simply copy the task description for each task.</li>
+    <li>You should test the generated code (with the provided examples) to ensure that it is working properly.</li>
+    <li>You will have 5 minutes for the warm-up tasks and 15 minutes for the others.</li>
+</ul>
+
+<p><strong>You can then move on to the next task when you feel confident that you understood the AI-generated code.</strong></p>
+<br/>
+<p>You will be working on six tasks and then at the end of them, you will be given a second series of tasks to review the concepts that were introduced.</p>
+<br/>
+<br/>
+<p>Before you start working on the tasks using the AI-Assisted Programming tool, you must read the instructions carefully.</p>
+
+<h2>Have you thoroughly read the instructions?</h2>`,
+        ["No 😞 - And I will not participate in the study.", "Yes 😊"],
+        2
+    ),
+
+    new MultipleChoiceTask(
+        "T1RB",
+        `<h1>Warm-Up Task 1: Reverse List Using Queue</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>reverse_list_with_queue(input_list: list) -> list</b> that uses a <b>Queue</b> to reverse the provided list and return it.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+reverse_list_with_queue(['e', 'f', 'i', 'l'])
+# Output: ['l', 'i', 'f', 'e']
+</pre>
+<pre class="code-block">
+reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
+# Output: [1, 1, 2, 3, 5, 8, 13]
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
     new AuthoringTask(
         "1",
         "Write a function reverse_list_with_queue(input_list: list) -> list that uses a Queue to reverse the provided list and return it.",
@@ -247,9 +301,50 @@ export const CodingTasks = [
         tech1WarmupDecomposition
     ),
 
+    new MultipleChoiceTask(
+        "T2RB",
+        `<h1>Task 2: Generate Valid Brackets (Using Queue</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+generate_parentheses(2, 2)
+# Output: ['[[]]', '[][]']
+# Explanation: For n=2, the function needs to generate all valid combinations of 2 pairs of parentheses. Since m=2, there is no restriction on the depth, so both combinations '[[]]' and '[][]' are valid and included in the result.
+</pre>
+<pre class="code-block">
+generate_parentheses(3, 2)
+# Output: ['[][[]]', '[][][]', '[[]][]']
+# Explanation: With n=3, the goal is to create valid combinations with 3 pairs of parentheses. The restriction m=2 limits nesting depth to 2, excluding '[[[]]]' but allowing combinations like '[][[]]', '[][][]', and '[[]][]' that respect the depth limit.
+</pre>
+<pre class="code-block">
+generate_parentheses(3, 1)
+# Output: ['[][][]']
+# Explanation: When n=3 and m=1, the nesting depth cannot exceed 1, which only allows for the pattern '[][][]', where no parentheses are nested more than one level deep.
+</pre>
+<pre class="code-block">
+generate_parentheses(4, 2)
+# Output: ['[][][][]', '[][[]][]', '[][][][]']
+# Explanation: With n=4 and m=2, the function can only generate combinations where no more than 2 pairs are nested within each other. This excludes combinations like '[[[[]]]]' or '[[[]]][]', but allows combinations like '[][][][]' and '[][[]][]' where the depth does not exceed 2.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
     new AuthoringTask(
         "2",
-        `Write a function 'generate_parentheses(n: int, d: int) -> list[str]' that generates all combinations of 'n' pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed 'd'. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in '[][[]]' the max is 2, in '[[][[]]]' the max is 3, and in '[][][]' the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
+        `Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
         task1Code,
         task1Explanation,
         task1Decomposition
@@ -338,7 +433,7 @@ export const CodingTasks = [
 
     new MultipleChoiceTask(
         "2MCQ10",
-        "Please skip this question",
+        "Please skip this question (This is not a bug!)",
         ["skip"],
         0,
         "Frustrating"
@@ -346,10 +441,39 @@ export const CodingTasks = [
 
     new MultipleChoiceTask(
         "2MCQ11",
-        "Please skip this question",
+        "Please skip this question (This is not a bug!)",
         ["skip"],
         0,
         "Willing"
+    ),
+
+    new MultipleChoiceTask(
+        "T3RB",
+        `<h1>Warm-Up Task 3: Reverse List Using Stack</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>reverse_list_with_stack(input_list: list) -> list</b> that uses a Stack to reverse the provided list and return it.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+reverse_list_with_queue(['e', 'f', 'i', 'l'])
+# Output: ['l', 'i', 'f', 'e']
+</pre>
+<pre class="code-block">
+reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
+# Output: [1, 1, 2, 3, 5, 8, 13]
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new AuthoringTask(
@@ -358,6 +482,42 @@ export const CodingTasks = [
         tech2WarmupCode,
         tech2WarmupExplanation,
         tech2WarmupDecomposition
+    ),
+
+    new MultipleChoiceTask(
+        "T4RB",
+        `<h1>Task 4: Longest Valid Brackets and Braces (Using Stack)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>longest_valid_brackets(s: str) -> int</b> that takes a string consisting of <b><></b>, <b>[]</b>, and <b>{}</b>, and returns the length of the longest valid bracket substring. A sequence is considered valid if every opening bracket has a corresponding closing bracket in the correct order without any mismatches. For example, <b>[<>{}]</b> is valid, but <b><[{]}></b> is not. The function should use a stack to calculate the longest valid parenthesis substring.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+longest_valid_brackets("(()")
+# Output: 2
+# Explanation: The valid substring is "()", which starts at index 1 and ends at index 2. Although the first bracket is unmatched, the substring "()" is valid, so the function returns 2.
+</pre>
+<pre class="code-block">
+longest_valid_brackets("((())")
+# Output: 4
+# Explanation: The longest valid substring is "(())", which starts at index 1 and ends at index 4. The unmatched opening bracket at the start does not affect the longest valid substring, so the function returns 4.
+</pre>
+<pre class="code-block">
+longest_valid_brackets(")()())()()(")
+# Output: 4
+# Explanation: There are multiple valid substrings, such as "()()" starting at index 1 and ending at index 4. The function returns 4, which is the length of the longest valid substring.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new AuthoringTask(
@@ -451,7 +611,7 @@ export const CodingTasks = [
 
     new MultipleChoiceTask(
         "4MCQ10",
-        "Please skip this question",
+        "Please skip this question (This is not a bug!)",
         ["skip"],
         1,
         "Frustrating"
@@ -459,10 +619,43 @@ export const CodingTasks = [
 
     new MultipleChoiceTask(
         "4MCQ11",
-        "Please skip this question",
+        "Please skip this question (This is not a bug!)",
         ["skip"],
         1,
         "Willing"
+    ),
+
+    new MultipleChoiceTask(
+        "T5RB",
+        `<h1>Warm-Up Task 5: Check is Palindrome (Using Double-Ended Queue)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>is_palindrome(s: str) -> bool</b> that checks if the input string <b>s</b> is palindrome. A palindrome is a sequence of characters that reads the same forward and backward. For example, <b>"racecar"</b> is a palindrome.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+is_palindrome("kayak")
+# Output: True
+</pre>
+<pre class="code-block">
+is_palindrome("step on no pets")
+# Output: True
+</pre>
+<pre class="code-block">
+is_palindrome("raider")
+# Output: False
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new AuthoringTask(
@@ -471,6 +664,31 @@ export const CodingTasks = [
         tech3WarmupCode,
         tech3WarmupExplanation,
         tech3WarmupDecomposition
+    ),
+
+    new MultipleChoiceTask(
+        "T6RB",
+        `<h1>Task 6: Sliding Window Maximum (Using Double-Ended Queue)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>max_sliding_window(nums: list[int], k: int) -> list[int]</b> that takes an array of integers <b>nums</b> and an integer <b>k</b>, and returns a list containing the maximum value from each sliding window of size <b>k</b> as it moves from left to right across the array. A sliding window is a contiguous subarray of length <b>k</b> that slides one element at a time from the start to the end of the array. The function should find the maximum value in each window efficiently using a double-ended queue (deque) to ensure an optimal time complexity of O(n). For example, given <b>nums = [1,3,-1,-3,5,3,6,7]</b> and <b>k = 3</b>, the function should return <b>[3, 3, 5, 5, 6, 7]</b>.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+</pre>
+<pre class="code-block">
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new AuthoringTask(
@@ -564,7 +782,7 @@ export const CodingTasks = [
 
     new MultipleChoiceTask(
         "6MCQ10",
-        "Please skip this question",
+        "Please skip this question. (This is not a bug!)",
         ["skip"],
         2,
         "Frustrating"
@@ -572,54 +790,187 @@ export const CodingTasks = [
 
     new MultipleChoiceTask(
         "6MCQ11",
-        "Please skip this question",
+        "Please skip this question. (This is not a bug!)",
         ["skip"],
         2,
         "Willing"
     ),
 
+    new MultipleChoiceTask(
+        "PRE2",
+        "<h1>Take a Short Break</h1><p>Thank you for completing the six tasks using our AI tools. Before proceeding to the next set of tasks, please take a short break (~5-10 minutes).</p><br/><p>After that you can continue with the next set of tasks.</p>",
+        ["I didn't take a break.", "I took a break. Let's continue."],
+        2
+    ),
+
+    new MultipleChoiceTask(
+        "PRE3",
+        `<h1>Next Phase of Study</h1>
+        <p>In the upcoming tasks, you will be given several programming tasks very similar in complexity to the previous tasks that you solved using AI.</p>
+        <p>In these tasks you will need to fill in the blanks in the provided code snippets to implement the requested behavior.</p>
+        <p>You will not have access to the AI anymore and you will need to complete the provided code manually.</p>
+        <br/>
+        <br/>
+        <p>Are you ready?</p>`,
+        ["I am not ready.", "I am ready for the next phase."],
+        2
+    ),
+
+    new MultipleChoiceTask(
+        "MC1RB",
+        `<h1>Task 1: Generate Valid Parentheses (Using Queue)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a function <b>generate_brackets(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid square brackets, such that the maximum number of consecutive opening brackets does not exceed <b>d</b>. For example, the maximum consecutive opening brackets in <b>[][[]]</b> is 2, in <b>[[]][[]]</b> is again 2, in <b>[][][]</b> is 1, but in <b>[[[]][]]</b> is 3. The function should return a list of all possible valid combinations of square brackets that meet the depth restriction.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+generate_brackets(2, 1)
+# Output: ["[][]"]
+# Explanation: For 2 pairs of square brackets with a maximum of 1 consecutive opening bracket, the only valid combination is "[][]". Any combination with more than one consecutive opening bracket, such as "[[]]", is not allowed.
+</pre>
+<pre class="code-block">
+generate_brackets(2, 2)
+# Output: ["[[]]", "[][]"]
+# Explanation: For 2 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are two valid combinations: "[[]]" and "[][]". Both satisfy the requirement of having no more than 2 consecutive opening brackets.
+</pre>
+<pre class="code-block">
+generate_brackets(3, 1)
+# Output: ["[][][]"]
+# Explanation: For 3 pairs of square brackets with a maximum of 1 consecutive opening bracket, the only valid combination is "[][][]". All other combinations, such as "[[]][]", "[[][]]", or "[[[]]]", exceed the depth restriction of 1 consecutive opening bracket.
+</pre>
+<pre class="code-block">
+generate_brackets(3, 2)
+# Output: ["[[][]]", "[[]][]", "[][][]"]
+# Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
     // coding tasks for evaluations
     new ManualCodingTask(
         "mc1",
-        "Write a function 'generate_brackets(n: int, d: int) -> list[str]' that generates all combinations of 'n' pairs of valid square brackets, such that the maximum number of consecutive opening brackets does not exceed 'd'. For example, the maximum consecutive opening brackets in '[][[]]' is 2, in '[[]][[]]' is again 2, in '[][][]' is 1, but in '[[[]][]]' is 3. The function should return a list of all possible valid combinations of square brackets that meet the depth restriction.",
+        "Write a function `generate_brackets(n: int, d: int) -> list[str]` that generates all combinations of `n` pairs of valid square brackets, such that the maximum number of consecutive opening brackets does not exceed `d`. For example, the maximum consecutive opening brackets in `[][[]]` is 2, in `[[]][[]]` is again 2, in `[][][]` is 1, but in `[[[]][]]` is 3. The function should return a list of all possible valid combinations of square brackets that meet the depth restriction.",
         `def generate_brackets(n: int, d: int) -> list[str]:
     """
     Write a function 'generate_brackets(n: int, d: int) -> list[str]' that generates all combinations of 'n' pairs of valid square brackets, such that the maximum number of consecutive opening brackets does not exceed 'd'. For example, the maximum consecutive opening brackets in '[][[]]' is 2, in '[[]][[]]' is again 2, in '[][][]' is 1, but in '[[[]][]]' is 3. The function should return a list of all possible valid combinations of square brackets that meet the depth restriction.
-        
-    Args:
-        n (int): The number of pairs of square brackets to generate.
-        d (int): The maximum allowed depth of consecutive opening brackets.
-        
-    Returns:
-        list[str]: A list of strings, each representing a valid combination of 'n' pairs of square brackets that meets the depth restriction.
-        
-    Examples:
-        >>> generate_brackets(2, 1)
-        ['[][]']
-        
-        >>> generate_brackets(2, 2)
-        ['[[]]', '[][]']
-        
-        >>> generate_brackets(3, 2)
-        ['[[][]]', '[[]][]', '[][[]]', '[][][]']
-        
-        >>> generate_brackets(4, 1)
-        ['[][][][]']
-        
-        >>> generate_brackets(3, 3)
-        ['[[[]]]', '[[][]]', '[[]][]', '[][[]]', '[][][]']
+
+    Please fill out the #TODO parts.
+
+    >>> generate_brackets(2, 1)
+    # Output: ["[][]"]
+    # Explanation: For 2 pairs of square brackets with a maximum of 1 consecutive opening bracket, the only valid combination is "[][]". Any combination with more than one consecutive opening bracket, such as "[[]]", is not allowed.
+
+    >>> generate_brackets(2, 2)
+    # Output: ["[[]]", "[][]"]
+    # Explanation: For 2 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are two valid combinations: "[[]]" and "[][]". Both satisfy the requirement of having no more than 2 consecutive opening brackets.
+
+    >>> generate_brackets(3, 1)
+    # Output: ["[][][]"]
+    # Explanation: For 3 pairs of square brackets with a maximum of 1 consecutive opening bracket, the only valid combination is "[][][]". All other combinations, such as "[[]][]", "[[][]]", or "[[[]]]", exceed the depth restriction of 1 consecutive opening bracket.
+
+    >>> generate_brackets(3, 2)
+    # Output: ["[[][]]", "[[]][]", "[][][]"]
+    # Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
     """
+    result = []
+    q = # TODO: fill this part
+
+    while q:
+        s, opens, closes, conseq_opens = # TODO: fill this part
+        
+        if opens == n and closes == n:
+            result.append(s)
+        else:
+            if opens < n:
+                # TODO: fill this part
+                
+                if new_conseq_opens <= d:
+                    # TODO: fill this part
+                    
+            if closes < opens:
+                # TODO: fill this part
+                
+    return result
+
+assert generate_brackets(2, 1) == ["[][]"]
+assert generate_brackets(2, 2) == ["[[]]", "[][]"]
+assert generate_brackets(3, 1) == ["[][][]"]
+assert generate_brackets(3, 2) == ["[[][]]", "[[]][]", "[][][]"]
 `
     ),
 
+    new MultipleChoiceTask(
+        "MC2RB",
+        `<h1>Task 2: Word Ladder (Using Queue)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>The function <b>word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int</b> is supposed to find the shortest transformation sequence from <b>begin_word</b> to <b>end_word</b> using only words from <b>word_list</b>, where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns <b>0</b>. The function explores all possible transformations by replacing each letter in the current word with every letter from 'a' to 'z', and uses a queue to perform a breadth-first search until it finds the end_word or exhausts all options.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])
+# Output: 5
+# Explanation: The shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> "cog", which has 5 steps.
+</pre>
+<pre class="code-block">
+word_ladder("red", "tax", ["ted", "tex", "red", "tax", "tad", "den", "rex", "pee"])
+# Output: 4
+# Explanation: The shortest transformation sequence is "red" -> "ted" -> "tad" -> "tax", which has 4 steps.
+</pre>
+<pre class="code-block">
+word_ladder("game", "thee", ["fame", "same", "lame", "gale", "pale", "page", "tame", "came", "cake", "take", "tape", "team", "teal", "teel", "thee"])
+# Output: 6
+# Explanation: The shortest transformation sequence is "game" -> "fame" -> "tame" -> "tape" -> "tepe" -> "teel" -> "thee", which has 6 steps.
+</pre>
+<pre class="code-block">
+generate_brackets(3, 2)
+# Output: ["[[][]]", "[[]][]", "[][][]"]
+# Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
+    ),
+
     new ManualCodingTask(
-        "fc2",
-        `The function 'word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int' is supposed to find the shortest transformation sequence from 'begin_word' to 'end_word' using only words from 'word_list', where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns '0'. Please fill out the #TODO parts.`,
+        "mc2",
+        `The function 'word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int' is supposed to find the shortest transformation sequence from 'begin_word' to 'end_word' using only words from 'word_list', where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns '0'. The function explores all possible transformations by replacing each letter in the current word with every letter from 'a' to 'z', and uses a queue to perform a breadth-first search until it finds the end_word or exhausts all options.`,
         `def word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int:
     """
-    The function 'word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int' is supposed to find the shortest transformation sequence from 'begin_word' to 'end_word' using only words from 'word_list', where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns '0'.
+    The function 'word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int' is supposed to find the shortest transformation sequence from 'begin_word' to 'end_word' using only words from 'word_list', where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns '0'. The function explores all possible transformations by replacing each letter in the current word with every letter from 'a' to 'z', and uses a queue to perform a breadth-first search until it finds the end_word or exhausts all options.
     
     Please fill out the #TODO parts.
+
+    >>> word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])
+    # Output: 5
+    # Explanation: The shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> "cog", which has 5 steps.
+
+    >>> word_ladder("red", "tax", ["ted", "tex", "red", "tax", "tad", "den", "rex", "pee"])
+    # Output: 4
+    # Explanation: The shortest transformation sequence is "red" -> "ted" -> "tad" -> "tax", which has 4 steps.
+
+    >>> word_ladder("game", "thee", ["fame", "same", "lame", "gale", "pale", "page", "tame", "came", "cake", "take", "tape", "team", "teal", "teel", "thee"])
+    # Output: 6
+    # Explanation: The shortest transformation sequence is "game" -> "fame" -> "tame" -> "tape" -> "tepe" -> "teel" -> "thee", which has 6 steps.
     """
 
     word_set = set(word_list)
@@ -640,11 +991,105 @@ export const CodingTasks = [
                     word_set.remove(next_word)
     
     return 0
-`
+
+assert word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]) == 5
+assert word_ladder("red", "tax", ["ted", "tex", "red", "tax", "tad", "den", "rex", "pee"]) == 4
+assert word_ladder("game", "thee", ["fame", "same", "lame", "gale", "pale", "page", "tame", "came", "cake", "take", "tape", "team", "teal", "teel", "thee"]) == 6`
+    ),
+
+    new MultipleChoiceTask(
+        "MC3RB",
+        `<h1>Task 3: Generate DNA Sequences (Using Queue)</h1>
+<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
+<h2>Task Description:</h2>
+<p>Write a Python function named <b>dna_sequences(pattern: str) -> list[str]</b> that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument ('pattern') and return a list of strings. The input pattern consists of the characters 'A', 'T', 'C', 'G', and a special placeholder 'N'. The 'N' acts as a wildcard that can be replaced by any of the four DNA bases ('A', 'C', 'G', 'T'). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every 'N' in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.</p>
+<br/>
+<p>Examples:</p>
+<pre class="code-block">
+dna_sequences("N")
+# Output: ['A', 'C', 'G', 'T']
+# Explanation: The pattern contains one 'N', which can be replaced by any of the four DNA bases (A, C, G, T). Therefore, the output is a list of all possible single-character DNA sequences.
+</pre>
+<pre class="code-block">
+dna_sequences("AN")
+# Output: ['AA', 'AC', 'AG', 'AT']
+# Explanation: The pattern "AN" has one 'N'. The function replaces 'N' with each of the four DNA bases, resulting in the sequences "AA", "AC", "AG", and "AT".
+</pre>
+<pre class="code-block">
+dna_sequences("NN")
+# Output: ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', 'GA', 'GC', 'GG', 'GT', 'TA', 'TC', 'TG', 'TT']
+# Explanation: The pattern "NN" contains two 'N's. Each 'N' can be replaced with A, C, G, or T, resulting in 4x4=16 possible combinations.
+</pre>
+<pre class="code-block">
+# Output: ['AAA', 'AAC', 'AAG', 'AAT']
+# Explanation: The pattern "AAN" has one 'N', which can be replaced by any of the four DNA bases, resulting in the sequences "AAA", "AAC", "AAG", and "AAT".
+</pre>
+<br/>
+<br/>
+<h2>Select how well did you understand the task?</h2>`,
+        [
+            "0: Not at all 😞",
+            "1: Slightly 😐",
+            "2: Moderately 🙂",
+            "3: Mostly 😊",
+            "4: Completely 🤩",
+        ],
+        2
     ),
 
     new ManualCodingTask(
         "mc3",
+        "Write a Python function named `dna_sequences(pattern: str) -> list[str]` that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument (`pattern`) and return a list of strings. The input pattern consists of the characters `A`, `T`, `C`, `G`, and a special placeholder `N`. The `N` acts as a wildcard that can be replaced by any of the four DNA bases (`A`, `C`, `G`, `T`). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every `N` in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.",
+        `def dna_sequences(pattern: str) -> list[str]:
+        """
+        Write a Python function named 'dna_sequences(pattern: str) -> list[str]' that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument ('pattern') and return a list of strings. The input pattern consists of the characters 'A', 'T', 'C', 'G', and a special placeholder 'N'. The 'N' acts as a wildcard that can be replaced by any of the four DNA bases ('A', 'C', 'G', 'T'). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every 'N' in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.
+
+        Please fill out the #TODO parts.
+
+        >>> dna_sequences("N")
+        # Output: ['A', 'C', 'G', 'T']
+        # Explanation: The pattern contains one 'N', which can be replaced by any of the four DNA bases (A, C, G, T). Therefore, the output is a list of all possible single-character DNA sequences.
+
+        >>> dna_sequences("AN")
+        # Output: ['AA', 'AC', 'AG', 'AT']
+        # Explanation: The pattern "AN" has one 'N'. The function replaces 'N' with each of the four DNA bases, resulting in the sequences "AA", "AC", "AG", and "AT".
+
+        >>> dna_sequences("NN")
+        # Output: ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', 'GA', 'GC', 'GG', 'GT', 'TA', 'TC', 'TG', 'TT']
+        # Explanation: The pattern "NN" contains two 'N's. Each 'N' can be replaced with A, C, G, or T, resulting in 4x4=16 possible combinations.
+
+        >>> dna_sequences("AAN")
+        # Output: ['AAA', 'AAC', 'AAG', 'AAT']
+        # Explanation: The pattern "AAN" has one 'N', which can be replaced by any of the four DNA bases, resulting in the sequences "AAA", "AAC", "AAG", and "AAT".
+        """
+    dna_chars = ['A', 'C', 'G', 'T']
+    q = ['']
+    result = []
+
+    while len(q) > 0:
+        seq = # TODO: fill this part
+        
+        if len(seq) == len(pattern):
+            result.append(seq)
+        else:
+			index = len(seq)
+			
+            if # TODO: fill this part:
+                for ch in dna_chars:
+                    # TODO: fill this part
+            else:
+                # TODO: fill this part
+                
+    return result
+
+assert dna_sequences("N") == ['A', 'C', 'G', 'T']
+assert dna_sequences("AN") == ['AA', 'AC', 'AG', 'AT']
+assert dna_sequences("NN") == ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', 'GA', 'GC', 'GG', 'GT', 'TA', 'TC', 'TG', 'TT']
+assert dna_sequences("AAN") == ['AAA', 'AAC', 'AAG', 'AAT']`
+    ),
+
+    new ManualCodingTask(
+        "mc4",
         "Write a function 'longest_valid_parentheses(s: str) -> int' that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = \"(()\"', the output should be '2', as the longest valid substring is '\"()\"'. For 's = \")()())\"', the output should be '4' due to the substring '\"()()\"'. Another example would be 's = \"\"', where the output should be '0' since there are no valid parentheses.",
         `def longest_valid_parentheses(s: str) -> int:
     """

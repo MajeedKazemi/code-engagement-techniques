@@ -56,6 +56,7 @@ export const ShortAnswerTask = (props: IShortAnswerTask) => {
             (block) => {
                 monaco.editor.colorizeElement(block as HTMLElement, {
                     theme: "vs",
+                    mimeType: "python",
                 });
             }
         );

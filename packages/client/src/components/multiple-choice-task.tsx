@@ -58,54 +58,73 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
 
     useEffect(() => {
         console.log(context?.user?.editorType);
-        if(context?.user?.editorType){
-            setEditorType(context?.user?.editorType[props.correspondingQuestion]);
+        if (context?.user?.editorType) {
+            setEditorType(
+                context?.user?.editorType[props.correspondingQuestion]
+            );
         }
     }, []);
 
     useEffect(() => {
         if (editorType === "A") {
-            setQuestionDescription(
-                props.description
-            )
+            setQuestionDescription(props.description);
             setQuestionChoices(props.choices!);
-        }
-        else if (editorType === "B") {
-            if (props.topic === "Frustrating"){
+        } else if (editorType === "B") {
+            if (props.topic === "Frustrating") {
                 setQuestionDescription(
                     "How frustrating was it to go through the additional steps in this AI system? (Additional Steps: the part where the AI system had you trace the code step by step and answer questions about different parts of the generated code."
-                )
-                setQuestionChoices(["1: Not at all Frustrating", "2: Slightly Frustrating", "3: Moderately Frustrating", "4: Very Frustrating", "5: Extremely Frustrating"]);
-            }else if (props.topic === "Willing"){
+                );
+                setQuestionChoices([
+                    "1: Not at all Frustrating",
+                    "2: Slightly Frustrating",
+                    "3: Moderately Frustrating",
+                    "4: Very Frustrating",
+                    "5: Extremely Frustrating",
+                ]);
+            } else if (props.topic === "Willing") {
                 setQuestionDescription(
                     "How willing are you to go through these additional steps in the future to understand AI-generated code? (Additional Steps: the part where the AI system had you trace the code step by step and answer questions about different parts of the generated code."
-                )
-                setQuestionChoices(["1: Not at all Willing", "2: Slightly Willing", "3: Moderately Willing", "4: Very Willing", "5: Extremely Willing"]);
-            }else{
-                setQuestionDescription(
-                    props.description
-                )
+                );
+                setQuestionChoices([
+                    "1: Not at all Willing",
+                    "2: Slightly Willing",
+                    "3: Moderately Willing",
+                    "4: Very Willing",
+                    "5: Extremely Willing",
+                ]);
+            } else {
+                setQuestionDescription(props.description);
                 setQuestionChoices(props.choices!);
             }
-        } else if (editorType === "C"){
-            if (props.topic === "Frustrating"){
+        } else if (editorType === "C") {
+            if (props.topic === "Frustrating") {
                 setQuestionDescription(
                     "How frustrating was it to go through the additional steps in this AI system? (Additional Steps: the part of the AI system that had you answer questions about how to solve each part of the task before revealing its corresponding code."
-                )
-                setQuestionChoices(["1: Not at all Frustrating", "2: Slightly Frustrating", "3: Moderately Frustrating", "4: Very Frustrating", "5: Extremely Frustrating"]);
-            }else if (props.topic === "Willing"){
+                );
+                setQuestionChoices([
+                    "1: Not at all Frustrating",
+                    "2: Slightly Frustrating",
+                    "3: Moderately Frustrating",
+                    "4: Very Frustrating",
+                    "5: Extremely Frustrating",
+                ]);
+            } else if (props.topic === "Willing") {
                 setQuestionDescription(
                     "How willing are you to go through these additional steps in the future to understand AI-generated code? (Additional Steps: the part of the AI system that had you answer questions about how to solve each part of the task before revealing its corresponding code."
-                )
-                setQuestionChoices(["1: Not at all Willing", "2: Slightly Willing", "3: Moderately Willing", "4: Very Willing", "5: Extremely Willing"]);
-            }else {
-                setQuestionDescription(
-                    props.description
-                )
+                );
+                setQuestionChoices([
+                    "1: Not at all Willing",
+                    "2: Slightly Willing",
+                    "3: Moderately Willing",
+                    "4: Very Willing",
+                    "5: Extremely Willing",
+                ]);
+            } else {
+                setQuestionDescription(props.description);
                 setQuestionChoices(props.choices!);
             }
         }
-    }, [editorType])
+    }, [editorType]);
 
     useEffect(() => {
         if (taskContainerEl.current) {
@@ -125,9 +144,6 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
         <div className="simple-task-container">
             <section className="simple-task-info">
                 <div ref={taskContainerEl}>
-                    <span className="task-title">
-                        Multiple Choice Question:
-                    </span>
                     <span className="task-subtitle">
                         <p
                             dangerouslySetInnerHTML={{
@@ -138,33 +154,37 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
                     <hr />
                     <form>
                         <p>Select from one of the following options:</p>
-                        {questionChoices && questionChoices.map((choice, index) => {
-                            return (
-                                <div className="task-response-item" key={index}>
-                                    <input
-                                        className="task-response-radio"
-                                        type="radio"
-                                        name="choice"
-                                        value={index}
-                                        checked={userChoice === index}
-                                        onChange={() => {
-                                            setUserChoice(index);
-                                            setUserChoiceText(choice);
-                                        }}
-                                    />
-                                    <label
-                                        dangerouslySetInnerHTML={{
-                                            __html: choice,
-                                        }}
-                                        onClick={() => {
-                                            setUserChoice(index);
-                                            setUserChoiceText(choice);
-                                        }}
-                                    ></label>
-                                    <br />
-                                </div>
-                            );
-                        })}
+                        {questionChoices &&
+                            questionChoices.map((choice, index) => {
+                                return (
+                                    <div
+                                        className="task-response-item"
+                                        key={index}
+                                    >
+                                        <input
+                                            className="task-response-radio"
+                                            type="radio"
+                                            name="choice"
+                                            value={index}
+                                            checked={userChoice === index}
+                                            onChange={() => {
+                                                setUserChoice(index);
+                                                setUserChoiceText(choice);
+                                            }}
+                                        />
+                                        <label
+                                            dangerouslySetInnerHTML={{
+                                                __html: choice,
+                                            }}
+                                            onClick={() => {
+                                                setUserChoice(index);
+                                                setUserChoiceText(choice);
+                                            }}
+                                        ></label>
+                                        <br />
+                                    </div>
+                                );
+                            })}
                     </form>
                 </div>
 
