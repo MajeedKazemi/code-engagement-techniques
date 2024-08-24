@@ -1230,7 +1230,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             .catch((error) => {
                 logError("sendLog: " + error.toString());
             });
-        
+            
         apiCheckMatchedValue(
             context?.token,
             inputValue[variableIndex],
@@ -1259,55 +1259,55 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
                 }else if (currentWrongAnswers && index == currentQuestionIndex){
                     //set the current wrong answers
-            //find the first empty string in the array
+                    //find the first empty string in the array
 
-            //set feedback
-            let tempNum = deepCopy(feedbackReady);
-            tempNum[variableIndex][attemptNumber - 1] = false;
-            setFeedbackReady(tempNum);
-            getCurrentFeedback(variableIndex);
+                    //set feedback
+                    let tempNum = deepCopy(feedbackReady);
+                    tempNum[variableIndex][attemptNumber - 1] = false;
+                    setFeedbackReady(tempNum);
+                    getCurrentFeedback(variableIndex);
 
-            setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
+                    setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
 
-            let temp = deepCopy(currentWrongAnswers);
-            console.log(temp[variableIndex][currentQuestionIndex]);
-            let emptyIndex = temp[variableIndex][
-                currentQuestionIndex
-            ].findIndex((item: string) => item === "");
-            if (emptyIndex <= 2 && emptyIndex >= 0) {
-                temp[variableIndex][currentQuestionIndex][emptyIndex] =
-                    inputValue[variableIndex];
-                setCurrentWrongAnswers(temp);
-                setInputValue((prevInputValue) => {
-                    const newInputValue = [...prevInputValue];
-                    newInputValue[variableIndex] = "";
-                    return newInputValue;
-                });
-            }
-            if (currentWrongAnswers[variableIndex][index][2] == "") {
-                //means there is at least one more try
-            } else {
-                // there is no more try, update question and reveal the answer
-                setShowSolution((prev) => {
-                    if (!prev) return prev;
-
-                    // Create a shallow copy of the top-level array
-                    let temp = prev.map((innerArray) => [...innerArray]);
-
-                    // Ensure the nested array exists
-                    if (temp[variableIndex]) {
-                        // Set the specific value to true
-                        temp[variableIndex][index] = true;
+                    let temp = deepCopy(currentWrongAnswers);
+                    console.log(temp[variableIndex][currentQuestionIndex]);
+                    let emptyIndex = temp[variableIndex][
+                        currentQuestionIndex
+                    ].findIndex((item: string) => item === "");
+                    if (emptyIndex <= 2 && emptyIndex >= 0) {
+                        temp[variableIndex][currentQuestionIndex][emptyIndex] =
+                            inputValue[variableIndex];
+                        setCurrentWrongAnswers(temp);
+                        setInputValue((prevInputValue) => {
+                            const newInputValue = [...prevInputValue];
+                            newInputValue[variableIndex] = "";
+                            return newInputValue;
+                        });
                     }
-                    return temp;
-                });
-                let temp = deepCopy(feedbackReady);
-                temp[variableIndex][attemptNumber - 1] = true;
-                setFeedbackReady(temp);
-                setTotalIncorrect(
-                    (prevTotalIncorrect) => prevTotalIncorrect + 1
-                );
-            }
+                    if (currentWrongAnswers[variableIndex][index][2] == "") {
+                        //means there is at least one more try
+                    } else {
+                        // there is no more try, update question and reveal the answer
+                        setShowSolution((prev) => {
+                            if (!prev) return prev;
+
+                            // Create a shallow copy of the top-level array
+                            let temp = prev.map((innerArray) => [...innerArray]);
+
+                            // Ensure the nested array exists
+                            if (temp[variableIndex]) {
+                                // Set the specific value to true
+                                temp[variableIndex][index] = true;
+                            }
+                            return temp;
+                        });
+                        let temp = deepCopy(feedbackReady);
+                        temp[variableIndex][attemptNumber - 1] = true;
+                        setFeedbackReady(temp);
+                        setTotalIncorrect(
+                            (prevTotalIncorrect) => prevTotalIncorrect + 1
+                        );
+                    }
                 }
             }
         }).catch((error) => {

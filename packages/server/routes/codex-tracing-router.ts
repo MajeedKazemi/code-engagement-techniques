@@ -639,26 +639,27 @@ tracingRouter.post("/feedbackFromTracingShortAnswer", verifyUser, async (req, re
 
 
   tracingRouter.post("/checkmatch", verifyUser, async (req, res, next) => {
-    const { userEnteredValue, expectedValue } = req.body;
+    const { userInputValue, expectedValue } = req.body;
+    // console.log(userInputValue, expectedValue);
     const userId = (req.user as IUser)._id;
-    if (userEnteredValue !== undefined) {
+    if (userInputValue !== undefined) {
         let messages: Array<ChatCompletionRequestMessage> = [
             {
                 role: "system",
                 content: `check if [user-entered-value] matches [expected-value]. do not be strict about quotations, but be strict about values (numbers, and the string contains).
-                ( matches '(' or "(" and a matches or 'a' "a"
-                but [ or { does not match "(" or '('
-
+                For example:
+                ( or “(” or ‘(’ all match with ‘(’ or “(”  (so if the characters are the same, they match … ignore the quotations)
+                but if the characters do not match like [ and } or ( and ] then match should be false.
                 return a JSON with the following format:
                 {
-                    "match": <true / false>
+                    “match”: <true / false>
                 }`,
               },
         ];
   
         messages.push({
           role: "user",
-          content: `[user-entered-value]: ${userEnteredValue}\n[expected-value]: ${expectedValue}`,
+          content: `[user-entered-value]: ${userInputValue}\n[expected-value]: ${expectedValue}`,
       });
   
       const result = await openai.createChatCompletion({
@@ -671,7 +672,7 @@ tracingRouter.post("/feedbackFromTracingShortAnswer", verifyUser, async (req, re
   
       if (result.data.choices && result.data.choices?.length > 0) {
           const response = result.data.choices[0].message?.content;
-  
+        //   console.log(response);
           if(response){
               res.json({
                   response: parseResponse(response),
