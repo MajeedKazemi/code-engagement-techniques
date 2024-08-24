@@ -571,31 +571,31 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                                         id={`line-${index}`}
                                         key={index}
                                         className="trace-predict-tracker"
+                                        onMouseEnter={() => {
+                                            //deepCopy of hoveringHovered
+                                            let temp =
+                                                deepCopy(
+                                                    hoveringHovered
+                                                );
+                                            //change all to false
+                                            temp.fill(false);
+                                            //change the current index to true
+                                            temp[index] = true;
+                                            setHoveringHovered(temp);
+                                        }}
+                                        onMouseLeave={() => {
+                                            //deepCopy of hoveringHovered
+                                            let temp =
+                                                deepCopy(
+                                                    hoveringHovered
+                                                );
+                                            //change all to false
+                                            temp.fill(false);
+                                            setHoveringHovered(temp);
+                                        }}
                                     >
                                         <>
                                             <pre
-                                                onMouseEnter={() => {
-                                                    //deepCopy of hoveringHovered
-                                                    let temp =
-                                                        deepCopy(
-                                                            hoveringHovered
-                                                        );
-                                                    //change all to false
-                                                    temp.fill(false);
-                                                    //change the current index to true
-                                                    temp[index] = true;
-                                                    setHoveringHovered(temp);
-                                                }}
-                                                onMouseLeave={() => {
-                                                    //deepCopy of hoveringHovered
-                                                    let temp =
-                                                        deepCopy(
-                                                            hoveringHovered
-                                                        );
-                                                    //change all to false
-                                                    temp.fill(false);
-                                                    setHoveringHovered(temp);
-                                                }}
                                                 dangerouslySetInnerHTML={{
                                                     __html: colorizedText[
                                                         index

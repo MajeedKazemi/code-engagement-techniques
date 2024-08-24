@@ -600,7 +600,7 @@ tracingRouter.post("/feedbackFromTracingShortAnswer", verifyUser, async (req, re
                 
                 Please return a JSON object with the following format:
                 {
-                    "correctness": <0-5>, // 0 means completely wrong, 5 means the student has answered perfectly with a lot of detail.
+                    "correctness": <0-5>, // 0 means completely wrong, 5 means the student has answered perfectly with a lot of detail. 3 means the student scored in some relenvant points but missed some minor points.
                     "feedback": "<20-30 word of explanation about what the student got correctly and what they are missing in their answer.>"
                 }`,
               },

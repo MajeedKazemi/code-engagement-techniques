@@ -372,17 +372,6 @@ const warmupQuestion2: newQuestionObject[] = [
         "stack",
         "reversed_list"
       ]
-    },
-    {
-      "step": 7,
-      "begin-line": 5,
-      "end-line": 5,
-      "question-about-purpose-of-code": "What is the purpose of appending popped elements from 'stack' to 'reversed_list'?",
-      "answer": "Appending popped elements from 'stack' to 'reversed_list' is the main operation that reverses the order of the list.",
-      "top-two-variables": [
-        "reversed_list",
-        "stack"
-      ]
     }
   ]
 
@@ -402,15 +391,7 @@ const warmupQuestion1: newQuestionObject[] = [
         "question-about-purpose-of-code": "What is the role of the while loop in the function reverse_list_with_queue?",
         "answer": "The while loop processes each element in the queue and inserts it at the beginning of the reversed list, thus reversing the order of elements.",
         "top-two-variables": ["queue", "reversed_list"]
-    },
-    {
-        "step": 9,
-        "begin-line": 5,
-        "end-line": 5,
-        "question-about-purpose-of-code": "What does the insert method do on line 5 and how does it contribute to the overall function?",
-        "answer": "The insert method inserts the first element of the queue at the beginning of the reversed list, thus changing the order of elements to achieve the reverse effect.",
-        "top-two-variables": ["reversed_list"]
-    },
+    }
 ]
 
 // const warmupQuestion1: questionObject[] = [
@@ -577,8 +558,8 @@ const taskQuestion2: newQuestionObject[] = [
       "step": 13,
       "begin-line": 10,
       "end-line": 15,
-      "question-about-purpose-of-code": "What is the purpose of the block of code from lines 10 to 15 that checks for certain conditions and updates the stack and max_length?",
-      "answer": "This block handles closing brackets. It checks if the top of the stack is an opening bracket that matches the current bracket. If so, it pops the stack and updates max_length.",
+      "question-about-purpose-of-code":null,
+      "answer": null,
       "top-two-variables": [
         "stack",
         "max_length"

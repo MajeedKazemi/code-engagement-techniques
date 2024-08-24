@@ -542,6 +542,10 @@
     max-height: 100px;
 }
 
+.follow-up-question-feedback.incorrect {
+    background-color: rgba(245, 205, 207, 255);
+}
+
 .follow-up-question-feedback.correct {
     background-color: rgba(192, 228, 188, 255);
 }

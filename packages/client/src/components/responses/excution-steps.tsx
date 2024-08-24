@@ -1135,11 +1135,6 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                     temp[index] = data.response.feedback;
                                     return temp;
                                 });
-                                setExplanationQuestionCorrect((prev) => {
-                                    let temp = deepCopy(prev);
-                                    temp[index] = false;
-                                    return temp;
-                                });
                                 setUserResponse((prev) => {
                                     let temp = deepCopy(prev);
                                     temp[index] = "";
@@ -1163,20 +1158,17 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
     useEffect(() => {
         if(currentQuestionIndex >= 0 && attempted[currentQuestionIndex]){
         if (attempted[currentQuestionIndex].every((value) => value === true)) {
-            setExplanationQuestionCorrect((prev) => {
-                let temp = deepCopy(prev);
-                temp[currentQuestionIndex] = true;
-                return temp;
-            });
+            // setExplanationQuestionCorrect((prev) => {
+            //     let temp = deepCopy(prev);
+            //     temp[currentQuestionIndex] = true;
+            //     return temp;
+            // });
+            console.log("attempted", attempted);
+            console.log(explanationQuestionCorrect);
 
             setIsOnStop(false);
             setCurrentQuestionNumber(currentQuestionNumber + 1);
             updateQuestion(currentQuestionIndex + 1);
-            setUserResponse((prev) => {
-                let temp = deepCopy(prev);
-                temp[currentQuestionIndex] = "";
-                return temp;
-            });
 
             return;
         }}
@@ -1427,27 +1419,27 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                     id={`line-${index}`}
                                     key={index}
                                     className="trace-predict-tracker"
+                                    onMouseEnter={() => {
+                                        //deepCopy of hoveringHovered
+                                        let temp =
+                                            deepCopy(hoveringHovered);
+                                        //change all to false
+                                        temp.fill(false);
+                                        //change the current index to true
+                                        temp[index] = true;
+                                        setHoveringHovered(temp);
+                                    }}
+                                    onMouseLeave={() => {
+                                        //deepCopy of hoveringHovered
+                                        let temp =
+                                            deepCopy(hoveringHovered);
+                                        //change all to false
+                                        temp.fill(false);
+                                        setHoveringHovered(temp);
+                                    }}
                                 >
                                     <>
                                         <pre
-                                            onMouseEnter={() => {
-                                                //deepCopy of hoveringHovered
-                                                let temp =
-                                                    deepCopy(hoveringHovered);
-                                                //change all to false
-                                                temp.fill(false);
-                                                //change the current index to true
-                                                temp[index] = true;
-                                                setHoveringHovered(temp);
-                                            }}
-                                            onMouseLeave={() => {
-                                                //deepCopy of hoveringHovered
-                                                let temp =
-                                                    deepCopy(hoveringHovered);
-                                                //change all to false
-                                                temp.fill(false);
-                                                setHoveringHovered(temp);
-                                            }}
                                             dangerouslySetInnerHTML={{
                                                 __html: colorizedText[index],
                                             }}
@@ -1998,13 +1990,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                 ]
                                                             }
                                                         </div>
-                                                        {explanationFeedback[
-                                                            index
-                                                        ] != "" &&
-                                                            explanationFeedbackReady[
-                                                                index
-                                                            ] &&
-                                                            !explanationQuestionCorrect[
+                                                        {!explanationQuestionCorrect[
                                                                 index
                                                             ] &&
                                                             attempted[index].every(
@@ -2126,7 +2112,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             )}
                                                         {!explanationFeedbackReady[
                                                             index
-                                                        ] &&
+                                                        ] && (!(explanationQuestionCorrect[
+                                                            index
+                                                        ])) &&
                                                             !attempted[index].every(
                                                                 (attempt) =>
                                                                     attempt
@@ -2146,7 +2134,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             index
                                                         ]) && (
                                                             <>
-                                                                <div className="follow-up-question-feedback normal">
+                                                                <div className="follow-up-question-feedback correct">
                                                                     <strong>
                                                                         You Answered
                                                                     </strong>{" "}
