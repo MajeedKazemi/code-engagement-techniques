@@ -8,15 +8,15 @@ import { verifyUser } from "../utils/strategy";
 export const revealRouter = express.Router();
 
 function getCodeWithLine(code: string) {
-    const lines = code.split('\n');
-    let output = '';
-    
+    const lines = code.split("\n");
+    let output = "";
+
     lines.forEach((line, index) => {
         output += `${index + 1}. ${line}\n`;
     });
 
     return output;
-};
+}
 
 revealRouter.post("/generateQuestion", verifyUser, async (req, res, next) => {
     const { code, task } = req.body;
@@ -25,8 +25,7 @@ revealRouter.post("/generateQuestion", verifyUser, async (req, res, next) => {
         let messages: Array<ChatCompletionRequestMessage> = [
             {
                 role: "system",
-                content:
-`
+                content: `
 # Overview:
 you are helping novice programmers learn about coding. Look at the provided Python [solution-code] and the [task-description], then divide the provided code into a list of [subgoal] items. For each [subgoal], provide a concise [title] and then divide it into [sub-subgoal-items]. The student has only be given the [task-description] and cannot see the [solution-code], instead you, the assistant that is helping this novice student learn about coding by asking a series of leading questions. These leading questions are multiple-choice question about each sub-subgoal parts of the task. These questions are supposed to promote critical thinking, problem solving, algorithmic thinking, and computational thinking, and help the student think about the task before they see the code. The student does not know about the [solution-code], they have only be given the [task-description. Our system shows the mcq-questions that you generate, one by one. If the student correctly answers the leading question, our system will reveal the code lines associated with that [sub-subgoal] and then the system displays the next question.
 
@@ -138,13 +137,14 @@ you are helping novice programmers learn about coding. Look at the provided Pyth
   ]
 }
 `,
-            }
+            },
         ];
-
 
         messages.push({
             role: "user",
-            content: `[task-description]: ${task}\n[solution-code]: ${getCodeWithLine(code)}[end-solution-code]\n\nFocus a lot of the questions on the complex part of the algorithm. For those parts, you can include one question per line, or even two questions per line.`,
+            content: `[task-description]: ${task}\n[solution-code]: ${getCodeWithLine(
+                code
+            )}[end-solution-code]\n\nFocus a lot of the questions on the complex part of the algorithm. For those parts, you can include one question per line, or even two questions per line.`,
         });
 
         const result = await openai.createChatCompletion({
@@ -158,7 +158,7 @@ you are helping novice programmers learn about coding. Look at the provided Pyth
         if (result.data.choices && result.data.choices?.length > 0) {
             const response = result.data.choices[0].message?.content;
 
-            if(response){
+            if (response) {
                 res.json({
                     response: parseResponse(response),
                     success: true,
@@ -177,51 +177,60 @@ function parseResponse(response: string): any {
     return JSON.parse(response);
 }
 
-
-revealRouter.post("/feedbackFromRevealShortAnswer", verifyUser, async (req, res, next) => {
-  const { code, studentSolution, aiGeneratedSolution, question } = req.body;
-  const userId = (req.user as IUser)._id;
-  if (studentSolution !== undefined) {
-    let messages: Array<ChatCompletionRequestMessage> = [
-        {
-            role: "system",
-            content: `The student has been given the provided [code] that certain lines in it have been highlighted. The student has been asked a [question] about these lines. And the student has answered [student-solution]. See if their answer makes sense based on the provided [code], you can also take a look at the AI-generated solution [ai-generated-solution]. The goal is to make sure the student is understanding these highlighted lines correctly and providing a good explanation to the [question]. There is no need for ther [student-solution] to be exactly the same as the [ai-generated-solution]. The student can be creative and provide a different but correct answer.
+revealRouter.post(
+    "/feedbackFromRevealShortAnswer",
+    verifyUser,
+    async (req, res, next) => {
+        const {
+            allCode,
+            code,
+            studentSolution,
+            aiGeneratedSolution,
+            question,
+        } = req.body;
+        const userId = (req.user as IUser)._id;
+        if (studentSolution !== undefined) {
+            let messages: Array<ChatCompletionRequestMessage> = [
+                {
+                    role: "system",
+                    content: `I have been asked this [question] about the next part of the [not-revealed-code] that I haven't seen yet (so it's hidden to me). This is part of an exercise to help me think deeply about what this [not-revealed-code] is supposed to do and how it contributes to the [overall-code-solution]. Here is my [my-answer] to the [question]. Check if it makes sense based on the [overall-code-solution], [not-revealed-code], and the [sample-solution]
             
             Please return a JSON object with the following format:
             {
-                "correctness": <0-5>, // 0 means completely wrong, 5 means the student has answered perfectly with a lot of detail.
-                "feedback": "<20-30 word of explanation about what the student got correctly and what they are missing in their answer.>"
+                "correctness": <0-5>, // if empty, jibberish, or completely wrong then 0. if partially correct and missing important details (like the value something needs to be set to, compared with, etc.) then 1 or 2 (based on how much is missing). If the answer is almost correct, but has a small mistake, then 3. If the answer is correct, but missing some details, then 4. If the answer is perfect, then 5.
+                0 means wrong, 2 means partially correct (for example if the question is what should we use for X and what should we do with it, then if I only answer one part correctly, then I should receive 2). But then 5 means that I have answered perfectly with sufficient detail about [not-revealed-code].
+                "feedback": "<20-30 word of explanation about what I got correctly and a small hint at what I am missing about the [not-revealed-code]>"
             }`,
-          },
-    ];
+                },
+            ];
 
-    messages.push({
-      role: "user",
-      content: `[code]: ${code}\n
-      [student-solution]: ${studentSolution}\n[ai-generated-solution]: ${aiGeneratedSolution}\n[question]: ${question}`,
-  });
-
-    const result = await openai.createChatCompletion({
-        model: "gpt-4o-mini",
-        messages,
-        temperature: 0.25,
-        max_tokens: 256,
-        user: userId,
-    });
-
-    if (result.data.choices && result.data.choices?.length > 0) {
-        const response = result.data.choices[0].message?.content;
-
-        if(response){
-            res.json({
-                response: parseResponse(response),
-                success: true,
+            messages.push({
+                role: "user",
+                content: `[question]: ${question}\n[my-answer]: ${studentSolution}\n\n[sample-solution]: ${aiGeneratedSolution}\n[not-revealed-code]: ${code}\n[overall-code-solution]: ${allCode}`,
             });
+
+            const result = await openai.createChatCompletion({
+                model: "gpt-4o-mini",
+                messages,
+                temperature: 0.25,
+                max_tokens: 256,
+                user: userId,
+            });
+
+            if (result.data.choices && result.data.choices?.length > 0) {
+                const response = result.data.choices[0].message?.content;
+
+                if (response) {
+                    res.json({
+                        response: parseResponse(response),
+                        success: true,
+                    });
+                }
+            } else {
+                res.json({
+                    success: false,
+                });
+            }
         }
-    } else {
-        res.json({
-            success: false,
-        });
     }
-}
-});
+);
