@@ -14,7 +14,8 @@ export const task1Code =
             if closes < opens and max_d <= d:
                 q.append([s + ')', opens, closes + 1, max_d, cur_d - 1])
     return result
-generate_parentheses(2, 2) # Output: ['(())', '()()']`
+generate_parentheses(2, 2)
+generate_parentheses(3, 1)`
 
 
 
@@ -35,7 +36,8 @@ def generate_parentheses(n: int, d: int) -> list[str]: ### Define a function nam
             if closes < opens and max_d <= d: ### Check if the number of closed parentheses is less than the number of open parentheses and the maximum depth is within the limit.
                 q.append((s + ")", opens, closes + 1, max_d, cur_d - 1)) ### If true, enqueue a new list with an additional closed parenthesis, incrementing the count of closed parentheses and updating the current depth.
     return result ### Return the \`result\` list containing all valid combinations of parentheses.
-generate_parentheses(2, 2) # Output: ['(())', '()()'] ### Example use case: Call the function with \`n=2\` and \`d=2\`, which should return the list ['(())', '()()'].
+generate_parentheses(3, 2) ### Example use case: Call the function.
+generate_parentheses(4, 1) ### Example use case: Call the function.
 [END]
 
 [OVERALL-EXPLANATION]
@@ -49,13 +51,11 @@ The function uses a breadth-first search (BFS) approach to explore all possible 
    - If the number of open and closed parentheses both equal \`n\`, the current string is a valid combination and is added to the result list.
    - If the number of open parentheses is less than \`n\`, a new state with an additional open parenthesis is enqueued, provided the new depth does not exceed \`d\`.
    - If the number of closed parentheses is less than the number of open parentheses, a new state with an additional closed parenthesis is enqueued, provided the maximum depth is within the limit.
-4. The function returns the list of valid combinations after processing all possible states.
-
-The example use case \`generate_parentheses(2, 2)\` demonstrates the function's ability to generate valid combinations of 2 pairs of parentheses with a maximum depth of 2, resulting in the output \"['(())', '()()']\".`
+4. The function returns the list of valid combinations after processing all possible states.`
 
 export const task2Code =
 `def longest_valid_brackets(s: str) -> int:
-    map = {'(': ')', '<': '>'}
+    map = {"[": "]", "<": ">", "{": "}"}
     stack = [-1]
     max_length = 0
     for i in range(len(s)):
@@ -72,9 +72,9 @@ export const task2Code =
             else:
                 stack[-1] = i
     return max_length
-print(longest_valid_brackets('[]([)]'))
-print(longest_valid_brackets('{}]([{}])'))
-print(longest_valid_brackets('{[]()}{]'))`
+
+print(longest_valid_brackets("[]<[>]"))
+print(longest_valid_brackets("{}]<[{}]>"))`
 
 
 export const task2Explanation =
@@ -96,7 +96,8 @@ export const task2Explanation =
             else: ### If the stack is empty or the brackets do not match:
                 stack[-1] = i ### Updates the last element in the stack to the current index \`i\`.
     return max_length ### Returns the length of the longest valid substring found.
-longest_valid_brackets("(()") ### Calls the function \`longest_valid_brackets\` with the input string "(()" and expects the output to be 2.
+print(longest_valid_brackets("[]<[>]")) ### Calls the function \`longest_valid_brackets\` with the input string.
+print(longest_valid_brackets("{}]<[{}]>")) ### Calls the function \`longest_valid_brackets\` with the input string.
 [END]
 
 [OVERALL-EXPLANATION]
@@ -110,9 +111,7 @@ If the character is a closing bracket, the function checks if the stack has more
 
 If the stack is empty or the brackets do not match, the current index is pushed onto the stack to serve as a new base for future calculations.
 
-Finally, the function returns the length of the longest valid substring found.
-
-The function is then called with the input string "(()", and it correctly returns 2, indicating that the longest valid substring of brackets is "()", which has a length of 2.`
+Finally, the function returns the length of the longest valid substring found.`
 
 
 export const task3Code = 
@@ -128,7 +127,8 @@ export const task3Code =
         if i >= k - 1:
             result.append(nums[dq[0]])
     return result
-sliding_window_maximum([1, 3, -1, -3, 5, 3, 6, 7], 3)`
+sliding_window_maximum([4, 2, 12, 3, 7], 4)
+sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)`
 
 export const task3Explanation = 
 `def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
@@ -143,7 +143,8 @@ export const task3Explanation =
         if i >= k - 1: ### Check if the current index \`i\` is greater than or equal to \`k - 1\`, which means the first window of size \`k\` is complete.
             result.append(nums[dq[0]]) ### Append the value at the index at the front of the deque to the result list, as it is the maximum value in the current window.
     return result ### Return the result list containing the maximum values of each sliding window.
-sliding_window_maximum([1,3,-1,-3,5,3,6,7], 3) ### Call the function \`sliding_window_maximum\` with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`. The expected output is \`[3, 3, 5, 5, 6, 7]\`.
+sliding_window_maximum([4, 2, 12, 3, 7], 4) ### Call the function \`sliding_window_maximum\`.
+sliding_window_maximum([9, 11, 8, 5, 7, 10], 2) ### Call the function \`sliding_window_maximum\`.
 
 [END]
 
@@ -154,9 +155,7 @@ The function initializes two empty lists: \`dq\` for the deque and \`result\` fo
 Removes indices from the front of the deque if they are out of the current window's range.
 Removes indices from the back of the deque if their corresponding values are less than the current value \`n\`.
 Appends the current index \`i\` to the deque.
-Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.
-
-Finally, the function returns the result list containing the maximum values of each sliding window. The function is called with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`, and it returns the expected output \`[3, 3, 5, 5, 6, 7]\`.`
+Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.`
 
 
 export const tech2WarmupExplanation = 

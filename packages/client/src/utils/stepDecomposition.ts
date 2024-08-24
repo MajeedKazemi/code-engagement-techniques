@@ -563,29 +563,29 @@ const taskQuestion1: newQuestionObject[] = [
 
 const taskQuestion2: newQuestionObject[] = [
     {
-        "step": 12,
-        "begin-line": 7,
-        "end-line": 8,
-        "question-about-purpose-of-code": "Why does the code append the index of the opening brackets to the stack in lines 7 and 8?",
-        "answer": "Appending the index of the opening brackets to the stack helps keep track of the brackets and their positions, which is useful for calculating the length of the valid substring.",
-        "top-two-variables": [
-          "stack",
-          "char"
-        ]
+      "step": 8,
+      "begin-line": 7,
+      "end-line": 8,
+      "question-about-purpose-of-code": "Why does the code append the index of the opening brackets to the stack in lines 7 and 8?",
+      "answer": "Appending the index of the opening brackets to the stack helps keep track of the brackets and their positions, which is useful for calculating the length of the valid substring.",
+      "top-two-variables": [
+        "stack",
+        "char"
+      ]
     },
     {
-      "step": 16,
+      "step": 13,
       "begin-line": 10,
-      "end-line": 17,
-      "question-about-purpose-of-code": "What is the purpose of the block of code from lines 10 to 17 that checks for certain conditions and updates the stack and max_length?",
-      "answer": "This block handles closing brackets. It checks if the top of the stack is an opening bracket that matches the current bracket. If so, it pops the stack and updates max_length. If not, it updates the top of the stack to the current index.",
+      "end-line": 15,
+      "question-about-purpose-of-code": "What is the purpose of the block of code from lines 10 to 15 that checks for certain conditions and updates the stack and max_length?",
+      "answer": "This block handles closing brackets. It checks if the top of the stack is an opening bracket that matches the current bracket. If so, it pops the stack and updates max_length.",
       "top-two-variables": [
         "stack",
         "max_length"
       ]
     },
     {
-      "step": 22,
+      "step": 18,
       "begin-line": 15,
       "end-line": 15,
       "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
@@ -596,13 +596,46 @@ const taskQuestion2: newQuestionObject[] = [
       ]
     },
     {
-      "step": 23,
+      "step": 34,
       "begin-line": 17,
       "end-line": 17,
       "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
       "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets.",
       "top-two-variables": [
         "stack",
+        "i"
+      ]
+    },
+    {
+      "step": 42,
+      "begin-line": 17,
+      "end-line": 17,
+      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
+      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets.",
+      "top-two-variables": [
+        "stack",
+        "i"
+      ]
+    },
+    {
+      "step": 69,
+      "begin-line": 17,
+      "end-line": 17,
+      "question-about-purpose-of-code": "What is the purpose of updating the top of the stack to the current index in line 17?",
+      "answer": "If the conditions are not met, the top of the stack is updated to the current index to prepare for the next comparison of opening and closing brackets.",
+      "top-two-variables": [
+        "stack",
+        "i"
+      ]
+    },
+    {
+      "step": 108,
+      "begin-line": 15,
+      "end-line": 15,
+      "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
+      "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring.",
+      "top-two-variables": [
+        "max_length",
         "i"
       ]
     }

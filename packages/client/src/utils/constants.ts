@@ -3672,7 +3672,7 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             }
@@ -3690,14 +3690,14 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
-                "value": [["",0,0,0,0]]
+                "value": []
             }
         ]
     },
@@ -3713,21 +3713,27 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["",0,0,0,0]
-                ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "",
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
             }
         ]
     },
@@ -3743,28 +3749,34 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["",0,0,0,0]
-                ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "",
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
             }
         ]
     },
     {
         "step": 7,
         "currLine": 6,
-        "nextLine": 10,
+        "nextLine": 9,
         "printOutput": [],
         "frame": [
             {
@@ -3773,17 +3785,17 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
@@ -3816,8 +3828,8 @@ const task2Trace = [
     },
     {
         "step": 8,
-        "currLine": 10,
-        "nextLine": 11,
+        "currLine": 9,
+        "nextLine": 10,
         "printOutput": [],
         "frame": [
             {
@@ -3826,17 +3838,17 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
@@ -3869,8 +3881,8 @@ const task2Trace = [
     },
     {
         "step": 9,
-        "currLine": 11,
-        "nextLine": 12,
+        "currLine": 10,
+        "nextLine": 11,
         "printOutput": [],
         "frame": [
             {
@@ -3879,17 +3891,17 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
@@ -3922,8 +3934,8 @@ const task2Trace = [
     },
     {
         "step": 10,
-        "currLine": 12,
-        "nextLine": 13,
+        "currLine": 11,
+        "nextLine": 12,
         "printOutput": [],
         "frame": [
             {
@@ -3932,17 +3944,17 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
@@ -3980,8 +3992,8 @@ const task2Trace = [
     },
     {
         "step": 11,
-        "currLine": 13,
-        "nextLine": 4,
+        "currLine": 12,
+        "nextLine": 13,
         "printOutput": [],
         "frame": [
             {
@@ -3990,19 +4002,17 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
-                "value": [
-                    ["(",1,0,1,1]
-                ]
+                "value": []
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
@@ -4040,8 +4050,8 @@ const task2Trace = [
     },
     {
         "step": 12,
-        "currLine": 4,
-        "nextLine": 5,
+        "currLine": 13,
+        "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
@@ -4050,21 +4060,27 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(",1,0,1,1]
-                ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[",
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
+                ]
             },
             {
                 "name": "s",
@@ -4100,6 +4116,72 @@ const task2Trace = [
     },
     {
         "step": 13,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[",
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 14,
         "currLine": 5,
         "nextLine": 6,
         "printOutput": [],
@@ -4110,19 +4192,3219 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
                 "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "q",
                 "type": "str",
                 "value": [
-                    ["(",1,0,1,1]
+                    [
+                        "[",
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
                 ]
             },
             {
+                "name": "s",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 15,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
                 "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 16,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 17,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 18,
+        "currLine": 11,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 19,
+        "currLine": 12,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 20,
+        "currLine": 13,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[",
+                        2,
+                        0,
+                        2,
+                        2
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 21,
+        "currLine": 14,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[",
+                        2,
+                        0,
+                        2,
+                        2
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 22,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[",
+                        2,
+                        0,
+                        2,
+                        2
+                    ],
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 23,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[",
+                        2,
+                        0,
+                        2,
+                        2
+                    ],
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 24,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 25,
+        "currLine": 9,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 26,
+        "currLine": 13,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 27,
+        "currLine": 14,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 28,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 29,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 30,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 31,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 32,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 33,
+        "currLine": 11,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 34,
+        "currLine": 12,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 35,
+        "currLine": 13,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 36,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 37,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]",
+                        2,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 38,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 39,
+        "currLine": 9,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 40,
+        "currLine": 13,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 41,
+        "currLine": 14,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 42,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ],
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 43,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ],
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 44,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 45,
+        "currLine": 9,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 46,
+        "currLine": 13,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 47,
+        "currLine": 14,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 48,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ],
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 49,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[[]]",
+                        2,
+                        2,
+                        2,
+                        0
+                    ],
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 50,
+        "currLine": 6,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 51,
+        "currLine": 7,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 52,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]"
+                ]
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 53,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]"
+                ]
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[[]]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 54,
+        "currLine": 6,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]"
+                ]
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 55,
+        "currLine": 7,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]"
+                ]
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 56,
+        "currLine": 4,
+        "nextLine": 15,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]",
+                    "[][]"
+                ]
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 57,
+        "currLine": 15,
+        "nextLine": 17,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]",
+                    "[][]"
+                ]
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 58,
+        "currLine": 17,
+        "nextLine": 2,
+        "printOutput": [],
+        "frame": []
+    },
+    {
+        "step": 59,
+        "currLine": 2,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 60,
+        "currLine": 3,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            }
+        ]
+    },
+    {
+        "step": 61,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "",
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
+            }
+        ]
+    },
+    {
+        "step": 62,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "",
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
+            }
+        ]
+    },
+    {
+        "step": 63,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "step": 64,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "step": 65,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "step": 66,
+        "currLine": 11,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
                 "type": "str",
                 "value": []
             },
@@ -4159,181 +7441,7 @@ const task2Trace = [
         ]
     },
     {
-        "step": 14,
-        "currLine": 6,
-        "nextLine": 10,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 15,
-        "currLine": 10,
-        "nextLine": 11,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 16,
-        "currLine": 11,
-        "nextLine": 12,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 17,
+        "step": 67,
         "currLine": 12,
         "nextLine": 13,
         "printOutput": [],
@@ -4341,17 +7449,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
+                "value": 1
             },
             {
                 "name": "result",
@@ -4359,14 +7462,19 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "s",
-                "type": "list",
-                "value": "("
+                "type": "str",
+                "value": ""
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "closes",
@@ -4376,102 +7484,35 @@ const task2Trace = [
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             }
         ]
     },
     {
-        "step": 18,
+        "step": 68,
         "currLine": 13,
-        "nextLine": 14,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["((",2,0,2,2]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 19,
-        "currLine": 14,
         "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["((",2,0,2,2]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -4479,14 +7520,27 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[",
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
                 "name": "s",
-                "type": "list",
-                "value": "("
+                "type": "str",
+                "value": ""
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "closes",
@@ -4496,22 +7550,22 @@ const task2Trace = [
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             }
         ]
     },
     {
-        "step": 20,
+        "step": 69,
         "currLine": 4,
         "nextLine": 5,
         "printOutput": [],
@@ -4519,20 +7573,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["((",2,0,2,2],
-                    ["()",1,1,1,0]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -4540,14 +7586,27 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[",
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
                 "name": "s",
-                "type": "list",
-                "value": "("
+                "type": "str",
+                "value": ""
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "closes",
@@ -4557,22 +7616,22 @@ const task2Trace = [
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             }
         ]
     },
     {
-        "step": 21,
+        "step": 70,
         "currLine": 5,
         "nextLine": 6,
         "printOutput": [],
@@ -4580,20 +7639,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["((",2,0,2,2],
-                    ["()",1,1,1,0]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -4601,9 +7652,80 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[",
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 71,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "("
+                "value": "["
             },
             {
                 "name": "opens",
@@ -4628,32 +7750,25 @@ const task2Trace = [
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             }
         ]
     },
     {
-        "step": 22,
-        "currLine": 6,
+        "step": 72,
+        "currLine": 9,
         "nextLine": 10,
         "printOutput": [],
         "frame": [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()",1,1,1,0]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -4661,407 +7776,14 @@ const task2Trace = [
                 "value": []
             },
             {
-                "name": "s",
-                "type": "list",
-                "value": "(("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 23,
-        "currLine": 10,
-        "nextLine": 13,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
                 "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[]",
-                        1,
-                        1,
-                        1,
-                        0
-                    ]
-                ]
-            },
-            {
-                "name": "result",
                 "type": "str",
                 "value": []
             },
             {
                 "name": "s",
                 "type": "list",
-                "value": "(("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 24,
-        "currLine": 13,
-        "nextLine": 14,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[]",
-                        1,
-                        1,
-                        1,
-                        0
-                    ]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 25,
-        "currLine": 14,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()",1,1,1,0]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 26,
-        "currLine": 4,
-        "nextLine": 5,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[]",
-                        1,
-                        1,
-                        1,
-                        0
-                    ],
-                    [
-                        "[[]",
-                        2,
-                        1,
-                        2,
-                        1
-                    ]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 27,
-        "currLine": 5,
-        "nextLine": 6,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[]",
-                        1,
-                        1,
-                        1,
-                        0
-                    ],
-                    [
-                        "[[]",
-                        2,
-                        1,
-                        2,
-                        1
-                    ]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 28,
-        "currLine": 6,
-        "nextLine": 10,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(()",2,1,2,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(("
+                "value": "["
             },
             {
                 "name": "opens",
@@ -5071,7 +7793,7 @@ const task2Trace = [
             {
                 "name": "closes",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "max_d",
@@ -5081,17 +7803,17 @@ const task2Trace = [
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 0
+                "value": 1
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             }
         ]
     },
     {
-        "step": 29,
+        "step": 73,
         "currLine": 10,
         "nextLine": 11,
         "printOutput": [],
@@ -5099,25 +7821,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[[]",
-                        2,
-                        1,
-                        2,
-                        1
-                    ]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -5125,9 +7834,14 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "()"
+                "value": "["
             },
             {
                 "name": "opens",
@@ -5137,7 +7851,7 @@ const task2Trace = [
             {
                 "name": "closes",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "max_d",
@@ -5147,97 +7861,30 @@ const task2Trace = [
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 0
+                "value": 1
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             }
         ]
     },
     {
-        "step": 30,
+        "step": 74,
         "currLine": 11,
-        "nextLine": 12,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(()",2,1,2,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "step": 31,
-        "currLine": 12,
         "nextLine": 13,
         "printOutput": [],
         "frame": [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(()",2,1,2,1]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -5245,9 +7892,14 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "()"
+                "value": "["
             },
             {
                 "name": "opens",
@@ -5256,71 +7908,10 @@ const task2Trace = [
             },
             {
                 "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
                 "type": "int",
                 "value": 0
             },
             {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 32,
-        "currLine": 13,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(()",2,1,2,1],
-                    ["()(",2,1,1,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
                 "name": "max_d",
                 "type": "int",
                 "value": 1
@@ -5328,259 +7919,17 @@ const task2Trace = [
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 33,
-        "currLine": 4,
-        "nextLine": 5,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(()",2,1,2,1],
-                    ["()(",2,1,1,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 34,
-        "currLine": 5,
-        "nextLine": 6,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(()",2,1,2,1],
-                    ["()(",2,1,1,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 35,
-        "currLine": 6,
-        "nextLine": 10,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()(",2,1,1,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
                 "value": 1
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 1
+                "value": 2
             }
         ]
     },
     {
-        "step": 36,
-        "currLine": 10,
-        "nextLine": 13,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()(",2,1,1,1]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 37,
+        "step": 75,
         "currLine": 13,
         "nextLine": 14,
         "printOutput": [],
@@ -5588,19 +7937,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()(",2,1,1,1]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -5608,24 +7950,29 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "(()"
+                "value": "["
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "cur_d",
@@ -5635,12 +7982,12 @@ const task2Trace = [
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 1
+                "value": 2
             }
         ]
     },
     {
-        "step": 38,
+        "step": 76,
         "currLine": 14,
         "nextLine": 4,
         "printOutput": [],
@@ -5648,19 +7995,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()(",2,1,1,1]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -5668,24 +8008,29 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "(()"
+                "value": "["
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "cur_d",
@@ -5695,12 +8040,12 @@ const task2Trace = [
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 1
+                "value": 2
             }
         ]
     },
     {
-        "step": 39,
+        "step": 77,
         "currLine": 4,
         "nextLine": 5,
         "printOutput": [],
@@ -5708,20 +8053,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()(",2,1,1,1],
-                    ["(())",2,2,2,0]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -5729,24 +8066,37 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "(()"
+                "value": "["
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "cur_d",
@@ -5756,12 +8106,12 @@ const task2Trace = [
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 1
+                "value": 2
             }
         ]
     },
     {
-        "step": 40,
+        "step": 78,
         "currLine": 5,
         "nextLine": 6,
         "printOutput": [],
@@ -5769,12 +8119,373 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[]",
+                        1,
+                        1,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
                 "type": "int",
                 "value": 2
+            }
+        ]
+    },
+    {
+        "step": 79,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 80,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 81,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 82,
+        "currLine": 11,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 83,
+        "currLine": 12,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 84,
+        "currLine": 13,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "q",
@@ -5786,90 +8497,18 @@ const task2Trace = [
                         1,
                         1,
                         1
-                    ],
-                    [
-                        "[[]]",
-                        2,
-                        2,
-                        2,
-                        0
                     ]
                 ]
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "s",
                 "type": "list",
-                "value": "(()"
+                "value": "[]"
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
                 "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 41,
-        "currLine": 6,
-        "nextLine": 10,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(())",2,2,2,0]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
             },
             {
                 "name": "closes",
@@ -5884,7 +8523,7 @@ const task2Trace = [
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "new_max_d",
@@ -5894,205 +8533,7 @@ const task2Trace = [
         ]
     },
     {
-        "step": 42,
-        "currLine": 10,
-        "nextLine": 13,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[[]]",
-                        2,
-                        2,
-                        2,
-                        0
-                    ]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 43,
-        "currLine": 13,
-        "nextLine": 14,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[[]]",
-                        2,
-                        2,
-                        2,
-                        0
-                    ]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 44,
-        "currLine": 14,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    [
-                        "[[]]",
-                        2,
-                        2,
-                        2,
-                        0
-                    ]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()("
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 45,
+        "step": 85,
         "currLine": 4,
         "nextLine": 5,
         "printOutput": [],
@@ -6100,20 +8541,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(())",2,2,2,0],
-                    ["()())",2,2,1,0]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -6121,14 +8554,27 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "()("
+                "value": "[]"
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "closes",
@@ -6143,7 +8589,7 @@ const task2Trace = [
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 1
+                "value": 0
             },
             {
                 "name": "new_max_d",
@@ -6153,7 +8599,7 @@ const task2Trace = [
         ]
     },
     {
-        "step": 46,
+        "step": 86,
         "currLine": 5,
         "nextLine": 6,
         "printOutput": [],
@@ -6161,20 +8607,12 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["(())",2,2,2,0],
-                    ["()())",2,2,1,0]
-                ]
+                "value": 1
             },
             {
                 "name": "result",
@@ -6182,9 +8620,80 @@ const task2Trace = [
                 "value": []
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][",
+                        2,
+                        1,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
                 "name": "s",
                 "type": "list",
-                "value": "()("
+                "value": "[]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 87,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
             },
             {
                 "name": "opens",
@@ -6214,27 +8723,322 @@ const task2Trace = [
         ]
     },
     {
-        "step": 47,
-        "currLine": 6,
-        "nextLine": 7,
+        "step": 88,
+        "currLine": 9,
+        "nextLine": 10,
         "printOutput": [],
         "frame": [
             {
                 "name": "n",
                 "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
                 "value": 2
             },
             {
-                "name": "m",
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 89,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
                 "type": "int",
                 "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 90,
+        "currLine": 11,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 91,
+        "currLine": 13,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 92,
+        "currLine": 14,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 93,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "q",
                 "type": "str",
                 "value": [
                     [
-                        "()()",
+                        "[][]",
                         2,
                         2,
                         1,
@@ -6243,14 +9047,9 @@ const task2Trace = [
                 ]
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "s",
                 "type": "list",
-                "value": "(())"
+                "value": "[]["
             },
             {
                 "name": "opens",
@@ -6260,211 +9059,27 @@ const task2Trace = [
             {
                 "name": "closes",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "max_d",
                 "type": "int",
-                "value": 2
+                "value": 1
             },
             {
                 "name": "cur_d",
                 "type": "int",
-                "value": 0
+                "value": 1
             },
             {
                 "name": "new_max_d",
                 "type": "int",
-                "value": 1
+                "value": 2
             }
         ]
     },
     {
-        "step": 48,
-        "currLine": 7,
-        "nextLine": 8,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()())",2,2,1,0]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(())"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 49,
-        "currLine": 8,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()())",2,2,1,0]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "[[]]"
-                ]
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(())"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 50,
-        "currLine": 4,
-        "nextLine": 5,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": [
-                    ["()())",2,2,1,0]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())"
-                ]
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "(())"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 51,
+        "step": 94,
         "currLine": 5,
         "nextLine": 6,
         "printOutput": [],
@@ -6472,31 +9087,93 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "q",
                 "type": "str",
                 "value": [
-                    ["()())",2,2,1,0]
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())"
+                    [
+                        "[][]",
+                        2,
+                        2,
+                        1,
+                        0
+                    ]
                 ]
             },
             {
                 "name": "s",
                 "type": "list",
-                "value": "(())"
+                "value": "[]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 95,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
             },
             {
                 "name": "opens",
@@ -6511,7 +9188,181 @@ const task2Trace = [
             {
                 "name": "max_d",
                 "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
                 "value": 2
+            }
+        ]
+    },
+    {
+        "step": 96,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 97,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 98,
+        "currLine": 11,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
             },
             {
                 "name": "cur_d",
@@ -6526,7 +9377,627 @@ const task2Trace = [
         ]
     },
     {
-        "step": 52,
+        "step": 99,
+        "currLine": 12,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 100,
+        "currLine": 13,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][][",
+                        3,
+                        2,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 101,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][][",
+                        3,
+                        2,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 102,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][][",
+                        3,
+                        2,
+                        1,
+                        1
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 103,
+        "currLine": 6,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 104,
+        "currLine": 9,
+        "nextLine": 13,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 105,
+        "currLine": 13,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 106,
+        "currLine": 14,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 107,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][][]",
+                        3,
+                        3,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 108,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "q",
+                "type": "str",
+                "value": [
+                    [
+                        "[][][]",
+                        3,
+                        3,
+                        1,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "s",
+                "type": "list",
+                "value": "[][]["
+            },
+            {
+                "name": "opens",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "closes",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "max_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "cur_d",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "new_max_d",
+                "type": "int",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "step": 109,
         "currLine": 6,
         "nextLine": 7,
         "printOutput": [],
@@ -6534,12 +10005,17 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "q",
@@ -6547,26 +10023,19 @@ const task2Trace = [
                 "value": []
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())"
-                ]
-            },
-            {
                 "name": "s",
                 "type": "list",
-                "value": "()()"
+                "value": "[][][]"
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "max_d",
@@ -6586,80 +10055,25 @@ const task2Trace = [
         ]
     },
     {
-        "step": 53,
+        "step": 110,
         "currLine": 7,
-        "nextLine": 8,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "n",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "m",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())"
-                ]
-            },
-            {
-                "name": "s",
-                "type": "list",
-                "value": "()()"
-            },
-            {
-                "name": "opens",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "closes",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "max_d",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "cur_d",
-                "type": "int",
-                "value": 0
-            },
-            {
-                "name": "new_max_d",
-                "type": "int",
-                "value": 1
-            }
-        ]
-    },
-    {
-        "step": 54,
-        "currLine": 8,
         "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "q",
@@ -6667,27 +10081,19 @@ const task2Trace = [
                 "value": []
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())",
-                    "()()"
-                ]
-            },
-            {
                 "name": "s",
                 "type": "list",
-                "value": "()()"
+                "value": "[][][]"
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "max_d",
@@ -6707,7 +10113,7 @@ const task2Trace = [
         ]
     },
     {
-        "step": 55,
+        "step": 111,
         "currLine": 4,
         "nextLine": 15,
         "printOutput": [],
@@ -6715,12 +10121,19 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[][][]"
+                ]
             },
             {
                 "name": "q",
@@ -6728,27 +10141,19 @@ const task2Trace = [
                 "value": []
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())",
-                    "()()"
-                ]
-            },
-            {
                 "name": "s",
                 "type": "list",
-                "value": "()()"
+                "value": "[][][]"
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "max_d",
@@ -6768,7 +10173,7 @@ const task2Trace = [
         ]
     },
     {
-        "step": 56,
+        "step": 112,
         "currLine": 15,
         "nextLine": null,
         "printOutput": [],
@@ -6776,12 +10181,19 @@ const task2Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
-                "name": "m",
+                "name": "d",
                 "type": "int",
-                "value": 2
+                "value": 1
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[][][]"
+                ]
             },
             {
                 "name": "q",
@@ -6789,27 +10201,19 @@ const task2Trace = [
                 "value": []
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "(())",
-                    "()()"
-                ]
-            },
-            {
                 "name": "s",
                 "type": "list",
-                "value": "()()"
+                "value": "[][][]"
             },
             {
                 "name": "opens",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "closes",
                 "type": "int",
-                "value": 2
+                "value": 3
             },
             {
                 "name": "max_d",
@@ -10610,20 +14014,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             }
         ]
     },
@@ -10637,20 +14038,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10669,20 +14067,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10706,20 +14101,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10739,7 +14131,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 1
+                "value": 4
             }
         ]
     },
@@ -10753,20 +14145,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10786,7 +14175,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 1
+                "value": 4
             }
         ]
     },
@@ -10800,20 +14189,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10833,7 +14219,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 1
+                "value": 4
             }
         ]
     },
@@ -10847,20 +14233,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10882,7 +14265,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 1
+                "value": 4
             }
         ]
     },
@@ -10896,20 +14279,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10931,7 +14311,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 1
+                "value": 4
             }
         ]
     },
@@ -10945,20 +14325,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -10980,12 +14357,245 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 2
             }
         ]
     },
     {
         "step": 12,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    0
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 13,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    0
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 14,
+        "currLine": 10,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 15,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 16,
+        "currLine": 5,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 12
+            }
+        ]
+    },
+    {
+        "step": 17,
         "currLine": 7,
         "nextLine": 8,
         "printOutput": [],
@@ -10994,26 +14604,24 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    0
+                    0,
+                    1
                 ]
             },
             {
@@ -11024,17 +14632,17 @@ const task6Trace = [
             {
                 "name": "i",
                 "type": "int",
-                "value": 1
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 12
             }
         ]
     },
     {
-        "step": 13,
+        "step": 18,
         "currLine": 8,
         "nextLine": 7,
         "printOutput": [],
@@ -11043,20 +14651,64 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 12
+            }
+        ]
+    },
+    {
+        "step": 19,
+        "currLine": 7,
+        "nextLine": 8,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
             },
             {
                 "name": "dq",
@@ -11073,509 +14725,18 @@ const task6Trace = [
             {
                 "name": "i",
                 "type": "int",
-                "value": 1
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 3
-            }
-        ]
-    },
-    {
-        "step": 14,
-        "currLine": 7,
-        "nextLine": 9,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 3
-            }
-        ]
-    },
-    {
-        "step": 15,
-        "currLine": 9,
-        "nextLine": 10,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 3
-            }
-        ]
-    },
-    {
-        "step": 16,
-        "currLine": 10,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 3
-            }
-        ]
-    },
-    {
-        "step": 17,
-        "currLine": 4,
-        "nextLine": 5,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 1
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 3
-            }
-        ]
-    },
-    {
-        "step": 18,
-        "currLine": 5,
-        "nextLine": 7,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
                 "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": -1
-            }
-        ]
-    },
-    {
-        "step": 19,
-        "currLine": 7,
-        "nextLine": 9,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -1
+                "value": 12
             }
         ]
     },
     {
         "step": 20,
-        "currLine": 9,
-        "nextLine": 10,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -1
-            }
-        ]
-    },
-    {
-        "step": 21,
-        "currLine": 10,
-        "nextLine": 11,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
-                    2
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -1
-            }
-        ]
-    },
-    {
-        "step": 22,
-        "currLine": 11,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
-                    2
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -1
-            }
-        ]
-    },
-    {
-        "step": 23,
-        "currLine": 4,
-        "nextLine": 5,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
-                    2
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 2
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -1
-            }
-        ]
-    },
-    {
-        "step": 24,
-        "currLine": 5,
+        "currLine": 8,
         "nextLine": 7,
         "printOutput": [],
         "frame": [
@@ -11583,50 +14744,44 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    1,
-                    2
+                    0
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": -3
+                "value": 12
             }
         ]
     },
     {
-        "step": 25,
+        "step": 21,
         "currLine": 7,
         "nextLine": 9,
         "printOutput": [],
@@ -11635,50 +14790,42 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
                 "type": "str",
-                "value": [
-                    1,
-                    2
-                ]
+                "value": []
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": -3
+                "value": 12
             }
         ]
     },
     {
-        "step": 26,
+        "step": 22,
         "currLine": 9,
         "nextLine": 10,
         "printOutput": [],
@@ -11687,104 +14834,43 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
-                    2
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -3
-            }
-        ]
-    },
-    {
-        "step": 27,
-        "currLine": 10,
-        "nextLine": 11,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
+                    4,
                     2,
-                    3
+                    12,
+                    3,
+                    7
                 ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": -3
+                "value": 12
             }
         ]
     },
     {
-        "step": 28,
-        "currLine": 11,
+        "step": 23,
+        "currLine": 10,
         "nextLine": 4,
         "printOutput": [],
         "frame": [
@@ -11792,51 +14878,44 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3
+                    2
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": -3
+                "value": 12
             }
         ]
     },
     {
-        "step": 29,
+        "step": 24,
         "currLine": 4,
         "nextLine": 5,
         "printOutput": [],
@@ -11845,107 +14924,45 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": -3
-            }
-        ]
-    },
-    {
-        "step": 30,
-        "currLine": 5,
-        "nextLine": 6,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3
-                ]
-            },
-            {
-                "name": "i",
                 "type": "int",
                 "value": 4
             },
             {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 12
             }
         ]
     },
     {
-        "step": 31,
-        "currLine": 6,
+        "step": 25,
+        "currLine": 5,
         "nextLine": 7,
         "printOutput": [],
         "frame": [
@@ -11953,26 +14970,254 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    1,
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "step": 26,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "step": 27,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "step": 28,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "step": 29,
+        "currLine": 11,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "step": 30,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
                     2,
                     3
                 ]
@@ -11981,8 +15226,56 @@ const task6Trace = [
                 "name": "result",
                 "type": "str",
                 "value": [
+                    12
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "step": 31,
+        "currLine": 5,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
                     3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
                     3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    12
                 ]
             },
             {
@@ -11993,7 +15286,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 7
             }
         ]
     },
@@ -12007,20 +15300,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -12034,8 +15324,7 @@ const task6Trace = [
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3
+                    12
                 ]
             },
             {
@@ -12046,7 +15335,7 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 7
             }
         ]
     },
@@ -12060,20 +15349,17 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -12087,8 +15373,7 @@ const task6Trace = [
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3
+                    12
                 ]
             },
             {
@@ -12099,34 +15384,31 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 7
             }
         ]
     },
     {
         "step": 34,
         "currLine": 7,
-        "nextLine": 8,
+        "nextLine": 9,
         "printOutput": [],
         "frame": [
             {
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -12139,8 +15421,7 @@ const task6Trace = [
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3
+                    12
                 ]
             },
             {
@@ -12151,34 +15432,31 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 7
             }
         ]
     },
     {
         "step": 35,
-        "currLine": 8,
-        "nextLine": 7,
+        "currLine": 9,
+        "nextLine": 10,
         "printOutput": [],
         "frame": [
             {
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
@@ -12191,8 +15469,7 @@ const task6Trace = [
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3
+                    12
                 ]
             },
             {
@@ -12203,46 +15480,45 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 7
             }
         ]
     },
     {
         "step": 36,
-        "currLine": 7,
-        "nextLine": 9,
+        "currLine": 10,
+        "nextLine": 11,
         "printOutput": [],
         "frame": [
             {
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
             },
             {
                 "name": "dq",
                 "type": "str",
-                "value": []
+                "value": [
+                    2,
+                    4
+                ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3
+                    12
                 ]
             },
             {
@@ -12253,34 +15529,243 @@ const task6Trace = [
             {
                 "name": "n",
                 "type": "int",
-                "value": 5
+                "value": 7
             }
         ]
     },
     {
         "step": 37,
-        "currLine": 9,
-        "nextLine": 10,
+        "currLine": 11,
+        "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
+                    4,
+                    2,
+                    12,
                     3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
                     7
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    12
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 38,
+        "currLine": 4,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    12,
+                    12
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 39,
+        "currLine": 12,
+        "nextLine": 14,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    4,
+                    2,
+                    12,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    12,
+                    12
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 40,
+        "currLine": 14,
+        "nextLine": 2,
+        "printOutput": [],
+        "frame": []
+    },
+    {
+        "step": 41,
+        "currLine": 2,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "step": 42,
+        "currLine": 3,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": []
+            }
+        ]
+    },
+    {
+        "step": 43,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
             },
             {
                 "name": "dq",
@@ -12290,182 +15775,12 @@ const task6Trace = [
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 4
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 5
+                "value": []
             }
         ]
     },
     {
-        "step": 38,
-        "currLine": 10,
-        "nextLine": 11,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    4
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 4
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 5
-            }
-        ]
-    },
-    {
-        "step": 39,
-        "currLine": 11,
-        "nextLine": 4,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    4
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 4
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 5
-            }
-        ]
-    },
-    {
-        "step": 40,
-        "currLine": 4,
-        "nextLine": 5,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    4
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 4
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 5
-            }
-        ]
-    },
-    {
-        "step": 41,
+        "step": 44,
         "currLine": 5,
         "nextLine": 7,
         "printOutput": [],
@@ -12474,51 +15789,43 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
-                "value": [
-                    4
-                ]
+                "value": []
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 5
+                "value": 0
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 9
             }
         ]
     },
     {
-        "step": 42,
+        "step": 45,
         "currLine": 7,
         "nextLine": 9,
         "printOutput": [],
@@ -12527,51 +15834,43 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
-                "value": [
-                    4
-                ]
+                "value": []
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 5
+                "value": 0
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 9
             }
         ]
     },
     {
-        "step": 43,
+        "step": 46,
         "currLine": 9,
         "nextLine": 10,
         "printOutput": [],
@@ -12580,106 +15879,44 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
-                "value": [
-                    4
-                ]
+                "value": []
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 5
+                "value": 0
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 9
             }
         ]
     },
     {
-        "step": 44,
+        "step": 47,
         "currLine": 10,
-        "nextLine": 11,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 5
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 3
-            }
-        ]
-    },
-    {
-        "step": 45,
-        "currLine": 11,
         "nextLine": 4,
         "printOutput": [],
         "frame": [
@@ -12687,52 +15924,45 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    4,
-                    5
+                    0
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 5
+                "value": 0
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 9
             }
         ]
     },
     {
-        "step": 46,
+        "step": 48,
         "currLine": 4,
         "nextLine": 5,
         "printOutput": [],
@@ -12741,53 +15971,45 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    4,
-                    5
+                    0
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 5
+                "value": 0
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 3
+                "value": 9
             }
         ]
     },
     {
-        "step": 47,
+        "step": 49,
         "currLine": 5,
         "nextLine": 7,
         "printOutput": [],
@@ -12796,158 +16018,40 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    4,
-                    5
+                    0
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
-            }
-        ]
-    },
-    {
-        "step": 48,
-        "currLine": 7,
-        "nextLine": 8,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 6
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 6
-            }
-        ]
-    },
-    {
-        "step": 49,
-        "currLine": 8,
-        "nextLine": 7,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 6
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -12961,47 +16065,40 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    4
+                    0
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13015,47 +16112,40 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    4
+                    0
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13069,20 +16159,18 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
@@ -13092,22 +16180,17 @@ const task6Trace = [
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13121,20 +16204,18 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
@@ -13144,22 +16225,17 @@ const task6Trace = [
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13173,47 +16249,40 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    6
+                    1
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13227,47 +16296,40 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    6
+                    1
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5
-                ]
+                "value": []
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13281,48 +16343,42 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    6
+                    1
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
+                    11
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 6
+                "value": 1
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 6
+                "value": 11
             }
         ]
     },
@@ -13336,163 +16392,47 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    6
+                    1
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
+                    11
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 7
+                "value": 8
             }
         ]
     },
     {
         "step": 58,
-        "currLine": 7,
-        "nextLine": 8,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    6
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 7
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 7
-            }
-        ]
-    },
-    {
-        "step": 59,
-        "currLine": 8,
-        "nextLine": 7,
-        "printOutput": [],
-        "frame": [
-            {
-                "name": "nums",
-                "type": "str",
-                "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
-                    5,
-                    3,
-                    6,
-                    7
-                ]
-            },
-            {
-                "name": "k",
-                "type": "int",
-                "value": 3
-            },
-            {
-                "name": "dq",
-                "type": "str",
-                "value": [
-                    6
-                ]
-            },
-            {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
-                ]
-            },
-            {
-                "name": "i",
-                "type": "int",
-                "value": 7
-            },
-            {
-                "name": "n",
-                "type": "int",
-                "value": 7
-            }
-        ]
-    },
-    {
-        "step": 60,
         "currLine": 7,
         "nextLine": 9,
         "printOutput": [],
@@ -13501,51 +16441,47 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
-                "value": []
+                "value": [
+                    1
+                ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
+                    11
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 2
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 7
+                "value": 8
             }
         ]
     },
     {
-        "step": 61,
+        "step": 59,
         "currLine": 9,
         "nextLine": 10,
         "printOutput": [],
@@ -13554,20 +16490,780 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    1
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 8
+            }
+        ]
+    },
+    {
+        "step": 60,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 8
+            }
+        ]
+    },
+    {
+        "step": 61,
+        "currLine": 11,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 8
+            }
+        ]
+    },
+    {
+        "step": 62,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 8
+            }
+        ]
+    },
+    {
+        "step": 63,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
                 "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 64,
+        "currLine": 6,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 65,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 66,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 67,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 68,
+        "currLine": 11,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 69,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 3
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "step": 70,
+        "currLine": 5,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 71,
+        "currLine": 6,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 72,
+        "currLine": 7,
+        "nextLine": 8,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 73,
+        "currLine": 8,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    3
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 74,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
             },
             {
                 "name": "dq",
@@ -13578,17 +17274,15 @@ const task6Trace = [
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
+                    11,
+                    11,
+                    8
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 4
             },
             {
                 "name": "n",
@@ -13598,7 +17292,56 @@ const task6Trace = [
         ]
     },
     {
-        "step": 62,
+        "step": 75,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 76,
         "currLine": 10,
         "nextLine": 11,
         "printOutput": [],
@@ -13607,43 +17350,39 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    7
+                    4
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
+                    11,
+                    11,
+                    8
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 4
             },
             {
                 "name": "n",
@@ -13653,7 +17392,7 @@ const task6Trace = [
         ]
     },
     {
-        "step": 63,
+        "step": 77,
         "currLine": 11,
         "nextLine": 4,
         "printOutput": [],
@@ -13662,43 +17401,39 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    7
+                    4
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6
+                    11,
+                    11,
+                    8
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 4
             },
             {
                 "name": "n",
@@ -13708,7 +17443,419 @@ const task6Trace = [
         ]
     },
     {
-        "step": 64,
+        "step": 78,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 4
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 7
+            }
+        ]
+    },
+    {
+        "step": 79,
+        "currLine": 5,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 80,
+        "currLine": 7,
+        "nextLine": 8,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 81,
+        "currLine": 8,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    4
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 82,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 83,
+        "currLine": 9,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 84,
+        "currLine": 10,
+        "nextLine": 11,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    5
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 85,
+        "currLine": 11,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "nums",
+                "type": "str",
+                "value": [
+                    9,
+                    11,
+                    8,
+                    5,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "k",
+                "type": "int",
+                "value": 2
+            },
+            {
+                "name": "dq",
+                "type": "str",
+                "value": [
+                    5
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    11,
+                    11,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "i",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "n",
+                "type": "int",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "step": 86,
         "currLine": 4,
         "nextLine": 12,
         "printOutput": [],
@@ -13717,54 +17864,51 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    7
+                    5
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6,
-                    7
+                    11,
+                    11,
+                    8,
+                    7,
+                    10
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 5
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 7
+                "value": 10
             }
         ]
     },
     {
-        "step": 65,
+        "step": 87,
         "currLine": 12,
         "nextLine": null,
         "printOutput": [],
@@ -13773,53 +17917,50 @@ const task6Trace = [
                 "name": "nums",
                 "type": "str",
                 "value": [
-                    1,
-                    3,
-                    -1,
-                    -3,
+                    9,
+                    11,
+                    8,
                     5,
-                    3,
-                    6,
-                    7
+                    7,
+                    10
                 ]
             },
             {
                 "name": "k",
                 "type": "int",
-                "value": 3
+                "value": 2
             },
             {
                 "name": "dq",
                 "type": "str",
                 "value": [
-                    7
+                    5
                 ]
             },
             {
                 "name": "result",
                 "type": "str",
                 "value": [
-                    3,
-                    3,
-                    5,
-                    5,
-                    6,
-                    7
+                    11,
+                    11,
+                    8,
+                    7,
+                    10
                 ]
             },
             {
                 "name": "i",
                 "type": "int",
-                "value": 7
+                "value": 5
             },
             {
                 "name": "n",
                 "type": "int",
-                "value": 7
+                "value": 10
             }
         ]
     }
-];
+]
 
 export const taskTrace: TaskTraceType = {
     1: task1Trace,
