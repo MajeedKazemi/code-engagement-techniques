@@ -10,9 +10,9 @@ export const task1Code =
             if opens < n:
                 new_max_d = max(max_d, cur_d + 1)
                 if new_max_d <= d:
-                    q.append([s + '(', opens + 1, closes, new_max_d, cur_d + 1])
+                    q.append([s + '[', opens + 1, closes, new_max_d, cur_d + 1])
             if closes < opens and max_d <= d:
-                q.append([s + ')', opens, closes + 1, max_d, cur_d - 1])
+                q.append([s + ']', opens, closes + 1, max_d, cur_d - 1])
     return result
 generate_parentheses(2, 2)
 generate_parentheses(3, 1)`

@@ -234,6 +234,25 @@ export const apiGetIssueHintLevel3 = (
         }),
     });
 
+export const apiCheckMatchedValue = (
+    token: string | null | undefined,
+    userInputValue: string,
+    expectedValue: string
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/checkmatch", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            userInputValue: userInputValue,
+            expectedValue: expectedValue,
+        }),
+    });
+
+
 export const apiGetFeedbackFromRevealShortAnswer = (
     token: string | null | undefined,
     allCode: string,

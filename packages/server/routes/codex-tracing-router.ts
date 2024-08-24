@@ -7,6 +7,8 @@ import { verifyUser } from "../utils/strategy";
 
 export const tracingRouter = express.Router();
 
+
+
 tracingRouter.post("/linesToRewrite", verifyUser, async (req, res, next) => {
     const { code, context } = req.body;
     const userId = (req.user as IUser)._id;
@@ -614,6 +616,55 @@ tracingRouter.post("/feedbackFromTracingShortAnswer", verifyUser, async (req, re
           model: "gpt-4o-mini",
           messages,
           temperature: 0.25,
+          max_tokens: 256,
+          user: userId,
+      });
+  
+      if (result.data.choices && result.data.choices?.length > 0) {
+          const response = result.data.choices[0].message?.content;
+  
+          if(response){
+              res.json({
+                  response: parseResponse(response),
+                  success: true,
+              });
+          }
+      } else {
+          res.json({
+              success: false,
+          });
+      }
+  }
+  });
+
+
+  tracingRouter.post("/checkmatch", verifyUser, async (req, res, next) => {
+    const { userEnteredValue, expectedValue } = req.body;
+    const userId = (req.user as IUser)._id;
+    if (userEnteredValue !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content: `check if [user-entered-value] matches [expected-value]. do not be strict about quotations, but be strict about values (numbers, and the string contains).
+                ( matches '(' or "(" and a matches or 'a' "a"
+                but [ or { does not match "(" or '('
+
+                return a JSON with the following format:
+                {
+                    "match": <true / false>
+                }`,
+              },
+        ];
+  
+        messages.push({
+          role: "user",
+          content: `[user-entered-value]: ${userEnteredValue}\n[expected-value]: ${expectedValue}`,
+      });
+  
+      const result = await openai.createChatCompletion({
+          model: "gpt-4o-mini",
+          messages,
+          temperature: 0,
           max_tokens: 256,
           user: userId,
       });

@@ -9,6 +9,7 @@ import { FaLongArrowAltRight, FaQuestionCircle } from "react-icons/fa";
 import { AuthContext, SocketContext } from "../../context";
 import ExcutionTimeline from "../excution-timeline";
 import {
+    apiCheckMatchedValue,
     apiGetBaselineLineByLineExplanationSimulation,
     apiGetFeedbackForDecomposition,
     apiGetFeedbackFromRevealShortAnswer,
@@ -1229,34 +1230,35 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             .catch((error) => {
                 logError("sendLog: " + error.toString());
             });
-        if (
-            (solution &&
-                typeof solution === "string" &&
-                inputValue[variableIndex]
-                    .replace(/\s+/g, "")
-                    .replace(/['"]/g, '"') ===
-                    solution.replace(/\s+/g, "").replace(/['"]/g, '"')) ||
-            Number(inputValue[variableIndex]) === Number(solution)
-        ) {
-            setShowSolution((prev) => {
-                if (!prev) return prev;
-
-                // Create a shallow copy of the top-level array
-                let temp = prev.map((innerArray) => [...innerArray]);
-
-                // Ensure the nested array exists
-                if (temp[variableIndex]) {
-                    // Set the specific value to true
-                    temp[variableIndex][index] = true;
-                }
-                return temp;
-            });
-            let temp = deepCopy(feedbackReady);
-            temp[variableIndex][attemptNumber - 1] = true;
-            setFeedbackReady(temp);
-            setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
-        } else if (currentWrongAnswers && index == currentQuestionIndex) {
-            //set the current wrong answers
+        
+        apiCheckMatchedValue(
+            context?.token,
+            inputValue[variableIndex],
+            solution,
+        ).then(async (response) => {
+            if (response.ok){
+                const data = await response.json();
+                console.log(data.response);
+                if (data.response.match || data.response.match == 'true'){
+                    setShowSolution((prev) => {
+                        if (!prev) return prev;
+        
+                        // Create a shallow copy of the top-level array
+                        let temp = prev.map((innerArray) => [...innerArray]);
+        
+                        // Ensure the nested array exists
+                        if (temp[variableIndex]) {
+                            // Set the specific value to true
+                            temp[variableIndex][index] = true;
+                        }
+                        return temp;
+                    });
+                    let temp = deepCopy(feedbackReady);
+                    temp[variableIndex][attemptNumber - 1] = true;
+                    setFeedbackReady(temp);
+                    setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
+                }else if (currentWrongAnswers && index == currentQuestionIndex){
+                    //set the current wrong answers
             //find the first empty string in the array
 
             //set feedback
@@ -1306,7 +1308,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     (prevTotalIncorrect) => prevTotalIncorrect + 1
                 );
             }
-        }
+                }
+            }
+        }).catch((error) => {
+            logError("sendLog: " + error.toString());
+        });
+
+            
     }
 
     return (
