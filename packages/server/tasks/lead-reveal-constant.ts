@@ -11,15 +11,15 @@ export const task1Decomposition = {
       ],
       "questions": [
         {
+          "context-so-far": "We have initialized our data structure to keep track of the current state of the string, the number of open and close parentheses, the maximum depth, and the current depth. Now we need a place to store all the valid combinations of parentheses that we generate.",
+          "question": "What should we initialize to store all the valid combinations of parentheses?",
+          "answer": "We should initialize an empty list to store all the valid combinations of parentheses that we generate."
+        },
+        {
           "context-so-far": "We are about to start generating all possible combinations of parentheses. We need a way to keep track of the current state of the string, the number of open and close parentheses, the maximum depth, and the current depth.",
           "question": "What should we initialize our data structure to in order to keep track of these variables?",
           "answer": "We should initialize our data structure, a queue, with an empty string and zeros for the number of open and close parentheses, the maximum depth, and the current depth. This represents the initial state of our problem."
         },
-        {
-          "context-so-far": "We have initialized our data structure to keep track of the current state of the string, the number of open and close parentheses, the maximum depth, and the current depth. Now we need a place to store all the valid combinations of parentheses that we generate.",
-          "question": "What should we initialize to store all the valid combinations of parentheses?",
-          "answer": "We should initialize an empty list to store all the valid combinations of parentheses that we generate."
-        }
       ],
       "subgoal-code-lines-to-be-revealed": [
         2,
@@ -679,24 +679,6 @@ export const tech1WarmupDecomposition = {
   "subgoals": [
     {
       "decisions-made-here": [
-        "Use a queue and initialize it with a copy of the input list"
-      ],
-      "reasonings-behind-decisions": [
-        "A queue is a data structure that follows the FIFO (First In First Out) principle. By initializing it with a copy of the input list, we ensure that the original list is not modified"
-      ],
-      "questions": [
-        {
-          "context-so-far": "We are at the beginning of our function and we need to set up our data structures. We have been given a list that we need to reverse using a queue.",
-          "question": "What data structure should we use and how should we initialize it?",
-          "answer": "We should use a queue and initialize it with a copy of the input list. This is because a queue follows the FIFO principle, which will help us reverse the list."
-        }
-      ],
-      "subgoal-code-lines-to-be-revealed": [
-        2
-      ]
-    },
-    {
-      "decisions-made-here": [
         "Initialize an empty list to store the reversed list"
       ],
       "reasonings-behind-decisions": [
@@ -707,6 +689,24 @@ export const tech1WarmupDecomposition = {
           "context-so-far": "We have initialized our queue with the input list. Now, we need a place to store our reversed list.",
           "question": "How should we prepare to store the reversed list?",
           "answer": "We should initialize an empty list to store the reversed elements. This list will be populated with elements in the reversed order as we process the queue."
+        }
+      ],
+      "subgoal-code-lines-to-be-revealed": [
+        2
+      ]
+    },
+    {
+      "decisions-made-here": [
+        "Use a queue and initialize it with a copy of the input list"
+      ],
+      "reasonings-behind-decisions": [
+        "A queue is a data structure that follows the FIFO (First In First Out) principle. By initializing it with a copy of the input list, we ensure that the original list is not modified"
+      ],
+      "questions": [
+        {
+          "context-so-far": "We are at the beginning of our function and we need to set up our data structures. We have been given a list that we need to reverse using a queue.",
+          "question": "What data structure should we use and how should we initialize it?",
+          "answer": "We should use a queue and initialize it with a copy of the input list. This is because a queue follows the FIFO principle, which will help us reverse the list."
         }
       ],
       "subgoal-code-lines-to-be-revealed": [

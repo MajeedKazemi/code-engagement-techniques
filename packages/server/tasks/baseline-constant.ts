@@ -1,7 +1,7 @@
 export const task1Code =
 `def generate_parentheses(n: int, d: int) -> list[str]:
-    result = []
     q = [['', 0, 0, 0, 0]]
+    result = []
     while q:
         s, opens, closes, max_d, cur_d = q.pop(0)
         if opens == n and closes == n:
@@ -14,16 +14,16 @@ export const task1Code =
             if closes < opens and max_d <= d:
                 q.append([s + ']', opens, closes + 1, max_d, cur_d - 1])
     return result
-generate_parentheses(2, 2)
-generate_parentheses(3, 1)`
+print(generate_parentheses(2, 2))
+print(generate_parentheses(3, 1))`
 
 
 
 export const task1Explanation =
 `[OUTPUT]
 def generate_parentheses(n: int, d: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`d\`, and returns a list of strings. This function will generate all valid combinations of \`n\` pairs of parentheses with a maximum depth of \`d\`.
-    result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
     q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a list containing an empty string and four integers all set to 0. These integers represent the number of open parentheses, the number of closed parentheses, the maximum depth encountered so far, and the current depth, respectively.
+    result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
     while q: ### Start a while loop that continues as long as the queue \`q\` is not empty.
         s, opens, closes, max_d, cur_d = q.pop(0) ### Dequeue the first element from \`q\` and unpack it into variables \`s\`, \`opens\`, \`closes\`, \`max_d\`, and \`cur_d\`.
         if opens == n and closes == n: ### Check if the number of open and closed parentheses both equal \`n\`.
@@ -127,8 +127,8 @@ export const task3Code =
         if i >= k - 1:
             result.append(nums[dq[0]])
     return result
-sliding_window_maximum([4, 2, 12, 3, 7], 4)
-sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)`
+print(sliding_window_maximum([4, 2, 12, 3, 7], 4))
+print(sliding_window_maximum([9, 11, 8, 5, 7, 10], 2))`
 
 export const task3Explanation = 
 `def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
@@ -183,7 +183,7 @@ export const tech3WarmupCode =
         if dq.pop(0) != dq.pop():
             return False 
     return True
-is_palindrome("racecar")`
+print(is_palindrome("racecar"))`
 
 export const tech3WarmupExplanation = 
 `def is_palindrome(s: str) -> bool: ### Define a function named \`is_palindrome\` that takes a string \`s\` as input and returns a boolean value indicating whether the string is a palindrome. A palindrome is a string that reads the same forward and backward.
@@ -213,23 +213,23 @@ export const tech2WarmupCode =
     while stack:
         reversed_list.append(stack.pop())
     return reversed_list
-reverse_list_with_stack([1, 2, 3, 4, 5])`
+print(reverse_list_with_stack([1, 2, 3, 4, 5]))`
 
 
 export const tech1WarmupCode = 
-`def reverse_list_with_queue(input_list):
-    reversed_list = []
+`def reverse_list_with_queue(input_list) -> list:
     queue = input_list[:]
+    reversed_list = []
     while queue:
         reversed_list.insert(0, queue.pop(0))
     return reversed_list
-reverse_list_with_queue([1, 2, 3, 4, 5])`
+print(reverse_list_with_queue([1, 2, 3, 4, 5]))`
 
 
 export const tech1WarmupExplanation = 
-`def reverse_list_with_queue(input_list): ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
-    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
+`def reverse_list_with_queue(input_list) -> list: ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
     queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
+    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
     while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
         reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
     return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
