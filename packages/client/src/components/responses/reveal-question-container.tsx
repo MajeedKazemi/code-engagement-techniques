@@ -82,7 +82,7 @@ function RevealQuestionComponent({
         // console.log("Current question index", index);
         for (let i = 0; i < data.length; i++) {
             if (getTotalQuestionsBeforeThisSubgoal(i) > index) {
-                console.log("Current subgoal index", i);
+                // console.log("Current subgoal index", i);
                 return i;
             }
         }
@@ -171,8 +171,7 @@ function RevealQuestionComponent({
         ) {
             const newReachedMax = reachedMax.map((reached, i) =>
                 i === currentQuestionIndex
-                    ? questionAnsweredTimes[i].currentTime == 3 ||
-                      revealAnswer[i]
+                    ? revealAnswer[i]
                     : reached
             );
             setReachedMax(newReachedMax);
@@ -184,7 +183,7 @@ function RevealQuestionComponent({
     }
 
     useEffect(() => {
-        if (reachedMax[currentQuestionIndex] == true) {
+        if (questionAnsweredTimes && questionAnsweredTimes[currentQuestionIndex] && (reachedMax[currentQuestionIndex] == true || questionAnsweredTimes[currentQuestionIndex].currentTime == 3)) {
             // console.log("Updating current question index", currentQuestionIndex);
             setCurrentQuestionIndex(
                 (currentQuestionIndex) => currentQuestionIndex + 1
@@ -205,7 +204,7 @@ function RevealQuestionComponent({
                 setQuestionFirstDisplayed(Date.now());
             });
         }
-    }, [reachedMax]);
+    }, [reachedMax, questionAnsweredTimes]);
 
     function handleClick(index: number): void {
         const newFeedback = [...feedback];
@@ -392,7 +391,7 @@ function RevealQuestionComponent({
                                                 <b>Question: </b>
                                                 {question.question}
                                             </div>
-                                            {!reachedMax[index] && (
+                                            {(!reachedMax[index] && (questionAnsweredTimes[index].currentTime != 3)) && (
                                                 <div className="reveal-short-answer-container">
                                                     <textarea
                                                         className="reveal-lead-textbox baseline-input"
@@ -433,7 +432,7 @@ function RevealQuestionComponent({
                                                 </div>
                                             )}
                                         </div>
-                                        {!reachedMax[index] && (
+                                        {(!reachedMax[index] && (questionAnsweredTimes[index].currentTime != 3)) && (
                                             <div>
                                                 {questionAnsweredTimes[index]
                                                     .currentTime != 0 && (
@@ -484,6 +483,56 @@ function RevealQuestionComponent({
                                                     </>
                                                 )}
                                             </div>
+                                        )}
+                                        {(questionAnsweredTimes[index].currentTime == 3) && (
+                                            <>
+                                                <div className="reveal-hint-mcq-incorrect">
+                                                    <b>
+                                                        Your
+                                                        Response:{" "}
+                                                    </b>
+                                                    {
+                                                        questionAnsweredTimes[
+                                                            index
+                                                        ]
+                                                            .currentAnswer
+                                                    }
+                                                </div>
+
+                                                <div className="explanation-after-reveal">
+                                                    <strong>
+                                                        Explanation:{" "}
+                                                    </strong>{" "}
+                                                    {question.solution}
+                                                </div>
+
+                                                {getCurrentSubgoalByQuestionIndex(
+                                                    index
+                                                ) ==
+                                                    currentSubgoalIndex - 1 &&
+                                                    data[0] && (
+                                                        <div>
+                                                            {data[
+                                                                getCurrentSubgoalByQuestionIndex(
+                                                                    index
+                                                                )
+                                                            ].revealLines
+                                                                .split("\n")
+                                                                .map(
+                                                                    (
+                                                                        line,
+                                                                        i
+                                                                    ) => (
+                                                                        <HighlightedPart
+                                                                            part={
+                                                                                line
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                )}
+                                                        </div>
+                                                    )}
+                                            </>
                                         )}
                                         {reachedMax[index] && (
                                             <>
