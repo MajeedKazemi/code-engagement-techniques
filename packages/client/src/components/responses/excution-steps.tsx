@@ -303,7 +303,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     useEffect(() => {
         if (tracing) {
-            console.log("traceOutput", traceOutput);
+            // console.log("traceOutput", traceOutput);
             const traceOutputLength = traceOutput.reduce(
                 (acc, curr) => acc + curr.length,
                 0
@@ -588,9 +588,9 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
     useEffect(() => {
         if (backendCode.length > 0) {
-            console.log("backendCode", backendCode);
             // console.log("backendCode", backendCode);
-            generateTrace();
+            // console.log("backendCode", backendCode);
+            // generateTrace();
 
             // for python tracer simulation
             // setTracing(true);
@@ -616,15 +616,15 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         generateQuestion();
     }, [excutionSteps]);
 
-    useEffect(() => {
-        if (storedInput.length == 0 && finishedTracing) {
-            generateTrack();
-        }
-        if (storedInput.length > 0 && !tracing) {
-            console.log("storedInput", storedInput);
-            generateTrack();
-        }
-    }, [storedInput, tracing, finishedTracing]);
+    // useEffect(() => {
+    //     if (storedInput.length == 0 && finishedTracing) {
+    //         generateTrack();
+    //     }
+    //     if (storedInput.length > 0 && !tracing) {
+    //         console.log("storedInput", storedInput);
+    //         generateTrack();
+    //     }
+    // }, [storedInput, tracing, finishedTracing]);
 
     useEffect(() => {
         let fElements: f[][] = trackOutput.map((item) => {
@@ -702,21 +702,35 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         setExcutionSteps(objectArray);
     }, [trackOutput]);
 
+    // useEffect(() => {
+    //     if (
+    //         showSolution &&
+    //         showSolution[0].every((value) => value === true) &&
+    //         showSolution[1].every((value) => value === true)
+    //     ) {
+    //         setQuestionStop(excutionSteps.length - 1);
+    //         console.log("showSolution", showSolution);
+    //     }
+    // }, [showSolution]);
     useEffect(() => {
-        if (
-            showSolution &&
-            showSolution[0].every((value) => value === true) &&
-            showSolution[1].every((value) => value === true)
-        ) {
+        if (showSolution && showSolution[0] && showSolution[0][showSolution[0].length - 1] === true) {
             setQuestionStop(excutionSteps.length - 1);
+            console.log(excutionSteps.length - 1);
         }
     }, [showSolution]);
 
     const updateQuestion = (questionIndex: number) => {
+
+        setCurrFeedback([
+            ["", "", ""],
+            ["", "", ""],
+        ]);
+
         const currentQuestion = questions[questionIndex];
         if (currentQuestion) {
             setQuestionStop(currentQuestion.step - 2);
             setCurrentQuestionIndex(questionIndex);
+            
 
             //reset timer for mini question
             apiLogEvents(
@@ -786,7 +800,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             // find the first frame that contains the stopLine in the code
             let currentSolutions: any[] = [];
             variablesOfInterest.forEach((voi) => {
-                console.log("voi", voi);
+                // console.log("voi", voi);
                 const result = findFrameWithVariable(
                     frames,
                     currStep,
@@ -819,55 +833,77 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         step: number,
         stopLine: number,
         variableOfInterest: string
-    ): { value: any; type: string } | null {
-        for (let i = 0; i < taskTrace.length; i++) {
-            const frame = taskTrace[i];
-            if (frame.currLine === stopLine) {
-                // if frame.frame is not undefined
-                console.log("frame", frame);
-                console.log("stopLine", stopLine);
-                if (!frame.frame) {
-                    return null;
-                }
-                //get frame's index
-                if (i + 1 < taskTrace.length) {
-                    const targetFrame = taskTrace[i + 1];
-                    // console.log("targetFrame", targetFrame);
-                    // console.log("variableOfInterest", variableOfInterest);
-                    const variable = targetFrame.frame.find(
+    ): { value: any; type: string } {
+        //two possibilities
+        //first: check if taskTrace[1].nextLine is taskTrace[0].currLine
+
+        if(taskTrace.length >= 2 && taskTrace[1].nextLine === taskTrace[0].currLine){
+            //means it in a loop
+            let line1 = taskTrace[0].currLine;
+            let line2 = taskTrace[0].nextLine;
+            //find the next occurence of currLine that is not line1 or line2
+            for(let i=0; i< taskTrace.length; i++) {
+                const frame = taskTrace[i];
+                if (frame.currLine !== line1 && frame.currLine !== line2) {
+                    const variable = frame.frame?.find(
                         (v: { name: string }) => v.name === variableOfInterest
                     );
-                    // console.log("variable", variable);
                     if (variable) {
+                        console.log(frame.currLine, variable, frame.step);
                         return { value: variable.value, type: variable.type };
-                    } else {
-                        //wired thing occured for task 6
-                        if (taskID == "6") {
-                            const variable = {
-                                name: "dq",
-                                type: "str",
-                                value: [2, 3],
-                            };
-                            if (variable) {
-                                return {
-                                    value: variable.value,
-                                    type: variable.type,
+                    }
+                }
+            }
+        }else{
+            for (let i = 0; i < taskTrace.length; i++) {
+                const frame = taskTrace[i];
+                if (frame.currLine === stopLine) {
+                    // if frame.frame is not undefined
+                    // console.log("frame", frame);
+                    // console.log("stopLine", stopLine);
+                    if (!frame.frame) {
+                        return {value:"please refresh your webpage", type:"str"};
+                    }
+                    //get frame's index
+                    if (i + 1 < taskTrace.length) {
+                        const targetFrame = taskTrace[i + 1];
+                        // console.log("targetFrame", targetFrame);
+                        // console.log("variableOfInterest", variableOfInterest);
+                        const variable = targetFrame.frame.find(
+                            (v: { name: string }) => v.name === variableOfInterest
+                        );
+                        // console.log("variable", variable);
+                        if (variable) {
+                            return { value: variable.value, type: variable.type };
+                        } else {
+                            //wired thing occured for task 6
+                            if (taskID == "6") {
+                                const variable = {
+                                    name: "dq",
+                                    type: "str",
+                                    value: [2, 3],
                                 };
+                                if (variable) {
+                                    return {
+                                        value: variable.value,
+                                        type: variable.type,
+                                    };
+                                }
                             }
                         }
-                    }
-                } else {
-                    const variable = frame.frame.find(
-                        (v: { name: string }) => v.name === variableOfInterest
-                    );
-                    if (variable) {
-                        return { value: variable.value, type: variable.type };
+                    } else {
+                        const variable = frame.frame.find(
+                            (v: { name: string }) => v.name === variableOfInterest
+                        );
+                        if (variable) {
+                            return { value: variable.value, type: variable.type };
+                        }
                     }
                 }
             }
         }
 
-        return null; // return null if no frame or variable is found
+        return {value:"please refresh your webpage", type:"str"};
     }
 
     function getLastNonEmptyElement(arr: string[]): string | undefined {
@@ -911,7 +947,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             .filter((item) => item.length > 0)
             .pop();
 
-        console.log(numberOfAttempts, previousResponse);
+        // console.log(numberOfAttempts, previousResponse);
 
         // console.log("currentFrame", currentFrame);
         // console.log("variableName", variableName);
@@ -933,23 +969,19 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     let tempFeedback = deepCopy(currFeedback);
                     tempFeedback[variableIndex][numberOfAttempts - 1] =
                         data.feedback;
+                    // console.log(tempFeedback);
                     setCurrFeedback(tempFeedback);
                     //feedback ready to be true at numberOfAttempts -1
                     let temp = deepCopy(feedbackReady);
                     temp[variableIndex][numberOfAttempts - 1] = true;
                     setFeedbackReady(temp);
-                    console.log("feedback", data.feedback);
+                    // console.log("feedback", data.feedback);
                 }
             });
         } catch (error: any) {
             logError(error.toString());
         }
     };
-
-    interface FollowUpProps {
-        question: questionObject;
-        index: number;
-    }
 
     const handleUserInput = (
         index: number,
@@ -1202,7 +1234,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
             let tempNum = deepCopy(feedbackReady);
             tempNum[variableIndex][attemptNumber - 1] = false;
             setFeedbackReady(tempNum);
-            getCurrentFeedback(index);
+            getCurrentFeedback(variableIndex);
 
             setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
 
@@ -1382,7 +1414,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
 
                 <div className={`step-by-step-timeline-container`}>
                     <div className="legend">
-                        {questionStop >= excutionSteps.length - 1 && (
+                        {(questionStop >= excutionSteps.length - 1) && (currentStep == excutionSteps.length-1) && (
                             <span id="game-over" style={{ opacity: 0 }}>
                                 Game Over
                             </span>
@@ -1567,6 +1599,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             ][0]
                                                         }
                                                     </span>
+                                                    {item["top-two-variables"].length!= 1 && (
+                                                    <>
                                                     {" and "}
                                                     <span className="variable">
                                                         {
@@ -1575,6 +1609,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             ][1]
                                                         }
                                                     </span>
+                                                    </>)
+                                                    }
                                                     on the highlighted line
                                                     <span>
                                                         {
@@ -1597,6 +1633,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             ][0]
                                                         }
                                                     </span>
+                                                    {item["top-two-variables"].length!= 1 && (
+                                                    <>
                                                     {" and "}
                                                     <span className="variable">
                                                         {
@@ -1605,6 +1643,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             ][1]
                                                         }
                                                     </span>
+                                                    </>)
+                                                    }
                                                     after the highlighted code
                                                     <span>
                                                         {
@@ -1624,6 +1664,56 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     are executed?{" "}
                                                 </p>
                                             )}
+                                            {currentWrongAnswers &&
+                                                currentWrongAnswers[0][index] &&
+                                                currentWrongAnswers[0][index]
+                                                    .length > 0 &&
+                                                currentWrongAnswers[0][
+                                                    index
+                                                ].map(
+                                                    (item, attamptNumber) =>
+                                                        item.length > 0 && (
+                                                            <>
+                                                                {feedbackReady[0][
+                                                                    attamptNumber
+                                                                ] ? (
+                                                                    <div className="step-answered-container">
+                                                                        <div className="step-answered-container-feedback">
+                                                                            You
+                                                                            Answered:
+                                                                            <span className="wrong">
+                                                                                {
+                                                                                    item
+                                                                                }
+                                                                            </span>
+                                                                            <p
+                                                                                style={{
+                                                                                    color: "red",
+                                                                                }}
+                                                                            >
+                                                                                Incorrect!
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="feedback-from-step">
+                                                                            <p>
+                                                                                {
+                                                                                    currFeedback[0][
+                                                                                        attamptNumber
+                                                                                    ]
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="step-answered-container">
+                                                                        Checking
+                                                                        Solution
+                                                                        <ChatLoader />
+                                                                    </div>
+                                                                )}
+                                                            </>
+                                                        )
+                                                )}
                                             {!showSolution![0][index] &&
                                                 index ==
                                                     currentQuestionIndex && (
@@ -1676,17 +1766,39 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         </button>
                                                     </div>
                                                 )}
-                                            {currentWrongAnswers &&
-                                                currentWrongAnswers[0][index] &&
-                                                currentWrongAnswers[0][index]
+                                            
+                                            {showSolution![0][index] && (
+                                                <div className="step-answered-container step-answered-container-correct">
+                                                    <p>
+                                                        Value of{" "}
+                                                        <span className="variable">
+                                                            {
+                                                                item[
+                                                                    "top-two-variables"
+                                                                ][0]
+                                                            }
+                                                        </span>
+                                                        :
+                                                    </p>
+                                                    <span className="correct">
+                                                        {
+                                                            solutions![index]
+                                                                .first
+                                                        }
+                                                    </span>
+                                                </div>
+                                            )}
+                                            {item["top-two-variables"].length!= 1 && currentWrongAnswers &&
+                                                currentWrongAnswers[1][index] &&
+                                                currentWrongAnswers[1][index]
                                                     .length > 0 &&
-                                                currentWrongAnswers[0][
+                                                currentWrongAnswers[1][
                                                     index
                                                 ].map(
                                                     (item, attamptNumber) =>
                                                         item.length > 0 && (
                                                             <>
-                                                                {feedbackReady[0][
+                                                                {feedbackReady[1][
                                                                     attamptNumber
                                                                 ] ? (
                                                                     <div className="step-answered-container">
@@ -1709,7 +1821,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                                         <div className="feedback-from-step">
                                                                             <p>
                                                                                 {
-                                                                                    currFeedback[0][
+                                                                                    currFeedback[1][
                                                                                         attamptNumber
                                                                                     ]
                                                                                 }
@@ -1726,28 +1838,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                             </>
                                                         )
                                                 )}
-                                            {showSolution![0][index] && (
-                                                <div className="step-answered-container step-answered-container-correct">
-                                                    <p>
-                                                        Value of{" "}
-                                                        <span className="variable">
-                                                            {
-                                                                item[
-                                                                    "top-two-variables"
-                                                                ][0]
-                                                            }
-                                                        </span>
-                                                        :
-                                                    </p>
-                                                    <span className="correct">
-                                                        {
-                                                            solutions![index]
-                                                                .first
-                                                        }
-                                                    </span>
-                                                </div>
-                                            )}
-                                            {!showSolution![1][index] &&
+                                            {item["top-two-variables"].length!= 1 && !showSolution![1][index] &&
                                                 index ==
                                                     currentQuestionIndex && (
                                                     <div
@@ -1799,57 +1890,7 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                         </button>
                                                     </div>
                                                 )}
-                                            {currentWrongAnswers &&
-                                                currentWrongAnswers[1][index] &&
-                                                currentWrongAnswers[1][index]
-                                                    .length > 0 &&
-                                                currentWrongAnswers[1][
-                                                    index
-                                                ].map(
-                                                    (item, attamptNumber) =>
-                                                        item.length > 0 && (
-                                                            <>
-                                                                {feedbackReady[1][
-                                                                    attamptNumber
-                                                                ] ? (
-                                                                    <div className="step-answered-container">
-                                                                        <div className="step-answered-container-feedback">
-                                                                            You
-                                                                            Answered:
-                                                                            <span className="wrong">
-                                                                                {
-                                                                                    item
-                                                                                }
-                                                                            </span>
-                                                                            <p
-                                                                                style={{
-                                                                                    color: "red",
-                                                                                }}
-                                                                            >
-                                                                                Incorrect!
-                                                                            </p>
-                                                                        </div>
-                                                                        <div className="feedback-from-step">
-                                                                            <p>
-                                                                                {
-                                                                                    currFeedback[1][
-                                                                                        attamptNumber
-                                                                                    ]
-                                                                                }
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                ) : (
-                                                                    <div className="step-answered-container">
-                                                                        Checking
-                                                                        Solution
-                                                                        <ChatLoader />
-                                                                    </div>
-                                                                )}
-                                                            </>
-                                                        )
-                                                )}
-                                            {showSolution![1][index] && (
+                                            {item["top-two-variables"].length!= 1 && showSolution![1][index] && (
                                                 <div className="step-answered-container step-answered-container-correct">
                                                     <p>
                                                         Value of{" "}
@@ -1870,8 +1911,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                                                     </span>
                                                 </div>
                                             )}
-                                            {showSolution![0][index] &&
-                                                showSolution![1][index] && (
+                                            {((showSolution![0][index] &&
+                                                showSolution![1][index]) || (showSolution![0][index] && item["top-two-variables"].length== 1))&& (
                                                     <div className="follow-up-question">
                                                         <div className="follow-up-header">
                                                             <p>Follow Up</p>
