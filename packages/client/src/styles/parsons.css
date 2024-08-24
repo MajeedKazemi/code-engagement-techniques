@@ -35,11 +35,10 @@
     align-items: center;
     background-color: #056794;
     color: aliceblue;
-    padding: 0.5rem 0.5rem;
+    padding-left: 12px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     font-size: 1rem;
-    height: 1.5rem;
     justify-content: space-between;
 }
 
@@ -82,13 +81,13 @@
 
 .modal-footer {
     position: absolute;
-    bottom: 0.5rem;
+    bottom: 0;
     width: 100%;
+    margin-bottom: 12px;
+    margin-top: 12px;
     display: flex;
     justify-content: flex-end;
-    padding-top: 0.5rem;
     border-top: 1px solid #dee2e6;
-    height: 2.5rem;
 }
 
 .modal-footer button {
