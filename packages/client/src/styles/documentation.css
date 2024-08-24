@@ -78,7 +78,7 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     padding: 12px;
     background-color: #fff;
     font-size: 16px;
@@ -127,7 +127,7 @@
 }
 
 .inline-code {
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     padding: 1px 8px;
     background-color: #c8f1ff;
     font-weight: 600;

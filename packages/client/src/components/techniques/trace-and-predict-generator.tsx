@@ -45,16 +45,7 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
-    const [timeoutValue, setTimeoutValue] = useState<number>(13);
-    const [showTimeout, setShowTimeout] = useState<boolean>(true);
-
-    useEffect(() => {
-        if (taskID === "1" || taskID === "3" || taskID === "5") {
-          setTimeoutValue(5);
-        } else if (taskID === "2" || taskID === "4" || taskID === "6") {
-          setTimeoutValue(13);
-        }
-      }, [taskID]);
+    const [timeoutValue, setTimeoutValue] = useState<number>(0);
 
     useEffect(() => {
         let intervalId: number | null = null;
@@ -442,13 +433,12 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
                     context?.token,
                     taskID,
                     "Timestamp when the prompt get out of the technique",
-                    Date.now(),
-                  )
+                    Date.now()
+                )
                     .then(() => {})
                     .catch((error) => {
-                        logError("sendLog: "
-                        + error.toString());
-                });
+                        logError("sendLog: " + error.toString());
+                    });
                 setButtonClickOver(true);
                 clearInterval(interval);
             }
@@ -498,19 +488,17 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
 
     useEffect(() => {
         const interval = setInterval(() => {
-          setTimeoutValue((prevTimeout) => {
-            const newTimeout = prevTimeout - 1;
-            if (newTimeout < 3) {
-              setShowTimeout(true);
-            }
-            return newTimeout;
-          });
+            setTimeoutValue((prevTimeout) => {
+                const newTimeout = prevTimeout + 1;
+
+                return newTimeout;
+            });
         }, 60000); // 60000 milliseconds = 1 minute
-    
+
         return () => {
-          clearInterval(interval);
+            clearInterval(interval);
         };
-      }, []);
+    }, []);
 
     return (
         <div>
@@ -528,19 +516,18 @@ const TraceAndPredictGenerator: React.FC<ExcutionGenerateCodeProps> = ({
                 <div className="modal show" style={{ display: "block" }}>
                     <div className="modal-header">
                         <div className="icon-div">
-                        <div className="spark-icon">
-                            <IconsDoc iconName="spark" />
+                            <div className="spark-icon">
+                                <IconsDoc iconName="spark" />
+                            </div>
+                            AI Assistance: Additional Steps
                         </div>
-                        AI Assistance:
+
+                        <div className="elapsed-time-container">
+                            Elapsed Time:{" "}
+                            <span className="elapsed-time-value">
+                                {timeoutValue + " mins"}
+                            </span>
                         </div>
-                        {showTimeout && (timeoutValue >= 0 ?
-                            <div className="warning">
-                                You have <strong>{timeoutValue}</strong> mins left!                       
-                            </div> : 
-                            <div>
-                                <strong>Time's up!</strong> Please finish up.
-                            </div>)
-                        }
                     </div>
                     <div className="modal-body">
                         {/* <div className="prompt-text">

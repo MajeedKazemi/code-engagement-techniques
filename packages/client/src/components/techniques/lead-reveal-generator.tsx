@@ -23,7 +23,6 @@ interface RevealGenerateCodeProps {
     moveOn: () => void;
 }
 
-
 interface QuestionInterface {
     revealLines: string;
     questions: SubQuestions[];
@@ -31,7 +30,7 @@ interface QuestionInterface {
 
 interface SubQuestions {
     context: string;
-    question: string
+    question: string;
     solution: string;
 }
 
@@ -43,7 +42,9 @@ function responseToQuestion(response: any, code: string): QuestionInterface[] {
 
         // revealLines
         const codeLines = code.split("\n");
-        const revealLines = Array.isArray(questionLines) ? questionLines :[questionLines];
+        const revealLines = Array.isArray(questionLines)
+            ? questionLines
+            : [questionLines];
         const lines = revealLines
             .map((index: number) => codeLines[index - 1])
             .filter((line: string) => typeof line === "string")
@@ -51,16 +52,13 @@ function responseToQuestion(response: any, code: string): QuestionInterface[] {
 
         for (let i = 0; i < item["questions"].length; i++) {
             const questionDetails = item["questions"][i];
-            
-            questionsInSubgoals.push(
-                {   
-                    context: questionDetails["context-so-far"],
-                    question: questionDetails["question"],
-                    solution: questionDetails["answer"],
-                }
-            );
-        }
 
+            questionsInSubgoals.push({
+                context: questionDetails["context-so-far"],
+                question: questionDetails["question"],
+                solution: questionDetails["answer"],
+            });
+        }
 
         return {
             revealLines: lines,
@@ -88,16 +86,7 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTimerStarted, setIsTimerStarted] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(0);
-    const [timeoutValue, setTimeoutValue] = useState<number>(13);
-    const [showTimeout, setShowTimeout] = useState<boolean>(true);
-
-    useEffect(() => {
-        if (taskID === "1" || taskID === "3" || taskID === "5") {
-          setTimeoutValue(5);
-        } else if (taskID === "2" || taskID === "4" || taskID === "6") {
-          setTimeoutValue(13);
-        }
-      }, [taskID]);
+    const [timeoutValue, setTimeoutValue] = useState<number>(0);
 
     useEffect(() => {
         let intervalId: number | null = null;
@@ -394,13 +383,12 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
                     context?.token,
                     taskID,
                     "Timestamp when the prompt get out of the technique",
-                    Date.now(),
-                  )
+                    Date.now()
+                )
                     .then(() => {})
                     .catch((error) => {
-                        logError("sendLog: "
-                        + error.toString());
-                });
+                        logError("sendLog: " + error.toString());
+                    });
                 clearInterval(interval);
             }
         }, 1000);
@@ -425,19 +413,17 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
 
     useEffect(() => {
         const interval = setInterval(() => {
-          setTimeoutValue((prevTimeout) => {
-            const newTimeout = prevTimeout - 1;
-            if (newTimeout < 3) {
-              setShowTimeout(true);
-            }
-            return newTimeout;
-          });
+            setTimeoutValue((prevTimeout) => {
+                const newTimeout = prevTimeout + 1;
+
+                return newTimeout;
+            });
         }, 60000); // 60000 milliseconds = 1 minute
-    
+
         return () => {
-          clearInterval(interval);
+            clearInterval(interval);
         };
-      }, []);
+    }, []);
 
     return (
         <div>
@@ -455,19 +441,20 @@ const RevealGenerateCode: React.FC<RevealGenerateCodeProps> = ({
                 <div className="modal show" style={{ display: "block" }}>
                     <div className="modal-header">
                         <div className="icon-div">
-                        <div className="spark-icon">
-                            <IconsDoc iconName="spark" />
+                            <div className="spark-icon">
+                                <IconsDoc iconName="spark" />
+                            </div>
+                            <span>
+                                <b>AI Assistance: </b> Additional Steps
+                            </span>
                         </div>
-                        AI Assistance:
+
+                        <div className="elapsed-time-container">
+                            Elapsed Time:{" "}
+                            <span className="elapsed-time-value">
+                                {timeoutValue + " mins"}
+                            </span>
                         </div>
-                        {showTimeout && (timeoutValue >= 0 ?
-                            <div className="warning">
-                                You have <strong>{timeoutValue}</strong> mins left!                       
-                            </div> : 
-                            <div>
-                                <strong>Time's up!</strong> Please finish up.
-                            </div>)
-                        }
                     </div>
                     <div className="modal-body leadreveal">
                         {(waiting || counter < 5) && (

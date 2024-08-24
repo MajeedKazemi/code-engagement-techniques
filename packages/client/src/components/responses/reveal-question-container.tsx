@@ -14,6 +14,7 @@ import { AuthContext } from "../../context";
 import { highlightPsudo } from "../../utils/utils";
 import React from "react";
 import { ChatLoader } from "../loader";
+import IconsDoc from "../docs/icons-doc";
 
 interface QuestionInterface {
     revealLines: string;
@@ -352,6 +353,15 @@ function RevealQuestionComponent({
                             Game Over
                         </span>
                     )}
+                <p>
+                    <b>Your Prompt:</b> {prompt}
+                </p>
+                <div className="ai-initial-message">
+                    <b> 🤖 AI:</b> Let's solve this task step by step. I'll give
+                    a brief description of each step and ask you a question.
+                    Focus on what needs to be done, and I'll guide you to the
+                    right answer.
+                </div>
                 {questions.length > 0 &&
                     questions.map(
                         (question: SubQuestions, index) =>
@@ -373,14 +383,13 @@ function RevealQuestionComponent({
                                         key={`rq${index}`}
                                     >
                                         <div className="reveal-question-content-container">
-                                            <b>Context: </b>
-                                            <br></br>
                                             <div className="reveal-question-content">
+                                                <b>🤖 AI: </b>
                                                 {question.context}
                                             </div>
-                                            <b>Short Question: </b>
-                                            <br></br>
+
                                             <div className="reveal-question-content">
+                                                <b>Question: </b>
                                                 {question.question}
                                             </div>
                                             {!reachedMax[index] && (
@@ -440,10 +449,10 @@ function RevealQuestionComponent({
                                                             ].currentTime !=
                                                                 1) && (
                                                             <div className="reveal-hint-mcq-incorrect">
-                                                                <strong>
+                                                                <b>
                                                                     Your
                                                                     Response:{" "}
-                                                                </strong>
+                                                                </b>
                                                                 {
                                                                     questionAnsweredTimes[
                                                                         index
@@ -455,10 +464,10 @@ function RevealQuestionComponent({
                                                         {feedbackReady[
                                                             index
                                                         ] ? (
-                                                            <div className="reveal-hint-mcq-incorrect">
-                                                                <strong>
+                                                            <div className="reveal-hint-mcq-explanation">
+                                                                <b>
                                                                     Explanation:{" "}
-                                                                </strong>{" "}
+                                                                </b>{" "}
                                                                 {
                                                                     hintForShort[
                                                                         index
@@ -478,9 +487,9 @@ function RevealQuestionComponent({
                                         )}
                                         {reachedMax[index] && (
                                             <>
-                                                <div className="explanation-after-reveal">
+                                                <div className="correct-answer-after-reveal">
                                                     <strong>
-                                                        Your Response:{" "}
+                                                        Your answer:{" "}
                                                     </strong>
                                                     {
                                                         questionAnsweredTimes[
@@ -488,14 +497,20 @@ function RevealQuestionComponent({
                                                         ].currentAnswer
                                                     }
                                                 </div>
+
+                                                <div className="explanation-after-reveal">
+                                                    <strong>
+                                                        Explanation:{" "}
+                                                    </strong>{" "}
+                                                    {question.solution}
+                                                </div>
+
                                                 {getCurrentSubgoalByQuestionIndex(
                                                     index
                                                 ) ==
                                                     currentSubgoalIndex - 1 &&
                                                     data[0] && (
-                                                        <>
-                                                            Current lines:
-                                                            <br></br>
+                                                        <div>
                                                             {data[
                                                                 getCurrentSubgoalByQuestionIndex(
                                                                     index
@@ -514,15 +529,8 @@ function RevealQuestionComponent({
                                                                         />
                                                                     )
                                                                 )}
-                                                        </>
+                                                        </div>
                                                     )}
-
-                                                <div className="explanation-after-reveal">
-                                                    <strong>
-                                                        Explanation:{" "}
-                                                    </strong>{" "}
-                                                    {question.solution}
-                                                </div>
                                             </>
                                         )}
                                     </div>
@@ -531,9 +539,6 @@ function RevealQuestionComponent({
                     )}
             </div>
             <div className="right-side-code-container">
-                <div className="prompt-text trace-predict-side">
-                    <span className="button-span">Prompt:</span> {prompt}
-                </div>
                 {questions.length > 0 && (
                     <div className="reveal-code-line-by-line-container">
                         <div className="reveal-code-title">

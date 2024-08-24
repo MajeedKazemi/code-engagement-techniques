@@ -17,15 +17,25 @@ export const HomePage = () => {
                 <main className="card">
                     {context?.token ? (
                         <div className="m-md">
-                            <h1>Welcome to Code Representation Techniques!</h1>
-                            <p>
-                                Hello {context?.user?.firstName}, welcome to
-                                Code Representation Techniques!
-                            </p>
-                            <p>
-                                To start learning and working on the programming
-                                tasks click start:
-                            </p>
+                            <h1>
+                                Hi {context?.user?.firstName}, welcome to our
+                                study!
+                            </h1>
+                            <ul>
+                                <li>
+                                    the study will take about 2.5 hours to
+                                    complete in two phases.
+                                </li>
+                                <li>
+                                    there will be a 10 minute break between the
+                                    two phases.
+                                </li>
+                                <li>
+                                    you will be compensated with $50 CAD for
+                                    your time.
+                                </li>
+                            </ul>
+
                             <Link to="/tasks" className="text-no-decoration">
                                 <Button type="block" class="text-sm">
                                     Start Coding
@@ -72,7 +82,9 @@ export const HomePage = () => {
                                 )}
                             </div>
                             <section className="right">
-                                <h2 className="card-title">Code Representation Techniques</h2>
+                                <h2 className="card-title">
+                                    Code Representation Techniques
+                                </h2>
                                 <p className="mb-md">
                                     TODO: Add the description of the project
                                     {/* Learn Python and introductory programming

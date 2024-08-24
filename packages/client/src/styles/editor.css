@@ -1,24 +1,24 @@
 .editor {
-    width: 45vw;
+    width: 50vw;
     height: calc(55% - 2px);
     border: solid 1px #ccc;
-    border-radius: 6px;
     overflow: hidden;
     position: relative;
 }
 
-.gpt-button:disabled, .gpt-button.disabled{
+.gpt-button:disabled,
+.gpt-button.disabled {
     background-color: #9b9b9b;
-    opacity: 0.5; 
-    cursor: not-allowed; 
-  }
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-  .buttons-container {
+.buttons-container {
     display: flex;
     justify-content: space-between;
     position: sticky;
     bottom: 0;
-  }
+}
 
 .overlay {
     position: absolute;
@@ -27,10 +27,9 @@
     width: 100%;
     height: 100%;
     background-color: rgba(85, 84, 84, 0.5);
-    pointer-events: none; 
+    pointer-events: none;
     display: none;
 }
-
 
 .hidden {
     display: none;
@@ -39,13 +38,10 @@
 .output {
     background-color: #023231;
     color: #fff;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     overflow-y: auto;
-    border-radius: 6px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
     position: relative;
-    width: 45vw;
+    width: 50vw;
     padding: 12px 0 12px 0;
     height: calc(45% - 65px);
 }
@@ -70,7 +66,7 @@
     background-color: #004847;
     color: #fff;
     border: none;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     font-size: 16px;
     font-weight: 600;
     padding: 2px 12px 2px 12px;
@@ -88,9 +84,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content:end;
+    justify-content: end;
     height: 40px;
-    width: 45vw;
+    width: 50vw;
 }
 
 .quick-editing-buttons-container {
@@ -98,12 +94,11 @@
     flex-direction: row;
     align-items: center;
     flex: 1;
-    background-color: rgba(3,39,38,255);
-    color: rgba(252,253,253,255);
+    background-color: rgba(3, 39, 38, 255);
+    color: rgba(252, 253, 253, 255);
     height: 40px;
     padding-left: 20px;
     padding-right: 20px;
-    border-top-left-radius: 6px;
 }
 
 .code-container-icon {
@@ -115,7 +110,6 @@
 .editor-button {
     border: none;
     height: 40px;
-    border-top-right-radius: 6px;
     color: #fff;
 
     display: flex;
@@ -130,7 +124,6 @@
     cursor: pointer;
     padding: 0 20px;
 }
-
 
 .editing-btn {
     height: 35px;
@@ -178,8 +171,7 @@
 }
 
 .task-workspace {
-    margin-left: 12px;
-    width: 45vw;
+    width: 50vw;
 }
 
 .coding-task-workspace {
@@ -197,7 +189,6 @@
 
 .baseline-read-only-editor {
     min-height: 100px;
-    margin: 10px;
     border: solid 1px black;
     margin-bottom: 1rem;
     border-radius: 4px;
@@ -206,34 +197,36 @@
     overflow-x: auto;
 }
 
-.task-baseline{
-    margin-left: 2px;  
-    margin-right: 12px;
-}
-
 .baseline-input {
-    height: 30%;
     width: 100%;
     border: none;
-	border-radius: 20px;
-	outline: none;
-	padding: 10px;
-	font-size: 1.25em;
-	color: #676767;
-	transition: border 0.5s;
-	-webkit-transition: border 0.5s;
-	-moz-transition: border 0.5s;
-	-o-transition: border 0.5s;
-	border: solid 3px #4c93b7;	
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	box-sizing:border-box;
+    border-radius: 12px;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    color: #676767;
+    transition: border 0.5s;
+    -webkit-transition: border 0.5s;
+    -moz-transition: border 0.5s;
+    -o-transition: border 0.5s;
+    border: solid 3px #4c93b7;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    resize: none;
+}
+
+.task-name-highlight {
+    background-color: #d39bff;
+    padding: 8px;
+    border-radius: 6px;
 }
 
 .gpt-image {
     display: inline-block;
     width: 2rem;
-    margin-right: .5em;
+    margin-right: 0.5em;
 }
 
 .gpt-button.insert-code {

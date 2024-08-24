@@ -10,7 +10,7 @@
 }
 
 .pesudocode-writer-container {
-   width: 40%; 
+    width: 40%;
 }
 
 .verifying-button {
@@ -21,8 +21,8 @@
     color: black;
 }
 
-.pesudo-code-reader{
-    font-family: "Courier New", Courier, monospace;
+.pesudo-code-reader {
+    font-family: monospace;
     font-size: 15px;
     line-height: 30px;
     border-radius: 15px;
@@ -33,7 +33,7 @@
 .hoverable-code-footer {
     height: 100px;
 }
-.monaco-code-writer{
+.monaco-code-writer {
     height: 40vh;
     border: solid 1px #ccc;
     border-radius: 15px;
@@ -44,7 +44,7 @@
 .pesudocode-container-div .output {
     background-color: #023231;
     color: #fff;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     overflow-y: auto;
     border-radius: 6px;
     border-top-left-radius: 0px;
@@ -65,8 +65,8 @@
     height: 50px !important;
 }
 
-.pseudocode-verify-button-container span{
-    color:green;
+.pseudocode-verify-button-container span {
+    color: green;
     font-weight: 600;
     font-size: 18px;
 }
@@ -89,7 +89,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content:end;
+    justify-content: end;
     height: 40px;
     width: 100%;
 }
@@ -112,8 +112,8 @@
     background-color: #fff;
 }
 
-.hoverable-code-content-container{
-    visibility:hidden;
+.hoverable-code-content-container {
+    visibility: hidden;
     margin-bottom: 2vh;
     height: 6vh;
 }
@@ -131,8 +131,8 @@
     padding: 0 0 0 16px;
 }
 
-.hoverable-code-line-container{
-    display:flex;
+.hoverable-code-line-container {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
@@ -142,13 +142,13 @@
     border-radius: 12px;
 }
 
-.hoverable-code{
+.hoverable-code {
     padding: 0.5rem !important;
     font-size: 18px;
 }
 
 .hoverable-code-line-container .exp-inline-code {
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     padding: 2px 8px;
     font-weight: 600;
     color: #fff;
@@ -156,7 +156,7 @@
 }
 
 .default-inline {
-    background-color: rgba(182,184,230,255);
+    background-color: rgba(182, 184, 230, 255);
     padding: 4px;
     border-radius: 4px;
 }
@@ -166,7 +166,7 @@
     cursor: pointer;
     display: block;
     padding: 0 0 0 16px;
-    background-color: rgba(205,224,230,255);
+    background-color: rgba(205, 224, 230, 255);
     margin-top: 8px;
     margin-bottom: 8px;
     padding-left: 6px;
@@ -182,23 +182,22 @@
 }
 
 .hoverable-code-hint-level-2 {
-    background-color: rgba(170,172,216,255);
+    background-color: rgba(170, 172, 216, 255);
     padding-left: 12px;
     user-select: none;
 }
 
 .hoverable-code-hint-level-1 {
     padding: 12px;
-    background-color: rgba(26,65,77,255);
+    background-color: rgba(26, 65, 77, 255);
 }
 
-
-.hoverable-code-container-with-hint{
+.hoverable-code-container-with-hint {
     z-index: 99;
     position: absolute;
     top: 30px;
     right: 0;
-    background-color: rgba(38,96,114,255);
+    background-color: rgba(38, 96, 114, 255);
     color: #fff;
     line-height: 30px;
     border-radius: 0 0 6px 6px;
@@ -218,20 +217,19 @@
     padding: 12px;
 }
 
-.hoverable-code-line-explanation .default-inline{
-    background-color: rgba(198,220,227,255);
-    color:#023231;
+.hoverable-code-line-explanation .default-inline {
+    background-color: rgba(198, 220, 227, 255);
+    color: #023231;
     padding: 4px;
     border-radius: 4px;
 }
 
-.expandable-button{
+.expandable-button {
     width: 2.5rem;
     height: 2.5rem;
-    color: rgba(5,164,255,255);
+    color: rgba(5, 164, 255, 255);
 }
 
-.expandable-button.minus{
-    color: rgba(135,77,193,255);
+.expandable-button.minus {
+    color: rgba(135, 77, 193, 255);
 }
-

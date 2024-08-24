@@ -1,32 +1,30 @@
-.baseline-title{
-    background-color:rgba(235,209,255,255);
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-    border-bottom: 1px solid black;
-    height: 75px;
+.baseline-title {
+    background-color: rgba(235, 209, 255, 255);
+    border-bottom: 1px solid rgb(115, 115, 115);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.baseline-title h3{
+.baseline-title h3 {
     padding: 10px;
     margin: 0 0 0 0;
     display: flex;
     align-items: center;
 }
 
-.chat-user-prompt{
-    margin: 2rem 1rem;
+.chat-user-prompt {
+    margin: 12px;
     overflow-y: auto;
     height: calc(100% - 75px - 2rem);
 }
 
-.baseline-generator-container{
+.baseline-generator-container {
+    margin-top: 8px;
     display: flex;
 }
 
-.baseline-generator-container .gpt-button{
+.baseline-generator-container .gpt-button {
     margin-left: auto;
 }
 
@@ -40,9 +38,9 @@
     border-radius: 10px;
     max-width: 70%;
 }
-  
+
 .baseline-feedback-user {
-    background-color: rgba(197,255,241,255); 
+    background-color: rgba(197, 255, 241, 255);
     position: relative;
     left: -2.5rem;
     align-self: flex-end;
@@ -50,7 +48,7 @@
 }
 
 .baseline-feedback-assistant {
-    background-color: rgba(252,191,249,255); 
+    background-color: rgba(252, 191, 249, 255);
     position: relative;
     left: 2.5rem;
     top: -2rem;
@@ -68,11 +66,10 @@
     align-self: flex-start;
 }
 
-.baseline-feedback-assistant-text .chat-loader-finish{
+.baseline-feedback-assistant-text .chat-loader-finish {
     text-wrap: nowrap;
 }
-  
-  
+
 .baseline-feedback-user-text p,
 .baseline-feedback-assistant-text ul {
     margin: 0;
@@ -81,32 +78,37 @@
 .baseline-feedback-assistant-text ul {
     list-style-type: none;
     padding: 0;
-  }
-  
-  .baseline-feedback-assistant-text li {
-    background-color: rgba(235,209,255,255); /* Background color for list items */
+}
+
+.baseline-feedback-assistant-text li {
+    background-color: rgba(
+        235,
+        209,
+        255,
+        255
+    ); /* Background color for list items */
     border-radius: 5px;
     margin: 5px 0;
     padding: 10px;
     display: flex;
     align-items: center;
-  }
-  
-  /* Adding a custom icon or bullet point */
-  .baseline-feedback-assistant-text li::before {
-    content: '-';
-    color: rgba(161,143,175,255); /* Color of the hyphen */
+}
+
+/* Adding a custom icon or bullet point */
+.baseline-feedback-assistant-text li::before {
+    content: "-";
+    color: rgba(161, 143, 175, 255); /* Color of the hyphen */
     font-size: 18px;
     margin-right: 10px;
-  }
-  
-  /* Adding hover effect for interactivity */
-  .baseline-feedback-assistant-text li:hover {
+}
+
+/* Adding hover effect for interactivity */
+.baseline-feedback-assistant-text li:hover {
     background-color: #b2dfdb; /* Hover background color */
     transition: background-color 0.3s ease;
-  }
+}
 
-.user-icon{
+.user-icon {
     width: 2rem;
     height: 2rem;
     align-self: flex-end;
@@ -118,15 +120,15 @@
     width: 2rem;
     height: 2rem;
     align-items: flex-start;
-    background-color: rgba(235,209,255,255);
+    background-color: rgba(235, 209, 255, 255);
     border-radius: 5px;
 }
 
-.icons-doc{
+.icons-doc {
     padding: 5px;
 }
 
-.chat-bubble p{
+.chat-bubble p {
     margin: 0;
 }
 
@@ -140,26 +142,27 @@
     justify-content: space-between;
 }
 
-.generated-button-container.inactive{
+.generated-button-container.inactive {
     display: none;
 }
 
 .read-only-explaination {
-    background-color: rgba(252,191,249,255); 
-    margin: 10px;
+    background-color: rgba(252, 191, 249, 255);
     padding: 10px;
     border-radius: 5px;
+    line-height: 26px;
 }
 
 .button-span {
     font-weight: bold;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
     color: rgb(0, 122, 204);
     margin-right: 5px;
     margin-left: 5px;
 }
 
-.continue-next-task-message{
+.continue-next-task-message {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,11 +171,7 @@
 }
 
 .prompt-text {
-    margin-left: 1rem;
     font-size: 16px;
     overflow-y: auto;
     height: 4rem;
 }
-
-  
-  

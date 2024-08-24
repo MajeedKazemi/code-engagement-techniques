@@ -4,7 +4,7 @@
 }
 
 .layout-content {
-    height: calc(100vh - 24px);
+    height: calc(100vh);
     overflow-y: hidden;
 }
 
