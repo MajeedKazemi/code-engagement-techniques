@@ -77,9 +77,15 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
+                "name": "queue",
                 "type": "str",
-                "value": []
+                "value": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
             }
         ]
     },
@@ -101,11 +107,6 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "queue",
                 "type": "str",
                 "value": [
@@ -115,6 +116,11 @@ const task1Trace = [
                     4,
                     5
                 ]
+            },
+            {
+                "name": "reversed_list",
+                "type": "str",
+                "value": []
             }
         ]
     },
@@ -136,11 +142,6 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "queue",
                 "type": "str",
                 "value": [
@@ -150,6 +151,11 @@ const task1Trace = [
                     4,
                     5
                 ]
+            },
+            {
+                "name": "reversed_list",
+                "type": "str",
+                "value": []
             }
         ]
     },
@@ -171,13 +177,6 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
                 "name": "queue",
                 "type": "str",
                 "value": [
@@ -185,6 +184,13 @@ const task1Trace = [
                     3,
                     4,
                     5
+                ]
+            },
+            {
+                "name": "reversed_list",
+                "type": "str",
+                "value": [
+                    1
                 ]
             }
         ]
@@ -207,13 +213,6 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    1
-                ]
-            },
-            {
                 "name": "queue",
                 "type": "str",
                 "value": [
@@ -221,6 +220,13 @@ const task1Trace = [
                     3,
                     4,
                     5
+                ]
+            },
+            {
+                "name": "reversed_list",
+                "type": "str",
+                "value": [
+                    1
                 ]
             }
         ]
@@ -243,20 +249,20 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    2,
-                    1
-                ]
-            },
-            {
                 "name": "queue",
                 "type": "str",
                 "value": [
                     3,
                     4,
                     5
+                ]
+            },
+            {
+                "name": "reversed_list",
+                "type": "str",
+                "value": [
+                    2,
+                    1
                 ]
             }
         ]
@@ -279,20 +285,20 @@ const task1Trace = [
                 ]
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    2,
-                    1
-                ]
-            },
-            {
                 "name": "queue",
                 "type": "str",
                 "value": [
                     3,
                     4,
                     5
+                ]
+            },
+            {
+                "name": "reversed_list",
+                "type": "str",
+                "value": [
+                    2,
+                    1
                 ]
             }
         ]
@@ -315,20 +321,20 @@ const task1Trace = [
                 ]
             },
             {
+                "name": "queue",
+                "type": "str",
+                "value": [
+                    4,
+                    5
+                ]
+            },
+            {
                 "name": "reversed_list",
                 "type": "str",
                 "value": [
                     3,
                     2,
                     1
-                ]
-            },
-            {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    4,
-                    5
                 ]
             }
         ]
@@ -351,20 +357,20 @@ const task1Trace = [
                 ]
             },
             {
+                "name": "queue",
+                "type": "str",
+                "value": [
+                    4,
+                    5
+                ]
+            },
+            {
                 "name": "reversed_list",
                 "type": "str",
                 "value": [
                     3,
                     2,
                     1
-                ]
-            },
-            {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    4,
-                    5
                 ]
             }
         ]
@@ -387,6 +393,13 @@ const task1Trace = [
                 ]
             },
             {
+                "name": "queue",
+                "type": "str",
+                "value": [
+                    5
+                ]
+            },
+            {
                 "name": "reversed_list",
                 "type": "str",
                 "value": [
@@ -394,13 +407,6 @@ const task1Trace = [
                     3,
                     2,
                     1
-                ]
-            },
-            {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    5
                 ]
             }
         ]
@@ -423,6 +429,13 @@ const task1Trace = [
                 ]
             },
             {
+                "name": "queue",
+                "type": "str",
+                "value": [
+                    5
+                ]
+            },
+            {
                 "name": "reversed_list",
                 "type": "str",
                 "value": [
@@ -430,13 +443,6 @@ const task1Trace = [
                     3,
                     2,
                     1
-                ]
-            },
-            {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    5
                 ]
             }
         ]
@@ -459,6 +465,11 @@ const task1Trace = [
                 ]
             },
             {
+                "name": "queue",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "reversed_list",
                 "type": "str",
                 "value": [
@@ -468,11 +479,6 @@ const task1Trace = [
                     2,
                     1
                 ]
-            },
-            {
-                "name": "queue",
-                "type": "str",
-                "value": []
             }
         ]
     },
@@ -494,6 +500,11 @@ const task1Trace = [
                 ]
             },
             {
+                "name": "queue",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "reversed_list",
                 "type": "str",
                 "value": [
@@ -503,15 +514,10 @@ const task1Trace = [
                     2,
                     1
                 ]
-            },
-            {
-                "name": "queue",
-                "type": "str",
-                "value": []
             }
         ]
     }
-];
+]
 
 
 
@@ -3695,9 +3701,17 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
-                "value": []
+                "value": [
+                    [
+                        "",
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
             }
         ]
     },
@@ -3718,11 +3732,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -3734,6 +3743,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             }
         ]
     },
@@ -3754,11 +3768,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -3770,6 +3779,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             }
         ]
     },
@@ -3790,12 +3804,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -3843,12 +3857,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -3896,12 +3910,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -3949,12 +3963,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4007,12 +4021,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4065,11 +4079,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4081,6 +4090,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4131,11 +4145,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4147,6 +4156,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4197,11 +4211,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4213,6 +4222,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4263,12 +4277,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4321,12 +4335,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4379,12 +4393,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4437,12 +4451,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4495,12 +4509,12 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -4553,11 +4567,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4569,6 +4578,11 @@ const task2Trace = [
                         2
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4619,11 +4633,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4635,6 +4644,11 @@ const task2Trace = [
                         2
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4685,11 +4699,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4708,6 +4717,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4758,11 +4772,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4781,6 +4790,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4831,11 +4845,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4847,6 +4856,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4897,11 +4911,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4913,6 +4922,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -4963,11 +4977,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -4979,6 +4988,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5029,11 +5043,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5045,6 +5054,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5095,11 +5109,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5118,6 +5127,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5168,11 +5182,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5191,6 +5200,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5241,11 +5255,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5257,6 +5266,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5307,11 +5321,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5323,6 +5332,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5373,11 +5387,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5389,6 +5398,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5439,11 +5453,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5455,6 +5464,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5505,11 +5519,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5521,6 +5530,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5571,11 +5585,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5594,6 +5603,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5644,11 +5658,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5667,6 +5676,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5717,11 +5731,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5740,6 +5749,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5790,11 +5804,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5806,6 +5815,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5856,11 +5870,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5872,6 +5881,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5922,11 +5936,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -5938,6 +5947,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -5988,11 +6002,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6004,6 +6013,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6054,11 +6068,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6077,6 +6086,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6127,11 +6141,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6150,6 +6159,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6200,11 +6214,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6216,6 +6225,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6266,11 +6280,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6282,6 +6291,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6332,11 +6346,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6348,6 +6357,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6398,11 +6412,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6414,6 +6423,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6464,11 +6478,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6487,6 +6496,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6537,11 +6551,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6560,6 +6569,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6610,11 +6624,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6626,6 +6635,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6676,11 +6690,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6692,6 +6701,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -6742,13 +6756,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "[[]]"
-                ]
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6759,6 +6766,13 @@ const task2Trace = [
                         1,
                         0
                     ]
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]"
                 ]
             },
             {
@@ -6810,13 +6824,6 @@ const task2Trace = [
                 "value": 2
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": [
-                    "[[]]"
-                ]
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -6827,6 +6834,13 @@ const task2Trace = [
                         1,
                         0
                     ]
+                ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": [
+                    "[[]]"
                 ]
             },
             {
@@ -6878,16 +6892,16 @@ const task2Trace = [
                 "value": 2
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "result",
                 "type": "str",
                 "value": [
                     "[[]]"
                 ]
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
             },
             {
                 "name": "s",
@@ -6938,16 +6952,16 @@ const task2Trace = [
                 "value": 2
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "result",
                 "type": "str",
                 "value": [
                     "[[]]"
                 ]
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
             },
             {
                 "name": "s",
@@ -6998,17 +7012,17 @@ const task2Trace = [
                 "value": 2
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "result",
                 "type": "str",
                 "value": [
                     "[[]]",
                     "[][]"
                 ]
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
             },
             {
                 "name": "s",
@@ -7059,17 +7073,17 @@ const task2Trace = [
                 "value": 2
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "result",
                 "type": "str",
                 "value": [
                     "[[]]",
                     "[][]"
                 ]
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
             },
             {
                 "name": "s",
@@ -7145,9 +7159,17 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
-                "value": []
+                "value": [
+                    [
+                        "",
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
             }
         ]
     },
@@ -7168,11 +7190,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -7184,6 +7201,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             }
         ]
     },
@@ -7204,11 +7226,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -7220,6 +7237,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             }
         ]
     },
@@ -7240,12 +7262,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7293,12 +7315,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7346,12 +7368,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7399,12 +7421,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7457,12 +7479,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7515,11 +7537,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -7531,6 +7548,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -7581,11 +7603,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -7597,6 +7614,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -7647,11 +7669,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -7663,6 +7680,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -7713,12 +7735,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7771,12 +7793,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7829,12 +7851,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7887,12 +7909,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -7945,12 +7967,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8003,12 +8025,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8061,11 +8083,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -8077,6 +8094,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -8127,11 +8149,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -8143,6 +8160,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -8193,12 +8215,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8251,12 +8273,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8309,12 +8331,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8367,12 +8389,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8425,12 +8447,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8483,11 +8505,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -8499,6 +8516,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -8549,11 +8571,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -8565,6 +8582,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -8615,11 +8637,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -8631,6 +8648,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -8681,12 +8703,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8739,12 +8761,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8797,12 +8819,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8855,12 +8877,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8913,12 +8935,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -8971,12 +8993,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9029,11 +9051,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9045,6 +9062,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -9095,11 +9117,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9111,6 +9128,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -9161,12 +9183,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9219,12 +9241,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9277,12 +9299,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9335,12 +9357,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9393,12 +9415,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9451,11 +9473,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9467,6 +9484,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -9517,11 +9539,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9533,6 +9550,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -9583,11 +9605,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9599,6 +9616,11 @@ const task2Trace = [
                         1
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -9649,12 +9671,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9707,12 +9729,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9765,12 +9787,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9823,12 +9845,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -9881,11 +9903,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9897,6 +9914,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -9947,11 +9969,6 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
-                "type": "str",
-                "value": []
-            },
-            {
                 "name": "q",
                 "type": "str",
                 "value": [
@@ -9963,6 +9980,11 @@ const task2Trace = [
                         0
                     ]
                 ]
+            },
+            {
+                "name": "result",
+                "type": "str",
+                "value": []
             },
             {
                 "name": "s",
@@ -10013,12 +10035,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -10071,12 +10093,12 @@ const task2Trace = [
                 "value": 1
             },
             {
-                "name": "result",
+                "name": "q",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "q",
+                "name": "result",
                 "type": "str",
                 "value": []
             },
@@ -10129,16 +10151,16 @@ const task2Trace = [
                 "value": 1
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "result",
                 "type": "str",
                 "value": [
                     "[][][]"
                 ]
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
             },
             {
                 "name": "s",
@@ -10189,16 +10211,16 @@ const task2Trace = [
                 "value": 1
             },
             {
+                "name": "q",
+                "type": "str",
+                "value": []
+            },
+            {
                 "name": "result",
                 "type": "str",
                 "value": [
                     "[][][]"
                 ]
-            },
-            {
-                "name": "q",
-                "type": "str",
-                "value": []
             },
             {
                 "name": "s",

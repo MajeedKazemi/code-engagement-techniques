@@ -388,9 +388,9 @@ const warmupQuestion2: newQuestionObject[] = [
 
 const warmupQuestion1: newQuestionObject[] = [
     {
-        "step": 4,
-        "begin-line": 3,
-        "end-line": 3,
+        "step": 3,
+        "begin-line": 2,
+        "end-line": 2,
         "question-about-purpose-of-code": "Why is the queue initialized with a copy of the input list on line 3?",
         "answer": "The queue is initialized with a copy of the input list to prevent modification of the original list and to provide a source of elements for the loop's operation.",
         "top-two-variables": ["queue"]

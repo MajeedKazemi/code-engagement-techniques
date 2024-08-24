@@ -59,6 +59,7 @@ function RevealQuestionComponent({
     const [questionFirstDisplayed, setQuestionFirstDisplayed] = useState(
         Date.now()
     );
+    const [settingReachMax, setSettingReachMax] = useState(false);
 
     const [hintForShort, setHintForShort] = useState<string[]>([]);
     const [feedbackReady, setFeedbackReady] = useState<boolean[]>(
@@ -99,11 +100,6 @@ function RevealQuestionComponent({
                 currentQuestionIndex &&
             currentQuestionIndex != 0
         ) {
-            console.log(
-                "Updating currentSubgoalIndex",
-                currentSubgoalIndex,
-                currentQuestionIndex
-            );
             setcurrentSubgoalIndex(
                 (currentSubgoalIndex) => currentSubgoalIndex + 1
             );
@@ -170,10 +166,11 @@ function RevealQuestionComponent({
             revealAnswer.length > 0
         ) {
             const newReachedMax = reachedMax.map((reached, i) =>
-                i === currentQuestionIndex
-                    ? revealAnswer[i]
-                    : reached
+                revealAnswer[i] ? true : false
             );
+            setSettingReachMax(false);
+            console.log(revealAnswer, currentQuestionIndex);
+            console.log("Updating reached max", newReachedMax);
             setReachedMax(newReachedMax);
         }
     }, [questionAnsweredTimes, revealAnswer]);
@@ -207,6 +204,7 @@ function RevealQuestionComponent({
     }, [reachedMax, questionAnsweredTimes]);
 
     function handleClick(index: number): void {
+        setSettingReachMax(true);
         const newFeedback = [...feedback];
         newFeedback[index] = "";
         setFeedback(newFeedback);
@@ -484,7 +482,7 @@ function RevealQuestionComponent({
                                                 )}
                                             </div>
                                         )}
-                                        {(questionAnsweredTimes[index].currentTime == 3) && (
+                                        {(!settingReachMax && questionAnsweredTimes[index].currentTime == 3 && !reachedMax[index]) && (
                                             <>
                                                 <div className="reveal-hint-mcq-incorrect">
                                                     <b>
@@ -534,7 +532,7 @@ function RevealQuestionComponent({
                                                     )}
                                             </>
                                         )}
-                                        {reachedMax[index] && (
+                                        {!settingReachMax && reachedMax[index] && (
                                             <>
                                                 <div className="correct-answer-after-reveal">
                                                     <strong>
@@ -660,7 +658,7 @@ function RevealQuestionComponent({
                                                 ? "active"
                                                 : "inactive"
                                         } `}
-                                        id={`code-container${subgoalIndex}`}
+                                        // id={`code-container${subgoalIndex}`}
                                     >
                                         {subgoals.revealLines
                                             .split("\n")
