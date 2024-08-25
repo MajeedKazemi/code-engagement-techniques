@@ -655,7 +655,6 @@ export const VerifyReview: React.FC<VerifyProps> = ({ code, issueCode, questions
                 <div className="status-container">
                     <div className='hint-button-container'>
                         <button className={`hint-button ${(generatingHint || revealStatus == 4) ? 'disabled' : ''}`} onClick={handleGetHint}>Get Hint</button>
-                        {/* <div>You have attempted <strong>{status}</strong> times</div> */}
                         <button className={`hint-button verify-button ${generatingHint ? 'disabled' : ''}`} onClick={handleVerifyCode}>Check Code</button>
                     </div>
                     {/* {status === 4 && <div className="monaco-editor-container" ref={monacoCorrectEl}></div>} */}

@@ -55,9 +55,13 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     const [counter, setCounter] = useState<number>(0);
     const [timeUsed, setTimeUsed] = useState<number>(0);
     const [runCodeNoError, setRunCodeNoError] = useState<boolean>(false);
-    const [lineByLineexplaination, setLineByLineExplanation] = useState<string[]>([]);
+    const [lineByLineexplaination, setLineByLineExplanation] = useState<
+        string[]
+    >([]);
     const [colorizedText, setColorizedText] = useState<string[]>([]);
-    const [hoveringHovered, setHoveringHovered] = useState<boolean[]>(new Array(code.length).fill(false));
+    const [hoveringHovered, setHoveringHovered] = useState<boolean[]>(
+        new Array(code.length).fill(false)
+    );
 
     useEffect(() => {
         // Create an interval that runs every second
@@ -84,29 +88,36 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                     context?.token,
                     taskID,
                     "User clicked run code first time successfully",
-                    Date.now(),
-                  )
+                    Date.now()
+                )
                     .then(() => {})
                     .catch((error) => {
-                        logError("sendLog: "
-                        + error.toString());
-                });
+                        logError("sendLog: " + error.toString());
+                    });
                 clearInterval(interval);
             }
         }, 1000);
         return () => clearInterval(interval);
-      }, []);
+    }, []);
 
     useEffect(() => {
         if (explanation.length > 0 && explanationRef.current) {
             explanationRef.current.innerHTML = highlightPsudo(
                 explanation,
-                "code-highlight"
+                "code-highlight-baseline"
             );
         }
     }, [explanation]);
 
     const cancelClick = () => {
+        const r = confirm(
+            "Are you sure you want to move to the next task? You can't return to this task."
+        );
+
+        if (!r) {
+            return;
+        }
+
         const overlayElement = document.querySelector(
             ".overlay"
         ) as HTMLElement;
@@ -122,13 +133,12 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
             context?.token,
             taskID,
             "Timestamp when the prompt finished the task and submit",
-            Date.now(),
-          )
+            Date.now()
+        )
             .then(() => {})
             .catch((error) => {
-                logError("sendLog: "
-                + error.toString());
-        });
+                logError("sendLog: " + error.toString());
+            });
         moveOn();
     };
 
@@ -416,14 +426,15 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     };
 
     useEffect(() => {
-        const lines = generatedCode.split("\n")
-        .filter((line) => line.trim() !== "")
-        .map((line) => ({
-            original: line,
-            trimmed: line.replace(/^\s+/, ""), // Strip leading whitespaces
-            leadSpaces: line.search(/\S|$/), // Counts leading whitespaces
-            currentTabs: Math.floor(line.search(/\S|$/) / 4),
-        }));
+        const lines = generatedCode
+            .split("\n")
+            .filter((line) => line.trim() !== "")
+            .map((line) => ({
+                original: line,
+                trimmed: line.replace(/^\s+/, ""), // Strip leading whitespaces
+                leadSpaces: line.search(/\S|$/), // Counts leading whitespaces
+                currentTabs: Math.floor(line.search(/\S|$/) / 4),
+            }));
 
         console.log(lines);
 
@@ -449,33 +460,24 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
             });
         }
 
-        apiGetBaselineLineByLineExplanationSimulation(
-            context?.token,
-            taskID,
-        )
+        apiGetBaselineLineByLineExplanationSimulation(context?.token, taskID)
             .then(async (response) => {
                 if (response.ok && editor) {
                     const data = await response.json();
 
-                    setLineByLineExplanation(
-                        data.explanation
-                    );
+                    setLineByLineExplanation(data.explanation);
                 }
             })
             .catch((error) => {
                 editor?.updateOptions({ readOnly: false });
                 logError(error.toString());
             });
-
-
-        
     }, [generatedCode]);
 
     useEffect(() => {
         if (code.length > 0 && exp.length > 0) {
             setGeneratedCode(code);
             setGeneratedExplanation(exp);
-            
         } else {
             generateCode();
         }
@@ -484,7 +486,6 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
     useEffect(() => {
         console.log(`runCodeNoError changed: ${runCodeNoError}`);
     }, [runCodeNoError]);
-
 
     useEffect(() => {
         if (baselineRef.current && generatedCode && !editorRef.current) {
@@ -564,60 +565,73 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                     <>
                         {/* //   <div ref={baselineRef} className="read-only-editor"></div> */}
                         <div className="baseline-read-only-editor">
-                            {generatedCode &&  
+                            {generatedCode &&
                                 generatedCode.split("\n").map((line, index) => (
                                     <div
                                         id={`line-${index}`}
                                         key={index}
                                         className="trace-predict-tracker"
+                                        onMouseEnter={() => {
+                                            //deepCopy of hoveringHovered
+                                            let temp =
+                                                deepCopy(
+                                                    hoveringHovered
+                                                );
+                                            //change all to false
+                                            temp.fill(false);
+                                            //change the current index to true
+                                            temp[index] = true;
+                                            setHoveringHovered(temp);
+                                        }}
+                                        onMouseLeave={() => {
+                                            //deepCopy of hoveringHovered
+                                            let temp =
+                                                deepCopy(
+                                                    hoveringHovered
+                                                );
+                                            //change all to false
+                                            temp.fill(false);
+                                            setHoveringHovered(temp);
+                                        }}
                                     >
                                         <>
                                             <pre
-                                                onMouseEnter={() => {
-                                                    //deepCopy of hoveringHovered
-                                                    let temp = deepCopy(hoveringHovered);
-                                                    //change all to false
-                                                    temp.fill(false);
-                                                    //change the current index to true
-                                                    temp[index] = true;
-                                                    setHoveringHovered(temp);
-                                                }}
-                                                onMouseLeave={() => {
-                                                    //deepCopy of hoveringHovered
-                                                    let temp = deepCopy(hoveringHovered);
-                                                    //change all to false
-                                                    temp.fill(false);
-                                                    setHoveringHovered(temp);
-                                                }}
                                                 dangerouslySetInnerHTML={{
-                                                    __html: colorizedText[index],
+                                                    __html: colorizedText[
+                                                        index
+                                                    ],
                                                 }}
                                             ></pre>
-                                            {hoveringHovered[index] && lineByLineexplaination && (
-                                            <div className="hoverable-code-container-with-hint">
-                                                <div
-                                                    className="hoverable-code-line-explanation"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: highlightPsudo(lineByLineexplaination[index]),
-                                                    }}
-                                                ></div>
-                                            </div>
-                                            )}
+                                            {hoveringHovered[index] &&
+                                                lineByLineexplaination && (
+                                                    <div className="hoverable-code-container-with-hint">
+                                                        <div
+                                                            className="hoverable-code-line-explanation"
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: highlightPsudo(
+                                                                    lineByLineexplaination[
+                                                                        index
+                                                                    ]
+                                                                ),
+                                                            }}
+                                                        ></div>
+                                                    </div>
+                                                )}
                                         </>
                                     </div>
-                                    ))}
-                                    <div
-                                        id={`line-${code.split("\n").length+1}`}
-                                        className="trace-predict-tracker"
-                                    ></div>
-                                    <div
-                                        id={`line-${code.split("\n").length+2}`}
-                                        className="trace-predict-tracker"
-                                    ></div>
-                                    <div
-                                        id={`line-${code.split("\n").length+3}`}
-                                        className="trace-predict-tracker"
-                                    ></div>
+                                ))}
+                            <div
+                                id={`line-${code.split("\n").length + 1}`}
+                                className="trace-predict-tracker"
+                            ></div>
+                            <div
+                                id={`line-${code.split("\n").length + 2}`}
+                                className="trace-predict-tracker"
+                            ></div>
+                            <div
+                                id={`line-${code.split("\n").length + 3}`}
+                                className="trace-predict-tracker"
+                            ></div>
                         </div>
                         <div className="read-only-explaination">
                             <b>Code Explanation</b>
@@ -630,7 +644,13 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                         generating ? "inactive" : ""
                     }`}
                 >
-                    <button className={`gpt-button ${!runCodeNoError ? 'disabled' : ''}`} onClick={cancelClick} disabled={!runCodeNoError}>
+                    <button
+                        className={`gpt-button ${
+                            !runCodeNoError ? "disabled" : ""
+                        }`}
+                        onClick={cancelClick}
+                        disabled={!runCodeNoError}
+                    >
                         Next Task
                     </button>
                     <button

@@ -8,12 +8,10 @@
     height: calc(100% - 20px - 4rem);
 }
 
-
-
 .verify-review-container .print-output {
     background-color: #023231;
     color: #fff;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     overflow-y: auto;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
@@ -23,25 +21,24 @@
 }
 
 .verify-review-container .print-output p {
-    margin: 0; 
+    margin: 0;
     font-size: 16px;
     font-weight: 600;
     padding: 2px 12px 2px 12px;
 }
 
 .verify-review-container .editor-buttons-container {
-   width: 100%;
+    width: 100%;
 }
 
 .verify-review-container .monaco-editor-container {
-  width: 100%;
-  height: 50vh;
-  border: solid 1px #ccc;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
+    width: 100%;
+    height: 50vh;
+    border: solid 1px #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
 }
-
 
 .console-input-container {
     display: flex;
@@ -52,25 +49,24 @@
 }
 
 .myLineHighlight {
-    background-color: rgb(243, 173, 173); 
+    background-color: rgb(243, 173, 173);
 }
 
 .myLineHighlightReset {
     background-color: transparent;
 }
 
-
-.verify-code-editor-container{
-  width: 50%;
-  height: calc(100% - 20px);
-  overflow-y: scroll;
+.verify-code-editor-container {
+    width: 50%;
+    height: calc(100% - 20px);
+    overflow-y: scroll;
 }
 
 .status-container {
-  width: 50%;
+    width: 50%;
 }
 
-.verify-buttons-container{
+.verify-buttons-container {
     display: flex;
     flex-direction: row;
 }
@@ -84,38 +80,38 @@
 }
 
 .status-sub-container {
-  margin-top: 20px;
-  padding: 10px;
+    margin-top: 20px;
+    padding: 10px;
 }
 
 .hint-button {
-  background-color: rgba(146,9,183,255);
-  color: white;
-  border: none;
-  padding: 10px;
-  border: none;
-  height: 30px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: rgba(146, 9, 183, 255);
+    color: white;
+    border: none;
+    padding: 10px;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  font-size: 15px;
-  font-weight: 400;
+    font-size: 15px;
+    font-weight: 400;
 
-  font-family: "Poppins";
+    font-family: "Poppins";
 
-  cursor: pointer;
-  padding: 0 20px;
+    cursor: pointer;
+    padding: 0 20px;
 }
 
-.hint-button.disabled{
-  background-color: grey;
-  cursor: not-allowed;
+.hint-button.disabled {
+    background-color: grey;
+    cursor: not-allowed;
 }
 
 .verify-button {
-  background-color: rgba(44,174,0,255);
+    background-color: rgba(44, 174, 0, 255);
 }
 
 /* .status-sub-container {
@@ -128,81 +124,81 @@
     margin: 10px;
     height: 100%;
     overflow-y: scroll;
-  }
-  .status-header {
+}
+.status-header {
     font-weight: bold;
     font-size: 15px;
-  }
-  .issues-info {
+}
+.issues-info {
     margin-top: 5px;
     padding: 1px 10px;
     border-radius: 3px;
-  }
+}
 
-  .hints-header{
+.hints-header {
     display: flex;
     flex-direction: row;
     align-items: center;
     font-weight: bold;
     font-size: 15px;
-    background-color: rgba(186,206,255,255);
+    background-color: rgba(186, 206, 255, 255);
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     border-bottom: 1px solid black;
-  }
+}
 
-  .hints-container {
+.hints-container {
     margin-top: 20px;
-    background-color: rgba(220,230,255,255);
+    background-color: rgba(220, 230, 255, 255);
     border-radius: 5px;
     border: black 1px solid;
-  }
+}
 
-  .hint-icon {
+.hint-icon {
     width: 2rem;
     height: 2rem;
-  }
+}
 
-  .current-issues {
+.current-issues {
     background-color: #ffcccc;
-  }
-  .fixed-issues {
+}
+.fixed-issues {
     background-color: #ccffcc;
-  }
+}
 
-  .verify-answer-container{
+.verify-answer-container {
     padding: 10px;
-  }
+}
 
 .issue-content.code-content {
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
 }
 
 .reveal-level-button {
-  color: white;
-  border: none;
-  padding: 10px;
-  border: none;
-  height: 30px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    color: white;
+    border: none;
+    padding: 10px;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  font-size: 15px;
-  font-weight: 400;
-  background-color: rgb(0, 122, 204);
+    font-size: 15px;
+    font-weight: 400;
+    background-color: rgb(0, 122, 204);
 }
 
 .issue-container {
-  border-bottom: 1px dashed #000;
-  padding: 10px;
+    border-bottom: 1px dashed #000;
+    padding: 10px;
 }
 
 .issue-container:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .issue-content {
@@ -216,7 +212,7 @@
 }
 
 .issue-content strong {
-    font-weight:bolder;
+    font-weight: bolder;
 }
 
 .hint {
@@ -234,5 +230,5 @@
 }
 
 .issue-content.code-content {
-  user-select: none;
+    user-select: none;
 }

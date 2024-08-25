@@ -7,6 +7,8 @@ import { verifyUser } from "../utils/strategy";
 
 export const tracingRouter = express.Router();
 
+
+
 tracingRouter.post("/linesToRewrite", verifyUser, async (req, res, next) => {
     const { code, context } = req.body;
     const userId = (req.user as IUser)._id;
@@ -588,29 +590,26 @@ while len(fib) < n:
 });
 
 tracingRouter.post("/feedbackFromTracingShortAnswer", verifyUser, async (req, res, next) => {
-    const { studentSolution, aiGeneratedSolution, question } = req.body;
+    const { code, studentSolution, aiGeneratedSolution, question } = req.body;
     const userId = (req.user as IUser)._id;
     if (studentSolution !== undefined) {
         let messages: Array<ChatCompletionRequestMessage> = [
             {
                 role: "system",
-                content: `You will be given details about a specific block of code and asked to predict the value of a target variable given a set of current frames. The goal of this exercise is to challenge the user to think critically and deeply without revealing the answer. 
-                You will take on the role of a teacher speaking directly to the student. The student does not have access to the AI-generated solution, so you should try your best to identify all the missing logic and discrepancies in the student's solution as compared to the AI-generated solution.
-                - student-solution: The student's proposed explanation or solution to the problem or question posed by the block of code.
-                - ai-generated-solution: The AI-generated solution to the same problem or question.
-                - question: The question associated with the line of code intended to stimulate critical thinking.
-                By comparing the logic of the student's solution and the AI-generated solution, return the following JSON object:
+                content: `The student has been given the provided [code] that certain lines in it have been highlighted. The student has been asked a [question] about these lines. And the student has answered [student-solution]. See if their answer makes sense based on the provided [code], you can also take a look at the AI-generated solution [ai-generated-solution]. The goal is to make sure the student is understanding these highlighted lines correctly and providing a good explanation to the [question]. There is no need for ther [student-solution] to be exactly the same as the [ai-generated-solution]. The student can be creative and provide a different but correct answer.
+                
+                Please return a JSON object with the following format:
                 {
-                "correct": "<either 'yes' or 'no'>",
-                "feedback": "<15-25 words of explanations and hints that guide users to the AI-generated solution. Be detailed and concise.>"
-                }
-                Your evaluation should focus on whether the student's solution correctly addresses the question and matches the AI-generated solution in terms of logic and correctness. Provide constructive feedback to guide the student toward improving their understanding, ideally steering them towards the AI-generated solution if their answer is incorrect.`,
+                    "correctness": <0-5>, // 0 means completely wrong, 5 means the student has answered perfectly with a lot of detail. 3 means the student scored in some relenvant points but missed some minor points.
+                    "feedback": "<20-30 word of explanation about what the student got correctly and what they are missing in their answer.>"
+                }`,
               },
         ];
   
         messages.push({
           role: "user",
-          content: `student-solution]: ${studentSolution}\n[ai-generated-solution]: ${aiGeneratedSolution}\n[question]: ${question}`,
+          content: `[code]: ${code}\n
+          [student-solution]: ${studentSolution}\n[ai-generated-solution]: ${aiGeneratedSolution}\n[question]: ${question}`,
       });
   
       const result = await openai.createChatCompletion({
@@ -624,6 +623,56 @@ tracingRouter.post("/feedbackFromTracingShortAnswer", verifyUser, async (req, re
       if (result.data.choices && result.data.choices?.length > 0) {
           const response = result.data.choices[0].message?.content;
   
+          if(response){
+              res.json({
+                  response: parseResponse(response),
+                  success: true,
+              });
+          }
+      } else {
+          res.json({
+              success: false,
+          });
+      }
+  }
+  });
+
+
+  tracingRouter.post("/checkmatch", verifyUser, async (req, res, next) => {
+    const { userInputValue, expectedValue } = req.body;
+    // console.log(userInputValue, expectedValue);
+    const userId = (req.user as IUser)._id;
+    if (userInputValue !== undefined) {
+        let messages: Array<ChatCompletionRequestMessage> = [
+            {
+                role: "system",
+                content: `check if [user-entered-value] matches [expected-value]. do not be strict about quotations, but be strict about values (numbers, and the string contains).
+                For example:
+                ( or “(” or ‘(’ all match with ‘(’ or “(”  (so if the characters are the same, they match … ignore the quotations)
+                but if the characters do not match like [ and } or ( and ] then match should be false.
+                return a JSON with the following format:
+                {
+                    “match”: <true / false>
+                }`,
+              },
+        ];
+  
+        messages.push({
+          role: "user",
+          content: `[user-entered-value]: ${userInputValue}\n[expected-value]: ${expectedValue}`,
+      });
+  
+      const result = await openai.createChatCompletion({
+          model: "gpt-4o-mini",
+          messages,
+          temperature: 0,
+          max_tokens: 256,
+          user: userId,
+      });
+  
+      if (result.data.choices && result.data.choices?.length > 0) {
+          const response = result.data.choices[0].message?.content;
+        //   console.log(response);
           if(response){
               res.json({
                   response: parseResponse(response),

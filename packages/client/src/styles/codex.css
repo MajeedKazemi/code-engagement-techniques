@@ -26,7 +26,7 @@
 .codex-description-input {
     width: calc(100% - 15px);
     height: 150px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     resize: none;
     border: 1px solid #aaa;
     border-radius: 6px;
@@ -55,142 +55,146 @@
     background-color: #fff !important;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 } */
 
 .keyword {
-    color:#00538c;
+    color: #00538c;
     font-weight: 600;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 }
 
 .variable {
-    color:#8c5900;
+    color: #8c5900;
     font-weight: 600;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 }
 
 .code-highlight {
-    color:#00538c;
+    color: #00538c;
     font-weight: 600;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
+}
+
+.code-highlight-baseline {
+    color: #00538c;
+    font-weight: bold;
+    background-color: #0002;
+    border-radius: 4px;
+    padding: 1px 4px;
+    font-family: monospace;
 }
 
 .build-in-function {
-    color:#1e8c00;
+    color: #1e8c00;
     font-weight: 600;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 }
 
 .operation {
-    color:#8c1023;
+    color: #8c1023;
     font-weight: 800;
     font-size: larger;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 }
 
 .self-defined-function {
-    color:#008c85;
+    color: #008c85;
     font-weight: 600;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 }
 
 .module {
-    color:#8c1058;
+    color: #8c1058;
     font-weight: 600;
     background-color: #fff;
     border-radius: 15px;
     padding: 2px 8px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
 }
 
 .line-number {
-    background-color:#00538c;
+    background-color: #00538c;
     color: #fff;
     padding: 2px 2px !important;
 }
-
-
 
 mark {
     background: var(--color-accent);
     color: var(--color-text);
     font-weight: bold;
     padding: 0 0.2em;
-  }
+}
 
-  
-  .card-question {
-    background-color: rgba(253,255,224,255);
+.card-question {
+    background-color: rgba(253, 255, 224, 255);
     border-radius: 6px;
-    width: calc(45vw - 60px);
-    right: 10px;
-    margin-left: 1vw;
+    width: calc(50vw);
+
     height: 100%;
-  }
-  
-  
-  .l-design-widht {
+}
+
+.l-design-widht {
     max-width: 40rem;
     padding: 1rem;
-  }
+}
 
-  
-  .input-question {
+.input-question {
     position: relative;
-    
+
     &__label {
-      position: absolute;
-      left: 0;
-      top: 0;
-      padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * .5);
-      margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * .5);
-      background: pink;
-      white-space: nowrap;
-      transform: translate(0, 0);
-      transform-origin: 0 0;
-      background: var(--color-background);
-      transition: transform 120ms ease-in;
-      font-weight: bold;
-      line-height: 1.2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
+        margin: calc(var(--size-bezel) * 0.75 + 3px)
+            calc(var(--size-bezel) * 0.5);
+        background: pink;
+        white-space: nowrap;
+        transform: translate(0, 0);
+        transform-origin: 0 0;
+        background: var(--color-background);
+        transition: transform 120ms ease-in;
+        font-weight: bold;
+        line-height: 1.2;
     }
     &__field {
-      box-sizing: border-box;
-      display: block;
-      width: 100%;
-      border: 3px solid currentColor;
-      padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
-      color: currentColor;
-      background: transparent;
-      border-radius: var(--size-radius);
-      
-      &:focus,
-      &:not(:placeholder-shown) {
-        & + .input__label {
-          transform: translate(.25rem, -65%) scale(.8);
-          color: var(--color-accent);
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        border: 3px solid currentColor;
+        padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+        color: currentColor;
+        background: transparent;
+        border-radius: var(--size-radius);
+
+        &:focus,
+        &:not(:placeholder-shown) {
+            & + .input__label {
+                transform: translate(0.25rem, -65%) scale(0.8);
+                color: var(--color-accent);
+            }
         }
-      }
     }
-  }
+}
 
 .response-header-icon {
     height: 24px;

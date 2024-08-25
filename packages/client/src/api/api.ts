@@ -220,7 +220,6 @@ export const apiGetIssueHintLevel3 = (
     token: string | null | undefined,
     code: string,
     studentCode: string
-
 ) =>
     fetch(env.API_URL + "/api/technique-verify/generateHintLevel3", {
         method: "POST",
@@ -235,12 +234,32 @@ export const apiGetIssueHintLevel3 = (
         }),
     });
 
+export const apiCheckMatchedValue = (
+    token: string | null | undefined,
+    userInputValue: string,
+    expectedValue: string
+) =>
+    fetch(env.API_URL + "/api/technique-tracing/checkmatch", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            userInputValue: userInputValue,
+            expectedValue: expectedValue,
+        }),
+    });
+
+
 export const apiGetFeedbackFromRevealShortAnswer = (
     token: string | null | undefined,
-    line: string,
+    allCode: string,
+    code: string,
     studentSolution: string,
     aiGeneratedSolution: string,
-    question: string,
+    question: string
 ) =>
     fetch(env.API_URL + "/api/technique-reveal/feedbackFromRevealShortAnswer", {
         method: "POST",
@@ -250,7 +269,8 @@ export const apiGetFeedbackFromRevealShortAnswer = (
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            line: line,
+            allCode: allCode,
+            code: code,
             studentSolution: studentSolution,
             aiGeneratedSolution: aiGeneratedSolution,
             question: question,
@@ -259,25 +279,28 @@ export const apiGetFeedbackFromRevealShortAnswer = (
 
 export const apiGetFeedbackFromTracePredictShortAnswer = (
     token: string | null | undefined,
+    code: string,
     studentSolution: string,
     aiGeneratedSolution: string,
-    question: string,
+    question: string
 ) =>
-    fetch(env.API_URL + "/api/technique-tracing/feedbackFromTracingShortAnswer", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-            studentSolution: studentSolution,
-            aiGeneratedSolution: aiGeneratedSolution,
-            question: question,
-        }),
-    });
-
-
+    fetch(
+        env.API_URL + "/api/technique-tracing/feedbackFromTracingShortAnswer",
+        {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                code: code,
+                studentSolution: studentSolution,
+                aiGeneratedSolution: aiGeneratedSolution,
+                question: question,
+            }),
+        }
+    );
 
 export const apiLogEvents = (
     token: string | null | undefined,
@@ -337,7 +360,6 @@ export const apiGetBaselineExplainationCodexSimulation = (
             taskId: taskId,
         }),
     });
-
 
 export const apiGetBaselineLineByLineExplanationSimulation = (
     token: string | null | undefined,
@@ -465,7 +487,7 @@ export const apiGetTestCaseSimulation = (
         body: JSON.stringify({
             taskId: taskId,
         }),
-});
+    });
 
 export const apiGetFeedbackForDecomposition = (
     token: string | null | undefined,
@@ -475,7 +497,7 @@ export const apiGetFeedbackForDecomposition = (
     userAnswer: string,
     solution: string,
     numberOfAttempts: number,
-    previousResponses: string,
+    previousResponses: string
 ) =>
     fetch(env.API_URL + "/api/technique-tracing/generateFeedback", {
         method: "POST",
@@ -494,5 +516,3 @@ export const apiGetFeedbackForDecomposition = (
             previousResponses: previousResponses,
         }),
     });
-
-

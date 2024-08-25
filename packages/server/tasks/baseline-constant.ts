@@ -1,52 +1,61 @@
 export const task1Code =
-`def generate_parentheses(n: int, m: int) -> list[str]:
-    q = [("", 0, 0, 0, 0)]
+`def generate_parentheses(n: int, d: int) -> list[str]:
+    q = [['', 0, 0, 0, 0]]
     result = []
     while q:
         s, opens, closes, max_d, cur_d = q.pop(0)
-        if len(s) == 2 * n:
+        if opens == n and closes == n:
             result.append(s)
-            continue
         else:
             if opens < n:
                 new_max_d = max(max_d, cur_d + 1)
-                q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1))
-            if closes < opens and max_d <= m:
-                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1))
+                if new_max_d <= d:
+                    q.append([s + '[', opens + 1, closes, new_max_d, cur_d + 1])
+            if closes < opens and max_d <= d:
+                q.append([s + ']', opens, closes + 1, max_d, cur_d - 1])
     return result
-generate_parentheses(2, 2) # Output: ['(())', '()()']`
+print(generate_parentheses(2, 2))
+print(generate_parentheses(3, 1))`
+
+
 
 export const task1Explanation =
-`def generate_parentheses(n: int, m: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`m\`, and returns a list of strings.
-    q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a tuple containing an empty string and four zeros. The tuple represents the current string, the number of open parentheses, the number of close parentheses, the maximum depth, and the current depth.
+`[OUTPUT]
+def generate_parentheses(n: int, d: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`d\`, and returns a list of strings. This function will generate all valid combinations of \`n\` pairs of parentheses with a maximum depth of \`d\`.
+    q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a list containing an empty string and four integers all set to 0. These integers represent the number of open parentheses, the number of closed parentheses, the maximum depth encountered so far, and the current depth, respectively.
     result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
     while q: ### Start a while loop that continues as long as the queue \`q\` is not empty.
         s, opens, closes, max_d, cur_d = q.pop(0) ### Dequeue the first element from \`q\` and unpack it into variables \`s\`, \`opens\`, \`closes\`, \`max_d\`, and \`cur_d\`.
-        if len(s) == 2 * n: ### Check if the length of the current string \`s\` is equal to \`2 * n\`. If true, it means a valid combination is formed.
-            result.append(s) ### Append the valid combination \`s\` to the \`result\` list.
-            continue ### Continue to the next iteration of the while loop.
-        else: ### If the length of \`s\` is not equal to \`2 * n\`, proceed to the next steps.
-            if opens < n: ### Check if the number of open parentheses \`opens\` is less than \`n\`.
-                new_max_d = max(max_d, cur_d + 1) ### Calculate the new maximum depth \`new_max_d\` by taking the maximum of the current maximum depth \`max_d\` and \`cur_d + 1\`.
-                q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1)) ### Enqueue a new tuple with an additional open parenthesis, incremented \`opens\`, and updated depths.
-            if closes < opens and max_d <= m: ### Check if the number of close parentheses \`closes\` is less than \`opens\` and the maximum depth \`max_d\` is less than or equal to \`m\`.
-                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1)) ### Enqueue a new tuple with an additional close parenthesis, incremented \`closes\`, and updated current depth.
-    return result ### Return the list \`result\` containing all valid combinations of parentheses.
-generate_parentheses(2, 2) ### Call the function \`generate_parentheses\` with \`n=2\` and \`m=2\` to generate all valid combinations of parentheses with these constraints. The output will be: ['(())', '()()']
+        if opens == n and closes == n: ### Check if the number of open and closed parentheses both equal \`n\`.
+            result.append(s) ### If true, append the current string \`s\` to the \`result\` list.
+        else: ### If the condition is not met, continue to the next steps.
+            if opens < n: ### Check if the number of open parentheses is less than \`n\`.
+                new_max_d = max(max_d, cur_d + 1) ### Calculate the new maximum depth if another open parenthesis is added.
+                if new_max_d <= d: ### Check if the new maximum depth is less than or equal to \`d\`.
+                    q.append((s + "(", opens + 1, closes, new_max_d, cur_d + 1)) ### If true, enqueue a new list with an additional open parenthesis, incrementing the count of open parentheses and updating the depths.
+            if closes < opens and max_d <= d: ### Check if the number of closed parentheses is less than the number of open parentheses and the maximum depth is within the limit.
+                q.append((s + ")", opens, closes + 1, max_d, cur_d - 1)) ### If true, enqueue a new list with an additional closed parenthesis, incrementing the count of closed parentheses and updating the current depth.
+    return result ### Return the \`result\` list containing all valid combinations of parentheses.
+generate_parentheses(3, 2) ### Example use case: Call the function.
+generate_parentheses(4, 1) ### Example use case: Call the function.
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`generate_parentheses\` that generates all valid combinations of \`n\` pairs of parentheses, ensuring that the maximum depth of nested parentheses does not exceed \`m\`. The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses.
+The function \`generate_parentheses\` is designed to generate all valid combinations of \`n\` pairs of parentheses such that the depth of any valid parentheses substring does not exceed \`d\`. The depth is defined as the maximum number of open parentheses at any point within the substring.
 
-The function initializes a queue \`q\` with a tuple representing an empty string and initial values for open and close parentheses counts, maximum depth, and current depth. It also initializes an empty list \`result\` to store the valid combinations.
+The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses. It starts with an empty string and iteratively adds open and closed parentheses while maintaining the constraints on the number of open and closed parentheses and the depth.
 
-The while loop continues as long as the queue is not empty. In each iteration, the function dequeues the first element and checks if the length of the current string is equal to \`2 * n\`. If true, it appends the string to the result list. Otherwise, it explores adding an open parenthesis if the number of open parentheses is less than \`n\`, and a close parenthesis if the number of close parentheses is less than the number of open parentheses and the maximum depth is within the allowed limit.
-
-By using BFS, the function ensures that all valid combinations are generated and stored in the result list, which is then returned. The function call \`generate_parentheses(2, 2)\` demonstrates the use case, generating the output \`['(())', '()()']\`.`
+1. The function initializes an empty list \`result\` to store the valid combinations.
+2. It uses a queue \`q\` to manage the state of the current string, the number of open and closed parentheses, and the depth information.
+3. The while loop processes each state in the queue:
+   - If the number of open and closed parentheses both equal \`n\`, the current string is a valid combination and is added to the result list.
+   - If the number of open parentheses is less than \`n\`, a new state with an additional open parenthesis is enqueued, provided the new depth does not exceed \`d\`.
+   - If the number of closed parentheses is less than the number of open parentheses, a new state with an additional closed parenthesis is enqueued, provided the maximum depth is within the limit.
+4. The function returns the list of valid combinations after processing all possible states.`
 
 export const task2Code =
 `def longest_valid_brackets(s: str) -> int:
-    map = {'(': ')', '[': ']', '{': '}'}
+    map = {"[": "]", "<": ">", "{": "}"}
     stack = [-1]
     max_length = 0
     for i in range(len(s)):
@@ -63,7 +72,9 @@ export const task2Code =
             else:
                 stack[-1] = i
     return max_length
-print(longest_valid_brackets("(()"))  # Output: 2`
+
+print(longest_valid_brackets("[]<[>]"))
+print(longest_valid_brackets("{}]<[{}]>"))`
 
 
 export const task2Explanation =
@@ -85,7 +96,8 @@ export const task2Explanation =
             else: ### If the stack is empty or the brackets do not match:
                 stack[-1] = i ### Updates the last element in the stack to the current index \`i\`.
     return max_length ### Returns the length of the longest valid substring found.
-longest_valid_brackets("(()") ### Calls the function \`longest_valid_brackets\` with the input string "(()" and expects the output to be 2.
+print(longest_valid_brackets("[]<[>]")) ### Calls the function \`longest_valid_brackets\` with the input string.
+print(longest_valid_brackets("{}]<[{}]>")) ### Calls the function \`longest_valid_brackets\` with the input string.
 [END]
 
 [OVERALL-EXPLANATION]
@@ -99,9 +111,7 @@ If the character is a closing bracket, the function checks if the stack has more
 
 If the stack is empty or the brackets do not match, the current index is pushed onto the stack to serve as a new base for future calculations.
 
-Finally, the function returns the length of the longest valid substring found.
-
-The function is then called with the input string "(()", and it correctly returns 2, indicating that the longest valid substring of brackets is "()", which has a length of 2.`
+Finally, the function returns the length of the longest valid substring found.`
 
 
 export const task3Code = 
@@ -117,7 +127,8 @@ export const task3Code =
         if i >= k - 1:
             result.append(nums[dq[0]])
     return result
-sliding_window_maximum([1, 3, -1, -3, 5, 3, 6, 7], 3)`
+print(sliding_window_maximum([4, 2, 12, 3, 7], 4))
+print(sliding_window_maximum([9, 11, 8, 5, 7, 10], 2))`
 
 export const task3Explanation = 
 `def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
@@ -132,7 +143,8 @@ export const task3Explanation =
         if i >= k - 1: ### Check if the current index \`i\` is greater than or equal to \`k - 1\`, which means the first window of size \`k\` is complete.
             result.append(nums[dq[0]]) ### Append the value at the index at the front of the deque to the result list, as it is the maximum value in the current window.
     return result ### Return the result list containing the maximum values of each sliding window.
-sliding_window_maximum([1,3,-1,-3,5,3,6,7], 3) ### Call the function \`sliding_window_maximum\` with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`. The expected output is \`[3, 3, 5, 5, 6, 7]\`.
+sliding_window_maximum([4, 2, 12, 3, 7], 4) ### Call the function \`sliding_window_maximum\`.
+sliding_window_maximum([9, 11, 8, 5, 7, 10], 2) ### Call the function \`sliding_window_maximum\`.
 
 [END]
 
@@ -143,9 +155,7 @@ The function initializes two empty lists: \`dq\` for the deque and \`result\` fo
 Removes indices from the front of the deque if they are out of the current window's range.
 Removes indices from the back of the deque if their corresponding values are less than the current value \`n\`.
 Appends the current index \`i\` to the deque.
-Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.
-
-Finally, the function returns the result list containing the maximum values of each sliding window. The function is called with the list \`[1, 3, -1, -3, 5, 3, 6, 7]\` and window size \`3\`, and it returns the expected output \`[3, 3, 5, 5, 6, 7]\`.`
+Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.`
 
 
 export const tech2WarmupExplanation = 
@@ -173,7 +183,7 @@ export const tech3WarmupCode =
         if dq.pop(0) != dq.pop():
             return False 
     return True
-is_palindrome("racecar")`
+print(is_palindrome("racecar"))`
 
 export const tech3WarmupExplanation = 
 `def is_palindrome(s: str) -> bool: ### Define a function named \`is_palindrome\` that takes a string \`s\` as input and returns a boolean value indicating whether the string is a palindrome. A palindrome is a string that reads the same forward and backward.
@@ -203,72 +213,73 @@ export const tech2WarmupCode =
     while stack:
         reversed_list.append(stack.pop())
     return reversed_list
-reverse_list_with_stack([1, 2, 3, 4, 5])`
+print(reverse_list_with_stack([1, 2, 3, 4, 5]))`
 
 
-// export const tech1WarmupCode = 
-// `def reverse_list_with_queue(input_list):
-//     reversed_list = []
-//     queue = input_list[:]
-//     while queue:
-//         reversed_list.insert(0, queue.pop(0))
-//     return reversed_list
-// reverse_list_with_queue([1, 2, 3, 4, 5])`
+export const tech1WarmupCode = 
+`def reverse_list_with_queue(input_list) -> list:
+    queue = input_list[:]
+    reversed_list = []
+    while queue:
+        reversed_list.insert(0, queue.pop(0))
+    return reversed_list
+print(reverse_list_with_queue([1, 2, 3, 4, 5]))`
 
-// export const tech1WarmupExplanation = 
-// `def reverse_list_with_queue(input_list): ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
-//     reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
-//     queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
-//     while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
-//         reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
-//     return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
-// reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_queue\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
-// [END]
 
-// [OVERALL-EXPLANATION]
-// The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
-
-// The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
-
-// Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
-
-export const tech1WarmupCode =
-`def is_balanced_parentheses(txt: str) -> bool:
-    stack = []
-    for char in txt:
-        if char == '(':
-            stack.append(char)
-        elif char == ')':
-            if not stack or stack[-1] != '(':
-                return False
-            stack.pop()      
-    return len(stack) == 0
-is_balanced_parentheses("()()")`
-
-export const tech1WarmupExplanation =
-`def is_balanced_parentheses(txt: str) -> bool: ### Defines a function named \`is_balanced_parentheses\` that takes a single argument \`txt\` of type string and returns a boolean value.
-    stack = [] ### Initializes an empty list named \`stack\` which will be used to keep track of opening parentheses.
-    for char in txt: ### Starts a for loop to iterate over each character in the input string \`txt\`.
-        if char == '(': ### Checks if the current character is an opening parenthesis '('.
-            stack.append(char) ### If it is an opening parenthesis, it is added to the \`stack\`.
-        elif char == ')': ### Checks if the current character is a closing parenthesis ')'.
-            if not stack or stack[-1] != '(': ### Checks if the \`stack\` is empty or if the top element of the \`stack\` is not an opening parenthesis '('.
-                return False ### If either condition is true, it means the parentheses are not balanced, so the function returns \`False\`.
-            stack.pop() ### If the top element of the \`stack\` is an opening parenthesis '(', it is removed from the \`stack\`.
-    return len(stack) == 0 ### After the loop, checks if the \`stack\` is empty. If it is empty, it means all opening parentheses have been matched with closing ones, so the function returns \`True\`. Otherwise, it returns \`False\`.
-is_balanced_parentheses("()()") ### Calls the function \`is_balanced_parentheses\` with the input string "()()" and prints the result.
+export const tech1WarmupExplanation = 
+`def reverse_list_with_queue(input_list) -> list: ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
+    queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
+    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
+    while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
+        reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
+    return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
+reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_queue\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
 [END]
 
 [OVERALL-EXPLANATION]
-The function \`is_balanced_parentheses\` is designed to determine if a string of parentheses is balanced. It uses a stack data structure to keep track of opening parentheses. As it iterates through each character in the input string, it performs the following steps:
+The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
 
-1. If the character is an opening parenthesis '(', it pushes it onto the stack.
-2. If the character is a closing parenthesis ')', it checks if the stack is empty or if the top element of the stack is not an opening parenthesis '('. If either condition is true, it returns \`False\` because it means the parentheses are not balanced.
-3. If the top element of the stack is an opening parenthesis '(', it pops it from the stack.
+The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
 
-After iterating through all characters, the function checks if the stack is empty. If it is, it means all opening parentheses have been matched with closing ones in the correct order, so it returns \`True\`. Otherwise, it returns \`False\`.
+Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
 
-The function call \`is_balanced_parentheses("()()")\` is an example use case that checks if the string "()()" is balanced, which it is, so the function would return \`True\`.`
+// export const tech1WarmupCode =
+// `def is_balanced_parentheses(txt: str) -> bool:
+//     stack = []
+//     for char in txt:
+//         if char == '(':
+//             stack.append(char)
+//         elif char == ')':
+//             if not stack or stack[-1] != '(':
+//                 return False
+//             stack.pop()      
+//     return len(stack) == 0
+// is_balanced_parentheses("()()")`
+
+// export const tech1WarmupExplanation =
+// `def is_balanced_parentheses(txt: str) -> bool: ### Defines a function named \`is_balanced_parentheses\` that takes a single argument \`txt\` of type string and returns a boolean value.
+//     stack = [] ### Initializes an empty list named \`stack\` which will be used to keep track of opening parentheses.
+//     for char in txt: ### Starts a for loop to iterate over each character in the input string \`txt\`.
+//         if char == '(': ### Checks if the current character is an opening parenthesis '('.
+//             stack.append(char) ### If it is an opening parenthesis, it is added to the \`stack\`.
+//         elif char == ')': ### Checks if the current character is a closing parenthesis ')'.
+//             if not stack or stack[-1] != '(': ### Checks if the \`stack\` is empty or if the top element of the \`stack\` is not an opening parenthesis '('.
+//                 return False ### If either condition is true, it means the parentheses are not balanced, so the function returns \`False\`.
+//             stack.pop() ### If the top element of the \`stack\` is an opening parenthesis '(', it is removed from the \`stack\`.
+//     return len(stack) == 0 ### After the loop, checks if the \`stack\` is empty. If it is empty, it means all opening parentheses have been matched with closing ones, so the function returns \`True\`. Otherwise, it returns \`False\`.
+// is_balanced_parentheses("()()") ### Calls the function \`is_balanced_parentheses\` with the input string "()()" and prints the result.
+// [END]
+
+// [OVERALL-EXPLANATION]
+// The function \`is_balanced_parentheses\` is designed to determine if a string of parentheses is balanced. It uses a stack data structure to keep track of opening parentheses. As it iterates through each character in the input string, it performs the following steps:
+
+// 1. If the character is an opening parenthesis '(', it pushes it onto the stack.
+// 2. If the character is a closing parenthesis ')', it checks if the stack is empty or if the top element of the stack is not an opening parenthesis '('. If either condition is true, it returns \`False\` because it means the parentheses are not balanced.
+// 3. If the top element of the stack is an opening parenthesis '(', it pops it from the stack.
+
+// After iterating through all characters, the function checks if the stack is empty. If it is, it means all opening parentheses have been matched with closing ones in the correct order, so it returns \`True\`. Otherwise, it returns \`False\`.
+
+// The function call \`is_balanced_parentheses("()()")\` is an example use case that checks if the string "()()" is balanced, which it is, so the function would return \`True\`.`
 
 
 // export const task4Code =

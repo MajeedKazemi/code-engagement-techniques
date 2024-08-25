@@ -1,94 +1,96 @@
-
 .modal {
     position: fixed;
     top: 12px;
     bottom: 12px;
-    left: 1rem;
-    width: calc(100% - 2rem);
+    left: 12px;
+    width: calc(100% - 24px);
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #fff;
     z-index: 999;
     border-radius: 20px;
-  }
+}
 
-  .indent-line {
+.indent-line {
     border-right: 1px dashed black;
 }
-  
-  .modal-dialog {
+
+.modal-dialog {
     position: relative;
     width: 90%;
     max-width: 500px;
     background-color: #fff;
     border-radius: 0.25rem;
     animation: fade-in 0.3s;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     padding: 1rem;
-  }
-  
-  .modal-header {
+}
+
+.modal-header {
     display: flex;
     flex-direction: row;
     align-items: center;
     background-color: #056794;
-    color:aliceblue;
-    padding: 0.5rem 2rem;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    font-size: 1.2rem;
-    height: 3rem;
+    color: aliceblue;
+    padding-left: 12px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-size: 1rem;
     justify-content: space-between;
-  }
+}
 
-  .icon-div {
+.icon-div {
     display: flex;
     align-items: center;
-  }
+}
 
-  .warning {
+.warning {
     border-radius: 25px;
-    background-color: #f06c77;
     padding: 10px;
     color: black;
     font-size: 15px;
-  }
+    margin-right: 5px;
+}
 
 .div-droppable {
-  height: calc(100% - 20px);
+    height: calc(100% - 20px);
 }
 
-.spark-icon{
-    width: 3rem;
-    height: 3rem;
+.spark-icon {
+    width: 2rem;
+    height: 2rem;
     margin-right: 10px;
 }
-  
-  .modal-title {
+
+.modal-title {
     margin: 0;
-  }
-  
-  .modal-body {
-    padding: 2rem 2rem;
-    height: calc(100% - 9.5rem);
+}
+
+.modal-body {
+    padding: 0 1rem;
+    height: calc(100% - 7.5rem);
     overflow-y: scroll;
-  }
-  
-  .modal-footer {
+}
+
+.modal-body.leadreveal {
+    padding-right: 0;
+}
+
+.modal-footer {
     position: absolute;
-    bottom: 0.5rem;
+    bottom: 0;
     width: 100%;
+    margin-bottom: 12px;
+    margin-top: 12px;
     display: flex;
     justify-content: flex-end;
-    padding-top: 0.5rem;
     border-top: 1px solid #dee2e6;
-    height: 2.5rem;
-  }
+}
 
-  .modal-footer button{
+.modal-footer button {
     margin-right: 1rem;
     background-color: rgb(0, 122, 204);
     color: #fff;
@@ -112,9 +114,9 @@
     cursor: pointer;
     padding: 0 20px;
     width: 200px;
-  }
-  
-  .btn {
+}
+
+.btn {
     display: inline-block;
     font-weight: 400;
     text-align: center;
@@ -127,30 +129,30 @@
     line-height: 1.5;
     border-radius: 0.25rem;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     cursor: pointer;
-  }
-  
-  .btn-primary {
+}
+
+.btn-primary {
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
-  }
-  
-  .btn-secondary {
+}
+
+.btn-secondary {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
-  }
-  
-  @keyframes fade-in {
+}
+
+@keyframes fade-in {
     from {
-      opacity: 0;
+        opacity: 0;
     }
     to {
-      opacity: 1;
+        opacity: 1;
     }
-  }
+}
 
 .parsons-problem {
     display: flex;
@@ -158,27 +160,27 @@
     height: calc(100% - 40px - 6rem);
 }
 
-.parsons-game-0  {
+.parsons-game-0 {
     width: 50%;
     height: calc(100% - 12px);
 }
 
-.parsons-game-1  {
+.parsons-game-1 {
     flex: 1;
     width: 50%;
     margin-left: 20px;
     height: calc(100% - 12px);
 }
 
-.parsons-game-0 div{
-    background-color: rgba(217,217,217,255);
+.parsons-game-0 div {
+    background-color: rgba(217, 217, 217, 255);
     padding: 10px;
     border-radius: 6px;
     overflow-y: scroll;
 }
 
-.parsons-game-1 div{
-    background-color: rgba(231,233,145,255);
+.parsons-game-1 div {
+    background-color: rgba(231, 233, 145, 255);
     padding-top: 10px;
     padding-bottom: 10px;
     position: relative;
@@ -199,43 +201,67 @@
     height: 20px;
 }
 
-.parsons-game-draggable .parsons-token{
-  margin-left: 8px;
-  background-color: #fff !important;
+.parsons-game-draggable .parsons-token {
+    margin-left: 8px;
+    background-color: #fff !important;
 }
 
 .parsons-game-input {
-  font-family: Consolas, monospace;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  border-radius: 0;
-  transition: border-color 0.3s ease;
-  font-size: 16px;
-  background-color: rgba(238, 238, 190, 0.721);
-  width: 100px;
-  margin-right: 5px;
-  margin-left: 5px;
+    font-family: Consolas, monospace;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    transition: border-color 0.3s ease;
+    font-size: 16px;
+    background-color: rgba(238, 238, 190, 0.721);
+    width: 100px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
-.arrow-left, .arrow-right, .arrow-up, .arrow-down {
-  display: none;
-  color: red;
-  margin-right: 5px;
+.arrow-left,
+.arrow-right,
+.arrow-up,
+.arrow-down {
+    display: none;
+    color: red;
+    margin-right: 5px;
 }
 
-.modal .check-button, .modal .continue-button {
-  background-color: #0baa0b;
+.modal .check-button,
+.modal .continue-button {
+    background-color: #0baa0b;
     border-color: #0baa0b;
 }
 
 .modal .parson-hint-button {
-  background-color: #ac00d6;
-  border-color: #ac00d6;
-  color: #fff;
+    background-color: #ac00d6;
+    border-color: #ac00d6;
+    color: #fff;
 }
 
 .modal .parson-hint-button.disabled {
-  background-color: rgba(217,166,230,255);
-  border-color: rgba(217,166,230,255);
+    background-color: rgba(217, 166, 230, 255);
+    border-color: rgba(217, 166, 230, 255);
 }
 
+.elapsed-time-container {
+    margin-right: 16px;
+}
+
+.elapsed-time-container.coding-task-time {
+    position: fixed;
+    right: 0px;
+    z-index: 999;
+    padding: 5px;
+    background: #ccc;
+    border-radius: 5px;
+    box-shadow: #6c757d 0px 0px 5px;
+}
+
+.elapsed-time-value {
+    font-weight: bold;
+    background-color: #0004;
+    padding: 4px 8px;
+    border-radius: 4px;
+}

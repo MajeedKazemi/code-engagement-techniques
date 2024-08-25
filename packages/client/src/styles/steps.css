@@ -5,7 +5,7 @@
     align-items: center;
     margin-bottom: -5px;
     margin-top: 40px;
-    width: 60%;
+    width: 50%;
     align-self: flex-end;
 }
 
@@ -18,9 +18,9 @@
 }
 
 .excution-generator {
-    padding-bottom: 2rem;
-    overflow-y: scroll;
-    height: calc(100% - 6rem);
+    padding-bottom: 0.5rem;
+    overflow-y: hidden;
+    height: calc(100% - 1rem);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -28,7 +28,6 @@
 
 .timeline-slider {
     width: 100%;
-    padding: 0 20px;
 }
 
 .slider {
@@ -89,7 +88,7 @@
 .print-container .print-output {
     background-color: #023231;
     color: #fff;
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     overflow-y: auto;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
@@ -107,9 +106,9 @@
     padding: 2px 12px 2px 12px;
 }
 
-.content-wrapper {
+.variable-values-content-wrapper {
+    margin-top: 12px;
     border: #353535 solid 1px;
-    margin-top: 1rem;
     border-radius: 6px;
     background-color: rgba(228, 255, 254, 255);
 }
@@ -119,7 +118,6 @@
 }
 
 .frame {
-    overflow-y: scroll;
     margin-right: 0;
     flex: 1;
     height: 80%;
@@ -132,9 +130,10 @@
 
 .step-by-step-read-container {
     margin-bottom: 10px;
-    width: 60%;
-    margin-top: 20px;
-    margin-right: 1rem;
+    padding-right: 12px;
+    width: 50%;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .legend-item {
@@ -163,8 +162,9 @@
 }
 
 .step-by-step-code-container {
-    height: 35vh;
-    overflow-y: scroll;
+    height: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
     border-radius: 6px;
     border: #353535 solid 1px;
 }
@@ -208,10 +208,10 @@
 }
 
 .excution-container {
-    width: 40%;
+    width: 50%;
     margin-left: 10px;
     margin-right: 12px;
-    height: 68vh;
+    height: 100%;
 }
 
 .code-editor {
@@ -227,7 +227,7 @@
 .frame-container {
     color: #333; /* default color for font */
     padding: 5px; /* Adding some padding */
-    font-family: "Courier New", Courier, monospace; /* Changing font */
+    font-family: monospace; /* Changing font */
     border-bottom: #353535 dashed 1px; /* Adding a border to the bottom */
     padding-left: 20px;
 }
@@ -289,8 +289,7 @@
     border-radius: 6px;
     border: #353535 solid 1px;
     width: 100%;
-    margin-top: 20px;
-    height: 70%;
+    height: 100%;
     background-color: rgba(220, 230, 255, 255);
 }
 
@@ -314,7 +313,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 10px 20px 10px 20px;
+    padding-left: 4px;
     background-color: rgba(201, 255, 254, 255);
     border-bottom: #353535 solid 1px;
     color: black;
@@ -352,11 +351,11 @@
     margin-bottom: 0px;
 }
 
-.step-question-content .question span {
+/* .step-question-content .question span {
     background-color: rgba(168, 107, 225, 0.615);
     padding: 4px;
     border-radius: 12px;
-}
+} */
 
 .question span.variable {
     background-color: #00538c !important;
@@ -368,6 +367,8 @@
 .question-input {
     height: 1.5rem;
     width: 70%;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .question-submission-button {
@@ -388,7 +389,6 @@
 .step-answered-container {
     /* justify-content: space-evenly; */
     padding-left: 20px;
-
 }
 
 .step-answered-container-correct {
@@ -435,7 +435,7 @@
     background-color: rgba(192, 228, 188, 255);
     padding: 5px;
     border-radius: 12px;
-    justify-content: space-evenly; 
+    justify-content: space-evenly;
 }
 
 .question-submission-button:disabled {
@@ -454,12 +454,17 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content:space-between;
+    justify-content: space-between;
     width: 100%;
     height: 35px;
 }
 
-.trace-predict-tracker pre{
+.trace-predict-tracker:hover {
+    cursor: pointer;
+    background-color: #bcfbff;
+}
+
+.trace-predict-tracker pre {
     margin: 5px;
     padding: 0;
     font-size: 16px;
@@ -469,7 +474,7 @@
     margin-left: 30px;
 }
 
-.highlighted-trace-predict{
+.highlighted-trace-predict {
     background-color: #0077ff52;
 }
 
@@ -478,12 +483,13 @@
 }
 
 .overall-explanation {
-    background-color: rgba(220, 230, 255, 255);;
-    height: 100px;
-    overflow-y: auto;
-    margin-top: 20px;
+    background-color: rgba(220, 230, 255, 255);
+    overflow-y: hidden;
+    margin-top: 10px;
     padding: 10px;
     border-radius: 15px;
+    margin-bottom: 20px;
+    line-height: 26px;
 }
 
 .follow-up-question {
@@ -492,7 +498,7 @@
     margin-bottom: 0px;
 }
 
-.follow-up-question p{
+.follow-up-question p {
     margin-left: 20px;
     padding: 0px;
     font-weight: bold;
@@ -536,6 +542,19 @@
     max-height: 100px;
 }
 
-.follow-up-question-feedback.correct{
+.follow-up-question-feedback.incorrect {
+    background-color: rgba(245, 205, 207, 255);
+}
+
+.follow-up-question-feedback.correct {
     background-color: rgba(192, 228, 188, 255);
+}
+
+.follow-up-question-feedback.normal {
+    background-color: rgba(220, 230, 255, 255);
+}
+
+.prompt-text.trace-predict-side {
+    overflow: none !important;
+    height: auto;
 }

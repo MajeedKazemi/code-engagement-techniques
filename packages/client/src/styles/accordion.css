@@ -49,12 +49,12 @@
 
 .accordion-title {
     font-size: 16px;
-    font-weight:400;
+    font-weight: 400;
     margin: 0;
 }
 
 .accordion-title-code {
-    font-family: "Courier New", Courier, monospace;
+    font-family: monospace;
     background-color: #bb1fd5;
     color: #fff;
     padding: 8px 16px;

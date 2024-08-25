@@ -79,6 +79,21 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
         useState<boolean>(false);
     const [rows, setRows] = useState(4);
     const [matched, setMatched] = useState<boolean>(true);
+    const [timeoutValue, setTimeoutValue] = useState<number>(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeoutValue((prevTimeout) => {
+                const newTimeout = prevTimeout + 1;
+
+                return newTimeout;
+            });
+        }, 60000); // 60000 milliseconds = 1 minute
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     //loggers
     const [generateButtonLog, setGenerateButtonLog] = useState<any>([]);
@@ -421,11 +436,35 @@ const MainInterface: React.FC<MainInterfaceProps> = ({
                         <div className="gpt-image">
                             <IconsDoc iconName="spark" />
                         </div>
-                        AI Assistance: {(taskID == "1" || taskID == "3" || taskID == "5") && `Warm-up Task ${taskID}`}{(taskID == "2" || taskID == "4" || taskID == "6") && `Task ${taskID}`}
+                        {(taskID == "1" || taskID == "3" || taskID == "5") && (
+                            <div>
+                                AI Assistance:{" "}
+                                <span className="task-name-highlight">
+                                    Warm-up Task {taskID}
+                                </span>
+                            </div>
+                        )}
+                        {(taskID == "2" || taskID == "4" || taskID == "6") && (
+                            <div>
+                                AI Assistance:{" "}
+                                <span className="task-name-highlight">
+                                    Task {taskID}
+                                </span>
+                            </div>
+                        )}
                     </h3>
+
+                    <div className="elapsed-time-container">
+                        Elapsed Time:{" "}
+                        <span className="elapsed-time-value">
+                            {timeoutValue + " mins"}
+                        </span>
+                    </div>
                 </div>
                 {/* Conditionally render the generated code component */}
-                {runCodeNoError && <p id="run-code-no-error" style={{ display: 'none' }}></p>}
+                {runCodeNoError && (
+                    <p id="run-code-no-error" style={{ display: "none" }}></p>
+                )}
                 <div
                     className={`generated-code-component ${
                         generatedCodeComponentVisible ? "" : "hidden"

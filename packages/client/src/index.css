@@ -24,7 +24,7 @@
 @import "styles/reveal.css";
 
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: monospace;
     margin: 0px;
     background-color: #edf8f9;
 }
