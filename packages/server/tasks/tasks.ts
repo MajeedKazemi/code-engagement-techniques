@@ -304,6 +304,9 @@ reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
     new MultipleChoiceTask(
         "T2RB",
         `<h1>Task 2: Generate Valid Brackets (Using Queue)</h1>
+        <br/>
+        <h2>**You will be evaluated on this task in the second phase of the study without AI assistance.**</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.</p>
@@ -487,6 +490,9 @@ reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
     new MultipleChoiceTask(
         "T4RB",
         `<h1>Task 4: Longest Valid Brackets and Braces (Using Stack)</h1>
+<br/>
+<h2>**You will be evaluated on this task in the second phase of the study without AI assistance.**</h2>
+<br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>longest_valid_brackets(s: str) -> int</b> that takes a string consisting of <b><></b>, <b>[]</b>, and <b>{}</b>, and returns the length of the longest valid bracket substring. A sequence is considered valid if every opening bracket has a corresponding closing bracket in the correct order without any mismatches. For example, <b>[<>{}]</b> is valid, but <b><[{]}></b> is not. The function should use a stack to calculate the longest valid parenthesis substring.</p>
@@ -669,6 +675,9 @@ is_palindrome("raider")
     new MultipleChoiceTask(
         "T6RB",
         `<h1>Task 6: Sliding Window Maximum (Using Double-Ended Queue)</h1>
+<br/>
+<h2>**You will be evaluated on this task in the second phase of the study without AI assistance.**</h2>
+<br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>max_sliding_window(nums: list[int], k: int) -> list[int]</b> that takes an array of integers <b>nums</b> and an integer <b>k</b>, and returns a list containing the maximum value from each sliding window of size <b>k</b> as it moves from left to right across the array. A sliding window is a contiguous subarray of length <b>k</b> that slides one element at a time from the start to the end of the array. The function should find the maximum value in each window efficiently using a double-ended queue (deque) to ensure an optimal time complexity of O(n). For example, given <b>nums = [1,3,-1,-3,5,3,6,7]</b> and <b>k = 3</b>, the function should return <b>[3, 3, 5, 5, 6, 7]</b>.</p>
@@ -1116,7 +1125,7 @@ assert longest_valid_parentheses("()(())))") == 6`
 
     new MultipleChoiceTask(
         "MC4RB",
-        `<h1>Task 6: Invalid Parentheses Indicies (Using Stack)</h1>
+        `<h1>Task 4: Invalid Parentheses Indicies (Using Stack)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
@@ -1209,7 +1218,7 @@ assert invalid_parentheses_indices(")()(") == [0, 3]`
 
     new MultipleChoiceTask(
         "MC5RB",
-        `<h1>Task 7: Sliding Window Minimum (Using Stack)</h1>
+        `<h1>Task 5: Sliding Window Minimum (Using Stack)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
@@ -1295,7 +1304,7 @@ assert sliding_window_minimum([10, 5, 2, 7, 8, 7], 3) == [(2, 2), (2, 2), (2, 2)
 
     new MultipleChoiceTask(
         "MC6RB",
-        `<h1>Task 8: Sliding Even Count (Using Dequeue)</h1>
+        `<h1>Task 6: Sliding Even Count (Using Dequeue)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
