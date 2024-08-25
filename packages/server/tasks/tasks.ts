@@ -344,7 +344,7 @@ generate_parentheses(4, 2)
 
     new AuthoringTask(
         "2",
-        `Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
+        `Write a function generate_parentheses(n: int, d: int) -> list[str] that generates all combinations of n pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed d. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in [][[]] the max is 2, in [[][[]]] the max is 3, and in [][][] the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
         task1Code,
         task1Explanation,
         task1Decomposition
