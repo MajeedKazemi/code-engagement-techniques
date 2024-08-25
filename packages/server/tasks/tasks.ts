@@ -420,11 +420,6 @@ generate_parentheses(3, 1)
 # Output: ['[][][]']
 # Explanation: When n=3 and m=1, the nesting depth cannot exceed 1, which only allows for the pattern '[][][]', where no parentheses are nested more than one level deep.
 </div>
-<div class="code-block">
-generate_parentheses(4, 2)
-# Output: ['[][][][]', '[][[]][]', '[][][][]']
-# Explanation: With n=4 and m=2, the function can only generate combinations where no more than 2 pairs are nested within each other. This excludes combinations like '[[[[]]]]' or '[[[]]][]', but allows combinations like '[][][][]' and '[][[]][]' where the depth does not exceed 2.
-</div>
 <br/>
 <br/>
 <h2>Select how well did you understand the task?</h2>`,
@@ -1668,7 +1663,6 @@ assert sliding_even_count([1, 2, 1, 2, 1, 2, 1, 2], 3) == [1, 2, 1, 2, 1, 2]
 assert sliding_even_count([2, 3, 6, 8, 1], 2) == [1, 1, 2, 1]`
     ),
 
-
     new MultipleChoiceTask(
         "FIN1",
         `<h1>Thank you for participating!</h1>
@@ -1676,7 +1670,7 @@ assert sliding_even_count([2, 3, 6, 8, 1], 2) == [1, 1, 2, 1]`
 <h2>Please email me (majeed@dgp.toronto.edu or majeed.kazemitabaar@mail.utoronto.ca) your INTERAC e-transfer email address so I can send you the compensation.</h2>`,
         [
             "I did not email it.",
-            "I emailed my e-transfer email address to receive the study compensation."
+            "I emailed my e-transfer email address to receive the study compensation.",
         ],
         2
     ),
