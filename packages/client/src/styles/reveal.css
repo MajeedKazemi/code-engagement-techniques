@@ -250,6 +250,7 @@
 }
 
 .ai-initial-message {
+    margin-top: 12px;
     background-color: #b6fbff;
     padding: 10px;
     border-radius: 10px;

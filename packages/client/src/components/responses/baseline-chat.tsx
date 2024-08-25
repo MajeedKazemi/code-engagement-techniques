@@ -574,9 +574,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                                         onMouseEnter={() => {
                                             //deepCopy of hoveringHovered
                                             let temp =
-                                                deepCopy(
-                                                    hoveringHovered
-                                                );
+                                                deepCopy(hoveringHovered);
                                             //change all to false
                                             temp.fill(false);
                                             //change the current index to true
@@ -586,9 +584,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                                         onMouseLeave={() => {
                                             //deepCopy of hoveringHovered
                                             let temp =
-                                                deepCopy(
-                                                    hoveringHovered
-                                                );
+                                                deepCopy(hoveringHovered);
                                             //change all to false
                                             temp.fill(false);
                                             setHoveringHovered(temp);
@@ -634,7 +630,7 @@ const BaselineGenerateCode: React.FC<BaselineGenerateCodeProps> = ({
                             ></div>
                         </div>
                         <div className="read-only-explaination">
-                            <b>Code Explanation</b>
+                            <h3>Code Explanation</h3>
                             <p ref={explanationRef}></p>
                         </div>
                     </>

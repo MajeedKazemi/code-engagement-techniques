@@ -1,5 +1,4 @@
-export const task1Code =
-`def generate_parentheses(n: int, d: int) -> list[str]:
+export const task1Code = `def generate_parentheses(n: int, d: int) -> list[str]:
     q = [['', 0, 0, 0, 0]]
     result = []
     while q:
@@ -15,12 +14,9 @@ export const task1Code =
                 q.append([s + ']', opens, closes + 1, max_d, cur_d - 1])
     return result
 print(generate_parentheses(2, 2))
-print(generate_parentheses(3, 1))`
+print(generate_parentheses(3, 1))`;
 
-
-
-export const task1Explanation =
-`[OUTPUT]
+export const task1Explanation = `[OUTPUT]
 def generate_parentheses(n: int, d: int) -> list[str]: ### Define a function named \`generate_parentheses\` that takes two integer parameters \`n\` and \`d\`, and returns a list of strings. This function will generate all valid combinations of \`n\` pairs of parentheses with a maximum depth of \`d\`.
     q = [("", 0, 0, 0, 0)] ### Initialize a queue \`q\` with a list containing an empty string and four integers all set to 0. These integers represent the number of open parentheses, the number of closed parentheses, the maximum depth encountered so far, and the current depth, respectively.
     result = [] ### Initialize an empty list \`result\` to store the valid combinations of parentheses.
@@ -41,20 +37,22 @@ generate_parentheses(4, 1) ### Example use case: Call the function.
 [END]
 
 [OVERALL-EXPLANATION]
-The function \`generate_parentheses\` is designed to generate all valid combinations of \`n\` pairs of parentheses such that the depth of any valid parentheses substring does not exceed \`d\`. The depth is defined as the maximum number of open parentheses at any point within the substring.
+<p>The function \`generate_parentheses\` is designed to generate all valid combinations of \`n\` pairs of parentheses such that the depth of any valid parentheses substring does not exceed \`d\`. The depth is defined as the maximum number of open parentheses at any point within the substring.</p>
 
-The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses. It starts with an empty string and iteratively adds open and closed parentheses while maintaining the constraints on the number of open and closed parentheses and the depth.
+<p>The function uses a breadth-first search (BFS) approach to explore all possible combinations of parentheses. It starts with an empty string and iteratively adds open and closed parentheses while maintaining the constraints on the number of open and closed parentheses and the depth.</p>
 
-1. The function initializes an empty list \`result\` to store the valid combinations.
-2. It uses a queue \`q\` to manage the state of the current string, the number of open and closed parentheses, and the depth information.
-3. The while loop processes each state in the queue:
-   - If the number of open and closed parentheses both equal \`n\`, the current string is a valid combination and is added to the result list.
-   - If the number of open parentheses is less than \`n\`, a new state with an additional open parenthesis is enqueued, provided the new depth does not exceed \`d\`.
-   - If the number of closed parentheses is less than the number of open parentheses, a new state with an additional closed parenthesis is enqueued, provided the maximum depth is within the limit.
-4. The function returns the list of valid combinations after processing all possible states.`
+<ol>
+<li>The function initializes an empty list \`result\` to store the valid combinations.</li>
+<li>It uses a queue \`q\` to manage the state of the current string, the number of open and closed parentheses, and the depth information.</li>
+<li><span>The while loop processes each state in the queue:</span><ul>
+    <li>If the number of open and closed parentheses both equal \`n\`, the current string is a valid combination and is added to the result list.</li>
+    <li>If the number of open parentheses is less than \`n\`, a new state with an additional open parenthesis is enqueued, provided the new depth does not exceed \`d\`.</li>
+    <li>If the number of closed parentheses is less than the number of open parentheses, a new state with an additional closed parenthesis is enqueued, provided the maximum depth is within the limit.</li>
+</ul></li>
+<li>The function returns the list of valid combinations after processing all possible states.</li>
+</ol>`;
 
-export const task2Code =
-`def longest_valid_brackets(s: str) -> int:
+export const task2Code = `def longest_valid_brackets(s: str) -> int:
     map = {"[": "]", "<": ">", "{": "}"}
     stack = [-1]
     max_length = 0
@@ -74,11 +72,9 @@ export const task2Code =
     return max_length
 
 print(longest_valid_brackets("[]<[>]"))
-print(longest_valid_brackets("{}]<[{}]>"))`
+print(longest_valid_brackets("{}]<[{}]>"))`;
 
-
-export const task2Explanation =
-`def longest_valid_brackets(s: str) -> int: ### Defines a function named \`longest_valid_brackets\` that takes a string \`s\` as input and returns an integer. The function aims to find the length of the longest valid substring of brackets.
+export const task2Explanation = `def longest_valid_brackets(s: str) -> int: ### Defines a function named \`longest_valid_brackets\` that takes a string \`s\` as input and returns an integer. The function aims to find the length of the longest valid substring of brackets.
     map = {'(': ')', '[': ']', '{': '}'} ### Creates a dictionary \`map\` that maps opening brackets to their corresponding closing brackets. This helps in checking if a closing bracket matches the last opened bracket.
     stack = [-1] ### Initializes a stack with a single element \`-1\`. This helps in calculating the length of valid substrings by providing a base index.
     max_length = 0 ### Initializes \`max_length\` to 0. This variable will store the length of the longest valid substring found.
@@ -101,21 +97,19 @@ print(longest_valid_brackets("{}]<[{}]>")) ### Calls the function \`longest_vali
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`longest_valid_brackets\` that calculates the length of the longest valid substring of brackets in a given string. The function uses a stack-based approach to keep track of the indices of opening brackets and to validate closing brackets.
+<p>The provided code defines a function \`longest_valid_brackets\` that calculates the length of the longest valid substring of brackets in a given string. The function uses a stack-based approach to keep track of the indices of opening brackets and to validate closing brackets.</p>
 
-The function starts by defining a dictionary \`map\` to match opening brackets with their corresponding closing brackets. It also initializes a stack with a single element \`-1\` to help in calculating the lengths of valid substrings and sets \`max_length\` to 0 to store the maximum length found.
+<p>The function starts by defining a dictionary \`map\` to match opening brackets with their corresponding closing brackets. It also initializes a stack with a single element \`-1\` to help in calculating the lengths of valid substrings and sets \`max_length\` to 0 to store the maximum length found.</p>
 
-The function iterates over each character in the input string using a for loop. For each character, it checks if it is an opening bracket by looking it up in the \`map\` dictionary. If it is, the index of the character is pushed onto the stack.
+<p>The function iterates over each character in the input string using a for loop. For each character, it checks if it is an opening bracket by looking it up in the \`map\` dictionary. If it is, the index of the character is pushed onto the stack.</p>
 
-If the character is a closing bracket, the function checks if the stack has more than one element and if the last element in the stack is an opening bracket that matches the current closing bracket. If both conditions are met, the last opening bracket is popped from the stack, and the length of the valid substring is calculated and compared with \`max_length\` to update it if necessary.
+<p>If the character is a closing bracket, the function checks if the stack has more than one element and if the last element in the stack is an opening bracket that matches the current closing bracket. If both conditions are met, the last opening bracket is popped from the stack, and the length of the valid substring is calculated and compared with \`max_length\` to update it if necessary.</p>
 
-If the stack is empty or the brackets do not match, the current index is pushed onto the stack to serve as a new base for future calculations.
+<p>If the stack is empty or the brackets do not match, the current index is pushed onto the stack to serve as a new base for future calculations.</p>
 
-Finally, the function returns the length of the longest valid substring found.`
+<p>Finally, the function returns the length of the longest valid substring found.</p>`;
 
-
-export const task3Code = 
-`def sliding_window_maximum(nums: list[int], k: int) -> list[int]:
+export const task3Code = `def sliding_window_maximum(nums: list[int], k: int) -> list[int]:
     dq = []
     result = []
     for i, n in enumerate(nums):
@@ -128,10 +122,9 @@ export const task3Code =
             result.append(nums[dq[0]])
     return result
 print(sliding_window_maximum([4, 2, 12, 3, 7], 4))
-print(sliding_window_maximum([9, 11, 8, 5, 7, 10], 2))`
+print(sliding_window_maximum([9, 11, 8, 5, 7, 10], 2))`;
 
-export const task3Explanation = 
-`def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
+export const task3Explanation = `def sliding_window_maximum(nums: list[int], k: int) -> list[int]: ### Define a function named \`sliding_window_maximum\` that takes a list of integers \`nums\` and an integer \`k\` as input. The function aims to find the maximum value in each sliding window of size \`k\` in the list \`nums\`.
     dq = [] ### Initialize an empty list \`dq\` which will be used as a deque (double-ended queue) to store indices of elements in \`nums\`. This helps in efficiently finding the maximum in the current window.
     result = [] ### Initialize an empty list \`result\` to store the maximum values of each sliding window.
     for i, n in enumerate(nums): ### Start a for loop to iterate over the list \`nums\` with both index \`i\` and value \`n\`.
@@ -155,11 +148,9 @@ The function initializes two empty lists: \`dq\` for the deque and \`result\` fo
 Removes indices from the front of the deque if they are out of the current window's range.
 Removes indices from the back of the deque if their corresponding values are less than the current value \`n\`.
 Appends the current index \`i\` to the deque.
-Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.`
+Once the first window of size \`k\` is complete (i.e., \`i >= k - 1\`), appends the value at the index at the front of the deque to the result list.`;
 
-
-export const tech2WarmupExplanation = 
-`def reverse_list_with_stack(input_list: list) -> list: ### Define a function named \`reverse_list_with_stack\` that takes a list \`input_lis\` as input. The function aims to reverse the list using a stack-based approach.
+export const tech2WarmupExplanation = `def reverse_list_with_stack(input_list: list) -> list: ### Define a function named \`reverse_list_with_stack\` that takes a list \`input_lis\` as input. The function aims to reverse the list using a stack-based approach.
     reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
     stack = input_list[:] ### Create a copy of \`input_list\` and assign it to \`stack\`. This copy will be used as a stack to reverse the elements.
     while stack: ### Start a while loop that continues as long as \`stack\` is not empty.
@@ -169,24 +160,21 @@ reverse_list_with_stack([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_wi
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`reverse_list_with_stack\` that reverses a given list \`input_list\` using a stack-based approach. The function initializes two lists: \`reversed_list\` to store the reversed elements and \`stack\` as a copy of \`input_list\` to be used as a stack.
+<p>The provided code defines a function \`reverse_list_with_stack\` that reverses a given list \`input_list\` using a stack-based approach. The function initializes two lists: \`reversed_list\` to store the reversed elements and \`stack\` as a copy of \`input_list\` to be used as a stack.</p>
 
-The function then enters a while loop that continues as long as \`stack\` is not empty. During each iteration of the loop, the function removes the last element from \`stack\` using the \`pop\` method and appends it to \`reversed_list\`. This process effectively reverses the order of elements.
+<p>The function then enters a while loop that continues as long as \`stack\` is not empty. During each iteration of the loop, the function removes the last element from \`stack\` using the \`pop\` method and appends it to \`reversed_list\`. This process effectively reverses the order of elements.</p>
 
-Finally, the function returns the \`reversed_list\`, which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
+<p>Finally, the function returns the \`reversed_list\`, which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.</p>`;
 
-
-export const tech3WarmupCode = 
-`def is_palindrome(s: str) -> bool:
+export const tech3WarmupCode = `def is_palindrome(s: str) -> bool:
     dq = list(s)
     while len(dq) > 1:
         if dq.pop(0) != dq.pop():
             return False 
     return True
-print(is_palindrome("racecar"))`
+print(is_palindrome("racecar"))`;
 
-export const tech3WarmupExplanation = 
-`def is_palindrome(s: str) -> bool: ### Define a function named \`is_palindrome\` that takes a string \`s\` as input and returns a boolean value indicating whether the string is a palindrome. A palindrome is a string that reads the same forward and backward.
+export const tech3WarmupExplanation = `def is_palindrome(s: str) -> bool: ### Define a function named \`is_palindrome\` that takes a string \`s\` as input and returns a boolean value indicating whether the string is a palindrome. A palindrome is a string that reads the same forward and backward.
     dq = list(s) ### Convert the input string \`s\` into a list of characters and store it in the variable \`dq\`. This list will be used as a deque (double-ended queue) to facilitate efficient removal of characters from both ends.
     while len(dq) > 1: ### Start a while loop that continues as long as the length of the deque \`dq\` is greater than 1. This ensures that there are at least two characters to compare.
         if dq.pop(0) != dq.pop(): ### Remove and return the first character from the deque using \`pop(0)\` and the last character using \`pop()\`. Compare these two characters. If they are not equal, the string is not a palindrome.
@@ -196,38 +184,33 @@ is_palindrome("racecar") ### Call the function \`is_palindrome\` with the string
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`is_palindrome\` that checks whether a given string \`s\` is a palindrome. A palindrome is a string that reads the same forward and backward. The function uses a deque (double-ended queue) to efficiently compare characters from both ends of the string.
+<p>The provided code defines a function \`is_palindrome\` that checks whether a given string \`s\` is a palindrome. A palindrome is a string that reads the same forward and backward. The function uses a deque (double-ended queue) to efficiently compare characters from both ends of the string.</p>
 
-The function starts by converting the input string \`s\` into a list of characters and storing it in the variable \`dq\`. This list acts as a deque, allowing efficient removal of characters from both the front and the back.
+<p>The function starts by converting the input string \`s\` into a list of characters and storing it in the variable \`dq\`. This list acts as a deque, allowing efficient removal of characters from both the front and the back.</p>
 
-The function then enters a while loop that continues as long as the length of the deque \`dq\` is greater than 1. During each iteration of the loop, the function removes and compares the first and last characters of the deque. If these characters are not equal, the function immediately returns \`False\`, indicating that the string is not a palindrome.
+<p>The function then enters a while loop that continues as long as the length of the deque \`dq\` is greater than 1. During each iteration of the loop, the function removes and compares the first and last characters of the deque. If these characters are not equal, the function immediately returns \`False\`, indicating that the string is not a palindrome.</p>
 
-If the loop completes without finding any unequal characters, the function returns \`True\`, indicating that the string is a palindrome.
+<p>If the loop completes without finding any unequal characters, the function returns \`True\`, indicating that the string is a palindrome.</p>
 
-The function is called with the string \`"racecar"\`, and it returns \`True\` because "racecar" is a palindrome.`
+<p>The function is called with the string \`"racecar"\`, and it returns \`True\` because "racecar" is a palindrome.</p>`;
 
-export const tech2WarmupCode = 
-`def reverse_list_with_stack(input_list: list) -> list:
+export const tech2WarmupCode = `def reverse_list_with_stack(input_list: list) -> list:
     reversed_list = []
     stack = input_list[:]
     while stack:
         reversed_list.append(stack.pop())
     return reversed_list
-print(reverse_list_with_stack([1, 2, 3, 4, 5]))`
+print(reverse_list_with_stack([1, 2, 3, 4, 5]))`;
 
-
-export const tech1WarmupCode = 
-`def reverse_list_with_queue(input_list) -> list:
+export const tech1WarmupCode = `def reverse_list_with_queue(input_list) -> list:
     queue = input_list[:]
     reversed_list = []
     while queue:
         reversed_list.insert(0, queue.pop(0))
     return reversed_list
-print(reverse_list_with_queue([1, 2, 3, 4, 5]))`
+print(reverse_list_with_queue([1, 2, 3, 4, 5]))`;
 
-
-export const tech1WarmupExplanation = 
-`def reverse_list_with_queue(input_list) -> list: ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
+export const tech1WarmupExplanation = `def reverse_list_with_queue(input_list) -> list: ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
     queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
     reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
     while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
@@ -237,11 +220,11 @@ reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_wi
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
+<p>The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.</p>
 
-The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
+<p>The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.</p>
 
-Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
+<p>Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.</p>`;
 
 // export const tech1WarmupCode =
 // `def is_balanced_parentheses(txt: str) -> bool:
@@ -252,7 +235,7 @@ Finally, the function returns the \`reversed_lis\` which contains the elements o
 //         elif char == ')':
 //             if not stack or stack[-1] != '(':
 //                 return False
-//             stack.pop()      
+//             stack.pop()
 //     return len(stack) == 0
 // is_balanced_parentheses("()()")`
 
@@ -280,7 +263,6 @@ Finally, the function returns the \`reversed_lis\` which contains the elements o
 // After iterating through all characters, the function checks if the stack is empty. If it is, it means all opening parentheses have been matched with closing ones in the correct order, so it returns \`True\`. Otherwise, it returns \`False\`.
 
 // The function call \`is_balanced_parentheses("()()")\` is an example use case that checks if the string "()()" is balanced, which it is, so the function would return \`True\`.`
-
 
 // export const task4Code =
 // `def decode_string(s: str) -> str:
@@ -345,7 +327,7 @@ Finally, the function returns the \`reversed_lis\` which contains the elements o
 //     return ''
 // first_char_k_times("aabbccddeeff", 2) # Output: a`
 
-// export const task5Explanation = 
+// export const task5Explanation =
 // `def first_char_k_times(s: str, k: int) -> str: ### Defines a function named \`first_char_k_times\` that takes a string \`s\` and an integer \`k\` as input and returns a string.
 //     dq = [] ### Initializes an empty list \`dq\` which will be used as a queue to keep track of characters in the order they appear.
 //     char_count = {} ### Initializes an empty dictionary \`char_count\` to keep track of the count of each character in the string.
@@ -385,7 +367,7 @@ Finally, the function returns the \`reversed_lis\` which contains the elements o
 //     return result
 // dna_sequences('A*T') # Output: ['AAT', 'ACT', 'AGT', 'ATT']`
 
-// export const task1Explanation = 
+// export const task1Explanation =
 // `def dna_sequences(pattern: str) -> list[str]: ### Define a function named \`dna_sequences\` that takes a string \`pattern\` as input and returns a list of strings.
 //     dna_chars = ['A', 'C', 'G', 'T'] ### Initialize a list \`dna_chars\` containing the characters 'A', 'C', 'G', and 'T', which represent the possible DNA bases.
 //     q = [''] ### Initialize a list \`q\` with an empty string. This list will be used as a queue to generate sequences.
@@ -409,4 +391,3 @@ Finally, the function returns the \`reversed_lis\` which contains the elements o
 // The function uses a breadth-first search (BFS) approach to generate the sequences. It initializes a queue with an empty string and iteratively builds sequences by appending characters according to the pattern. If the current character in the pattern is a wildcard, the function appends all possible DNA bases to the current sequence and adds them to the queue. If the character is a specific base, it appends that base to the current sequence and adds it to the queue.
 
 // The process continues until the queue is empty, and all sequences of the same length as the pattern are collected in the \`result\` list, which is then returned.`
-

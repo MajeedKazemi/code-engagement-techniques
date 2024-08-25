@@ -303,32 +303,32 @@ reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
 
     new MultipleChoiceTask(
         "T2RB",
-        `<h1>Task 2: Generate Valid Brackets (Using Queue</h1>
+        `<h1>Task 2: Generate Valid Brackets (Using Queue)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.</p>
 <br/>
 <p>Examples:</p>
-<pre class="code-block">
+<div class="code-block">
 generate_parentheses(2, 2)
 # Output: ['[[]]', '[][]']
 # Explanation: For n=2, the function needs to generate all valid combinations of 2 pairs of parentheses. Since m=2, there is no restriction on the depth, so both combinations '[[]]' and '[][]' are valid and included in the result.
-</pre>
-<pre class="code-block">
+</div>
+<div class="code-block">
 generate_parentheses(3, 2)
 # Output: ['[][[]]', '[][][]', '[[]][]']
 # Explanation: With n=3, the goal is to create valid combinations with 3 pairs of parentheses. The restriction m=2 limits nesting depth to 2, excluding '[[[]]]' but allowing combinations like '[][[]]', '[][][]', and '[[]][]' that respect the depth limit.
-</pre>
-<pre class="code-block">
+</div>
+<div class="code-block">
 generate_parentheses(3, 1)
 # Output: ['[][][]']
 # Explanation: When n=3 and m=1, the nesting depth cannot exceed 1, which only allows for the pattern '[][][]', where no parentheses are nested more than one level deep.
-</pre>
-<pre class="code-block">
+</div>
+<div class="code-block">
 generate_parentheses(4, 2)
 # Output: ['[][][][]', '[][[]][]', '[][][][]']
 # Explanation: With n=4 and m=2, the function can only generate combinations where no more than 2 pairs are nested within each other. This excludes combinations like '[[[[]]]]' or '[[[]]][]', but allows combinations like '[][][][]' and '[][[]][]' where the depth does not exceed 2.
-</pre>
+</div>
 <br/>
 <br/>
 <h2>Select how well did you understand the task?</h2>`,
@@ -352,7 +352,7 @@ generate_parentheses(4, 2)
 
     new MultipleChoiceTask(
         "2MCQ1",
-        "Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.\n\n How many deep breaths did you take?",
+        "<h1>(1/11)</h1><br/><h3>Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.</h3><br/><br/><h3>How many deep breaths did you take?</h3>",
         [
             "- One! 😄",
             "- Two!! 👏😊👏",
@@ -365,49 +365,49 @@ generate_parentheses(4, 2)
 
     new MultipleChoiceTask(
         "2MCQ2",
-        `How mentally demanding was it to fully understand the AI-generated code?`,
+        `<h1>(2/11)</h1><br/><h3>How mentally demanding was it to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         0
     ),
 
     new MultipleChoiceTask(
         "2MCQ3",
-        `How physically demanding was it to fully understand the AI-generated code?`,
+        `<h1>(3/11)</h1><br/><h3>How physically demanding was it to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         0
     ),
 
     new MultipleChoiceTask(
         "2MCQ4",
-        `How pressured did you feel by time while trying to fully understand the AI-generated code?`,
+        `<h1>(4/11)</h1><br/><h3>How pressured did you feel by time while trying to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         0
     ),
 
     new MultipleChoiceTask(
         "2MCQ5",
-        `How successful do you think you were in fully understanding the AI-generated code?`,
+        `<h1>(5/11)</h1><br/><h3>How successful do you think you were in fully understanding the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         0
     ),
 
     new MultipleChoiceTask(
         "2MCQ6",
-        `How much effort did it take to fully understand the AI-generated code?`,
+        `<h1>(6/11)</h1><br/><h3>How much effort did it take to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         0
     ),
 
     new MultipleChoiceTask(
         "2MCQ7",
-        `How frustrated were you during the process of trying to fully understand the AI-generated code?`,
+        `<h1>(7/11)</h1><br/><h3>How frustrated were you during the process of trying to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         0
     ),
 
     new MultipleChoiceTask(
         "2MCQ8",
-        `How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?`,
+        `<h1>(8/11)</h1><br/><h3>How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?</h3>`,
         [
             "1: Not at all Confident",
             "2: Slightly Confident",
@@ -420,7 +420,7 @@ generate_parentheses(4, 2)
 
     new MultipleChoiceTask(
         "2MCQ9",
-        "How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?",
+        "<h1>(9/11)</h1><br/><h3>How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?</h3>",
         [
             "1: Not at all Confident",
             "2: Slightly Confident",
@@ -433,7 +433,7 @@ generate_parentheses(4, 2)
 
     new MultipleChoiceTask(
         "2MCQ10",
-        "Please skip this question (This is not a bug!)",
+        "<h1>(10/11)</h1><br/><h3>Please skip this question (This is not a bug!)</h3>",
         ["skip"],
         0,
         "Frustrating"
@@ -441,7 +441,7 @@ generate_parentheses(4, 2)
 
     new MultipleChoiceTask(
         "2MCQ11",
-        "Please skip this question (This is not a bug!)",
+        "<h1>(11/11)</h1><br/><h3>Please skip this question (This is not a bug!)</h3>",
         ["skip"],
         0,
         "Willing"
@@ -530,7 +530,7 @@ longest_valid_brackets(")()())()()(")
 
     new MultipleChoiceTask(
         "4MCQ1",
-        "Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.\n\n How many deep breaths did you take?",
+        "<h1>(1/11)</h1><br/><h3>Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.</h3><br/><br/><h3>How many deep breaths did you take?</h3>",
         [
             "- One! 😄",
             "- Two!! 👏😊👏",
@@ -543,49 +543,49 @@ longest_valid_brackets(")()())()()(")
 
     new MultipleChoiceTask(
         "4MCQ2",
-        `How mentally demanding was it to fully understand the AI-generated code?`,
+        `<h1>(2/11)</h1><br/><h3>How mentally demanding was it to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         1
     ),
 
     new MultipleChoiceTask(
         "4MCQ3",
-        `How physically demanding was it to fully understand the AI-generated code?`,
+        `<h1>(3/11)</h1><br/><h3>How physically demanding was it to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         1
     ),
 
     new MultipleChoiceTask(
         "4MCQ4",
-        `How pressured did you feel by time while trying to fully understand the AI-generated code?`,
+        `<h1>(4/11)</h1><br/><h3>How pressured did you feel by time while trying to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         1
     ),
 
     new MultipleChoiceTask(
         "4MCQ5",
-        `How successful do you think you were in fully understanding the AI-generated code?`,
+        `<h1>(5/11)</h1><br/><h3>How successful do you think you were in fully understanding the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         1
     ),
 
     new MultipleChoiceTask(
         "4MCQ6",
-        `How much effort did it take to fully understand the AI-generated code?`,
+        `<h1>(6/11)</h1><br/><h3>How much effort did it take to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         1
     ),
 
     new MultipleChoiceTask(
         "4MCQ7",
-        `How frustrated were you during the process of trying to fully understand the AI-generated code?`,
+        `<h1>(7/11)</h1><br/><h3>How frustrated were you during the process of trying to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         1
     ),
 
     new MultipleChoiceTask(
         "4MCQ8",
-        `How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?`,
+        `<h1>(8/11)</h1><br/><h3>How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?</h3>`,
         [
             "1: Not at all Confident",
             "2: Slightly Confident",
@@ -598,7 +598,7 @@ longest_valid_brackets(")()())()()(")
 
     new MultipleChoiceTask(
         "4MCQ9",
-        "How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?",
+        "<h1>(9/11)</h1><br/><h3>How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?</h3>",
         [
             "1: Not at all Confident",
             "2: Slightly Confident",
@@ -611,7 +611,7 @@ longest_valid_brackets(")()())()()(")
 
     new MultipleChoiceTask(
         "4MCQ10",
-        "Please skip this question (This is not a bug!)",
+        "<h1>(10/11)</h1><br/><h3>Please skip this question (This is not a bug!)</h3>",
         ["skip"],
         1,
         "Frustrating"
@@ -619,7 +619,7 @@ longest_valid_brackets(")()())()()(")
 
     new MultipleChoiceTask(
         "4MCQ11",
-        "Please skip this question (This is not a bug!)",
+        "<h1>(11/11)</h1><br/><h3>Please skip this question (This is not a bug!)</h3>",
         ["skip"],
         1,
         "Willing"
@@ -725,7 +725,7 @@ sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
 
     new MultipleChoiceTask(
         "6MCQ1",
-        "Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.\n\n How many deep breaths did you take?",
+        "<h1>(1/11)</h1><br/><h3>Thank you for completing this task. Please take a moment to pause, look away from the screen, and take several deep breaths, and center your thoughts. You can then proceed to answering several questions about your experience.</h3><br/><br/><h3>How many deep breaths did you take?</h3>",
         [
             "- One! 😄",
             "- Two!! 👏😊👏",
@@ -738,49 +738,49 @@ sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
 
     new MultipleChoiceTask(
         "6MCQ2",
-        `How mentally demanding was it to fully understand the AI-generated code?`,
+        `<h1>(2/11)</h1><br/><h3>How mentally demanding was it to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         2
     ),
 
     new MultipleChoiceTask(
         "6MCQ3",
-        `How physically demanding was it to fully understand the AI-generated code?`,
+        `<h1>(3/11)</h1><br/><h3>How physically demanding was it to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         2
     ),
 
     new MultipleChoiceTask(
         "6MCQ4",
-        `How pressured did you feel by time while trying to fully understand the AI-generated code?`,
+        `<h1>(4/11)</h1><br/><h3>How pressured did you feel by time while trying to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         2
     ),
 
     new MultipleChoiceTask(
         "6MCQ5",
-        `How successful do you think you were in fully understanding the AI-generated code?`,
+        `<h1>(5/11)</h1><br/><h3>How successful do you think you were in fully understanding the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         2
     ),
 
     new MultipleChoiceTask(
         "6MCQ6",
-        `How much effort did it take to fully understand the AI-generated code?`,
+        `<h1>(6/11)</h1><br/><h3>How much effort did it take to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         2
     ),
 
     new MultipleChoiceTask(
         "6MCQ7",
-        `How frustrated were you during the process of trying to fully understand the AI-generated code?`,
+        `<h1>(7/11)</h1><br/><h3>How frustrated were you during the process of trying to fully understand the AI-generated code?</h3>`,
         ["1: Very Low", "2: Low", "3: Moderate", "4: High", "5: Very High"],
         2
     ),
 
     new MultipleChoiceTask(
         "6MCQ8",
-        `How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?`,
+        `<h1>(8/11)</h1><br/><h3>How confident are you that you fully understood the concepts and approaches used in the AI-generated code, and can explain how they contribute to the overall functionality?</h3>`,
         [
             "1: Not at all Confident",
             "2: Slightly Confident",
@@ -793,7 +793,7 @@ sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
 
     new MultipleChoiceTask(
         "6MCQ9",
-        "How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?",
+        "<h1>(9/11)</h1><br/><h3>How confident are you in your ability to independently write, modify, or extend code of similar complexity to the AI-generated code?</h3>",
         [
             "1: Not at all Confident",
             "2: Slightly Confident",
@@ -806,7 +806,7 @@ sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
 
     new MultipleChoiceTask(
         "6MCQ10",
-        "Please skip this question. (This is not a bug!)",
+        "<h1>(10/11)</h1><br/><h3>Please skip this question. (This is not a bug!)</h3>",
         ["skip"],
         2,
         "Frustrating"
@@ -814,7 +814,7 @@ sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
 
     new MultipleChoiceTask(
         "6MCQ11",
-        "Please skip this question. (This is not a bug!)",
+        "<h1>(11/11)</h1><br/><h3>Please skip this question. (This is not a bug!)</h3>",
         ["skip"],
         2,
         "Willing"
@@ -908,7 +908,7 @@ generate_brackets(3, 2)
     # Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
     """
     result = []
-    q = # TODO: fill this part
+    q = [["", 0, 0, 0]]
 
     while q:
         s, opens, closes, conseq_opens = # TODO: fill this part
@@ -936,94 +936,7 @@ assert generate_brackets(3, 2) == ["[[][]]", "[[]][]", "[][][]"]
 
     new MultipleChoiceTask(
         "MC2RB",
-        `<h1>Task 2: Word Ladder (Using Queue)</h1>
-<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
-<h2>Task Description:</h2>
-<p>The function <b>word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int</b> is supposed to find the shortest transformation sequence from <b>begin_word</b> to <b>end_word</b> using only words from <b>word_list</b>, where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns <b>0</b>. The function explores all possible transformations by replacing each letter in the current word with every letter from 'a' to 'z', and uses a queue to perform a breadth-first search until it finds the end_word or exhausts all options.</p>
-<br/>
-<p>Examples:</p>
-<pre class="code-block">
-word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])
-# Output: 5
-# Explanation: The shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> "cog", which has 5 steps.
-</pre>
-<pre class="code-block">
-word_ladder("red", "tax", ["ted", "tex", "red", "tax", "tad", "den", "rex", "pee"])
-# Output: 4
-# Explanation: The shortest transformation sequence is "red" -> "ted" -> "tad" -> "tax", which has 4 steps.
-</pre>
-<pre class="code-block">
-word_ladder("game", "thee", ["fame", "same", "lame", "gale", "pale", "page", "tame", "came", "cake", "take", "tape", "team", "teal", "teel", "thee"])
-# Output: 6
-# Explanation: The shortest transformation sequence is "game" -> "fame" -> "tame" -> "tape" -> "tepe" -> "teel" -> "thee", which has 6 steps.
-</pre>
-<pre class="code-block">
-generate_brackets(3, 2)
-# Output: ["[[][]]", "[[]][]", "[][][]"]
-# Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
-</pre>
-<br/>
-<br/>
-<h2>Select how well did you understand the task?</h2>`,
-        [
-            "0: Not at all 😞",
-            "1: Slightly 😐",
-            "2: Moderately 🙂",
-            "3: Mostly 😊",
-            "4: Completely 🤩",
-        ],
-        2
-    ),
-
-    new ManualCodingTask(
-        "mc2",
-        `The function 'word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int' is supposed to find the shortest transformation sequence from 'begin_word' to 'end_word' using only words from 'word_list', where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns '0'. The function explores all possible transformations by replacing each letter in the current word with every letter from 'a' to 'z', and uses a queue to perform a breadth-first search until it finds the end_word or exhausts all options.`,
-        `def word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int:
-    """
-    The function 'word_ladder(begin_word: str, end_word: str, word_list: list[str]) -> int' is supposed to find the shortest transformation sequence from 'begin_word' to 'end_word' using only words from 'word_list', where each step can only change one letter and must form a valid word. The function should return the length of the shortest transformation sequence. If no such sequence exists, it returns '0'. The function explores all possible transformations by replacing each letter in the current word with every letter from 'a' to 'z', and uses a queue to perform a breadth-first search until it finds the end_word or exhausts all options.
-    
-    Please fill out the #TODO parts.
-
-    >>> word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])
-    # Output: 5
-    # Explanation: The shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> "cog", which has 5 steps.
-
-    >>> word_ladder("red", "tax", ["ted", "tex", "red", "tax", "tad", "den", "rex", "pee"])
-    # Output: 4
-    # Explanation: The shortest transformation sequence is "red" -> "ted" -> "tad" -> "tax", which has 4 steps.
-
-    >>> word_ladder("game", "thee", ["fame", "same", "lame", "gale", "pale", "page", "tame", "came", "cake", "take", "tape", "team", "teal", "teel", "thee"])
-    # Output: 6
-    # Explanation: The shortest transformation sequence is "game" -> "fame" -> "tame" -> "tape" -> "tepe" -> "teel" -> "thee", which has 6 steps.
-    """
-
-    word_set = set(word_list)
-    q = # TODO: fill this part
-    
-    while q:
-        current_word, steps = # TODO: fill this part
-        
-        if # TODO: fill this part
-            return steps
-        
-        for i in range(len(current_word)):
-            for char in 'abcdefghijklmnopqrstuvwxyz':
-                next_word = current_word[:i] + char + current_word[i+1:]
-                
-                if next_word in word_set:
-                    q.append( # TODO: fill this part
-                    word_set.remove(next_word)
-    
-    return 0
-
-assert word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]) == 5
-assert word_ladder("red", "tax", ["ted", "tex", "red", "tax", "tad", "den", "rex", "pee"]) == 4
-assert word_ladder("game", "thee", ["fame", "same", "lame", "gale", "pale", "page", "tame", "came", "cake", "take", "tape", "team", "teal", "teel", "thee"]) == 6`
-    ),
-
-    new MultipleChoiceTask(
-        "MC3RB",
-        `<h1>Task 3: Generate DNA Sequences (Using Queue)</h1>
+        `<h1>Task 2: Generate DNA Sequences (Using Queue)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a Python function named <b>dna_sequences(pattern: str) -> list[str]</b> that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument ('pattern') and return a list of strings. The input pattern consists of the characters 'A', 'T', 'C', 'G', and a special placeholder 'N'. The 'N' acts as a wildcard that can be replaced by any of the four DNA bases ('A', 'C', 'G', 'T'). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every 'N' in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.</p>
@@ -1062,7 +975,7 @@ dna_sequences("NN")
     ),
 
     new ManualCodingTask(
-        "mc3",
+        "mc2",
         "Write a Python function named `dna_sequences(pattern: str) -> list[str]` that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument (`pattern`) and return a list of strings. The input pattern consists of the characters `A`, `T`, `C`, `G`, and a special placeholder `N`. The `N` acts as a wildcard that can be replaced by any of the four DNA bases (`A`, `C`, `G`, `T`). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every `N` in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.",
         `def dna_sequences(pattern: str) -> list[str]:
         """
@@ -1091,9 +1004,9 @@ dna_sequences("NN")
     result = []
 
     while len(q) > 0:
-        seq = # TODO: fill this part
+        seq = q.pop(0)
         
-        if len(seq) == len(pattern):
+        if # TODO: fill this part
             result.append(seq)
         else:
 			index = len(seq)
@@ -1113,8 +1026,8 @@ assert dna_sequences("AAN") == ['AAA', 'AAC', 'AAG', 'AAT']`
     ),
 
     new MultipleChoiceTask(
-        "MC4RB",
-        `<h1>Task 4: Longest Valid Parentheses (Using Stack)</h1>
+        "MC3RB",
+        `<h1>Task 3: Longest Valid Parentheses (Using Stack)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>longest_valid_parentheses(s: str) -> int</b> that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = "(()"', the output should be '2', as the longest valid substring is '"()"'. For 's = ")()())"', the output should be '4' due to the substring '"()()"'. Another example would be 's = ""', where the output should be '0' since there are no valid parentheses.</p>
@@ -1154,7 +1067,7 @@ longest_valid_parentheses("()(())))")
     ),
 
     new ManualCodingTask(
-        "mc4",
+        "mc3",
         "Write a function 'longest_valid_parentheses(s: str) -> int' that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = \"(()\"', the output should be '2', as the longest valid substring is '\"()\"'. For 's = \")()())\"', the output should be '4' due to the substring '\"()()\"'. Another example would be 's = \"\"', where the output should be '0' since there are no valid parentheses.",
         `def longest_valid_parentheses(s: str) -> int:
     """
@@ -1202,101 +1115,7 @@ assert longest_valid_parentheses("()(())))") == 6`
     ),
 
     new MultipleChoiceTask(
-        "MC5RB",
-        `<h1>Task 5: Longest Valid DNA Sequences (Using Stack)</h1>
-<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
-<h2>Task Description:</h2>
-<p>Write a function <b>longest_valid_dna_subsequence(s: str) -> str</b> that finds and returns the longest valid subsequence of a DNA string where each 'A' is paired with a 'T' and each 'C' is paired with a 'G'. The DNA string is considered valid if the sequence of pairs is correctly balanced, meaning every 'A' has a corresponding 'T' after it and every 'C' has a corresponding 'G'. For example, in the string '"ATCGGCAT"', the longest valid subsequence is '"ATCGGC"', while in the string '"ATATGC"', the longest valid subsequence is '"ATAT"'. The function should return this subsequence as a string.</p>
-<br/>
-<p>Examples:</p>
-<pre class="code-block">
-longest_valid_dna_subsequence("TACG")
-# Output: "CG"
-# Explanation: The input string "TACG" has the valid subsequence "CG". The characters 'C' and 'G' form a valid pair, but 'TA' does not have a corresponding 'T' after 'A'. Therefore, the longest valid subsequence is "CG".
-</pre>
-<pre class="code-block">
-longest_valid_dna_subsequence("GGCATCGGTA")
-# Output: "CATCGG"
-# Explanation: The input string "GGCATCGGTA" has the longest valid subsequence "CATCGG". This subsequence includes correctly paired 'A' with 'T' and 'C' with 'G'. Other combinations do not result in a longer valid subsequence.
-</pre>
-<pre class="code-block">
-longest_valid_dna_subsequence("AATTCG")
-# Output: "AATTCG"
-# Explanation: The input string "AATTCG" is itself a valid subsequence. All 'A's are paired with 'T's and 'C's are paired with 'G's correctly. So, the longest valid subsequence is the entire string "AATTCG".
-</pre>
-<pre class="code-block">
-longest_valid_dna_subsequence("ATGCGT")
-# Output: "AT"
-# Explanation: In the input string "ATGCGT", the longest valid subsequence is "AT". Even though there are 'G' and 'C', they do not form a balanced subsequence after considering the initial valid "AT".
-</pre>
-<br/>
-<br/>
-<h2>Select how well did you understand the task?</h2>`,
-        [
-            "0: Not at all 😞",
-            "1: Slightly 😐",
-            "2: Moderately 🙂",
-            "3: Mostly 😊",
-            "4: Completely 🤩",
-        ],
-        2
-    ),
-
-    new ManualCodingTask(
-        "mc5",
-        `Write a function 'longest_valid_dna_subsequence(s: str) -> str' that finds and returns the longest valid subsequence of a DNA string where each 'A' is paired with a 'T' and each 'C' is paired with a 'G'. The DNA string is considered valid if the sequence of pairs is correctly balanced, meaning every 'A' has a corresponding 'T' after it and every 'C' has a corresponding 'G'. For example, in the string '"ATCGGCAT"', the longest valid subsequence is '"ATCGGC"', while in the string '"ATATGC"', the longest valid subsequence is '"ATAT"'. The function should return this subsequence as a string.`,
-        `def longest_valid_dna_subsequence(s: str) -> str:
-    """
-    Write a function 'longest_valid_dna_subsequence(s: str) -> str' that finds and returns the longest valid subsequence of a DNA string where each 'A' is paired with a 'T' and each 'C' is paired with a 'G'. The DNA string is considered valid if the sequence of pairs is correctly balanced, meaning every 'A' has a corresponding 'T' after it and every 'C' has a corresponding 'G'. For example, in the string '"ATCGGCAT"', the longest valid subsequence is '"ATCGGC"', while in the string '"ATATGC"', the longest valid subsequence is '"ATAT"'. The function should return this subsequence as a string.
-
-    Please fill out the #TODO parts.
-
-    >>> longest_valid_dna_subsequence("TACG")
-    # Output: "CG"
-    # Explanation: The input string "TACG" has the valid subsequence "CG". The characters 'C' and 'G' form a valid pair, but 'TA' does not have a corresponding 'T' after 'A'. Therefore, the longest valid subsequence is "CG".
-
-    >>> longest_valid_dna_subsequence("GGCATCGGTA")
-    # Output: "CATCGG"
-    # Explanation: The input string "GGCATCGGTA" has the longest valid subsequence "CATCGG". This subsequence includes correctly paired 'A' with 'T' and 'C' with 'G'. Other combinations do not result in a longer valid subsequence.
-
-    >>> longest_valid_dna_subsequence("AATTCG")
-    # Output: "AATTCG"
-    # Explanation: The input string "AATTCG" is itself a valid subsequence. All 'A's are paired with 'T's and 'C's are paired with 'G's correctly. So, the longest valid subsequence is the entire string "AATTCG".
-
-    >>> longest_valid_dna_subsequence("ATGCGT")
-    # Output: "AT"
-    # Explanation: In the input string "ATGCGT", the longest valid subsequence is "AT". Even though there are 'G' and 'C', they do not form a balanced subsequence after considering the initial valid "AT".
-    """
-    pair_map = {'A': 'T', 'C': 'G'}
-    stack = [-1]
-    max_length = 0
-    start_index = 0
-    
-    for i in range(len(s)):
-        char = s[i]
-        
-        if char in pair_map:
-            stack.append(i)
-        else:
-            not_empty = len(stack) > 1
-            last_is_open = stack[-1] != -1 and s[stack[-1]] in pair_map
-            is_match = last_is_open and pair_map[s[stack[-1]]] == char
-            
-            if not_empty and is_match:
-                # TODO: fill this part
-            else:
-                # TODO: fill this part
-    
-    return # TODO: fill this part
-
-assert longest_valid_dna_subsequence("TACG") == "CG"
-assert longest_valid_dna_subsequence("GGCATCGGTA") == "CATCGG"
-assert longest_valid_dna_subsequence("AATTCG") == "AATTCG"
-assert longest_valid_dna_subsequence("ATGCGT") == "AT"`
-    ),
-
-    new MultipleChoiceTask(
-        "MC6RB",
+        "MC4RB",
         `<h1>Task 6: Invalid Parentheses Indicies (Using Stack)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
@@ -1339,7 +1158,7 @@ invalid_parentheses_indices(")()(")
     ),
 
     new ManualCodingTask(
-        "mc6",
+        "mc4",
         `Write a function 'invalid_parentheses_indices(s: str) -> int' that calculates the minimum number of invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()"', the function should return 1 because removing one closing parenthesis at index 2 would make the string valid. If the input is 's = "(()"', it should return 1 as well because removing one opening parenthesis at index 0 would make the string valid.`,
         `def invalid_parentheses_indices(s: str) -> list[int]:
     """
@@ -1364,7 +1183,7 @@ invalid_parentheses_indices(")()(")
     # Explanation: Parentheses at indices 0 and 3 are unmatched and need removal.
     """
     invalid_indices = []
-    stack = # TODO: fill this par
+    stack = # TODO: fill this part
     
     for i in range(len(s)):
         char = s[i]
@@ -1389,7 +1208,7 @@ assert invalid_parentheses_indices(")()(") == [0, 3]`
     ),
 
     new MultipleChoiceTask(
-        "MC7RB",
+        "MC5RB",
         `<h1>Task 7: Sliding Window Minimum (Using Stack)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
@@ -1432,7 +1251,7 @@ sliding_window_minimum([4, 5, 6, 3, 2, 1], 4)
     ),
 
     new ManualCodingTask(
-        "mc7",
+        "mc5",
         `Write a function 'sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]' that finds the minimum value within every sliding window of size 'k' in the given list 'nums', and returns a list of tuples where each tuple contains the minimum value and its index within the window. The sliding window moves one position at a time from left to right across the list. For example, given 'nums = [4, 2, 12, 3, 8]' and 'k = 3', the function should return '[(2, 1), (2, 1), (3, 3)]', and for 'nums = [1, 3, -1, -3, 5]' with 'k = 2', it should return '[(1, 0), (-1, 2), (-3, 3), (-3, 3)]'.`,
         `def sliding_window_minimum(nums: list[int], k: int) -> list[tuple[int, int]]:
     """
@@ -1475,7 +1294,7 @@ assert sliding_window_minimum([10, 5, 2, 7, 8, 7], 3) == [(2, 2), (2, 2), (2, 2)
     ),
 
     new MultipleChoiceTask(
-        "MC8RB",
+        "MC6RB",
         `<h1>Task 8: Sliding Even Count (Using Dequeue)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
@@ -1529,7 +1348,7 @@ sliding_even_count([2, 3, 6, 8, 1], 2)
     ),
 
     new ManualCodingTask(
-        "mc8",
+        "mc6",
         ``,
         `def even_count(nums: list[int], k: int) -> list[int]:
     """

@@ -138,7 +138,7 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
                 });
             });
         }
-    }, [taskContainerEl]);
+    }, [taskContainerEl.current]);
 
     return (
         <div className="simple-task-container">

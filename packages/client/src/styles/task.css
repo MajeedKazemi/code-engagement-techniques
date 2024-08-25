@@ -127,6 +127,7 @@
     border: 1px solid #ddd;
     padding: 16px;
     font-family: monospace;
+    overflow-x: auto;
 }
 
 .submit-attention {
@@ -145,10 +146,20 @@
     flex-direction: row;
     align-items: center;
     margin: 12px 0;
+    cursor: pointer;
+}
+
+.task-response-item:hover {
+    background-color: #a0f2ff;
 }
 
 .task-response-radio {
     margin-right: 16px;
+    cursor: pointer;
+}
+
+.task-response-item label {
+    cursor: pointer;
 }
 
 .short-answer-textarea {

@@ -16,7 +16,7 @@
 .chat-user-prompt {
     margin: 12px;
     overflow-y: auto;
-    height: calc(100% - 75px - 2rem);
+    height: calc(100% - 120px);
 }
 
 .baseline-generator-container {
@@ -133,8 +133,7 @@
 }
 
 .generated-code-component {
-    overflow-y: scroll;
-    height: calc(100% - 55px);
+    height: calc(100% - 24px);
 }
 .generated-button-container {
     margin-top: 2rem;
