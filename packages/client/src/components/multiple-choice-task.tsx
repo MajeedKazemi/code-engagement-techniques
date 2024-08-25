@@ -100,7 +100,7 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
 <iframe
   width="900"
   height="550"
-  src="https://youtu.be/V0VzHVzMszk"
+  src="https://www.youtube.com/embed/V0VzHVzMszk"
   title="Study Instructions"
   frameBorder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -146,7 +146,7 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
 <iframe
   width="900"
   height="550"
-  src="https://youtu.be/gMCmsjNzmgY"
+  src="https://www.youtube.com/embed/gMCmsjNzmgY"
   title="Study Instructions"
   frameBorder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

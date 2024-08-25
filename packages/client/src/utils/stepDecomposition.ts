@@ -488,7 +488,7 @@ const taskQuestion1: newQuestionObject[] = [
         ]
     },
     {
-      "step": 25,
+      "step": 16,
       "begin-line": 9,
       "end-line": 12,
       "question-about-purpose-of-code": "What is the purpose of the code block from lines 9 to 12 that checks the condition 'if opens < n' and updates 'q' and 'new_max_d'?",
