@@ -1197,39 +1197,39 @@ dna_sequences("NN")
         "mc2",
         "Write a Python function named `dna_sequences(pattern: str) -> list[str]` that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument (`pattern`) and return a list of strings. The input pattern consists of the characters `A`, `T`, `C`, `G`, and a special placeholder `N`. The `N` acts as a wildcard that can be replaced by any of the four DNA bases (`A`, `C`, `G`, `T`). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every `N` in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.",
         `def dna_sequences(pattern: str) -> list[str]:
-        """
-        Write a Python function named 'dna_sequences(pattern: str) -> list[str]' that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument ('pattern') and return a list of strings. The input pattern consists of the characters 'A', 'T', 'C', 'G', and a special placeholder 'N'. The 'N' acts as a wildcard that can be replaced by any of the four DNA bases ('A', 'C', 'G', 'T'). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every 'N' in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.
+    """
+    Write a Python function named 'dna_sequences(pattern: str) -> list[str]' that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument ('pattern') and return a list of strings. The input pattern consists of the characters 'A', 'T', 'C', 'G', and a special placeholder 'N'. The 'N' acts as a wildcard that can be replaced by any of the four DNA bases ('A', 'C', 'G', 'T'). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every 'N' in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.
 
-        Please fill out the #TODO parts.
+    Please fill out the #TODO parts.
 
-        >>> dna_sequences("N")
-        # Output: ['A', 'C', 'G', 'T']
-        # Explanation: The pattern contains one 'N', which can be replaced by any of the four DNA bases (A, C, G, T). Therefore, the output is a list of all possible single-character DNA sequences.
+    >>> dna_sequences("N")
+    # Output: ['A', 'C', 'G', 'T']
+    # Explanation: The pattern contains one 'N', which can be replaced by any of the four DNA bases (A, C, G, T). Therefore, the output is a list of all possible single-character DNA sequences.
 
-        >>> dna_sequences("AN")
-        # Output: ['AA', 'AC', 'AG', 'AT']
-        # Explanation: The pattern "AN" has one 'N'. The function replaces 'N' with each of the four DNA bases, resulting in the sequences "AA", "AC", "AG", and "AT".
+    >>> dna_sequences("AN")
+    # Output: ['AA', 'AC', 'AG', 'AT']
+    # Explanation: The pattern "AN" has one 'N'. The function replaces 'N' with each of the four DNA bases, resulting in the sequences "AA", "AC", "AG", and "AT".
 
-        >>> dna_sequences("NN")
-        # Output: ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', 'GA', 'GC', 'GG', 'GT', 'TA', 'TC', 'TG', 'TT']
-        # Explanation: The pattern "NN" contains two 'N's. Each 'N' can be replaced with A, C, G, or T, resulting in 4x4=16 possible combinations.
+    >>> dna_sequences("NN")
+    # Output: ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', 'GA', 'GC', 'GG', 'GT', 'TA', 'TC', 'TG', 'TT']
+    # Explanation: The pattern "NN" contains two 'N's. Each 'N' can be replaced with A, C, G, or T, resulting in 4x4=16 possible combinations.
 
-        >>> dna_sequences("AAN")
-        # Output: ['AAA', 'AAC', 'AAG', 'AAT']
-        # Explanation: The pattern "AAN" has one 'N', which can be replaced by any of the four DNA bases, resulting in the sequences "AAA", "AAC", "AAG", and "AAT".
-        """
+    >>> dna_sequences("AAN")
+    # Output: ['AAA', 'AAC', 'AAG', 'AAT']
+    # Explanation: The pattern "AAN" has one 'N', which can be replaced by any of the four DNA bases, resulting in the sequences "AAA", "AAC", "AAG", and "AAT".
+    """
     dna_chars = ['A', 'C', 'G', 'T']
     q = ['']
     result = []
 
     while len(q) > 0:
         seq = q.pop(0)
-        
+
         if # TODO: fill this part
             result.append(seq)
         else:
-			index = len(seq)
-			
+            index = len(seq)
+
             if # TODO: fill this part:
                 for ch in dna_chars:
                     # TODO: fill this part
