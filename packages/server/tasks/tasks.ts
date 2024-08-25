@@ -350,7 +350,13 @@ print(q)
 
     new MultipleChoiceTask(
         "T1RB",
-        `<h1>Warm-Up Task 1: Reverse List Using Queue</h1>
+        `<h1>Warm-Up Task 1 - <b>Using AI</b>: Reverse List (Using Queue)</h1>
+<br/>
+<h2>**You will use AI to solve this task**</h2>
+<br/>
+<h2>A <b>timer</b> is in the top right: Do not spend more than <i>5 minutes</i> on this warm-up task. After learning how the new system works, proceed to the actual task.</h2>
+<br/>
+<br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>reverse_list_with_queue(input_list: list) -> list</b> that uses a <b>Queue</b> to reverse the provided list and return it.</p>
@@ -387,10 +393,13 @@ reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
 
     new MultipleChoiceTask(
         "T2RB",
-        `<h1>Task 2: Generate Valid Brackets (Using Queue)</h1>
-        <br/>
-        <h2>**You will be evaluated on this task in the second phase of the study without AI assistance.**</h2>
-        <br/>
+        `<h1>Task 2 - <b>Using AI</b>: Generate Valid Brackets (Using Queue)</h1>
+<br/>
+<h2>**You will use AI to solve this task, but you will be evaluated on it at the end of the study without AI assistance.**</h2>
+<br/>
+<h2>A <b>timer</b> is in the top right: Do not spend more than <i>15 minutes</i> on this task. After understanding and testing the solution, proceed to the next task.</h2>
+<br/>
+<br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.</p>
@@ -568,8 +577,8 @@ print(s)
     ),
 
     new MultipleChoiceTask(
-      "VID2",
-      `<h1>Watch the Following Video</h1>
+        "VID2",
+        `<h1>Watch the Following Video</h1>
 <br/>
 <br/>
 <p>Here is a short video that explains what you will be doing in the study</p>
@@ -586,17 +595,23 @@ print(s)
 <br/>
 <h3>Did you watch the video and learn about the study instructions?</h3>
       `,
-      [
-          "No - I did not watch the video.",
-          "Yes - I understand the study instructions.",
-      ],
-      1,
-      "video"
-  ),
+        [
+            "No - I did not watch the video.",
+            "Yes - I understand the study instructions.",
+        ],
+        1,
+        "video"
+    ),
 
     new MultipleChoiceTask(
         "T3RB",
-        `<h1>Warm-Up Task 3: Reverse List Using Stack</h1>
+        `<h1>Warm-Up Task 3 - <b>Using AI</b>: Reverse List (Using Stack)</h1>
+<br/>
+<h2>**You will use AI to solve this task**</h2>
+<br/>
+<h2>A <b>timer</b> is in the top right: Do not spend more than <i>5 minutes</i> on this warm-up task. After learning how the new system works, proceed to the actual task.</h2>
+<br/>
+<br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>reverse_list_with_stack(input_list: list) -> list</b> that uses a Stack to reverse the provided list and return it.</p>
@@ -633,9 +648,12 @@ reverse_list_with_queue([13, 8, 5, 3, 2, 1, 1])
 
     new MultipleChoiceTask(
         "T4RB",
-        `<h1>Task 4: Longest Valid Brackets and Braces (Using Stack)</h1>
+        `<h1>Task 4 - <b>Using AI</b>: Longest Valid Brackets and Braces (Using Stack)</h1>
 <br/>
-<h2>**You will be evaluated on this task in the second phase of the study without AI assistance.**</h2>
+<h2>**You will use AI to solve this task, but you will be evaluated on it at the end of the study without AI assistance.**</h2>
+<br/>
+<h2>A <b>timer</b> is in the top right: Do not spend more than <i>15 minutes</i> on this task. After understanding and testing the solution, proceed to the next task.</h2>
+<br/>
 <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
@@ -815,8 +833,8 @@ print(dq)
     ),
 
     new MultipleChoiceTask(
-      "VID3",
-      `<h1>Watch the Following Video</h1>
+        "VID3",
+        `<h1>Watch the Following Video</h1>
 <br/>
 <br/>
 <p>Here is a short video that explains what you will be doing in the study</p>
@@ -833,17 +851,23 @@ print(dq)
 <br/>
 <h3>Did you watch the video and learn about the study instructions?</h3>
       `,
-      [
-          "No - I did not watch the video.",
-          "Yes - I understand the study instructions.",
-      ],
-      2,
-      "video"
-  ),
+        [
+            "No - I did not watch the video.",
+            "Yes - I understand the study instructions.",
+        ],
+        2,
+        "video"
+    ),
 
     new MultipleChoiceTask(
         "T5RB",
-        `<h1>Warm-Up Task 5: Check is Palindrome (Using Double-Ended Queue)</h1>
+        `<h1>Warm-Up Task 5 - <b>Using AI</b>: Sliding Window Maximum (Using Double-Ended Queue)</h1>
+<br/>
+<h2>**You will use AI to solve this task**</h2>
+<br/>
+<h2>A <b>timer</b> is in the top right: Do not spend more than <i>5 minutes</i> on this warm-up task. After learning how the new system works, proceed to the actual task.</h2>
+<br/>
+<br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>is_palindrome(s: str) -> bool</b> that checks if the input string <b>s</b> is palindrome. A palindrome is a sequence of characters that reads the same forward and backward. For example, <b>"racecar"</b> is a palindrome.</p>
@@ -884,9 +908,12 @@ is_palindrome("raider")
 
     new MultipleChoiceTask(
         "T6RB",
-        `<h1>Task 6: Sliding Window Maximum (Using Double-Ended Queue)</h1>
+        `<h1>Task 6 - <b>Using AI</b>: Sliding Window Maximum (Using Double-Ended Queue)</h1>
 <br/>
-<h2>**You will be evaluated on this task in the second phase of the study without AI assistance.**</h2>
+<h2>**You will use AI to solve this task, but you will be evaluated on it at the end of the study without AI assistance.**</h2>
+<br/>
+<h2>A <b>timer</b> is in the top right: Do not spend more than <i>15 minutes</i> on this task. After understanding and testing the solution, proceed to the next task.</h2>
+<br/>
 <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
@@ -1062,6 +1089,9 @@ sliding_window_maximum([9, 11, 8, 5, 7, 10], 2)
     new MultipleChoiceTask(
         "MC1RB",
         `<h1>Task 1: Generate Valid Parentheses (Using Queue)</h1>
+        <br/>
+        <h2>A <b>timer</b> is in the top right of your screen: Do not spend more than <i>10 minutes</i> on this task. If you can't solve it within 10 minutes, please submit and skip the task.</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>generate_brackets(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid square brackets, such that the maximum number of consecutive opening brackets does not exceed <b>d</b>. For example, the maximum consecutive opening brackets in <b>[][[]]</b> is 2, in <b>[[]][[]]</b> is again 2, in <b>[][][]</b> is 1, but in <b>[[[]][]]</b> is 3. The function should return a list of all possible valid combinations of square brackets that meet the depth restriction.</p>
@@ -1156,6 +1186,9 @@ assert generate_brackets(3, 2) == ["[[][]]", "[[]][]", "[][][]"]
     new MultipleChoiceTask(
         "MC2RB",
         `<h1>Task 2: Generate DNA Sequences (Using Queue)</h1>
+        <br/>
+        <h2>A <b>timer</b> is in the top right of your screen: Do not spend more than <i>10 minutes</i> on this task. If you can't solve it within 10 minutes, please submit and skip the task.</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a Python function named <b>dna_sequences(pattern: str) -> list[str]</b> that generates all possible DNA sequences based on a given pattern. The function should accept a single string argument ('pattern') and return a list of strings. The input pattern consists of the characters 'A', 'T', 'C', 'G', and a special placeholder 'N'. The 'N' acts as a wildcard that can be replaced by any of the four DNA bases ('A', 'C', 'G', 'T'). Your function should return a list of strings, each representing a unique DNA sequence obtained by substituting every 'N' in the input pattern with each possible DNA base. Use a queue data structure to generate and explore all combinations of sequences.</p>
@@ -1247,6 +1280,9 @@ assert dna_sequences("AAN") == ['AAA', 'AAC', 'AAG', 'AAT']`
     new MultipleChoiceTask(
         "MC3RB",
         `<h1>Task 3: Longest Valid Parentheses (Using Stack)</h1>
+        <br/>
+        <h2>A <b>timer</b> is in the top right of your screen: Do not spend more than <i>10 minutes</i> on this task. If you can't solve it within 10 minutes, please submit and skip the task.</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 <p>Write a function <b>longest_valid_parentheses(s: str) -> int</b> that determines the length of the longest valid (well-formed) parentheses substring within the string 's'. The function should return the maximum length of such a substring. For example, given the input 's = "(()"', the output should be '2', as the longest valid substring is '"()"'. For 's = ")()())"', the output should be '4' due to the substring '"()()"'. Another example would be 's = ""', where the output should be '0' since there are no valid parentheses.</p>
@@ -1336,6 +1372,9 @@ assert longest_valid_parentheses("()(())))") == 6`
     new MultipleChoiceTask(
         "MC4RB",
         `<h1>Task 4: Invalid Parentheses Indicies (Using Stack)</h1>
+        <br/>
+        <h2>A <b>timer</b> is in the top right of your screen: Do not spend more than <i>10 minutes</i> on this task. If you can't solve it within 10 minutes, please submit and skip the task.</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
@@ -1429,6 +1468,9 @@ assert invalid_parentheses_indices(")()(") == [0, 3]`
     new MultipleChoiceTask(
         "MC5RB",
         `<h1>Task 5: Sliding Window Minimum (Using Stack)</h1>
+        <br/>
+        <h2>A <b>timer</b> is in the top right of your screen: Do not spend more than <i>10 minutes</i> on this task. If you can't solve it within 10 minutes, please submit and skip the task.</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
@@ -1515,6 +1557,9 @@ assert sliding_window_minimum([10, 5, 2, 7, 8, 7], 3) == [(2, 2), (2, 2), (2, 2)
     new MultipleChoiceTask(
         "MC6RB",
         `<h1>Task 6: Sliding Even Count (Using Dequeue)</h1>
+        <br/>
+        <h2>A <b>timer</b> is in the top right of your screen: Do not spend more than <i>10 minutes</i> on this task. If you can't solve it within 10 minutes, please submit and skip the task.</h2>
+        <br/>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
@@ -1569,7 +1614,7 @@ sliding_even_count([2, 3, 6, 8, 1], 2)
     new ManualCodingTask(
         "mc6",
         ``,
-        `def even_count(nums: list[int], k: int) -> list[int]:
+        `def sliding_even_count(nums: list[int], k: int) -> list[int]:
     """
     Write a function named 'sliding_even_count(nums: list[int], k: int) -> list[int]' that computes the count of even numbers in each sliding window of size 'k' across a list of integers 'nums'. The function takes two arguments: 'nums', a list of integers, and 'k', an integer specifying the window size. It returns a list of integers where each value represents the number of even numbers within each window as it moves from the start to the end of 'nums'. The function should handle edge cases, such as windows extending beyond the list's bounds or having no even numbers, and efficiently compute the counts for each window position.
 
@@ -1620,7 +1665,20 @@ sliding_even_count([2, 3, 6, 8, 1], 2)
 
 assert sliding_even_count([2, 4, 6, 1, 3, 5], 4) == [3, 2, 1]
 assert sliding_even_count([1, 2, 1, 2, 1, 2, 1, 2], 3) == [1, 2, 1, 2, 1, 2]
-assert sliding_even_count([2, 3, 6, 8, 1], 2) = [1, 1, 2, 1]`
+assert sliding_even_count([2, 3, 6, 8, 1], 2) == [1, 1, 2, 1]`
+    ),
+
+
+    new MultipleChoiceTask(
+        "FIN1",
+        `<h1>Thank you for participating!</h1>
+<br/>
+<h2>Please email me (majeed@dgp.toronto.edu or majeed.kazemitabaar@mail.utoronto.ca) your INTERAC e-transfer email address so I can send you the compensation.</h2>`,
+        [
+            "I did not email it.",
+            "I emailed my e-transfer email address to receive the study compensation."
+        ],
+        2
     ),
 ];
 
