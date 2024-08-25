@@ -810,7 +810,6 @@ const taskQuestion3: newQuestionObject[] = [
       "answer": "It ensures that 'dq' is in decreasing order, which is crucial for finding the maximum in the sliding window.",
       "top-two-variables": [
         "dq",
-        "n"
       ]
     },
     {
@@ -842,7 +841,6 @@ const taskQuestion3: newQuestionObject[] = [
       "answer": null,
       "top-two-variables": [
         "dq",
-        "n"
       ]
     },
     {
@@ -853,7 +851,6 @@ const taskQuestion3: newQuestionObject[] = [
       "answer": "This removes elements that are outside the current window, ensuring the window size remains valid.",
       "top-two-variables": [
         "dq",
-        "i"
       ]
     },
     {
@@ -864,7 +861,6 @@ const taskQuestion3: newQuestionObject[] = [
       "answer": null,
       "top-two-variables": [
         "dq",
-        "n"
       ]
     },
 

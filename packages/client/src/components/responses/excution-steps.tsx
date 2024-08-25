@@ -1244,32 +1244,54 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
                     setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
                 }else if (currentWrongAnswers && index == currentQuestionIndex){
-                    //set the current wrong answers
-                    //find the first empty string in the array
-
-                    //set feedback
-                    let tempNum = deepCopy(feedbackReady);
-                    tempNum[variableIndex][attemptNumber - 1] = false;
-                    setFeedbackReady(tempNum);
-                    getCurrentFeedback(index, variableIndex);
-
-                    setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
-
-                    let temp = deepCopy(currentWrongAnswers);
-                    console.log(temp[variableIndex][currentQuestionIndex]);
-                    let emptyIndex = temp[variableIndex][
-                        currentQuestionIndex
-                    ].findIndex((item: string) => item === "");
-                    if (emptyIndex <= 2 && emptyIndex >= 0) {
-                        temp[variableIndex][currentQuestionIndex][emptyIndex] =
-                            inputValue[variableIndex];
-                        setCurrentWrongAnswers(temp);
-                        console.log("currentWrongAnswers", temp);
-                        setInputValue((prevInputValue) => {
-                            const newInputValue = [...prevInputValue];
-                            newInputValue[variableIndex] = "";
-                            return newInputValue;
+                    if(inputValue[variableIndex].replace(/\s/g, "") == solution.replace(/\s/g, "")){
+                        setShowSolution((prev) => {
+                            if (!prev) return prev;
+            
+                            // Create a shallow copy of the top-level array
+                            let temp = prev.map((innerArray) => [...innerArray]);
+            
+                            // Ensure the nested array exists
+                            if (temp[variableIndex]) {
+                                // Set the specific value to true
+                                temp[variableIndex][index] = true;
+                            }
+                            return temp;
                         });
+                        let temp = deepCopy(feedbackReady);
+                        temp[variableIndex][attemptNumber - 1] = true;
+                        setFeedbackReady(temp);
+                        setTotalCorrect((prevTotalCorrect) => prevTotalCorrect + 1);
+                        setTotalAttempts((prevTotalAttempts) => prevTotalAttempts + 1);
+
+                    }else{
+                        //set the current wrong answers
+                        //find the first empty string in the array
+
+                        //set feedback
+                        let tempNum = deepCopy(feedbackReady);
+                        tempNum[variableIndex][attemptNumber - 1] = false;
+                        setFeedbackReady(tempNum);
+                        getCurrentFeedback(index, variableIndex);
+
+                        setTotalIncorrect((prevTotalIncorrect) => prevTotalIncorrect + 1);
+
+                        let temp = deepCopy(currentWrongAnswers);
+                        console.log(temp[variableIndex][currentQuestionIndex]);
+                        let emptyIndex = temp[variableIndex][
+                            currentQuestionIndex
+                        ].findIndex((item: string) => item === "");
+                        if (emptyIndex <= 2 && emptyIndex >= 0) {
+                            temp[variableIndex][currentQuestionIndex][emptyIndex] =
+                                inputValue[variableIndex];
+                            setCurrentWrongAnswers(temp);
+                            console.log("currentWrongAnswers", temp);
+                            setInputValue((prevInputValue) => {
+                                const newInputValue = [...prevInputValue];
+                                newInputValue[variableIndex] = "";
+                                return newInputValue;
+                            });
+                        }
                     }
                     
                 }
