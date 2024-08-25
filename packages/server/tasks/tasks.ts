@@ -248,7 +248,7 @@ export const CodingTasks = [
 <iframe
     width="900"
     height="550"
-    src="https://www.youtube.com/embed/eGfxgTff_xY"
+    src="https://www.youtube.com/embed/WzakOxPM0DA"
     title="Study Instructions"
     frameBorder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -318,6 +318,23 @@ print(q)
 <br/>
 <h3>What will be the output of the code snippet?</h3>`,
         ["[0]", "[1, 2, 3, 4]", "[10]", "[4]"],
+        2
+    ),
+
+    new MultipleChoiceTask(
+        "VID1",
+        `<h1>Ask Me to Send You Video Tutorial</h1>
+        <br/>
+<p>For the next two tasks you will be using a particular AI tool embedded in this system. But you first need to watch a video about it.</p>
+
+<h1>Ask the experimenter to send you the video tutorial.</h1>
+
+<br/>
+<h3>Have you watched the video?</h3>`,
+        [
+            "No - I did not watch the video.",
+            "Yes - I know how the AI tool works.",
+        ],
         2
     ),
 
@@ -541,6 +558,23 @@ print(s)
     ),
 
     new MultipleChoiceTask(
+        "VID2",
+        `<h1>Ask Me to Send You Video Tutorial</h1>
+        <br/>
+<p>For the next two tasks you will be using a particular AI tool embedded in this system. But you first need to watch a video about it.</p>
+
+<h1>Ask the experimenter to send you the video tutorial.</h1>
+
+<br/>
+<h3>Have you watched the video?</h3>`,
+        [
+            "No - I did not watch the video.",
+            "Yes - I know how the AI tool works.",
+        ],
+        2
+    ),
+
+    new MultipleChoiceTask(
         "T3RB",
         `<h1>Warm-Up Task 3: Reverse List Using Stack</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
@@ -757,6 +791,23 @@ print(dq)
 <br/>
 <h3>What will be the output of the code snippet?</h3>`,
         ["[1]", "[0, 1, 0]", "[2]", "[1, 0, 1]"],
+        2
+    ),
+
+    new MultipleChoiceTask(
+        "VID3",
+        `<h1>Ask Me to Send You Video Tutorial</h1>
+        <br/>
+<p>For the next two tasks you will be using a particular AI tool embedded in this system. But you first need to watch a video about it.</p>
+
+<h1>Ask the experimenter to send you the video tutorial.</h1>
+
+<br/>
+<h3>Have you watched the video?</h3>`,
+        [
+            "No - I did not watch the video.",
+            "Yes - I know how the AI tool works.",
+        ],
         2
     ),
 
