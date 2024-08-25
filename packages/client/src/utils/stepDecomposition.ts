@@ -415,35 +415,27 @@ const warmupQuestion1: newQuestionObject[] = [
 
 const warmupQuestion3: newQuestionObject[] = [
     {
-        "step": 4,
-        "begin-line": 3,
-        "end-line": 5,
-        "question-about-purpose-of-code": "What is the purpose of the while loop in lines 3 to 5?",
-        "answer": "The loop iteratively checks and removes characters from both ends of the list until it's either empty or contains one character, which is crucial for palindrome validation.",
-        "top-two-variables": ["dq", "s"]
-    },
-    {
         "step": 5,
         "begin-line": 4,
         "end-line": 4,
         "question-about-purpose-of-code": "What is the purpose of the if statement on line 4?",
         "answer": "It checks if the first and last characters of the list are equal, which is the core logic for palindrome validation.",
-        "top-two-variables": ["dq", "s"]
+        "top-two-variables": ["dq"]
     },
     {
         "step": 7,
         "begin-line": 4,
         "end-line": 4,
-        "question-about-purpose-of-code": "What does the pop function do in line 4?",
-        "answer": "It removes and returns the first and last characters from the list, which are then compared to check for palindrome.",
+        "question-about-purpose-of-code": null,
+        "answer": null,
         "top-two-variables": ["dq"]
     },
     {
-        "step": 11,
+        "step": 9,
         "begin-line": 6,
         "end-line": 6,
-        "question-about-purpose-of-code": "What is the purpose of the return statement on line 6?",
-        "answer": "It returns True if the input string is a palindrome, concluding the palindrome check.",
+        "question-about-purpose-of-code": null,
+        "answer": null,
         "top-two-variables": ["dq"]
     }
 ]
@@ -483,7 +475,6 @@ const warmupQuestion3: newQuestionObject[] = [
 //     }
 // ];
 
-
 const taskQuestion1: newQuestionObject[] = [
     {
         "step": 6,
@@ -497,7 +488,7 @@ const taskQuestion1: newQuestionObject[] = [
         ]
     },
     {
-      "step": 8,
+      "step": 25,
       "begin-line": 9,
       "end-line": 12,
       "question-about-purpose-of-code": "What is the purpose of the code block from lines 9 to 12 that checks the condition 'if opens < n' and updates 'q' and 'new_max_d'?",
@@ -507,8 +498,8 @@ const taskQuestion1: newQuestionObject[] = [
         "new_max_d"
       ]
     },
-    {
-        "step": 9,
+    {   
+        "step": 32,
         "begin-line": 10,
         "end-line": 10,
         "question-about-purpose-of-code": "What is the purpose of line 10 that calculates the new maximum depth 'new_max_d' when adding an opening parenthesis?",
@@ -517,30 +508,113 @@ const taskQuestion1: newQuestionObject[] = [
           "new_max_d",
           "cur_d"
         ]
-    },
-    {
-      "step": 24,
-      "begin-line": 13,
-      "end-line": 14,
-      "question-about-purpose-of-code": "What is the purpose of the code block from lines 13 to 14 that checks the condition 'if closes < opens and max_d <= d' and updates 'q'?",
-      "answer": "This block handles the case when a closing parenthesis can be added. It updates the queue 'q' with the new state after adding a closing parenthesis and updating the current depth 'cur_d'.",
-      "top-two-variables": [
-        "q",
-        "closes"
-      ]
-    },
-    {
-      "step": 47,
-      "begin-line": 6,
-      "end-line": 7,
-      "question-about-purpose-of-code": "What is the purpose of the code block from lines 6 to 7 that checks the condition 'if opens == n and closes == n' and updates 'result'?",
-      "answer": "This block checks if the current state represents a valid combination of parentheses (i.e., it has 'n' opening and closing parentheses) and if so, adds it to the result list.",
-      "top-two-variables": [
-        "result",
-        "s"
-      ]
-    }
-  ]
+      },
+      {
+        "step": 46,
+        "begin-line": 13,
+        "end-line": 14,
+        "question-about-purpose-of-code": "What is the purpose of the code block from lines 13 to 14 that checks the condition 'if closes < opens and max_d <= d' and updates 'q'?",
+        "answer": "This block handles the case when a closing parenthesis can be added. It updates the queue 'q' with the new state after adding a closing parenthesis and updating the current depth 'cur_d'.",
+        "top-two-variables": [
+          "q",
+          "closes"
+        ]
+      },
+      {
+        "step": 54,
+        "begin-line": 6,
+        "end-line": 7,
+        "question-about-purpose-of-code": "What is the purpose of the code block from lines 6 to 7 that checks the condition 'if opens == n and closes == n' and updates 'result'?",
+        "answer": "This block checks if the current state represents a valid combination of parentheses (i.e., it has 'n' opening and closing parentheses) and if so, adds it to the result list.",
+        "top-two-variables": [
+          "result",
+          "s"
+        ]
+      },
+      {
+        "step": 80,
+        "begin-line": 9,
+        "end-line": 12,
+        "question-about-purpose-of-code": null,
+        "answer": null,
+        "top-two-variables": [
+          "q",
+          "new_max_d"
+        ]
+      },
+      {
+        "step": 105,
+        "begin-line": 13,
+        "end-line": 14,
+        "question-about-purpose-of-code": null,
+        "answer": null,
+        "top-two-variables": [
+          "q",
+          "closes"
+        ]
+      },
+
+
+]
+
+// const taskQuestion1: newQuestionObject[] = [
+//     {
+//         "step": 6,
+//         "begin-line": 5,
+//         "end-line": 5,
+//         "question-about-purpose-of-code": "What is the purpose of line 5 that pops the first element from the queue and unpacks it into multiple variables?",
+//         "answer": "This line retrieves the next state to process from the queue 'q' and unpacks it into the variables 's', 'opens', 'closes', 'max_d', and 'cur_d'.",
+//         "top-two-variables": [
+//           "q",
+//           "s"
+//         ]
+//     },
+//     {
+//       "step": 8,
+//       "begin-line": 9,
+//       "end-line": 12,
+//       "question-about-purpose-of-code": "What is the purpose of the code block from lines 9 to 12 that checks the condition 'if opens < n' and updates 'q' and 'new_max_d'?",
+//       "answer": "This block handles the case when an opening parenthesis can be added. It updates the queue 'q' with the new state after adding an opening parenthesis and updating the maximum depth 'new_max_d'.",
+//       "top-two-variables": [
+//         "q",
+//         "new_max_d"
+//       ]
+//     },
+//     {
+//         "step": 9,
+//         "begin-line": 10,
+//         "end-line": 10,
+//         "question-about-purpose-of-code": "What is the purpose of line 10 that calculates the new maximum depth 'new_max_d' when adding an opening parenthesis?",
+//         "answer": "This line calculates the new maximum depth if an opening parenthesis is added to the current state, which is used to check if the depth restriction is met.",
+//         "top-two-variables": [
+//           "new_max_d",
+//           "cur_d"
+//         ]
+//     },
+//     {
+//       "step": 24,
+//       "begin-line": 13,
+//       "end-line": 14,
+//       "question-about-purpose-of-code": "What is the purpose of the code block from lines 13 to 14 that checks the condition 'if closes < opens and max_d <= d' and updates 'q'?",
+//       "answer": "This block handles the case when a closing parenthesis can be added. It updates the queue 'q' with the new state after adding a closing parenthesis and updating the current depth 'cur_d'.",
+//       "top-two-variables": [
+//         "q",
+//         "closes"
+//       ]
+//     },
+//     {
+//       "step": 47,
+//       "begin-line": 6,
+//       "end-line": 7,
+//       "question-about-purpose-of-code": "What is the purpose of the code block from lines 6 to 7 that checks the condition 'if opens == n and closes == n' and updates 'result'?",
+//       "answer": "This block checks if the current state represents a valid combination of parentheses (i.e., it has 'n' opening and closing parentheses) and if so, adds it to the result list.",
+//       "top-two-variables": [
+//         "result",
+//         "s"
+//       ]
+//     },
+
+//   ]
 
 const taskQuestion2: newQuestionObject[] = [
     {
@@ -566,17 +640,6 @@ const taskQuestion2: newQuestionObject[] = [
       ]
     },
     {
-      "step": 18,
-      "begin-line": 15,
-      "end-line": 15,
-      "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
-      "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring.",
-      "top-two-variables": [
-        "max_length",
-        "i"
-      ]
-    },
-    {
       "step": 34,
       "begin-line": 17,
       "end-line": 17,
@@ -588,38 +651,49 @@ const taskQuestion2: newQuestionObject[] = [
       ]
     },
     {
-      "step": 42,
-      "begin-line": 17,
-      "end-line": 17,
+      "step": 51,
+      "begin-line": 7,
+      "end-line": 8,
       "question-about-purpose-of-code": null,
       "answer": null,
       "top-two-variables": [
         "stack",
-        "i"
+        "char"
       ]
     },
     {
-      "step": 69,
-      "begin-line": 17,
-      "end-line": 17,
-      "question-about-purpose-of-code": null,
-      "answer": null,
-      "top-two-variables": [
-        "stack",
-        "i"
-      ]
+        "step": 61,
+        "begin-line": 15,
+        "end-line": 15,
+        "question-about-purpose-of-code": "How does the line 15 update the max_length variable?",
+        "answer": "It updates max_length to be the maximum of the current max_length and the difference between the current index and the top of the stack, representing the length of the valid substring.",
+        "top-two-variables": [
+          "max_length",
+          "i"
+        ]
+      },
+    {
+        "step": 85,
+        "begin-line": 10,
+        "end-line": 15,
+        "question-about-purpose-of-code": null,
+        "answer": null,
+        "top-two-variables": [
+          "stack",
+          "max_length"
+        ]
     },
     {
-      "step": 108,
-      "begin-line": 15,
+      "step": 94,
+      "begin-line": 10,
       "end-line": 15,
       "question-about-purpose-of-code": null,
       "answer": null,
       "top-two-variables": [
-        "max_length",
-        "i"
+        "stack",
+        "max_length"
       ]
-    }
+    },
   ]
 
 // const taskQuestion2: questionObject[] = [
@@ -751,11 +825,11 @@ const taskQuestion3: newQuestionObject[] = [
       ]
     },
     {
-        "step": 37,
-        "begin-line": 11,
+        "step": 36,
+        "begin-line": 10,
         "end-line": 11,
-        "question-about-purpose-of-code": "What is the significance of appending 'nums[dq[0]]' to 'result'?",
-        "answer": "This adds the maximum of the current window to the result list, as 'dq[0]' always holds the index of the maximum.",
+        "question-about-purpose-of-code": null,
+        "answer": null,
         "top-two-variables": [
           "result"
         ]
@@ -768,7 +842,7 @@ const taskQuestion3: newQuestionObject[] = [
       "answer": null,
       "top-two-variables": [
         "dq",
-        "i"
+        "n"
       ]
     },
     {
@@ -790,7 +864,7 @@ const taskQuestion3: newQuestionObject[] = [
       "answer": null,
       "top-two-variables": [
         "dq",
-        "i"
+        "n"
       ]
     },
 

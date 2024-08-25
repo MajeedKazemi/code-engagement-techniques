@@ -799,7 +799,8 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                     frames,
                     currStep,
                     stopLine,
-                    voi
+                    currLine,
+                    voi,
                 );
 
                 //update currValue with the value after the block that can be found using "next-line"
@@ -826,12 +827,13 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
         taskTrace: any[],
         step: number,
         stopLine: number,
+        currLine: number,
         variableOfInterest: string
     ): { value: any; type: string } {
         //two possibilities
         //first: check if taskTrace[1].nextLine is taskTrace[0].currLine
 
-        if(taskTrace.length >= 2 && taskTrace[1].nextLine === taskTrace[0].currLine){
+        if(taskTrace.length >= 2 && taskTrace[1].nextLine === taskTrace[0].currLine && currLine != stopLine){
             //means it in a loop
             let line1 = taskTrace[0].currLine;
             let line2 = taskTrace[0].nextLine;
@@ -871,19 +873,19 @@ export const ExcutionSteps: React.FC<ExcutionStepsProps> = ({
                             return { value: variable.value, type: variable.type };
                         } else {
                             //wired thing occured for task 6
-                            if (taskID == "6") {
-                                const variable = {
-                                    name: "dq",
-                                    type: "str",
-                                    value: [2, 3],
-                                };
-                                if (variable) {
-                                    return {
-                                        value: variable.value,
-                                        type: variable.type,
-                                    };
-                                }
-                            }
+                            // if (taskID == "6") {
+                            //     const variable = {
+                            //         name: "dq",
+                            //         type: "str",
+                            //         value: [2, 3],
+                            //     };
+                            //     if (variable) {
+                            //         return {
+                            //             value: variable.value,
+                            //             type: variable.type,
+                            //         };
+                            //     }
+                            // }
                         }
                     } else {
                         const variable = frame.frame.find(

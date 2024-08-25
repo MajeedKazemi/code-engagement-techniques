@@ -5993,7 +5993,7 @@ for block in decomposition['complex-multiline-blocks']:
     step_ranges = find_step_ranges(begin_line, end_line, steps)
     
     for start_step, end_step in step_ranges:
-        if end_step - start_step <= 10 and end_line - begin_line <= 7:
+        if end_step - start_step <= 50 and end_line - begin_line <= 7:
             new_block = {
                 "begin-line": begin_line,
                 "end-line": end_line,
