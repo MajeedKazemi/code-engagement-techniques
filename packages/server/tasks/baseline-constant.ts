@@ -217,31 +217,39 @@ print(reverse_list_with_stack([1, 2, 3, 4, 5]))`
 
 
 export const tech1WarmupCode = 
-`def reverse_list_with_queue(input_list) -> list:
-    queue = input_list[:]
-    reversed_list = []
-    while queue:
-        reversed_list.insert(0, queue.pop(0))
-    return reversed_list
-print(reverse_list_with_queue([1, 2, 3, 4, 5]))`
+`def is_balanced_parentheses(txt: str) -> bool:
+    stack = []
+    for char in txt:
+        if char == '[':
+            stack.append(char)
+        elif char == ']':
+            if not stack or stack[-1] != '[':
+                return False
+            stack.pop()         
+    return len(stack) == 0
+print(is_balanced_parentheses("[][]"))
+print(is_balanced_parentheses("[[]"))`
 
 
 export const tech1WarmupExplanation = 
-`def reverse_list_with_queue(input_list) -> list: ### Define a function named \`reverse_list_with_queue\` that takes a list \`input_list\` as input. The function aims to reverse the list using a queue-like approach.
-    queue = input_list[:] ### Create a copy of \`input_list\` and assign it to \`queue\`. This ensures that the original list is not modified.
-    reversed_list = [] ### Initialize an empty list \`reversed_list\` to store the elements in reversed order.
-    while queue: ### Start a while loop that continues as long as \`queue\` is not empty.
-        reversed_list.insert(0, queue.pop(0)) ### Remove the first element from \`queue\` using \`pop(0)\` and insert it at the beginning of \`reversed_list\` using \`insert(0, element)\`.
-    return reversed_list ### Return the \`reversed_list\` which now contains the elements of \`input_list\` in reversed order.
-reverse_list_with_queue([1, 2, 3, 4, 5]) ### Call the function \`reverse_list_with_queue\` with the list \`[1, 2, 3, 4, 5]\`. The expected output is \`[5, 4, 3, 2, 1]\`.
+`def is_balanced_parentheses(txt: str) -> bool: ### Defines a function named \`is_balanced_parentheses\` that takes a string \`txt\` as an argument and returns a boolean value. The function aims to check if the parentheses in the string are balanced.
+    stack = [] ### Initializes an empty list named \`stack\` which will be used to keep track of the opening parentheses encountered in the string.
+    for char in txt: ### Starts a for loop to iterate over each character in the input string \`txt\`.
+        if char == '(': ### Checks if the current character is an opening parenthesis '('.
+            stack.append(char) ### If it is an opening parenthesis, it is added to the \`stack\`.
+        elif char == ')': ### Checks if the current character is a closing parenthesis ')'.
+            if not stack or stack[-1] != '(': ### Checks if the \`stack\` is empty or if the top element of the \`stack\` is not an opening parenthesis '('.
+                return False ### If either condition is true, it means the parentheses are not balanced, so the function returns \`False\`.
+            stack.pop() ### If the top element of the \`stack\` is an opening parenthesis '(', it is removed from the \`stack\`.
+    return len(stack) == 0 ### After the loop, checks if the \`stack\` is empty. If it is empty, it means all opening parentheses have been matched with closing ones, so the function returns \`True\`. Otherwise, it returns \`False\`.
+print(is_balanced_parentheses("()()")) ### Calls the function \`is_balanced_parentheses\` with the string "()()" and prints the result. This should return \`True\` because the parentheses are balanced.
+print(is_balanced_parentheses("(()")) ### Calls the function \`is_balanced_parentheses\` with the string "(()" and prints the result. This should return \`False\` because the parentheses are not balanced.
 [END]
 
 [OVERALL-EXPLANATION]
-The provided code defines a function \`reverse_list_with_queue\` that reverses a given list \`input_list\` using a queue-like approach. The function initializes an empty list \`reversed_list\` to store the elements in reversed order and creates a copy of \`input_list\` named \`queue\` to avoid modifying the original list.
+The provided code defines a function \`is_balanced_parentheses\` that checks whether the parentheses in a given string are balanced. The function uses a stack data structure to keep track of the opening parentheses encountered as it iterates through the string. When it encounters a closing parenthesis, it checks if there is a corresponding opening parenthesis at the top of the stack. If there is, it removes the opening parenthesis from the stack. If not, it returns \`False\` immediately, indicating that the parentheses are not balanced. After processing all characters in the string, the function checks if the stack is empty. If it is, it means all opening parentheses have been matched with closing ones, and the function returns \`True\`. Otherwise, it returns \`False\`.
 
-The function then enters a while loop that continues as long as \`queue\` is not empty. During each iteration of the loop, the function removes the first element from \`queue\` using \`pop(0)\` and inserts it at the beginning of \`reversed_list\` using \`insert(0, element)\`. This effectively reverses the order of the elements.
-
-Finally, the function returns the \`reversed_lis\` which contains the elements of \`input_list\` in reversed order. The function is called with the list \`[1, 2, 3, 4, 5]\`, and it returns the expected output \`[5, 4, 3, 2, 1]\`.`
+The function is then tested with two example strings: "()()" and "(()". The first string has balanced parentheses, so the function returns \`True\`. The second string has an unmatched opening parenthesis, so the function returns \`False\`. This demonstrates the function's ability to correctly identify balanced and unbalanced parentheses in a string.`
 
 // export const tech1WarmupCode =
 // `def is_balanced_parentheses(txt: str) -> bool:

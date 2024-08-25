@@ -377,22 +377,38 @@ const warmupQuestion2: newQuestionObject[] = [
 
 const warmupQuestion1: newQuestionObject[] = [
     {
-        "step": 3,
-        "begin-line": 2,
-        "end-line": 2,
-        "question-about-purpose-of-code": "Why is the queue initialized with a copy of the input list on line 3?",
-        "answer": "The queue is initialized with a copy of the input list to prevent modification of the original list and to provide a source of elements for the loop's operation.",
-        "top-two-variables": ["queue"]
+      "step": 5,
+      "begin-line": 4,
+      "end-line": 5,
+      "question-about-purpose-of-code": "What is the purpose of appending opening parentheses to the stack in the code?",
+      "answer": "Appending opening parentheses to the stack helps keep track of the parentheses that are yet to be closed.",
+      "top-two-variables": [
+        "stack",
+        "char"
+      ]
     },
     {
-        "step": 5,
+      "step": 11,
+      "begin-line": 9,
+      "end-line": 9,
+      "question-about-purpose-of-code": "Why does the function return True only when the stack is empty at the end?",
+      "answer": "If the stack is empty, it means all opening parentheses have been closed, indicating a balanced string.",
+      "top-two-variables": [
+        "stack"
+      ]
+    },
+    {
+        "step": 28,
         "begin-line": 4,
         "end-line": 5,
-        "question-about-purpose-of-code": "What is the role of the while loop in the function reverse_list_with_queue?",
-        "answer": "The while loop processes each element in the queue and inserts it at the beginning of the reversed list, thus reversing the order of elements.",
-        "top-two-variables": ["queue", "reversed_list"]
-    }
-]
+        "question-about-purpose-of-code": null,
+        "answer": null,
+        "top-two-variables": [
+          "stack",
+          "char"
+        ]
+      }
+  ]
 
 // const warmupQuestion1: questionObject[] = [
 //     {

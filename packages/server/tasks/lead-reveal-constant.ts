@@ -675,20 +675,115 @@ export const tech3WarmupDecomposition = {
   ]
 }
 
+// export const tech1WarmupDecomposition = {
+//   "subgoals": [
+//     {
+//       "decisions-made-here": [
+//         "Initialize an empty list to store the reversed list"
+//       ],
+//       "reasonings-behind-decisions": [
+//         "We need a separate list to store the reversed elements. An empty list is initialized so that elements can be added to it in the reversed order"
+//       ],
+//       "questions": [
+//         {
+//           "context-so-far": "We have initialized our queue with the input list. Now, we need a place to store our reversed list.",
+//           "question": "How should we prepare to store the reversed list?",
+//           "answer": "We should initialize an empty list to store the reversed elements. This list will be populated with elements in the reversed order as we process the queue."
+//         }
+//       ],
+//       "subgoal-code-lines-to-be-revealed": [
+//         2
+//       ]
+//     },
+//     {
+//       "decisions-made-here": [
+//         "Use a queue and initialize it with a copy of the input list"
+//       ],
+//       "reasonings-behind-decisions": [
+//         "A queue is a data structure that follows the FIFO (First In First Out) principle. By initializing it with a copy of the input list, we ensure that the original list is not modified"
+//       ],
+//       "questions": [
+//         {
+//           "context-so-far": "We are at the beginning of our function and we need to set up our data structures. We have been given a list that we need to reverse using a queue.",
+//           "question": "What data structure should we use and how should we initialize it?",
+//           "answer": "We should use a queue and initialize it with a copy of the input list. This is because a queue follows the FIFO principle, which will help us reverse the list."
+//         }
+//       ],
+//       "subgoal-code-lines-to-be-revealed": [
+//         3
+//       ]
+//     },
+//     {
+//       "decisions-made-here": [
+//         "Loop until the queue is empty"
+//       ],
+//       "reasonings-behind-decisions": [
+//         "We need to pop all the elements from the queue and insert them at the beginning of the reversed_list. The loop continues until all elements are popped from the queue"
+//       ],
+//       "questions": [
+//         {
+//           "context-so-far": "We have our queue and an empty list to store the reversed elements. Now, we need to start processing the elements in the queue.",
+//           "question": "What should be our condition to continue processing the elements in the queue?",
+//           "answer": "We should continue processing the elements in the queue until the queue is empty. This ensures that all elements are popped from the queue and inserted into the reversed list."
+//         }
+//       ],
+//       "subgoal-code-lines-to-be-revealed": [
+//         4
+//       ]
+//     },
+//     {
+//       "decisions-made-here": [
+//         "Pop the first element from the queue and insert it at the beginning of the reversed_list"
+//       ],
+//       "reasonings-behind-decisions": [
+//         "Since a queue follows the FIFO principle, popping the first element and inserting it at the beginning of the reversed_list ensures that the order of elements is reversed"
+//       ],
+//       "questions": [
+//         {
+//           "context-so-far": "We are inside a loop that continues until the queue is empty. Now, we need to process each element in the queue.",
+//           "question": "How should we process each element in the queue to achieve the reversed order in the reversed_list?",
+//           "answer": "We should pop the first element from the queue and insert it at the beginning of the reversed_list. This ensures that the order of elements is reversed, as a queue follows the FIFO principle."
+//         }
+//       ],
+//       "subgoal-code-lines-to-be-revealed": [
+//         5
+//       ]
+//     },
+//     {
+//       "decisions-made-here": [
+//         "Return the reversed_list after the loop completes"
+//       ],
+//       "reasonings-behind-decisions": [
+//         "After all elements are popped from the queue and inserted at the beginning of the reversed_list, the reversed_list will contain the elements of the input_list in reversed order. Therefore, it is returned as the result"
+//       ],
+//       "questions": [
+//         {
+//           "context-so-far": "We have processed all the elements in the queue and inserted them in the reversed order into the reversed_list. Now, we need to provide the result of our function.",
+//           "question": "What should be the result of our function?",
+//           "answer": "The result of our function should be the reversed_list. After all elements are popped from the queue and inserted at the beginning of the reversed_list, the reversed_list will contain the elements of the input_list in reversed order."
+//         }
+//       ],
+//       "subgoal-code-lines-to-be-revealed": [
+//         6
+//       ]
+//     }
+//   ]
+// }
+
 export const tech1WarmupDecomposition = {
   "subgoals": [
     {
       "decisions-made-here": [
-        "Initialize an empty list to store the reversed list"
+        "Initialize an empty list to act as a stack"
       ],
       "reasonings-behind-decisions": [
-        "We need a separate list to store the reversed elements. An empty list is initialized so that elements can be added to it in the reversed order"
+        "A stack is a data structure that follows the LIFO (Last In First Out) principle. It is used here to keep track of the parentheses in the input string. An empty list is initialized to act as a stack."
       ],
       "questions": [
         {
-          "context-so-far": "We have initialized our queue with the input list. Now, we need a place to store our reversed list.",
-          "question": "How should we prepare to store the reversed list?",
-          "answer": "We should initialize an empty list to store the reversed elements. This list will be populated with elements in the reversed order as we process the queue."
+          "context-so-far": "We are at the beginning of the function where we need to set up some initial data structures to help us solve the problem.",
+          "question": "What data structure can we use to keep track of the parentheses in the input string?",
+          "answer": "We can use a stack to keep track of the parentheses in the input string. In Python, we can use a list as a stack."
         }
       ],
       "subgoal-code-lines-to-be-revealed": [
@@ -697,16 +792,16 @@ export const tech1WarmupDecomposition = {
     },
     {
       "decisions-made-here": [
-        "Use a queue and initialize it with a copy of the input list"
+        "Loop over each character in the input string"
       ],
       "reasonings-behind-decisions": [
-        "A queue is a data structure that follows the FIFO (First In First Out) principle. By initializing it with a copy of the input list, we ensure that the original list is not modified"
+        "We need to examine each character in the input string to determine if the parentheses are balanced. A loop is used to iterate over each character."
       ],
       "questions": [
         {
-          "context-so-far": "We are at the beginning of our function and we need to set up our data structures. We have been given a list that we need to reverse using a queue.",
-          "question": "What data structure should we use and how should we initialize it?",
-          "answer": "We should use a queue and initialize it with a copy of the input list. This is because a queue follows the FIFO principle, which will help us reverse the list."
+          "context-so-far": "We have initialized an empty stack. Now we need to start processing the input string.",
+          "question": "How can we examine each character in the input string?",
+          "answer": "We can use a for loop to iterate over each character in the input string."
         }
       ],
       "subgoal-code-lines-to-be-revealed": [
@@ -715,56 +810,77 @@ export const tech1WarmupDecomposition = {
     },
     {
       "decisions-made-here": [
-        "Loop until the queue is empty"
+        "Check if the current character is an opening parenthesis and if so, push it onto the stack"
       ],
       "reasonings-behind-decisions": [
-        "We need to pop all the elements from the queue and insert them at the beginning of the reversed_list. The loop continues until all elements are popped from the queue"
+        "If the current character is an opening parenthesis, it needs to be pushed onto the stack. This is because we need to find a corresponding closing parenthesis for it later."
       ],
       "questions": [
         {
-          "context-so-far": "We have our queue and an empty list to store the reversed elements. Now, we need to start processing the elements in the queue.",
-          "question": "What should be our condition to continue processing the elements in the queue?",
-          "answer": "We should continue processing the elements in the queue until the queue is empty. This ensures that all elements are popped from the queue and inserted into the reversed list."
+          "context-so-far": "We are inside the loop, examining each character in the input string. We need to decide what to do when we encounter an opening parenthesis.",
+          "question": "What should we do when we encounter an opening parenthesis?",
+          "answer": "When we encounter an opening parenthesis, we should push it onto the stack. This is because we need to find a corresponding closing parenthesis for it later."
         }
       ],
       "subgoal-code-lines-to-be-revealed": [
-        4
-      ]
-    },
-    {
-      "decisions-made-here": [
-        "Pop the first element from the queue and insert it at the beginning of the reversed_list"
-      ],
-      "reasonings-behind-decisions": [
-        "Since a queue follows the FIFO principle, popping the first element and inserting it at the beginning of the reversed_list ensures that the order of elements is reversed"
-      ],
-      "questions": [
-        {
-          "context-so-far": "We are inside a loop that continues until the queue is empty. Now, we need to process each element in the queue.",
-          "question": "How should we process each element in the queue to achieve the reversed order in the reversed_list?",
-          "answer": "We should pop the first element from the queue and insert it at the beginning of the reversed_list. This ensures that the order of elements is reversed, as a queue follows the FIFO principle."
-        }
-      ],
-      "subgoal-code-lines-to-be-revealed": [
+        4,
         5
       ]
     },
     {
       "decisions-made-here": [
-        "Return the reversed_list after the loop completes"
+        "Check if the current character is a closing parenthesis and if so, check if the stack is empty or the top of the stack is not an opening parenthesis"
       ],
       "reasonings-behind-decisions": [
-        "After all elements are popped from the queue and inserted at the beginning of the reversed_list, the reversed_list will contain the elements of the input_list in reversed order. Therefore, it is returned as the result"
+        "If the current character is a closing parenthesis, we need to check if there is a corresponding opening parenthesis on the stack. If the stack is empty or the top of the stack is not an opening parenthesis, it means the parentheses are not balanced."
       ],
       "questions": [
         {
-          "context-so-far": "We have processed all the elements in the queue and inserted them in the reversed order into the reversed_list. Now, we need to provide the result of our function.",
-          "question": "What should be the result of our function?",
-          "answer": "The result of our function should be the reversed_list. After all elements are popped from the queue and inserted at the beginning of the reversed_list, the reversed_list will contain the elements of the input_list in reversed order."
+          "context-so-far": "We are inside the loop, examining each character in the input string. We have handled the case for the opening parenthesis. Now we need to decide what to do when we encounter a closing parenthesis.",
+          "question": "What should we check when we encounter a closing parenthesis?",
+          "answer": "When we encounter a closing parenthesis, we should check if there is a corresponding opening parenthesis on the stack. If the stack is empty or the top of the stack is not an opening parenthesis, it means the parentheses are not balanced."
         }
       ],
       "subgoal-code-lines-to-be-revealed": [
-        6
+        6,
+        7,
+        8,
+      ]
+    },
+    {
+      "decisions-made-here": [
+        "If the top of the stack is an opening parenthesis, pop it from the stack"
+      ],
+      "reasonings-behind-decisions": [
+        "If the top of the stack is an opening parenthesis, it means we have found a matching pair of parentheses. Therefore, we can pop the opening parenthesis from the stack."
+      ],
+      "questions": [
+        {
+          "context-so-far": "We are inside the loop, examining each character in the input string. We have found a closing parenthesis and the top of the stack is an opening parenthesis.",
+          "question": "What should we do when we find a matching pair of parentheses?",
+          "answer": "When we find a matching pair of parentheses, we should pop the opening parenthesis from the stack."
+        }
+      ],
+      "subgoal-code-lines-to-be-revealed": [
+        9
+      ]
+    },
+    {
+      "decisions-made-here": [
+        "Return whether the stack is empty"
+      ],
+      "reasonings-behind-decisions": [
+        "At the end of the function, if the stack is empty, it means all opening parentheses have found their matching closing parentheses, and therefore the parentheses in the input string are balanced."
+      ],
+      "questions": [
+        {
+          "context-so-far": "We have finished examining all characters in the input string. Now we need to decide what to return from the function.",
+          "question": "What should we return from the function to indicate whether the parentheses in the input string are balanced?",
+          "answer": "We should return whether the stack is empty. If the stack is empty, it means all opening parentheses have found their matching closing parentheses, and therefore the parentheses in the input string are balanced."
+        }
+      ],
+      "subgoal-code-lines-to-be-revealed": [
+        10
       ]
     }
   ]

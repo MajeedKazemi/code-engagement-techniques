@@ -25,17 +25,511 @@ type TaskTraceType = {
     [key: number]: Step[];
 };
 
+// const task1Trace = [
+//     {
+//         "step": 1,
+//         "currLine": 1,
+//         "nextLine": 7,
+//         "printOutput": [],
+//         "frame": []
+//     },
+//     {
+//         "step": 2,
+//         "currLine": 7,
+//         "nextLine": 2,
+//         "printOutput": [],
+//         "frame": []
+//     },
+//     {
+//         "step": 3,
+//         "currLine": 2,
+//         "nextLine": 3,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 4,
+//         "currLine": 3,
+//         "nextLine": 4,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 5,
+//         "currLine": 4,
+//         "nextLine": 5,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": []
+//             }
+//         ]
+//     },
+//     {
+//         "step": 6,
+//         "currLine": 5,
+//         "nextLine": 4,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": []
+//             }
+//         ]
+//     },
+//     {
+//         "step": 7,
+//         "currLine": 4,
+//         "nextLine": 5,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 8,
+//         "currLine": 5,
+//         "nextLine": 4,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 9,
+//         "currLine": 4,
+//         "nextLine": 5,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 10,
+//         "currLine": 5,
+//         "nextLine": 4,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 11,
+//         "currLine": 4,
+//         "nextLine": 5,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     3,
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 12,
+//         "currLine": 5,
+//         "nextLine": 4,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     3,
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 13,
+//         "currLine": 4,
+//         "nextLine": 5,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     4,
+//                     3,
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 14,
+//         "currLine": 5,
+//         "nextLine": 4,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": [
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     4,
+//                     3,
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 15,
+//         "currLine": 4,
+//         "nextLine": 6,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": []
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     5,
+//                     4,
+//                     3,
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         "step": 16,
+//         "currLine": 6,
+//         "nextLine": null,
+//         "printOutput": [],
+//         "frame": [
+//             {
+//                 "name": "input_list",
+//                 "type": "str",
+//                 "value": [
+//                     1,
+//                     2,
+//                     3,
+//                     4,
+//                     5
+//                 ]
+//             },
+//             {
+//                 "name": "queue",
+//                 "type": "str",
+//                 "value": []
+//             },
+//             {
+//                 "name": "reversed_list",
+//                 "type": "str",
+//                 "value": [
+//                     5,
+//                     4,
+//                     3,
+//                     2,
+//                     1
+//                 ]
+//             }
+//         ]
+//     }
+// ]
+
 const task1Trace = [
     {
         "step": 1,
         "currLine": 1,
-        "nextLine": 7,
+        "nextLine": 11,
         "printOutput": [],
         "frame": []
     },
     {
         "step": 2,
-        "currLine": 7,
+        "currLine": 11,
         "nextLine": 2,
         "printOutput": [],
         "frame": []
@@ -47,15 +541,9 @@ const task1Trace = [
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             }
         ]
     },
@@ -66,26 +554,14 @@ const task1Trace = [
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             },
             {
-                "name": "queue",
+                "name": "stack",
                 "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "value": []
             }
         ]
     },
@@ -96,282 +572,190 @@ const task1Trace = [
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             },
             {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
+                "name": "stack",
                 "type": "str",
                 "value": []
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
             }
         ]
     },
     {
         "step": 6,
         "currLine": 5,
-        "nextLine": 4,
+        "nextLine": 3,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             },
             {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
+                "name": "stack",
                 "type": "str",
                 "value": []
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
             }
         ]
     },
     {
         "step": 7,
-        "currLine": 4,
-        "nextLine": 5,
+        "currLine": 3,
+        "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
-                "type": "str",
-                "value": [
-                    2,
-                    3,
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    1
-                ]
+                "name": "char",
+                "type": "list",
+                "value": "["
             }
         ]
     },
     {
         "step": 8,
-        "currLine": 5,
-        "nextLine": 4,
+        "currLine": 4,
+        "nextLine": 6,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
+                "name": "char",
                 "type": "str",
-                "value": [
-                    2,
-                    3,
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    1
-                ]
+                "value": "]"
             }
         ]
     },
     {
         "step": 9,
-        "currLine": 4,
-        "nextLine": 5,
+        "currLine": 6,
+        "nextLine": 7,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
+                "name": "char",
                 "type": "str",
-                "value": [
-                    3,
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    2,
-                    1
-                ]
+                "value": "]"
             }
         ]
     },
     {
         "step": 10,
-        "currLine": 5,
-        "nextLine": 4,
+        "currLine": 7,
+        "nextLine": 9,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
+                "name": "char",
                 "type": "str",
-                "value": [
-                    3,
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    2,
-                    1
-                ]
+                "value": "]"
             }
         ]
     },
     {
         "step": 11,
-        "currLine": 4,
-        "nextLine": 5,
+        "currLine": 9,
+        "nextLine": 3,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
+                "name": "char",
                 "type": "str",
-                "value": [
-                    4,
-                    5
-                ]
-            },
-            {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    3,
-                    2,
-                    1
-                ]
+                "value": "]"
             }
         ]
     },
     {
         "step": 12,
-        "currLine": 5,
+        "currLine": 3,
         "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             },
             {
-                "name": "queue",
+                "name": "stack",
                 "type": "str",
-                "value": [
-                    4,
-                    5
-                ]
+                "value": []
             },
             {
-                "name": "reversed_list",
+                "name": "char",
                 "type": "str",
-                "value": [
-                    3,
-                    2,
-                    1
-                ]
+                "value": "]"
             }
         ]
     },
@@ -382,143 +766,556 @@ const task1Trace = [
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             },
             {
-                "name": "queue",
+                "name": "stack",
                 "type": "str",
-                "value": [
-                    5
-                ]
+                "value": []
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    4,
-                    3,
-                    2,
-                    1
-                ]
+                "name": "char",
+                "type": "list",
+                "value": "["
             }
         ]
     },
     {
         "step": 14,
         "currLine": 5,
-        "nextLine": 4,
+        "nextLine": 3,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
-                "type": "str",
-                "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
             },
             {
-                "name": "queue",
+                "name": "stack",
                 "type": "str",
-                "value": [
-                    5
-                ]
+                "value": []
             },
             {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    4,
-                    3,
-                    2,
-                    1
-                ]
+                "name": "char",
+                "type": "list",
+                "value": "["
             }
         ]
     },
     {
         "step": 15,
-        "currLine": 4,
-        "nextLine": 6,
+        "currLine": 3,
+        "nextLine": 4,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
-                "type": "str",
-                "value": []
-            },
-            {
-                "name": "reversed_list",
-                "type": "str",
-                "value": [
-                    5,
-                    4,
-                    3,
-                    2,
-                    1
-                ]
+                "name": "char",
+                "type": "list",
+                "value": "["
             }
         ]
     },
     {
         "step": 16,
-        "currLine": 6,
-        "nextLine": null,
+        "currLine": 4,
+        "nextLine": 6,
         "printOutput": [],
         "frame": [
             {
-                "name": "input_list",
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
+                    "["
                 ]
             },
             {
-                "name": "queue",
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 17,
+        "currLine": 6,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 18,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 19,
+        "currLine": 9,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 20,
+        "currLine": 3,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": []
             },
             {
-                "name": "reversed_list",
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 21,
+        "currLine": 10,
+        "nextLine": 12,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[][]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 22,
+        "currLine": 12,
+        "nextLine": 2,
+        "printOutput": [],
+        "frame": []
+    },
+    {
+        "step": 23,
+        "currLine": 2,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            }
+        ]
+    },
+    {
+        "step": 24,
+        "currLine": 3,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": []
+            }
+        ]
+    },
+    {
+        "step": 25,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
+            }
+        ]
+    },
+    {
+        "step": 26,
+        "currLine": 5,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": []
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
+            }
+        ]
+    },
+    {
+        "step": 27,
+        "currLine": 3,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
                 "type": "str",
                 "value": [
-                    5,
-                    4,
-                    3,
-                    2,
-                    1
+                    "["
                 ]
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
+            }
+        ]
+    },
+    {
+        "step": 28,
+        "currLine": 4,
+        "nextLine": 5,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
+            }
+        ]
+    },
+    {
+        "step": 29,
+        "currLine": 5,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
+            }
+        ]
+    },
+    {
+        "step": 30,
+        "currLine": 3,
+        "nextLine": 4,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "[",
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "list",
+                "value": "["
+            }
+        ]
+    },
+    {
+        "step": 31,
+        "currLine": 4,
+        "nextLine": 6,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "[",
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 32,
+        "currLine": 6,
+        "nextLine": 7,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "[",
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 33,
+        "currLine": 7,
+        "nextLine": 9,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "[",
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 34,
+        "currLine": 9,
+        "nextLine": 3,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "[",
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 35,
+        "currLine": 3,
+        "nextLine": 10,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
+            }
+        ]
+    },
+    {
+        "step": 36,
+        "currLine": 10,
+        "nextLine": null,
+        "printOutput": [],
+        "frame": [
+            {
+                "name": "txt",
+                "type": "list",
+                "value": "[[]"
+            },
+            {
+                "name": "stack",
+                "type": "str",
+                "value": [
+                    "["
+                ]
+            },
+            {
+                "name": "char",
+                "type": "str",
+                "value": "]"
             }
         ]
     }
 ]
-
 
 
 const task3Trace = [
