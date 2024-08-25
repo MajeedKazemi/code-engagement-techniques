@@ -91,6 +91,25 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
                     "4: Very Willing",
                     "5: Extremely Willing",
                 ]);
+            } else if(props.topic === "video") {
+                setQuestionDescription(
+                    `<h1>Watch the Following Video</h1>
+<br/>
+<br/>
+<p>Here is a short video that explains what you will be doing in the study</p>
+<iframe
+  width="900"
+  height="550"
+  src="https://youtu.be/V0VzHVzMszk"
+  title="Study Instructions"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+<br/>
+<br/>
+<h3>Did you watch the video and learn about the study instructions?</h3>`);
+                setQuestionChoices(props.choices!);
             } else {
                 setQuestionDescription(props.description);
                 setQuestionChoices(props.choices!);
@@ -118,6 +137,25 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
                     "4: Very Willing",
                     "5: Extremely Willing",
                 ]);
+            } else if (props.topic === "video") {
+                setQuestionDescription(
+                    `<h1>Watch the Following Video</h1>
+<br/>
+<br/>
+<p>Here is a short video that explains what you will be doing in the study</p>
+<iframe
+  width="900"
+  height="550"
+  src="https://youtu.be/gMCmsjNzmgY"
+  title="Study Instructions"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+<br/>
+<br/>
+<h3>Did you watch the video and learn about the study instructions?</h3>`);
+                setQuestionChoices(props.choices!);
             } else {
                 setQuestionDescription(props.description);
                 setQuestionChoices(props.choices!);

@@ -323,19 +323,29 @@ print(q)
 
     new MultipleChoiceTask(
         "VID1",
-        `<h1>Ask Me to Send You Video Tutorial</h1>
-        <br/>
-<p>For the next two tasks you will be using a particular AI tool embedded in this system. But you first need to watch a video about it.</p>
-
-<h1>Ask the experimenter to send you the video tutorial.</h1>
-
+        `<h1>Watch the Following Video</h1>
 <br/>
-<h3>Have you watched the video?</h3>`,
+<br/>
+<p>Here is a short video that explains what you will be doing in the study</p>
+<iframe
+    width="900"
+    height="550"
+    src="https://youtu.be/-UEJzIbt8L8"
+    title="Study Instructions"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+></iframe>
+<br/>
+<br/>
+<h3>Did you watch the video and learn about the study instructions?</h3>
+        `,
         [
             "No - I did not watch the video.",
-            "Yes - I know how the AI tool works.",
+            "Yes - I understand the study instructions.",
         ],
-        2
+        0,
+        "video"
     ),
 
     new MultipleChoiceTask(
@@ -421,7 +431,7 @@ generate_parentheses(4, 2)
 
     new AuthoringTask(
         "2",
-        `Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
+        `Write a function generate_parentheses(n: int, d: int) -> list[str] that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed d. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in [][[]] the max is 2, in [[][[]]] the max is 3, and in [][][] the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
         task1Code,
         task1Explanation,
         task1Decomposition
@@ -558,21 +568,31 @@ print(s)
     ),
 
     new MultipleChoiceTask(
-        "VID2",
-        `<h1>Ask Me to Send You Video Tutorial</h1>
-        <br/>
-<p>For the next two tasks you will be using a particular AI tool embedded in this system. But you first need to watch a video about it.</p>
-
-<h1>Ask the experimenter to send you the video tutorial.</h1>
-
+      "VID2",
+      `<h1>Watch the Following Video</h1>
 <br/>
-<h3>Have you watched the video?</h3>`,
-        [
-            "No - I did not watch the video.",
-            "Yes - I know how the AI tool works.",
-        ],
-        2
-    ),
+<br/>
+<p>Here is a short video that explains what you will be doing in the study</p>
+<iframe
+  width="900"
+  height="550"
+  src="https://youtu.be/-UEJzIbt8L8"
+  title="Study Instructions"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+<br/>
+<br/>
+<h3>Did you watch the video and learn about the study instructions?</h3>
+      `,
+      [
+          "No - I did not watch the video.",
+          "Yes - I understand the study instructions.",
+      ],
+      1,
+      "video"
+  ),
 
     new MultipleChoiceTask(
         "T3RB",
@@ -795,21 +815,31 @@ print(dq)
     ),
 
     new MultipleChoiceTask(
-        "VID3",
-        `<h1>Ask Me to Send You Video Tutorial</h1>
-        <br/>
-<p>For the next two tasks you will be using a particular AI tool embedded in this system. But you first need to watch a video about it.</p>
-
-<h1>Ask the experimenter to send you the video tutorial.</h1>
-
+      "VID3",
+      `<h1>Watch the Following Video</h1>
 <br/>
-<h3>Have you watched the video?</h3>`,
-        [
-            "No - I did not watch the video.",
-            "Yes - I know how the AI tool works.",
-        ],
-        2
-    ),
+<br/>
+<p>Here is a short video that explains what you will be doing in the study</p>
+<iframe
+  width="900"
+  height="550"
+  src="https://youtu.be/-UEJzIbt8L8"
+  title="Study Instructions"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+<br/>
+<br/>
+<h3>Did you watch the video and learn about the study instructions?</h3>
+      `,
+      [
+          "No - I did not watch the video.",
+          "Yes - I understand the study instructions.",
+      ],
+      2,
+      "video"
+  ),
 
     new MultipleChoiceTask(
         "T5RB",
