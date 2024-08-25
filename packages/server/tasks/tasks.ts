@@ -344,7 +344,7 @@ generate_parentheses(4, 2)
 
     new AuthoringTask(
         "2",
-        `Write a function generate_parentheses(n: int, d: int) -> list[str] that generates all combinations of n pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed d. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in [][[]] the max is 2, in [[][[]]] the max is 3, and in [][][] the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
+        `Write a function <b>generate_parentheses(n: int, d: int) -> list[str]</b> that generates all combinations of <b>n</b> pairs of valid parentheses, such that the depth of any valid parentheses substring does not exceed <b>d</b>. The depth of a substring is defined as the maximum number of open parentheses at any point within the substring. For example, in <b>[][[]]</b> the max is 2, in <b>[[][[]]]</b> the max is 3, and in <b>[][][]</b> the max is 1. The function should return a list of all possible valid combinations of parentheses that meet the depth restriction.`,
         task1Code,
         task1Explanation,
         task1Decomposition
@@ -1340,7 +1340,7 @@ invalid_parentheses_indices(")()(")
 
     new ManualCodingTask(
         "mc6",
-        ``,
+        `Write a function 'invalid_parentheses_indices(s: str) -> int' that calculates the minimum number of invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()"', the function should return 1 because removing one closing parenthesis at index 2 would make the string valid. If the input is 's = "(()"', it should return 1 as well because removing one opening parenthesis at index 0 would make the string valid.`,
         `def invalid_parentheses_indices(s: str) -> list[int]:
     """
     Write a function 'invalid_parentheses_indices(s: str) -> int' that calculates the minimum number of invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()"', the function should return 1 because removing one closing parenthesis at index 2 would make the string valid. If the input is 's = "(()"', it should return 1 as well because removing one opening parenthesis at index 0 would make the string valid.
@@ -1390,7 +1390,7 @@ assert invalid_parentheses_indices(")()(") == [0, 3]`
 
     new MultipleChoiceTask(
         "MC7RB",
-        `<h1>Task 7: Longest Valid DNA Sequences (Using Stack)</h1>
+        `<h1>Task 7: Sliding Window Minimum (Using Stack)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
@@ -1476,22 +1476,41 @@ assert sliding_window_minimum([10, 5, 2, 7, 8, 7], 3) == [(2, 2), (2, 2), (2, 2)
 
     new MultipleChoiceTask(
         "MC8RB",
-        `<h1>Task 8: Longest Valid DNA Sequences (Using Stack)</h1>
+        `<h1>Task 8: Sliding Even Count (Using Dequeue)</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
-<p>Write a function </p>
+<p>Write a function named <b>sliding_even_count(nums: list[int], k: int) -> list[int]</b> that computes the count of even numbers in each sliding window of size <b>k</b> across a list of integers <b>nums</b>. The function takes two arguments: <b>nums</b>, a list of integers, and <b>k</b>, an integer specifying the window size. It returns a list of integers where each value represents the number of even numbers within each window as it moves from the start to the end of <b>nums</b>. The function should handle edge cases, such as windows extending beyond the list's bounds or having no even numbers, and efficiently compute the counts for each window position.</p>
 
 <br/>
 <p>Examples:</p>
 <pre class="code-block">
-
+sliding_even_count([2, 4, 6, 1, 3, 5], 4)
+# Output: [3, 2, 1]
+# Explanation: The sliding windows and their counts of even numbers are:
+# - [2, 4, 6, 1] -> 3 even numbers (2, 4, 6)
+# - [4, 6, 1, 3] -> 2 even numbers (4, 6)
+# - [6, 1, 3, 5] -> 1 even number (6)
 </pre>
 <pre class="code-block">
-
+sliding_even_count([1, 2, 1, 2, 1, 2, 1, 2], 3)
+# Output: [1, 2, 1, 2, 1, 2]
+# Explanation: The sliding windows and their counts of even numbers are:
+# - [1, 2, 1] -> 1 even number (2)
+# - [2, 1, 2] -> 2 even numbers (2, 2)
+# - [1, 2, 1] -> 1 even number (2)
+# - [2, 1, 2] -> 2 even numbers (2, 2)
+# - [1, 2, 1] -> 1 even number (2)
+# - [2, 1, 2] -> 2 even numbers (2, 2)
 </pre>
 <pre class="code-block">
-
+sliding_even_count([2, 3, 6, 8, 1], 2)
+# Output: [1, 1, 2, 1]
+# Explanation: The sliding windows and their counts of even numbers are:
+# - [2, 3] -> 1 even number (2)
+# - [3, 6] -> 1 even number (6)
+# - [6, 8] -> 2 even numbers (6, 8)
+# - [8, 1] -> 1 even number (8)
 </pre>
 <pre class="code-block">
 
@@ -1512,50 +1531,58 @@ assert sliding_window_minimum([10, 5, 2, 7, 8, 7], 3) == [(2, 2), (2, 2), (2, 2)
     new ManualCodingTask(
         "mc8",
         ``,
-        `def longest_valid_dna_subsequence(s: str) -> str:
-`
-    ),
+        `def even_count(nums: list[int], k: int) -> list[int]:
+    """
+    Write a function named 'sliding_even_count(nums: list[int], k: int) -> list[int]' that computes the count of even numbers in each sliding window of size 'k' across a list of integers 'nums'. The function takes two arguments: 'nums', a list of integers, and 'k', an integer specifying the window size. It returns a list of integers where each value represents the number of even numbers within each window as it moves from the start to the end of 'nums'. The function should handle edge cases, such as windows extending beyond the list's bounds or having no even numbers, and efficiently compute the counts for each window position.
 
-    new MultipleChoiceTask(
-        "MC9RB",
-        `<h1>Task 5: Longest Valid DNA Sequences (Using Stack)</h1>
-<p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
-<h2>Task Description:</h2>
+    Please fill out the #TODO parts.
 
-<p>Write a function </p>
+    >>> sliding_even_count([2, 4, 6, 1, 3, 5], 4)
+    # Output: [3, 2, 1]
+    # Explanation: The sliding windows and their counts of even numbers are:
+    # - [2, 4, 6, 1] -> 3 even numbers (2, 4, 6)
+    # - [4, 6, 1, 3] -> 2 even numbers (4, 6)
+    # - [6, 1, 3, 5] -> 1 even number (6)
 
-<br/>
-<p>Examples:</p>
-<pre class="code-block">
+    >>> sliding_even_count([1, 2, 1, 2, 1, 2, 1, 2], 3)
+    # Output: [1, 2, 1, 2, 1, 2]
+    # Explanation: The sliding windows and their counts of even numbers are:
+    # - [1, 2, 1] -> 1 even number (2)
+    # - [2, 1, 2] -> 2 even numbers (2, 2)
+    # - [1, 2, 1] -> 1 even number (2)
+    # - [2, 1, 2] -> 2 even numbers (2, 2)
+    # - [1, 2, 1] -> 1 even number (2)
+    # - [2, 1, 2] -> 2 even numbers (2, 2)
 
-</pre>
-<pre class="code-block">
+    >>> sliding_even_count([2, 3, 6, 8, 1], 2)
+    # Output: [1, 1, 2, 1]
+    # Explanation: The sliding windows and their counts of even numbers are:
+    # - [2, 3] -> 1 even number (2)
+    # - [3, 6] -> 1 even number (6)
+    # - [6, 8] -> 2 even numbers (6, 8)
+    # - [8, 1] -> 1 even number (8)
+    """
+    dq = []
+    result = []
 
-</pre>
-<pre class="code-block">
+    for i, n in enumerate(nums):
+        if dq and dq[0] < i - k + 1:
+            dq.pop(0)
+        
+        while dq and # TODO: fill out this part
+            dq.pop()
+        
+        # TODO: fill out this part
+        # TODO: fill out this part
 
-</pre>
-<pre class="code-block">
+        if i >= k - 1:
+            result.append(len(dq))
 
-</pre>
-<br/>
-<br/>
-<h2>Select how well did you understand the task?</h2>`,
-        [
-            "0: Not at all 😞",
-            "1: Slightly 😐",
-            "2: Moderately 🙂",
-            "3: Mostly 😊",
-            "4: Completely 🤩",
-        ],
-        2
-    ),
+    return result
 
-    new ManualCodingTask(
-        "mc9",
-        ``,
-        `def longest_valid_dna_subsequence(s: str) -> str:
-`
+assert sliding_even_count([2, 4, 6, 1, 3, 5], 4) == [3, 2, 1]
+assert sliding_even_count([1, 2, 1, 2, 1, 2, 1, 2], 3) == [1, 2, 1, 2, 1, 2]
+assert sliding_even_count([2, 3, 6, 8, 1], 2) = [1, 1, 2, 1]`
     ),
 ];
 
