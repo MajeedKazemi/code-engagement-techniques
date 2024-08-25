@@ -150,6 +150,7 @@ mark {
     width: calc(50vw);
 
     height: 100%;
+    overflow: auto;
 }
 
 .l-design-widht {

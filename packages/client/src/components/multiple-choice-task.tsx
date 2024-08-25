@@ -57,7 +57,6 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
     }, [userChoice]);
 
     useEffect(() => {
-        console.log(context?.user?.editorType);
         if (context?.user?.editorType) {
             setEditorType(
                 context?.user?.editorType[props.correspondingQuestion]
@@ -138,7 +137,7 @@ export const MultipleChoiceTask = (props: IMultipleChoiceTaskProps) => {
                 });
             });
         }
-    }, [taskContainerEl]);
+    }, [taskContainerEl.current]);
 
     return (
         <div className="simple-task-container">

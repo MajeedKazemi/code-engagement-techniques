@@ -350,9 +350,7 @@ function RevealQuestionComponent({
                             Game Over
                         </span>
                     )}
-                <p>
-                    <b>Your Prompt:</b> {prompt}
-                </p>
+                
                 <div className="ai-initial-message">
                     <b> 🤖 AI:</b> Let's solve this task step by step. I'll give
                     a brief description of each step and ask you a question.
