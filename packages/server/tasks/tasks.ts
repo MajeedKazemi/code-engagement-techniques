@@ -240,6 +240,32 @@ export enum TaskStage {
 
 export const CodingTasks = [
     new MultipleChoiceTask(
+        "0MCQVID",
+        `<h1>Watch the Following Video</h1>
+<br/>
+<br/>
+<p>Here is a short video that explains what you will be doing in the study</p>
+<iframe
+    width="900"
+    height="550"
+    src="https://www.youtube.com/embed/eGfxgTff_xY"
+    title="Study Instructions"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+></iframe>
+<br/>
+<br/>
+<h3>Did you watch the video and learn about the study instructions?</h3>
+        `,
+        [
+            "No - I did not watch the video.",
+            "Yes - I understand the study instructions.",
+        ],
+        2
+    ),
+
+    new MultipleChoiceTask(
         "PRE1",
         `<h1>Study Introduction</h1>
 
@@ -261,6 +287,37 @@ export const CodingTasks = [
 
 <h2>Have you thoroughly read the instructions?</h2>`,
         ["No 😞 - And I will not participate in the study.", "Yes 😊"],
+        2
+    ),
+
+    new MultipleChoiceTask(
+        "INST1",
+        `<h1>Using Lists as Queues in Python</h1>
+        <br/>
+        <br/>
+<p>In the next two tasks we will be working on two tasks that use the <i>queue</i> data structure to solve complex problems. However, note that we will be using the <b>list</b> data type as a Queue. Here's how:</p>
+<br/>
+<ul>
+    <li>To create a queue, we can simply write: <b>q = []</b></li>
+    <li>To initialize the queue with an initial value, we can write: <b>q = ['val']</b></li>
+    <li>To add an item to the end of the queue, we use the <b>q.append('val')</b> method.</li>
+    <li>To remove an item from the beginning of the queue, we use the <b>q.pop(0)</b> method.</li>
+</ul>
+<br/>
+<p>What will be the result of the following code snippet?</p>
+<div class="code-block">
+q = [0] # define queue and initialize with 0
+
+for i in range(5):
+    item = q.pop(0) # remove the first item from the queue and assign it to item
+    q.append(i + item) # add the sum of i and the removed item to the end of the queue
+
+print(q)
+</div>
+
+<br/>
+<h3>What will be the output of the code snippet?</h3>`,
+        ["[0]", "[1, 2, 3, 4]", "[10]", "[4]"],
         2
     ),
 
@@ -451,6 +508,39 @@ generate_parentheses(4, 2)
     ),
 
     new MultipleChoiceTask(
+        "INST2",
+        `<h1>Using Lists as Stacks in Python</h1>
+        <br/>
+        <br/>
+<p>In the next two tasks we will be working on two tasks that use the <i>stack</i> data structure to solve complex problems. However, note that we will be using the <b>list</b> data type as a Stack. Here's how:</p>
+<br/>
+<ul>
+    <li>To create a stack, we can simply write: <b>s = []</b></li>
+    <li>To initialize the stack with an initial value, we can write: <b>s = ['val']</b></li>
+    <li>To add an item to the top of the stack, we use the <b>s.append('val')</b> method.</li>
+    <li>To peek at the top item of the stack (access the top item without removing it), we use the index <b>s[-1]</b>.</li>
+    <li>To remove the top item from the stack, we use the <b>s.pop()</b> method.</li>
+</ul>
+<br/>
+<p>What will be the result of the following code snippet?</p>
+<div class="code-block">
+s = [0, 1]  # define stack and initialize with 0, 1, 2
+
+for i in range(2):
+    item = s.pop()  # remove the top item from the stack and assign it to item
+    s.append(i)  # add i to the top of the stack
+    s.append(item)  # add the removed item back to the top of the stack
+
+print(s)
+</div>
+
+<br/>
+<h3>What will be the output of the code snippet?</h3>`,
+        ["[0, 1]", "[1, 0]", "[0, 1, 0, 1]", "[0, 0, 1, 1]"],
+        2
+    ),
+
+    new MultipleChoiceTask(
         "T3RB",
         `<h1>Warm-Up Task 3: Reverse List Using Stack</h1>
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
@@ -629,6 +719,45 @@ longest_valid_brackets(")()())()()(")
         ["skip"],
         1,
         "Willing"
+    ),
+
+    new MultipleChoiceTask(
+        "INST3",
+        `<h1>Using Lists as a Double-Ended Queue in Python</h1>
+        <br/>
+        <br/>
+<p>Double-Ended Queues (de-queues) are a versatile data structure that allows insertion and deletion at both the front and back of the queue.</p>
+<br/>
+<p>In the next two tasks we will be working on two tasks that use the <i>double-ended queue</i> (or de-queue) data structure to solve complex problems. However, note that we will be using the <b>list</b> data type as a Double-Ended Queue. Here's how:</p>
+<br/>
+<ul>
+    <li>To create a double-ended queue, we can simply write: <b>dq = []</b></li>
+    <li>To initialize the dq with an initial value, we can write: <b>dq = ['val']</b></li>
+    <li>To add an item to the end of the queue, we use the <b>dq.append('val')</b> method.</li>
+    <li>To see the end of the queue, we use the <b>dq[-1]</b> method.</li>
+    <li>To remove an item from the end of the queue, we use the <b>dq.pop()</b> method.</li>
+    <li>To add an item to the front of the queue, we use the <b>dq.insert(0, 'val')</b> method.</li>
+    <li>To remove an item from the front of the queue, we use the <b>dq.pop(0)</b> method.</li>
+    <li>To see the front of the queue, we use the <b>dq[0]</b> method.</li>
+</ul>
+<br/>
+<p>What will be the result of the following code snippet?</p>
+<div class="code-block">
+dq = [2] # define an empty double-ended queue
+
+for i in range(2):
+    dq.append(i) # add i to the end of the queue
+    dq.pop(0) # remove the first item from the queue
+    dq.insert(0, i) # add i to the front of the queue
+    dq.pop() # remove the last item from the queue
+
+print(dq)
+</div>
+
+<br/>
+<h3>What will be the output of the code snippet?</h3>`,
+        ["[1]", "[0, 1, 0]", "[2]", "[1, 0, 1]"],
+        2
     ),
 
     new MultipleChoiceTask(
