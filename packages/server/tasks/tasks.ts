@@ -1373,7 +1373,7 @@ assert longest_valid_parentheses("()(())))") == 6`
 <p>Please read the task description and the provided examples carefully to ensure you fully understand the desired behavior of the requested function.</p>
 <h2>Task Description:</h2>
 
-<p>Write a function <b>invalid_parentheses_indices(s: str) -> int</b> that calculates the minimum number of invalid parentheses that need to be removed to make the input string <b>s</b> valid. The function should traverse the string <b>s</b>, keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input <b>s = "())()"</b>, the function should return <b>1</b> because removing one closing parenthesis at index <b>2</b> would make the string valid. If the input is <b>s = "(()"</b>, it should return <b>1</b> as well because removing one opening parenthesis at index <b>0</b> would make the string valid.</p>
+<p>Write a function 'invalid_parentheses_indices(s: str) -> list[int]:' that returns the index of all invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()("', the function should return [2, 5] because removing the closing parentheses at index 2, and 5 would make the string valid: '()()'.</p>
 
 <br/>
 <p>Examples:</p>
@@ -1412,10 +1412,10 @@ invalid_parentheses_indices(")()(")
 
     new ManualCodingTask(
         "mc4",
-        `Write a function 'invalid_parentheses_indices(s: str) -> int' that calculates the minimum number of invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()"', the function should return 1 because removing one closing parenthesis at index 2 would make the string valid. If the input is 's = "(()"', it should return 1 as well because removing one opening parenthesis at index 0 would make the string valid.`,
+        `Write a function 'invalid_parentheses_indices(s: str) -> list[int]:' that returns the index of all invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()("', the function should return [2, 5] because removing the closing parentheses at index 2, and 5 would make the string valid: '()()'.`,
         `def invalid_parentheses_indices(s: str) -> list[int]:
     """
-    Write a function 'invalid_parentheses_indices(s: str) -> int' that calculates the minimum number of invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()"', the function should return 1 because removing one closing parenthesis at index 2 would make the string valid. If the input is 's = "(()"', it should return 1 as well because removing one opening parenthesis at index 0 would make the string valid.
+    Write a function 'invalid_parentheses_indices(s: str) -> list[int]:' that returns the index of all invalid parentheses that need to be removed to make the input string 's' valid. The function should traverse the string 's', keeping track of the indices of unmatched opening and closing parentheses. It returns the total number of unmatched parentheses indices. For example, given the input 's = "())()("', the function should return [2, 5] because removing the closing parentheses at index 2, and 5 would make the string valid: '()()'.
 
     Please fill out the #TODO parts.
 
@@ -1454,10 +1454,10 @@ invalid_parentheses_indices(")()(")
 	
     return invalid_indices
 
-assert invalid_parentheses_indices(")()(") == [0, 3]
-assert invalid_parentheses_indices("())()") == [2]
-assert invalid_parentheses_indices(")((") == [0, 2, 1]
-assert invalid_parentheses_indices(")()(") == [0, 3]`
+print(invalid_parentheses_indices(")()(")) # Expect: [0, 3]
+print(invalid_parentheses_indices("())()")) # Expect: [2]
+print(invalid_parentheses_indices(")((")) # Expect: [0, 2, 1]
+print(invalid_parentheses_indices(")()(")) # Expect [0, 3]`
     ),
 
     new MultipleChoiceTask(
