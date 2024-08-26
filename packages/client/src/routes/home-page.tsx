@@ -85,12 +85,6 @@ export const HomePage = () => {
                                 <h2 className="card-title">
                                     Code Representation Techniques
                                 </h2>
-                                <p className="mb-md">
-                                    TODO: Add the description of the project
-                                    {/* Learn Python and introductory programming
-                                    concepts by solving programming tasks step
-                                    by step */}
-                                </p>
 
                                 <p className="text-sm">
                                     This tool is part of a research study

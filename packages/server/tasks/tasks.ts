@@ -1109,8 +1109,8 @@ generate_brackets(3, 1)
 </pre>
 <pre class="code-block">
 generate_brackets(3, 2)
-# Output: ["[[][]]", "[[]][]", "[][][]"]
-# Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
+# Output: ['[[][]]', '[[]][]', '[][[]]', '[][][]']
+# Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", "[][[]]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
 </pre>
 <br/>
 <br/>
@@ -1148,8 +1148,8 @@ generate_brackets(3, 2)
     # Explanation: For 3 pairs of square brackets with a maximum of 1 consecutive opening bracket, the only valid combination is "[][][]". All other combinations, such as "[[]][]", "[[][]]", or "[[[]]]", exceed the depth restriction of 1 consecutive opening bracket.
 
     >>> generate_brackets(3, 2)
-    # Output: ["[[][]]", "[[]][]", "[][][]"]
-    # Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
+    # Output: ['[[][]]', '[[]][]', '[][[]]', '[][][]']
+    # Explanation: For 3 pairs of square brackets with a maximum of 2 consecutive opening brackets, there are three valid combinations: "[[][]]", "[[]][]", "[][[]]", and "[][][]". These combinations do not exceed the depth restriction of 2 consecutive opening brackets.
     """
     result = []
     q = [["", 0, 0, 0]]
@@ -1174,7 +1174,7 @@ generate_brackets(3, 2)
 assert generate_brackets(2, 1) == ["[][]"]
 assert generate_brackets(2, 2) == ["[[]]", "[][]"]
 assert generate_brackets(3, 1) == ["[][][]"]
-assert generate_brackets(3, 2) == ["[[][]]", "[[]][]", "[][][]"]
+assert generate_brackets(3, 2) == ['[[][]]', '[[]][]', '[][[]]', '[][][]']
 `
     ),
 
