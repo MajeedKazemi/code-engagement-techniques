@@ -1456,7 +1456,7 @@ invalid_parentheses_indices(")()(")
 
 assert invalid_parentheses_indices(")()(") == [0, 3]
 assert invalid_parentheses_indices("())()") == [2]
-assert invalid_parentheses_indices(")((") == [0, 1, 2]
+assert invalid_parentheses_indices(")((") == [0, 2, 1]
 assert invalid_parentheses_indices(")()(") == [0, 3]`
     ),
 
@@ -1664,10 +1664,28 @@ assert sliding_even_count([2, 3, 6, 8, 1], 2) == [1, 1, 2, 1]`
     ),
 
     new MultipleChoiceTask(
+        "FIN0",
+        `<h1>Post-Study Interview!</h1>
+<br/>
+<h2>Please take the time to fill out this form and provide your detailed feedback on the two systems that we developed: <a target="_blank" href="https://forms.office.com/r/pCL6RKDcTP">https://forms.office.com/r/pCL6RKDcTP</a></h2>`,
+        [
+            "I did not email it.",
+            "I emailed my e-transfer email address to receive the study compensation.",
+        ],
+        2
+    ),
+
+    new MultipleChoiceTask(
         "FIN1",
         `<h1>Thank you for participating!</h1>
 <br/>
-<h2>Please email me (majeed@dgp.toronto.edu or majeed.kazemitabaar@mail.utoronto.ca) your INTERAC e-transfer email address so I can send you the compensation.</h2>`,
+<h2>Please email me (majeed@dgp.toronto.edu or majeed.kazemitabaar@mail.utoronto.ca) your INTERAC e-transfer email address so I can send you the compensation.</h2>
+<br/>
+<h3>After this you can close the tab and end the study.</h3>
+<br/>
+<h1>Thank you!</h1>
+<br/>
+`,
         [
             "I did not email it.",
             "I emailed my e-transfer email address to receive the study compensation.",
