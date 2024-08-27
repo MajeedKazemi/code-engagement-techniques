@@ -555,7 +555,7 @@ generate_parentheses(3, 1)
 <br/>
 <p>What will be the result of the following code snippet?</p>
 <div class="code-block">
-s = [0, 1]  # define stack and initialize with 0, 1, 2
+s = [0, 1]  # define stack and initialize with two values: 0 and 1. The top of the stack is 1 at index -1 (s[-1])
 
 for i in range(2):
     item = s.pop()  # remove the top item from the stack and assign it to item
@@ -810,7 +810,7 @@ longest_valid_brackets(")()())()()(")
 <br/>
 <p>What will be the result of the following code snippet?</p>
 <div class="code-block">
-dq = [2] # define an empty double-ended queue
+dq = [2] # define double-ended queue and initialize with 2
 
 for i in range(2):
     dq.append(i) # add i to the end of the queue
